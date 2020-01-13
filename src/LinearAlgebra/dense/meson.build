@@ -1,0 +1,19 @@
+LinearAlgebra_headers += [
+  'dense/vector_crtp.hpp',
+  'dense/memory_chunk.hpp',
+  'dense/is_std_integral_constant.hpp',
+
+  'dense/vector_crtp.hpp',
+  'dense/vector_storage_scheme.hpp',
+  'dense/vector.hpp',
+
+  'dense/matrix_crtp.hpp',
+
+  'dense/matrix_special_structure_enum.hpp',
+  'dense/matrix_storage_scheme.hpp',
+  'dense/matrix.hpp',
+    
+  'dense/known_patterns.hpp',
+  'dense/known_patterns_impl.hpp',
+  'dense/scalar_functions.hpp',
+]

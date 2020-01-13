@@ -1,3 +1,5 @@
+subdir('dense')
+
 test_array = [['hello_test','hello_exe','hello.cpp']]
 
 foreach test : test_array

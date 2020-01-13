@@ -1,0 +1,614 @@
+// TODO: for hermitian matrices, check that diagonal is real
+#pragma once
+
+#include "KissDStream/linear_algebra/is_std_integral_constant.hpp"
+#include "KissDStream/linear_algebra/matrix_crtp.hpp"
+#include "KissDStream/linear_algebra/matrix_special_structure_enum.hpp"
+#include "KissDStream/linear_algebra/matrix_storage_scheme.hpp"
+#include "KissDStream/linear_algebra/memory_chunk.hpp"
+
+// Allowed combination Structure + Mask
+//
+namespace KissDStream
+{
+  namespace Default_Matrix_Detail
+  {
+    template <Matrix_Special_Structure_Enum SPECIAL_STRUCTURE, Matrix_Storage_Mask_Enum MASK>
+    struct is_structure_mask_combination_allowed : std::false_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::None,
+                                                 Matrix_Storage_Mask_Enum::None> : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Symmetric,
+                                                 Matrix_Storage_Mask_Enum::Lower> : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Symmetric,
+                                                 Matrix_Storage_Mask_Enum::Upper> : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Hermitian,
+                                                 Matrix_Storage_Mask_Enum::Lower> : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Hermitian,
+                                                 Matrix_Storage_Mask_Enum::Upper> : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Triangular,
+                                                 Matrix_Storage_Mask_Enum::Lower> : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Triangular,
+                                                 Matrix_Storage_Mask_Enum::Upper> : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Unit_Triangular,
+                                                 Matrix_Storage_Mask_Enum::Lower_Strict>
+        : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Unit_Triangular,
+                                                 Matrix_Storage_Mask_Enum::Upper_Strict>
+        : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Triangular_Strict,
+                                                 Matrix_Storage_Mask_Enum::Lower_Strict>
+        : std::true_type
+    {
+    };
+
+    template <>
+    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Triangular_Strict,
+                                                 Matrix_Storage_Mask_Enum::Upper_Strict>
+        : std::true_type
+    {
+    };
+
+    // TODO:to complete
+
+    template <Matrix_Special_Structure_Enum SPECIAL_STRUCTURE, Matrix_Storage_Mask_Enum MASK>
+    constexpr bool is_structure_mask_combination_allowed_v =
+        is_structure_mask_combination_allowed<SPECIAL_STRUCTURE, MASK>::value;
+
+    template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+              Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+              typename LEADING_DIMENSION>
+    constexpr bool sanity_check_v =
+        is_structure_mask_combination_allowed_v<SPECIAL_STRUCTURE, MASK>and
+            is_std_integral_constant_size_or_std_size_v<N_TYPE>and
+                is_std_integral_constant_size_or_std_size_v<M_TYPE>and
+                    is_std_integral_constant_size_or_std_size_v<LEADING_DIMENSION>;
+
+  }
+}
+
+// Below concrete implementations Default_Matrix_Crtp<> of are defined:
+//
+// - Default_Matrix
+// - Default_Matrix_View
+// - Default_Matrix_Const_View
+//
+namespace KissDStream
+{
+  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  class Default_Matrix;
+}
+
+namespace KissCore
+{
+  template <typename T, KissDStream::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            KissDStream::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  struct Crtp_Type_Traits<
+      KissDStream::Default_Matrix<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>
+  {
+    using storage_scheme_type =
+        KissDStream::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
+    using memory_chunk_type =
+        KissDStream::Default_Memory_Chunk<T, typename storage_scheme_type::required_capacity_type>;
+
+    using element_type = typename memory_chunk_type::element_type;
+
+    using I_size_type = typename storage_scheme_type::I_size_type;
+    using J_size_type = typename storage_scheme_type::J_size_type;
+
+    using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
+
+    using matrix_special_structure_type =
+        std::integral_constant<KissDStream::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
+  };
+
+}
+
+namespace KissDStream
+{
+  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  class Default_Matrix
+      : public Default_Matrix_Crtp<
+            Default_Matrix<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>
+  {
+    static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE,
+                                                        LEADING_DIMENSION>);
+
+    ///////////
+    // Types //
+    ///////////
+    //
+   public:
+    using base_type = Default_Matrix_Crtp<
+        Default_Matrix<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>;
+
+    using storage_scheme_type = typename base_type::storage_scheme_type;
+    using memory_chunk_type   = typename base_type::memory_chunk_type;
+
+    using element_type = typename base_type::element_type;
+
+    using I_size_type = typename base_type::I_size_type;
+    using J_size_type = typename base_type::J_size_type;
+
+    using leading_dimension_type = typename base_type::leading_dimension_type;
+
+    /////////////
+    // Members //
+    /////////////
+    //
+   protected:
+    //////////////////
+    // Constructors //
+    //////////////////
+    //
+   public:
+    Default_Matrix() : base_type(storage_scheme_type()) {}
+    Default_Matrix(const N_TYPE n, const M_TYPE m, const LEADING_DIMENSION ld)
+        : base_type(storage_scheme_type(n, m, ld))
+    {
+      assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+             (base_type::I_size() == base_type::J_size()));
+    }
+    Default_Matrix(const N_TYPE n, const M_TYPE m) : base_type(storage_scheme_type(n, m))
+    {
+      assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+             (base_type::I_size() == base_type::J_size()));
+    }
+
+    ////////////////////
+    // Public Methods //
+    ////////////////////
+    //
+   public:
+  };
+
+  //================
+
+  template <typename T, size_t N, size_t M>
+  using Tiny_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
+                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::None,
+                                Matrix_Storage_Mask_Enum::None, size_t, size_t, size_t>;
+
+  //================ Triangular_Strict
+
+  // Lower
+  template <typename T, size_t N, size_t M>
+  using Tiny_Lower_Triangular_Strict_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
+                     Matrix_Storage_Mask_Enum::Lower_Strict, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Lower_Triangular_Strict_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
+                     Matrix_Storage_Mask_Enum::Lower_Strict, size_t, size_t, size_t>;
+
+  // Upper
+  template <typename T, size_t N, size_t M>
+  using Tiny_Upper_Triangular_Strict_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
+                     Matrix_Storage_Mask_Enum::Upper_Strict, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Upper_Triangular_Strict_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
+                     Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
+
+  //================ Unit_Triangular
+
+  // Lower
+  template <typename T, size_t N, size_t M>
+  using Tiny_Lower_Unit_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
+                     Matrix_Storage_Mask_Enum::Lower_Strict, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Lower_Unit_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
+                     Matrix_Storage_Mask_Enum::Lower_Strict, size_t, size_t, size_t>;
+
+  // Upper
+  template <typename T, size_t N, size_t M>
+  using Tiny_Upper_Unit_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
+                     Matrix_Storage_Mask_Enum::Upper_Strict, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Upper_Unit_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
+                     Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
+
+  //================ Symmetric (are square)
+
+  template <typename T, size_t N>
+  using Tiny_Symmetric_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Symmetric, Matrix_Storage_Mask_Enum::Lower,
+                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Symmetric_Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::Symmetric,
+                                          Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
+
+  //================ Hermitian (are square)
+
+  template <typename T, size_t N>
+  using Tiny_Hermitian_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Hermitian, Matrix_Storage_Mask_Enum::Lower,
+                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Hermitian_Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::Hermitian,
+                                          Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
+
+}
+
+//****************************************************************
+
+namespace KissDStream
+{
+  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  class Default_Matrix_View;
+}
+
+namespace KissCore
+{
+  template <typename T, KissDStream::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            KissDStream::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  struct Crtp_Type_Traits<KissDStream::Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
+                                                           M_TYPE, LEADING_DIMENSION>>
+  {
+    using storage_scheme_type =
+        KissDStream::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
+    using memory_chunk_type = KissDStream::View_Default_Memory_Chunk<
+        T, typename storage_scheme_type::required_capacity_type>;
+
+    using element_type = typename memory_chunk_type::element_type;
+
+    using I_size_type = typename storage_scheme_type::I_size_type;
+    using J_size_type = typename storage_scheme_type::J_size_type;
+
+    using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
+
+    using matrix_special_structure_type =
+        std::integral_constant<KissDStream::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
+  };
+}
+
+namespace KissDStream
+{
+  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  class Default_Matrix_View
+      : public Default_Matrix_Crtp<
+            Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>
+  {
+    static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE,
+                                                        LEADING_DIMENSION>);
+
+    ///////////
+    // Types //
+    ///////////
+    //
+   public:
+    using base_type = Default_Matrix_Crtp<
+        Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>;
+
+    using storage_scheme_type = typename base_type::storage_scheme_type;
+    using memory_chunk_type   = typename base_type::memory_chunk_type;
+
+    using element_type = typename base_type::element_type;
+
+    using I_size_type = typename storage_scheme_type::I_size_type;
+    using J_size_type = typename storage_scheme_type::J_size_type;
+
+    using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
+
+    /////////////
+    // Members //
+    /////////////
+    //
+   protected:
+    //////////////////
+    // Constructors //
+    //////////////////
+    //
+    // Design:
+    //   Do *not* start to define constructors like
+    // #+begin_src cpp
+    // template <size_t N_OTHER>
+    // Default_Matrix_View(const Default_Matrix<T, SPECIAL_STRUCTURE, N_OTHER> &v)
+    //     : base_type(storage_scheme_type(),
+    //                 memory_chunk_type(v._memory_chunk.data())) {
+    //   static_assert(base_type::required_capacity() <= v.required_capacity());
+    // }
+    // #+end_src
+    //
+    // Reason: this would add artificial and useless strong couplings/dependencies
+    //
+   public:
+    Default_Matrix_View(T* data) : base_type(storage_scheme_type(), data)
+    {
+      assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+             (base_type::I_size() == base_type::J_size()));
+    }
+    Default_Matrix_View(T* data, const N_TYPE n, const M_TYPE m, const LEADING_DIMENSION ld)
+        : base_type(storage_scheme_type(n, m, ld), data)
+    {
+      assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+             (base_type::I_size() == base_type::J_size()));
+    }
+
+    ////////////////////
+    // Public Methods //
+    ////////////////////
+    //
+   public:
+  };
+
+  // Regular matrices
+  //
+  template <typename T, size_t N, size_t M>
+  using Tiny_Matrix_View =
+      Default_Matrix_View<T, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
+                          std::integral_constant<std::size_t, N>,
+                          std::integral_constant<std::size_t, M>,
+                          std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Matrix_View = Default_Matrix_View<T, Matrix_Special_Structure_Enum::None,
+                                          Matrix_Storage_Mask_Enum::None, size_t, size_t, size_t>;
+
+  // Symmetric matrices
+  //
+  template <typename T, size_t N, size_t M>
+  using Tiny_Symmetric_Matrix_View =
+      Default_Matrix_View<T, Matrix_Special_Structure_Enum::Symmetric,
+                          Matrix_Storage_Mask_Enum::Lower, std::integral_constant<std::size_t, N>,
+                          std::integral_constant<std::size_t, M>,
+                          std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Symmetric_Matrix_View =
+      Default_Matrix_View<T, Matrix_Special_Structure_Enum::Symmetric,
+                          Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
+
+}
+
+//================================================================
+
+namespace KissDStream
+{
+  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  class Default_Matrix_Const_View;
+}
+
+namespace KissCore
+{
+  template <typename T, KissDStream::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            KissDStream::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  struct Crtp_Type_Traits<KissDStream::Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
+                                                                 M_TYPE, LEADING_DIMENSION>>
+  {
+    using storage_scheme_type =
+        KissDStream::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
+    using memory_chunk_type = KissDStream::Const_View_Default_Memory_Chunk<
+        T, typename storage_scheme_type::required_capacity_type>;
+
+    using element_type = typename memory_chunk_type::element_type;
+
+    using I_size_type = typename storage_scheme_type::I_size_type;
+    using J_size_type = typename storage_scheme_type::J_size_type;
+
+    using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
+
+    using matrix_special_structure_type =
+        std::integral_constant<KissDStream::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
+  };
+}
+
+namespace KissDStream
+{
+  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  class Default_Matrix_Const_View
+      : public Default_Matrix_Crtp<Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
+                                                             M_TYPE, LEADING_DIMENSION>>
+  {
+    static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE,
+                                                        LEADING_DIMENSION>);
+
+    ///////////
+    // Types //
+    ///////////
+    //
+   public:
+    using base_type = Default_Matrix_Crtp<
+        Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>;
+
+    using storage_scheme_type = typename base_type::storage_scheme_type;
+    using memory_chunk_type   = typename base_type::memory_chunk_type;
+
+    using element_type = typename base_type::element_type;
+
+    using I_size_type = typename storage_scheme_type::I_size_type;
+    using J_size_type = typename storage_scheme_type::J_size_type;
+
+    using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
+
+    /////////////
+    // Members //
+    /////////////
+    //
+   protected:
+    //////////////////
+    // Constructors //
+    //////////////////
+    //
+   public:
+    Default_Matrix_Const_View(const T* data) : base_type(storage_scheme_type(), data)
+    {
+      assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+             (base_type::I_size() == base_type::J_size()));
+    }
+    // Default_Matrix_Const_View(const T* data, const N_TYPE n, const M_TYPE m,
+    //                           const LEADING_DIMENSION ld)
+    //     : base_type(storage_scheme_type(n, m, ld), data)
+    // {
+    //   assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+    //          (base_type::I_size() == base_type::J_size()));
+    // }
+
+    Default_Matrix_Const_View(const T* data, const N_TYPE n, const M_TYPE m,
+                              const LEADING_DIMENSION ld)
+        : Default_Matrix_Const_View(storage_scheme_type(n, m, ld), data)
+    {
+    }
+
+    Default_Matrix_Const_View(const storage_scheme_type& storage_scheme, const T* data)
+        : base_type(storage_scheme, data)
+    {
+      assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+             (base_type::I_size() == base_type::J_size()));
+    }
+
+    ////////////////////
+    // Public Methods //
+    ////////////////////
+    //
+   public:
+  };
+
+  template <typename T, size_t N, size_t M>
+  using Tiny_Matrix_Const_View = Default_Matrix_Const_View<
+      T, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
+      std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, M>,
+      std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Matrix_Const_View =
+      Default_Matrix_Const_View<T, Matrix_Special_Structure_Enum::None,
+                                Matrix_Storage_Mask_Enum::None, size_t, size_t, size_t>;
+
+  ////////////////
+  // Some views //
+  ////////////////
+
+  // const views
+  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  auto
+  create_view(const T* data,
+              const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
+              const Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>&
+                  default_matrix_storage_scheme)
+  {
+    return Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>(
+        default_matrix_storage_scheme, data);
+  }
+
+  // mutable views
+  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+            typename LEADING_DIMENSION>
+  auto
+  create_view(T* data,
+              const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
+              const Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>&
+                  default_matrix_storage_scheme)
+  {
+    return Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>(
+        default_matrix_storage_scheme, data);
+  }
+
+  //================================================================
+
+  // triangular strict
+  template <typename IMPL>
+  auto
+  view_as_upper_triangular_strict(const Default_Matrix_Crtp<IMPL>& M)
+  {
+    return create_view(M.data(),
+                       std::integral_constant<Matrix_Special_Structure_Enum,
+                                              Matrix_Special_Structure_Enum::Triangular_Strict>(),
+                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Upper_Strict>());
+  }
+
+  template <typename IMPL>
+  auto
+  view_as_lower_triangular_strict(const Default_Matrix_Crtp<IMPL>& M)
+  {
+    return create_view(M.data(),
+                       std::integral_constant<Matrix_Special_Structure_Enum,
+                                              Matrix_Special_Structure_Enum::Triangular_Strict>(),
+                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Lower_Strict>());
+  }
+
+  // TODO: to complete
+}

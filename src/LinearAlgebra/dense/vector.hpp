@@ -107,10 +107,7 @@ namespace LinearAlgebra
 
     using increment_type = typename storage_scheme_type::increment_type;
   };
-}
 
-namespace LinearAlgebra
-{
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector_View : public Default_Vector_Crtp<Default_Vector_View<T, N_TYPE, INCREMENT>>
   {

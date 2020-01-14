@@ -7,7 +7,9 @@ using namespace LinearAlgebra;
 int
 main()
 {
-  Vector<double> V_1(5), V_2(5);
+  using T = float;
+
+  Vector<T> V_1(5), V_2(5);
 
   std::cout << V_1 << std::endl;
 

@@ -1,31 +1,12 @@
 #pragma once
 
-#include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/vector_crtp.hpp"
+#include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
+#include "LinearAlgebra/expr_of_the_poor/expr_selector.hpp"
 
 namespace LinearAlgebra
 {
-  enum class Expr_Selector_Enum : int
-  {
-    Undefined,
-    Generic,
-    Blas,
-    Static,
-    END
-  };
-
-  template <Expr_Selector_Enum EXPR_ORDER = Expr_Selector_Enum::END>
-  struct Expr_Selector
-      : Expr_Selector<static_cast<Expr_Selector_Enum>(
-            static_cast<std::underlying_type_t<Expr_Selector_Enum>>(EXPR_ORDER) - 1)>
-  {
-  };
-  template <>
-  struct Expr_Selector<Expr_Selector_Enum::Undefined>
-  {
-  };
-
   //****************************************************************
   // v_0 = alpha.v_0 + beta.op(M).v_1 (Blas's gemv, trmv, symv etc...)
   //****************************************************************

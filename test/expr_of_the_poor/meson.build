@@ -1,6 +1,8 @@
 test_array = [
   ['expr_tags_test','expr_tags_exe','expr_tags.cpp'],
   ['known_patterns_impl_test','known_patterns_impl_exe','known_patterns_impl.cpp'],
+
+  ['X_assign_X_test','X_assign_X_exe','X_assign_X.cpp'],
 ]
 
 foreach test : test_array

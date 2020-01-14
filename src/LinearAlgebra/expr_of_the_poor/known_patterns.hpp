@@ -14,7 +14,7 @@
 //
 // However, please note that special products like (_cwise_product_,
 // _Kronecker_product_) are *noted*.
-
+//
 #pragma once
 
 #include <ccomplex>
@@ -23,7 +23,9 @@
 
 namespace LinearAlgebra
 {
-  // Tags definitions
+  ///////////////////////////////////////////////////////
+  // Tags used to notify operations (plus, product...) //
+  ///////////////////////////////////////////////////////
   //
   // Note: as we do not use *capitalized first letter* these are
   // *legal* C++ identifiers, see
@@ -39,8 +41,20 @@ namespace LinearAlgebra
   };
   constexpr auto _assign_ = _assign_t_();
 
-  //================================================================
-
+  //////////////////////////////////
+  // Tags used to notify argument //
+  //////////////////////////////////
+  //
+  // By example:
+  //
+  // expr(v,_assign_,2.,_product_,_vector_0_)
+  //
+  // then _vector_0_ refers to the first (=0) vector argument, here v.
+  //
+  // The expression expr must be read as:
+  //
+  // v = 2 * v
+  //
   struct _vector_0_t_
   {
   };
@@ -69,8 +83,10 @@ namespace LinearAlgebra
   constexpr auto _matrix_1_ = _matrix_1_t_();
   constexpr auto _matrix_2_ = _matrix_2_t_();
 
-  //================================================================
-
+  //////////////////////////////////////////////
+  // Matrix unary operators (like transpose) //
+  /////////////////////////////////////////////
+  //
   enum class Matrix_Unary_Op_Enum
   {
     Transpose,
@@ -86,7 +102,7 @@ namespace LinearAlgebra
 
   template <Matrix_Unary_Op_Enum OP_A, Matrix_Unary_Op_Enum OP_B>
   constexpr bool
-  operator==(const _matrix_unary_op_t_<OP_A>, const _matrix_unary_op_t_<OP_B>)
+  operator==(const _matrix_unary_op_t_<OP_A>, const _matrix_unary_op_t_<OP_B>) noexcept
   {
     return OP_A == OP_B;
   }
@@ -101,8 +117,10 @@ namespace LinearAlgebra
   constexpr auto _conjugate_ = _conjugate_t_();
   constexpr auto _transConj_ = _transConj_t_();
 
-  //----------------------------------------------------------------
-
+  ///////////////////////////////////////////////////
+  // Does _matrix_unary_op_t_ modifies dimensions? //
+  ///////////////////////////////////////////////////
+  //
   template <Matrix_Unary_Op_Enum OP>
   constexpr bool
   does_it_transpose_matrix_dimension(const _matrix_unary_op_t_<OP>)
@@ -111,8 +129,14 @@ namespace LinearAlgebra
                                                                                             : false;
   }
 
-  //----------------------------------------------------------------
-
+  ////////////////////////////////////
+  // _matrix_unary_op_t_ arithmetic //
+  ////////////////////////////////////
+  //
+  // By example:
+  //
+  // _identity_ <= transpose(_transpose_)
+  //
   constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>
   transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>)
   {
@@ -166,8 +190,14 @@ namespace LinearAlgebra
     return conjugate(transpose(op));
   }
 
-  //----------------------------------------------------------------
-
+  ///////////////////////////////////////////
+  // _matrix_unary_op_t_ action on scalars //
+  ///////////////////////////////////////////
+  //
+  // By example: if z is complex
+  //
+  // z_bar = transform_scalar(_transconjugate_,z)
+  //
   template <Matrix_Unary_Op_Enum OP, typename SCALAR>
   auto
   transform_scalar(const _matrix_unary_op_t_<OP>, const SCALAR& scalar)
@@ -199,8 +229,9 @@ namespace LinearAlgebra
   };
 
   template <Expr_Selector_Enum EXPR_ORDER = Expr_Selector_Enum::END>
-  struct Expr_Selector : Expr_Selector<static_cast<Expr_Selector_Enum>(
-                          static_cast<std::underlying_type_t<Expr_Selector_Enum>>(EXPR_ORDER) - 1)>
+  struct Expr_Selector
+      : Expr_Selector<static_cast<Expr_Selector_Enum>(
+            static_cast<std::underlying_type_t<Expr_Selector_Enum>>(EXPR_ORDER) - 1)>
   {
   };
   template <>
@@ -215,15 +246,15 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-            Vector_Crtp<V_0_TYPE>& v_0,                     // v_0
-            _assign_t_,                                     // =
-            const typename V_0_TYPE::element_type alpha,    // alpha
-            _vector_0_t_,                                   // v_0
-            _plus_t_,                                       // +
-            const typename V_1_TYPE::element_type beta,     // beta
-            _matrix_unary_op_t_<M_OP> op,                   // op
-            const Matrix_Crtp<M_TYPE>& M,                   // M
-            const Vector_Crtp<V_1_TYPE>& v_1)               // v_1
+            Vector_Crtp<V_0_TYPE>& v_0,                           // v_0
+            _assign_t_,                                           // =
+            const typename V_0_TYPE::element_type alpha,          // alpha
+            _vector_0_t_,                                         // v_0
+            _plus_t_,                                             // +
+            const typename V_1_TYPE::element_type beta,           // beta
+            _matrix_unary_op_t_<M_OP> op,                         // op
+            const Matrix_Crtp<M_TYPE>& M,                         // M
+            const Vector_Crtp<V_1_TYPE>& v_1)                     // v_1
   {
     static_assert(not std::is_same_v<M, M>, "Not implemented");
   }
@@ -257,9 +288,9 @@ namespace LinearAlgebra
 
   template <typename V>
   void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-            Vector_Crtp<V>& v_0,                            // vector_0
-            _assign_t_,                                     // =
-            const typename V::element_type scalar)          // scalar
+            Vector_Crtp<V>& v_0,                                  // vector_0
+            _assign_t_,                                           // =
+            const typename V::element_type scalar)                // scalar
   {
     static_assert(not(std::is_same_v<V, V>), "Undefined implementation");
   }
@@ -279,9 +310,9 @@ namespace LinearAlgebra
 
   template <typename M>
   void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-            Matrix_Crtp<M>& M_0,                            // matrix_0
-            _assign_t_,                                     // =
-            const typename M::element_type scalar)          // scalar
+            Matrix_Crtp<M>& M_0,                                  // matrix_0
+            _assign_t_,                                           // =
+            const typename M::element_type scalar)                // scalar
   {
     static_assert(not(std::is_same_v<M, M>), "Undefined implementation");
   }
@@ -300,10 +331,10 @@ namespace LinearAlgebra
   template <typename V_0_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-       Vector_Crtp<V_0_TYPE>& v_0,                     // vector_0
-       _assign_t_,                                     // =
-       const typename V_0_TYPE::element_type scalar,   // scalar
-       _vector_0_t_                                    // vector_0
+       Vector_Crtp<V_0_TYPE>& v_0,                           // vector_0
+       _assign_t_,                                           // =
+       const typename V_0_TYPE::element_type scalar,         // scalar
+       _vector_0_t_                                          // vector_0
   )
   {
     static_assert(not(std::is_same_v<V_0_TYPE, V_0_TYPE>), "Undefined implementation");
@@ -325,10 +356,10 @@ namespace LinearAlgebra
   template <typename M_0_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-       Matrix_Crtp<M_0_TYPE>& M_0,                     // matrix_0
-       _assign_t_,                                     // =
-       const typename M_0_TYPE::element_type scalar,   // scalar
-       _matrix_0_t_                                    // matrix_0
+       Matrix_Crtp<M_0_TYPE>& M_0,                           // matrix_0
+       _assign_t_,                                           // =
+       const typename M_0_TYPE::element_type scalar,         // scalar
+       _matrix_0_t_                                          // matrix_0
   )
   {
     static_assert(not(std::is_same_v<M_0_TYPE, M_0_TYPE>), "Undefined implementation");
@@ -351,15 +382,15 @@ namespace LinearAlgebra
   template <typename M_0_TYPE, typename V_1_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-       Matrix_Crtp<M_0_TYPE>& M_0,                     // matrix_0
-       _assign_t_,                                     // =
-       const typename M_0_TYPE::element_type alpha,    // alpha
-       _matrix_0_t_,                                   // matrix_0
-       _plus_t_,                                       // +
-       const typename V_1_TYPE::element_type beta,     // beta
-       Vector_Crtp<V_1_TYPE>& v_1,                     // vector_1
-       _transpose_t_,                                  // transpose
-       _vector_1_t_                                    // vector_1
+       Matrix_Crtp<M_0_TYPE>& M_0,                           // matrix_0
+       _assign_t_,                                           // =
+       const typename M_0_TYPE::element_type alpha,          // alpha
+       _matrix_0_t_,                                         // matrix_0
+       _plus_t_,                                             // +
+       const typename V_1_TYPE::element_type beta,           // beta
+       Vector_Crtp<V_1_TYPE>& v_1,                           // vector_1
+       _transpose_t_,                                        // transpose
+       _vector_1_t_                                          // vector_1
   )
   {
     static_assert(not(std::is_same_v<M_0_TYPE, M_0_TYPE>), "Undefined implementation");
@@ -393,12 +424,12 @@ namespace LinearAlgebra
   template <typename V_0, typename V_1>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-       Vector_Crtp<V_0>& v_0,                          // vector_0
-       _assign_t_,                                     // =
-       _vector_0_t_,                                   // vector_0
-       _plus_t_,                                       // +
-       const typename V_1::element_type scalar,        // scalar
-       const Vector_Crtp<V_1>& v_1                     // vector_1
+       Vector_Crtp<V_0>& v_0,                                // vector_0
+       _assign_t_,                                           // =
+       _vector_0_t_,                                         // vector_0
+       _plus_t_,                                             // +
+       const typename V_1::element_type scalar,              // scalar
+       const Vector_Crtp<V_1>& v_1                           // vector_1
   )
   {
     static_assert(not(std::is_same_v<V_0, V_0>), "Undefined implementation");

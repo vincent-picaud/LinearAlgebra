@@ -1,5 +1,4 @@
 test_array = [
-  ['is_std_integral_constant_test','is_std_integral_constant_exe','is_std_integral_constant.cpp'],
   ['vector_test','vector_exe','vector.cpp'],
   ['matrix_storage_scheme_test','matrix_storage_scheme_exe','matrix_storage_scheme.cpp'],
   ['matrix_test','matrix_exe','matrix.cpp'],

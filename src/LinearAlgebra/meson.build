@@ -1,4 +1,7 @@
-LinearAlgebra_headers = ['hello.hpp']
+LinearAlgebra_headers = [
+  'hello.hpp',
+  'vector.hpp'
+]
 LinearAlgebra_sources = ['hello.cpp']
 
 subdir('meta')
@@ -13,8 +16,8 @@ LinearAlgebra_lib = library('LinearAlgebra',
 			    sources: [LinearAlgebra_headers,LinearAlgebra_sources])
 
 LinearAlgebra_dep = declare_dependency(include_directories : inc,
-				       dependencies : [blas_lib,],
-				       link_with : [LinearAlgebra_lib,])
+				       link_with : [LinearAlgebra_lib,],
+				       dependencies : [blas_lib,])
 
 install_headers(LinearAlgebra_headers,
 		subdir : 'LinearAlgebra')

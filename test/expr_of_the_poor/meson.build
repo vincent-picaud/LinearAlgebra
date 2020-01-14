@@ -11,7 +11,7 @@ foreach test : test_array
 		  test.get(2),
 		  include_directories : inc, 
 		  dependencies
- 		  : [ gtest_dep ]))
+ 		  : [ LinearAlgebra_dep, gtest_dep ]))
 endforeach
 
 

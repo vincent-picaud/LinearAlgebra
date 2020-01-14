@@ -2,17 +2,22 @@
 
 * What is it?
 
-This library is an attempt to provides some facilities to compute with
-vectors and matrices. The expected goal is a reasonable compilation
-time and a concise implementation wrapping libraries like Blas,
-Lapacke, etc. with a minimal number of lines of code.
+This library is an *crazy* attempt to create another C++ Linear Algebra library. 
 
-In peculiar, for the moment I will not immediately implement Expression Templates
-(even If I know how to), but simply provide call sites like:
+Compared to already existing libs like: [[http://eigen.tuxfamily.org/index.php?title=Main_Page][Eigen]], [[https://bitbucket.org/blaze-lib/blaze/src/master/][Blaze]], ...
+
+The expected goal is a reasonable compilation time and with a concise
+implementation wrapping libraries like Blas, Lapacke, etc. I want a
+minimal number of lines of code!
+
+In peculiar, for the moment I will not immediately implement
+ Expression Templates, but simply provide call sites like:
 
 #+begin_src cpp :eval never
-TODO! expr(....)
+expr(M, _assign_, 1, A, _transpose_, B, _plus_, 3, _matrix_0_);
 #+end_src
+
+which means: M = 1.A.B^t+3.M, where M, A and B are matrices.
 
 *Reasons:* expression templates
 - increase compilation time
@@ -20,7 +25,8 @@ TODO! expr(....)
 
 ** Disclaimer
 
- The library is as its early development stage, for the moment only for the curious...
+ The library is at its early, early, early... development stage. I
+ have made it public only for the curious...
 
 
 * Examples
@@ -134,3 +140,25 @@ prints
 (0,0)
 (0,0)
 #+end_example
+
+* API Documentation
+
+** Available matrix types
+
+For the moment only dense BLAS compatibles (column major) matrices are
+defined (I expect to add sparse & triangular matrices too).
+
+The generic definition for these matrix types is:
+#+begin_src cpp :eval never
+template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+          Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+          typename LEADING_DIMENSION>
+class Default_Matrix { /* ... */ };
+#+end_src
+
+where 
+
+| T                             | is the =element_type, can be a float, int or any user type                    |
+| Matrix_Special_Structure_Enum | is in {None,Symmetric,Hermitian,Triangular,Unit_Triangular,Triangular_Strict} |
+|                               |                                                                               |
+

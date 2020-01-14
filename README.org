@@ -1,8 +1,21 @@
 #+TITLE: Another C++ Linear Algerba library
 
-* Disclaimer
+* What is it?
 
-The library is as its early development stage, for the moment only for the curious...
+This library is an attempt to provides some facilities to compute with
+vectors and matrices. The expected goal is a reasonable compilation
+time and a concise implementation wrapping libraries like Blas,
+Lapacke, etc. with a minimal number of lines of code.
+
+In peculiar, for the moment I will not jump on Expression Templates
+(even If I know how to implement this), but provide call sites like
+this:
+TODO
+
+** Disclaimer
+
+ The library is as its early development stage, for the moment only for the curious...
+
 
 
 * Matrix types 

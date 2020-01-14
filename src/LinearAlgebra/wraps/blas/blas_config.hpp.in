@@ -1,0 +1,7 @@
+#define HAS_BLAS @HAS_BLAS@
+
+#if(HAS_BLAS)
+
+@BLAS_INCLUDE@
+
+#endif

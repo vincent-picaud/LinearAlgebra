@@ -1,9 +1,4 @@
-subdir('meta')
-subdir('dense')
-subdir('expr_of_the_poor')
-subdir('wraps')
-
-test_array = [['hello_test','hello_exe','hello.cpp']]
+test_array = [['blas_test','blas_exe','blas.cpp']]
 
 foreach test : test_array
   test(test.get(0),

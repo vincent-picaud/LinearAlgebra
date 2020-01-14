@@ -14,75 +14,75 @@ namespace LinearAlgebra
   namespace Default_Matrix_Detail
   {
     template <Matrix_Special_Structure_Enum SPECIAL_STRUCTURE, Matrix_Storage_Mask_Enum MASK>
-    struct is_structure_mask_combination_allowed : std::false_type
+    struct Is_Structure_Mask_Combination_Allowed : std::false_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::None,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::None,
                                                  Matrix_Storage_Mask_Enum::None> : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Symmetric,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Symmetric,
                                                  Matrix_Storage_Mask_Enum::Lower> : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Symmetric,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Symmetric,
                                                  Matrix_Storage_Mask_Enum::Upper> : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Hermitian,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Hermitian,
                                                  Matrix_Storage_Mask_Enum::Lower> : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Hermitian,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Hermitian,
                                                  Matrix_Storage_Mask_Enum::Upper> : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Triangular,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Triangular,
                                                  Matrix_Storage_Mask_Enum::Lower> : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Triangular,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Triangular,
                                                  Matrix_Storage_Mask_Enum::Upper> : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Unit_Triangular,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Unit_Triangular,
                                                  Matrix_Storage_Mask_Enum::Lower_Strict>
         : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Unit_Triangular,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Unit_Triangular,
                                                  Matrix_Storage_Mask_Enum::Upper_Strict>
         : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Triangular_Strict,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Triangular_Strict,
                                                  Matrix_Storage_Mask_Enum::Lower_Strict>
         : std::true_type
     {
     };
 
     template <>
-    struct is_structure_mask_combination_allowed<Matrix_Special_Structure_Enum::Triangular_Strict,
+    struct Is_Structure_Mask_Combination_Allowed<Matrix_Special_Structure_Enum::Triangular_Strict,
                                                  Matrix_Storage_Mask_Enum::Upper_Strict>
         : std::true_type
     {
@@ -92,7 +92,7 @@ namespace LinearAlgebra
 
     template <Matrix_Special_Structure_Enum SPECIAL_STRUCTURE, Matrix_Storage_Mask_Enum MASK>
     constexpr bool is_structure_mask_combination_allowed_v =
-        is_structure_mask_combination_allowed<SPECIAL_STRUCTURE, MASK>::value;
+        Is_Structure_Mask_Combination_Allowed<SPECIAL_STRUCTURE, MASK>::value;
 
     template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
               Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,

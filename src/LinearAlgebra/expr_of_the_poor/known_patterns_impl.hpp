@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LinearAlgebra/dense/known_patterns.hpp"
+#include "LinearAlgebra/expr_of_the_poor/known_patterns.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 

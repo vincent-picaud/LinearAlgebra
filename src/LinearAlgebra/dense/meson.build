@@ -12,7 +12,4 @@ LinearAlgebra_headers += [
   'dense/matrix_storage_scheme.hpp',
   'dense/matrix.hpp',
     
-  'dense/known_patterns.hpp',
-  'dense/known_patterns_impl.hpp',
-  'dense/scalar_functions.hpp',
 ]

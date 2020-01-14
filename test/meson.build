@@ -1,5 +1,6 @@
 subdir('meta')
 subdir('dense')
+subdir('expr_of_the_poor')
 
 test_array = [['hello_test','hello_exe','hello.cpp']]
 

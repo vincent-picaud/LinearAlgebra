@@ -1,4 +1,4 @@
-#include "LinearAlgebra/dense/known_patterns_impl.hpp"
+#include "LinearAlgebra/expr_of_the_poor/known_patterns_impl.hpp"
 
 #include <gtest/gtest.h>
 

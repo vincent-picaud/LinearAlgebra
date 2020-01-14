@@ -1,7 +1,6 @@
 LinearAlgebra_headers += [
   'dense/vector_crtp.hpp',
   'dense/memory_chunk.hpp',
-  'dense/is_std_integral_constant.hpp',
 
   'dense/vector_crtp.hpp',
   'dense/vector_storage_scheme.hpp',

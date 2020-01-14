@@ -1,7 +1,7 @@
 // TODO: for hermitian matrices, check that diagonal is real
 #pragma once
 
-#include "LinearAlgebra/dense/is_std_integral_constant.hpp"
+#include "LinearAlgebra/meta/is_std_integral_constant.hpp"
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/matrix_special_structure_enum.hpp"
 #include "LinearAlgebra/dense/matrix_storage_scheme.hpp"

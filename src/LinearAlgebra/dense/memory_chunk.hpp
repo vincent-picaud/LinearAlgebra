@@ -3,7 +3,7 @@
 #include <array>
 #include <type_traits>
 #include <vector>
-#include "LinearAlgebra/dense/is_std_integral_constant.hpp"
+#include "LinearAlgebra/meta/is_std_integral_constant.hpp"
 
 namespace LinearAlgebra
 {

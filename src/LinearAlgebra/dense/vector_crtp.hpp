@@ -2,11 +2,11 @@
 
 #include <cstddef>
 
-#include "LinearAlgebra/meta/crtp.hpp"
+#include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 
 namespace LinearAlgebra
 {
-  template <typename IMPL = Crtp_Final_Impl>
+  template <typename IMPL>
   class Vector_Crtp : public Crtp_Find_Impl<Vector_Crtp, IMPL, Crtp>
   {
     ///////////
@@ -51,7 +51,7 @@ namespace LinearAlgebra
 
   // By "default" we assume that we use the storage_scheme,
   // memory_chunk policies
-  template <typename IMPL = Crtp_Final_Impl>
+  template <typename IMPL>
   class Default_Vector_Crtp : public Crtp_Find_Impl<Default_Vector_Crtp, IMPL, Vector_Crtp>
   {
     ///////////

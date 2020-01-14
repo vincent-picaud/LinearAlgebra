@@ -3,11 +3,11 @@
 #include <cstddef>
 #include <iomanip>
 
-#include "LinearAlgebra/meta/crtp.hpp"
+#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 
 namespace LinearAlgebra
 {
-  template <typename IMPL = Crtp_Final_Impl>
+  template <typename IMPL>
   class Matrix_Crtp : public Crtp_Find_Impl<Matrix_Crtp, IMPL, Crtp>
   {
     ///////////
@@ -54,9 +54,8 @@ namespace LinearAlgebra
    protected:
   };
 
-  template <typename IMPL = Crtp_Final_Impl>
-  class Default_Matrix_Crtp
-      : public Crtp_Find_Impl<Default_Matrix_Crtp, IMPL, Matrix_Crtp>
+  template <typename IMPL>
+  class Default_Matrix_Crtp : public Crtp_Find_Impl<Default_Matrix_Crtp, IMPL, Matrix_Crtp>
   {
     ///////////
     // Types //

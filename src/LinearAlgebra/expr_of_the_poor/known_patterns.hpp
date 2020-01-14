@@ -1,24 +1,6 @@
-//
-// Notations:
-//
-// arg_0 = arg_1 op arg_2....
-//
-// arg_0 is ALWAYS the LHS
-// arg_i, i>0belo,g the the RHS, i denotes the rank of the first occurrence
-//
-// Example: $M_0=v_1.v_1^t$ is translated into
-//
-// M_0 = v_1 _transpose_ _vector_1_
-//
-// Product is not noted.
-//
-// However, please note that special products like (_cwise_product_,
-// _Kronecker_product_) are *noted*.
-//
 #pragma once
 
-#include <LinearAlgebra/expr_of_the_poor/expr_tags.hpp>
-
+#include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 

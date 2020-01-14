@@ -189,7 +189,7 @@ namespace LinearAlgebra
 
   //****************************************************************
 
-  enum class Expr_Order_Enum : int
+  enum class Expr_Selector_Enum : int
   {
     Undefined,
     Generic,
@@ -198,13 +198,13 @@ namespace LinearAlgebra
     END
   };
 
-  template <Expr_Order_Enum EXPR_ORDER = Expr_Order_Enum::END>
-  struct Expr_Order : Expr_Order<static_cast<Expr_Order_Enum>(
-                          static_cast<std::underlying_type_t<Expr_Order_Enum>>(EXPR_ORDER) - 1)>
+  template <Expr_Selector_Enum EXPR_ORDER = Expr_Selector_Enum::END>
+  struct Expr_Selector : Expr_Selector<static_cast<Expr_Selector_Enum>(
+                          static_cast<std::underlying_type_t<Expr_Selector_Enum>>(EXPR_ORDER) - 1)>
   {
   };
   template <>
-  struct Expr_Order<Expr_Order_Enum::Undefined>
+  struct Expr_Selector<Expr_Selector_Enum::Undefined>
   {
   };
 
@@ -214,7 +214,7 @@ namespace LinearAlgebra
   //
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
-  void expr(const Expr_Order<Expr_Order_Enum::Undefined>&,  // Undefined implementation
+  void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
             Vector_Crtp<V_0_TYPE>& v_0,                     // v_0
             _assign_t_,                                     // =
             const typename V_0_TYPE::element_type alpha,    // alpha
@@ -246,7 +246,7 @@ namespace LinearAlgebra
     assert(v_1.size() == (does_it_transpose_matrix_dimension(op) ? M.I_size() : M.J_size()));
 
     // Delegate computation
-    expr(Expr_Order<>(), v_0.impl(), _assign_, alpha, _vector_0_, _plus_, beta, op, M.impl(),
+    expr(Expr_Selector<>(), v_0.impl(), _assign_, alpha, _vector_0_, _plus_, beta, op, M.impl(),
          v_1.impl());
   }
 
@@ -256,7 +256,7 @@ namespace LinearAlgebra
   //
 
   template <typename V>
-  void expr(const Expr_Order<Expr_Order_Enum::Undefined>&,  // Undefined implementation
+  void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
             Vector_Crtp<V>& v_0,                            // vector_0
             _assign_t_,                                     // =
             const typename V::element_type scalar)          // scalar
@@ -269,7 +269,7 @@ namespace LinearAlgebra
             _assign_t_,                             // =
             const typename V::element_type scalar)  // scalar
   {
-    expr(Expr_Order<>(), v_0.impl(), _assign_, scalar);
+    expr(Expr_Selector<>(), v_0.impl(), _assign_, scalar);
   }
 
   //****************************************************************
@@ -278,7 +278,7 @@ namespace LinearAlgebra
   //
 
   template <typename M>
-  void expr(const Expr_Order<Expr_Order_Enum::Undefined>&,  // Undefined implementation
+  void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
             Matrix_Crtp<M>& M_0,                            // matrix_0
             _assign_t_,                                     // =
             const typename M::element_type scalar)          // scalar
@@ -291,7 +291,7 @@ namespace LinearAlgebra
             _assign_t_,                             // =
             const typename M::element_type scalar)  // scalar
   {
-    expr(Expr_Order<>(), M_0.impl(), _assign_, scalar);
+    expr(Expr_Selector<>(), M_0.impl(), _assign_, scalar);
   }
   //****************************************************************
   // v_0 = alpha v_0 (Blas's scal)
@@ -299,7 +299,7 @@ namespace LinearAlgebra
   //
   template <typename V_0_TYPE>
   void
-  expr(const Expr_Order<Expr_Order_Enum::Undefined>&,  // Undefined implementation
+  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Vector_Crtp<V_0_TYPE>& v_0,                     // vector_0
        _assign_t_,                                     // =
        const typename V_0_TYPE::element_type scalar,   // scalar
@@ -317,14 +317,14 @@ namespace LinearAlgebra
        _vector_0_t_                                   // vector_0
   )
   {
-    expr(Expr_Order<>(), v_0.impl(), _assign_, scalar, _vector_0_);
+    expr(Expr_Selector<>(), v_0.impl(), _assign_, scalar, _vector_0_);
   }
   //
   // Matrix version
   //
   template <typename M_0_TYPE>
   void
-  expr(const Expr_Order<Expr_Order_Enum::Undefined>&,  // Undefined implementation
+  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Matrix_Crtp<M_0_TYPE>& M_0,                     // matrix_0
        _assign_t_,                                     // =
        const typename M_0_TYPE::element_type scalar,   // scalar
@@ -342,7 +342,7 @@ namespace LinearAlgebra
        _matrix_0_t_                                   // matrix_0
   )
   {
-    expr(Expr_Order<>(), M_0.impl(), _assign_, scalar, _matrix_0_);
+    expr(Expr_Selector<>(), M_0.impl(), _assign_, scalar, _matrix_0_);
   }
   //****************************************************************
   // M_0 = α.M_0 + β.v_1 transpose v_1 (rank-one udpate, M_0 is symmetric)
@@ -350,7 +350,7 @@ namespace LinearAlgebra
   //
   template <typename M_0_TYPE, typename V_1_TYPE>
   void
-  expr(const Expr_Order<Expr_Order_Enum::Undefined>&,  // Undefined implementation
+  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Matrix_Crtp<M_0_TYPE>& M_0,                     // matrix_0
        _assign_t_,                                     // =
        const typename M_0_TYPE::element_type alpha,    // alpha
@@ -381,7 +381,7 @@ namespace LinearAlgebra
     assert(M_0.I_size() == M_0.J_size());
     assert(M_0.I_size() == v_1.size());
 
-    expr(Expr_Order<>(), M_0.impl(), _assign_, alpha, _matrix_0_, _plus_, beta, v_1.impl(),
+    expr(Expr_Selector<>(), M_0.impl(), _assign_, alpha, _matrix_0_, _plus_, beta, v_1.impl(),
          _transpose_, _vector_1_);
   }
 
@@ -392,7 +392,7 @@ namespace LinearAlgebra
 
   template <typename V_0, typename V_1>
   void
-  expr(const Expr_Order<Expr_Order_Enum::Undefined>&,  // Undefined implementation
+  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Vector_Crtp<V_0>& v_0,                          // vector_0
        _assign_t_,                                     // =
        _vector_0_t_,                                   // vector_0
@@ -416,7 +416,7 @@ namespace LinearAlgebra
   {
     assert(v_0.size() == v_1.size());
 
-    expr(Expr_Order<>(), v_0.impl(), _assign_, _vector_0_, _plus_, scalar, v_1.impl());
+    expr(Expr_Selector<>(), v_0.impl(), _assign_, _vector_0_, _plus_, scalar, v_1.impl());
   }
 
 }

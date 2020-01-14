@@ -23,11 +23,9 @@ TODO! expr(....)
  The library is as its early development stage, for the moment only for the curious...
 
 
+* Examples
 
-* Matrix types 
-
-** Example 
-
+** Matrix types 
 
 #+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
 cat $(pwd)/examples/some_matrix_types.cpp
@@ -80,4 +78,59 @@ prints
                0               X               X               X               X               X               X
                0               0               X               X               X               X               X
                0               0               0               X               X               X               X
+#+end_example
+
+** Expression usage example
+
+Again this is not expression template, but IMHO this is still readable
+and you do not have hidden temporary (plsu shorter compilation time).
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/expr_usage.cpp
+#+END_SRC
+
+#+RESULTS:
+#+begin_src cpp :eval never
+#include "LinearAlgebra/vector.hpp"
+
+#include <ccomplex>
+#include <iostream>
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  using T = std::complex<double>;
+
+  Vector<T> V_1(5), V_2(5);
+
+  std::cout << V_1 << std::endl;
+
+  expr(V_2, _assign_, V_1);
+
+  std::cout << V_2 << std::endl;
+}
+#+end_src
+
+prints
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/expr_usage
+#+END_SRC
+
+#+RESULTS:
+#+begin_example :eval never
+
+(0,0)
+(0,0)
+(0,0)
+(0,0)
+(0,0)
+
+(0,0)
+(0,0)
+(0,0)
+(0,0)
+(0,0)
 #+end_example

@@ -2,19 +2,19 @@
 
 #include <cstddef>
 
-#include "KissCore/crtp.hpp"
+#include "LinearAlgebra/meta/crtp.hpp"
 
-namespace KissDStream
+namespace LinearAlgebra
 {
-  template <typename IMPL = KissCore::Crtp_Final_Impl>
-  class Vector_Crtp : public KissCore::Crtp_Find_Impl<Vector_Crtp, IMPL, KissCore::Crtp>
+  template <typename IMPL = Crtp_Final_Impl>
+  class Vector_Crtp : public Crtp_Find_Impl<Vector_Crtp, IMPL, Crtp>
   {
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = KissCore::Crtp_Find_Impl<Vector_Crtp, IMPL, KissCore::Crtp>;
+    using base_type = Crtp_Find_Impl<Vector_Crtp, IMPL, Crtp>;
     using base_type::impl;
 
     using exact_type  = typename base_type::exact_type;
@@ -51,16 +51,15 @@ namespace KissDStream
 
   // By "default" we assume that we use the storage_scheme,
   // memory_chunk policies
-  template <typename IMPL = KissCore::Crtp_Final_Impl>
-  class Default_Vector_Crtp
-      : public KissCore::Crtp_Find_Impl<Default_Vector_Crtp, IMPL, Vector_Crtp>
+  template <typename IMPL = Crtp_Final_Impl>
+  class Default_Vector_Crtp : public Crtp_Find_Impl<Default_Vector_Crtp, IMPL, Vector_Crtp>
   {
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = KissCore::Crtp_Find_Impl<Default_Vector_Crtp, IMPL, Vector_Crtp>;
+    using base_type = Crtp_Find_Impl<Default_Vector_Crtp, IMPL, Vector_Crtp>;
 
     using exact_type  = typename base_type::exact_type;
     using traits_type = typename base_type::traits_type;

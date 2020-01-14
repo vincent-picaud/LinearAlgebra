@@ -4,7 +4,7 @@
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   //****************************************************************
   // v = alpha

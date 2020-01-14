@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   template <typename T>
   struct is_std_integral_constant : std::false_type

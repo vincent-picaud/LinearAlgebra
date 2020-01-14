@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace KissDStream;
+using namespace LinearAlgebra;
 
 TEST(Default_Matrix_Storage_Scheme, Basic)
 {

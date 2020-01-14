@@ -5,7 +5,7 @@
 #include <vector>
 #include "LinearAlgebra/dense/is_std_integral_constant.hpp"
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   template <typename T, typename CAPACITY_TYPE>
   class Default_Memory_Chunk;

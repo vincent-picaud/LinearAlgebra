@@ -4,20 +4,18 @@
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/dense/vector_storage_scheme.hpp"
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector;
-}
 
-namespace KissCore
-{
   template <typename T, typename N_TYPE, typename INCREMENT>
-  struct Crtp_Type_Traits<KissDStream::Default_Vector<T, N_TYPE, INCREMENT>>
+  struct Crtp_Type_Traits<LinearAlgebra::Default_Vector<T, N_TYPE, INCREMENT>>
   {
-    using storage_scheme_type = KissDStream::Default_Vector_Storage_Scheme<N_TYPE, INCREMENT>;
+    using storage_scheme_type = LinearAlgebra::Default_Vector_Storage_Scheme<N_TYPE, INCREMENT>;
     using memory_chunk_type =
-        KissDStream::Default_Memory_Chunk<T, typename storage_scheme_type::required_capacity_type>;
+        LinearAlgebra::Default_Memory_Chunk<T,
+                                            typename storage_scheme_type::required_capacity_type>;
 
     using element_type = typename memory_chunk_type::element_type;
 
@@ -25,10 +23,7 @@ namespace KissCore
 
     using increment_type = typename storage_scheme_type::increment_type;
   };
-}
 
-namespace KissDStream
-{
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector : public Default_Vector_Crtp<Default_Vector<T, N_TYPE, INCREMENT>>
   {
@@ -81,35 +76,29 @@ namespace KissDStream
 
   template <typename T>
   using Vector = Default_Vector<T, size_t, std::integral_constant<std::size_t, 1>>;
-}
 
-//****************************************************************
-// Views
-//
-// Very few changes ( tagged by "CHANGE HERE" )
-//
-// - uses View_Default_Memory_Chunk instead of Default_Memory_Chunk
-//
-// - modifies Default_Vector to take a pointer (to feed
-//   View_Default_Memory_Chunk)
-//
-//****************************************************************
+  //****************************************************************
+  // Views
+  //
+  // Very few changes ( tagged by "CHANGE HERE" )
+  //
+  // - uses View_Default_Memory_Chunk instead of Default_Memory_Chunk
+  //
+  // - modifies Default_Vector to take a pointer (to feed
+  //   View_Default_Memory_Chunk)
+  //
+  //****************************************************************
 
-namespace KissDStream
-{
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector_View;
-}
 
-namespace KissCore
-{
   template <typename T, typename N_TYPE, typename INCREMENT>
-  struct Crtp_Type_Traits<KissDStream::Default_Vector_View<T, N_TYPE, INCREMENT>>
+  struct Crtp_Type_Traits<LinearAlgebra::Default_Vector_View<T, N_TYPE, INCREMENT>>
   {
     using storage_scheme_type =
-        KissDStream::Default_Vector_Storage_Scheme<N_TYPE,
-                                                   INCREMENT>;  // <- "CHANGE HERE"
-    using memory_chunk_type = KissDStream::View_Default_Memory_Chunk<
+        LinearAlgebra::Default_Vector_Storage_Scheme<N_TYPE,
+                                                     INCREMENT>;  // <- "CHANGE HERE"
+    using memory_chunk_type = LinearAlgebra::View_Default_Memory_Chunk<
         T, typename storage_scheme_type::required_capacity_type>;
 
     using element_type = typename memory_chunk_type::element_type;
@@ -120,7 +109,7 @@ namespace KissCore
   };
 }
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector_View : public Default_Vector_Crtp<Default_Vector_View<T, N_TYPE, INCREMENT>>
@@ -166,25 +155,19 @@ namespace KissDStream
 
   template <typename T>
   using Vector_View = Default_Vector_View<T, size_t, std::integral_constant<std::size_t, 1>>;
-}
 
-//****************************************************************
-// Const_View
-//****************************************************************
+  //****************************************************************
+  // Const_View
+  //****************************************************************
 
-namespace KissDStream
-{
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector_Const_View;
-}
 
-namespace KissCore
-{
   template <typename T, typename N_TYPE, typename INCREMENT>
-  struct Crtp_Type_Traits<KissDStream::Default_Vector_Const_View<T, N_TYPE, INCREMENT>>
+  struct Crtp_Type_Traits<LinearAlgebra::Default_Vector_Const_View<T, N_TYPE, INCREMENT>>
   {
-    using storage_scheme_type = KissDStream::Default_Vector_Storage_Scheme<N_TYPE, INCREMENT>;
-    using memory_chunk_type   = KissDStream::Const_View_Default_Memory_Chunk<
+    using storage_scheme_type = LinearAlgebra::Default_Vector_Storage_Scheme<N_TYPE, INCREMENT>;
+    using memory_chunk_type   = LinearAlgebra::Const_View_Default_Memory_Chunk<
         T, typename storage_scheme_type::
                required_capacity_type>;  // <- "CHANGE HERE" View -> Const_View
 
@@ -194,10 +177,7 @@ namespace KissCore
 
     using increment_type = typename storage_scheme_type::increment_type;
   };
-}
 
-namespace KissDStream
-{
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector_Const_View
       : public Default_Vector_Crtp<Default_Vector_Const_View<T, N_TYPE, INCREMENT>>

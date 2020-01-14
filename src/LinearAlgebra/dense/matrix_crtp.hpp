@@ -3,19 +3,19 @@
 #include <cstddef>
 #include <iomanip>
 
-#include "KissCore/crtp.hpp"
+#include "LinearAlgebra/meta/crtp.hpp"
 
-namespace KissDStream
+namespace LinearAlgebra
 {
-  template <typename IMPL = KissCore::Crtp_Final_Impl>
-  class Matrix_Crtp : public KissCore::Crtp_Find_Impl<Matrix_Crtp, IMPL, KissCore::Crtp>
+  template <typename IMPL = Crtp_Final_Impl>
+  class Matrix_Crtp : public Crtp_Find_Impl<Matrix_Crtp, IMPL, Crtp>
   {
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = KissCore::Crtp_Find_Impl<Matrix_Crtp, IMPL, KissCore::Crtp>;
+    using base_type = Crtp_Find_Impl<Matrix_Crtp, IMPL, Crtp>;
     using base_type::impl;
 
     using exact_type  = typename base_type::exact_type;
@@ -54,16 +54,16 @@ namespace KissDStream
    protected:
   };
 
-  template <typename IMPL = KissCore::Crtp_Final_Impl>
+  template <typename IMPL = Crtp_Final_Impl>
   class Default_Matrix_Crtp
-      : public KissCore::Crtp_Find_Impl<Default_Matrix_Crtp, IMPL, Matrix_Crtp>
+      : public Crtp_Find_Impl<Default_Matrix_Crtp, IMPL, Matrix_Crtp>
   {
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = KissCore::Crtp_Find_Impl<Default_Matrix_Crtp, IMPL, Matrix_Crtp>;
+    using base_type = Crtp_Find_Impl<Default_Matrix_Crtp, IMPL, Matrix_Crtp>;
 
     using exact_type  = typename base_type::exact_type;
     using traits_type = typename base_type::traits_type;

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   enum class Matrix_Special_Structure_Enum
   {

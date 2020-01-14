@@ -9,7 +9,7 @@
 
 // Allowed combination Structure + Mask
 //
-namespace KissDStream
+namespace LinearAlgebra
 {
   namespace Default_Matrix_Detail
   {
@@ -104,34 +104,30 @@ namespace KissDStream
                     is_std_integral_constant_size_or_std_size_v<LEADING_DIMENSION>;
 
   }
-}
 
-// Below concrete implementations Default_Matrix_Crtp<> of are defined:
-//
-// - Default_Matrix
-// - Default_Matrix_View
-// - Default_Matrix_Const_View
-//
-namespace KissDStream
-{
+  // Below concrete implementations Default_Matrix_Crtp<> of are defined:
+  //
+  // - Default_Matrix
+  // - Default_Matrix_View
+  // - Default_Matrix_Const_View
+  //
+
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
   class Default_Matrix;
-}
 
-namespace KissCore
-{
-  template <typename T, KissDStream::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            KissDStream::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+  template <typename T, LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            LinearAlgebra::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
   struct Crtp_Type_Traits<
-      KissDStream::Default_Matrix<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>
+      LinearAlgebra::Default_Matrix<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>
   {
     using storage_scheme_type =
-        KissDStream::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
+        LinearAlgebra::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
     using memory_chunk_type =
-        KissDStream::Default_Memory_Chunk<T, typename storage_scheme_type::required_capacity_type>;
+        LinearAlgebra::Default_Memory_Chunk<T,
+                                            typename storage_scheme_type::required_capacity_type>;
 
     using element_type = typename memory_chunk_type::element_type;
 
@@ -141,12 +137,12 @@ namespace KissCore
     using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
 
     using matrix_special_structure_type =
-        std::integral_constant<KissDStream::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
+        std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
 
 }
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
@@ -298,29 +294,22 @@ namespace KissDStream
   using Hermitian_Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::Hermitian,
                                           Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
 
-}
+  //****************************************************************
 
-//****************************************************************
-
-namespace KissDStream
-{
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
   class Default_Matrix_View;
-}
 
-namespace KissCore
-{
-  template <typename T, KissDStream::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            KissDStream::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+  template <typename T, LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            LinearAlgebra::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
-  struct Crtp_Type_Traits<KissDStream::Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
-                                                           M_TYPE, LEADING_DIMENSION>>
+  struct Crtp_Type_Traits<LinearAlgebra::Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
+                                                             M_TYPE, LEADING_DIMENSION>>
   {
     using storage_scheme_type =
-        KissDStream::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
-    using memory_chunk_type = KissDStream::View_Default_Memory_Chunk<
+        LinearAlgebra::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
+    using memory_chunk_type = LinearAlgebra::View_Default_Memory_Chunk<
         T, typename storage_scheme_type::required_capacity_type>;
 
     using element_type = typename memory_chunk_type::element_type;
@@ -331,11 +320,11 @@ namespace KissCore
     using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
 
     using matrix_special_structure_type =
-        std::integral_constant<KissDStream::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
+        std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
 }
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
@@ -434,29 +423,22 @@ namespace KissDStream
       Default_Matrix_View<T, Matrix_Special_Structure_Enum::Symmetric,
                           Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
 
-}
+  //================================================================
 
-//================================================================
-
-namespace KissDStream
-{
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
   class Default_Matrix_Const_View;
-}
 
-namespace KissCore
-{
-  template <typename T, KissDStream::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            KissDStream::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+  template <typename T, LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            LinearAlgebra::Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
-  struct Crtp_Type_Traits<KissDStream::Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
-                                                                 M_TYPE, LEADING_DIMENSION>>
+  struct Crtp_Type_Traits<LinearAlgebra::Default_Matrix_Const_View<
+      T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>
   {
     using storage_scheme_type =
-        KissDStream::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
-    using memory_chunk_type = KissDStream::Const_View_Default_Memory_Chunk<
+        LinearAlgebra::Default_Matrix_Storage_Scheme<MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>;
+    using memory_chunk_type = LinearAlgebra::Const_View_Default_Memory_Chunk<
         T, typename storage_scheme_type::required_capacity_type>;
 
     using element_type = typename memory_chunk_type::element_type;
@@ -467,12 +449,9 @@ namespace KissCore
     using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
 
     using matrix_special_structure_type =
-        std::integral_constant<KissDStream::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
+        std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
-}
 
-namespace KissDStream
-{
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>

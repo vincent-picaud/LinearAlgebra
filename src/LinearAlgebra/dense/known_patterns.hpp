@@ -21,7 +21,7 @@
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   // Tags definitions
   //

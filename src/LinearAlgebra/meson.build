@@ -1,6 +1,7 @@
 LinearAlgebra_headers = ['hello.hpp']
 LinearAlgebra_sources = ['hello.cpp']
 
+subdir('meta')
 subdir('dense')
 
 

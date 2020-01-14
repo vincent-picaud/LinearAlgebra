@@ -5,7 +5,7 @@
 #include <type_traits>
 #include "LinearAlgebra/dense/is_std_integral_constant.hpp"
 
-namespace KissDStream
+namespace LinearAlgebra
 {
   enum class Matrix_Storage_Mask_Enum
   {

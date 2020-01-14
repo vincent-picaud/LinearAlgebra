@@ -168,27 +168,49 @@ where
 There are some alias covering the usual cases. Those with the =Tiny=
 prefix denote *static size* (no memory allocation).
 
-|--------------------------------------------+-----------------------------------------|
-| Matrix<T>,                                 | Regular matrix                          |
+
+| Matrix<T>                                  | Regular matrix                          |
 | Tiny_Matrix<T,N,M>                         |                                         |
-|--------------------------------------------+-----------------------------------------|
-| Lower_Triangular_Strict_Matrix<T>,         | Lower Triangular Strict (no diagonal)   |
+
+
+| Lower_Triangular_Strict_Matrix<T>          | Lower Triangular Strict (no diagonal)   |
 | Tiny_Lower_Triangular_Strict_Matrix<T,N,M> |                                         |
-|--------------------------------------------+-----------------------------------------|
-| Upper_Triangular_Strict_Matrix<T>,         | Upper Triangular Strict (no diagonal)   |
+
+
+| Upper_Triangular_Strict_Matrix<T>          | Upper Triangular Strict (no diagonal)   |
 | Tiny_Upper_Triangular_Strict_Matrix<T,N,M> |                                         |
-|--------------------------------------------+-----------------------------------------|
-| Lower_Unit_Triangular_Matrix<T>,           | Lower Unit Triangular (diagonal=1)      |
+
+| Lower_Unit_Triangular_Matrix<T>            | Lower Unit Triangular (diagonal=1)      |
 | Tiny_Lower_Unit_Triangular_Matrix<T,N,M>   |                                         |
-|--------------------------------------------+-----------------------------------------|
-| Upper_Unit_Triangular_Matrix<T>,           | Upper Unit Triangular (no diagonal=1)   |
+
+
+| Upper_Unit_Triangular_Matrix<T>            | Upper Unit Triangular (no diagonal=1)   |
 | Tiny_Upper_Unit_Triangular_Matrix<T,N,M>   |                                         |
-|--------------------------------------------+-----------------------------------------|
-| Symmetric_Matrix<T>,                       | Symmetric Matrix (lower part is stored) |
+
+
+| Symmetric_Matrix<T>                        | Symmetric Matrix (lower part is stored) |
 | Tiny_Symmetric_Matrix<T,N,M>               |                                         |
-|--------------------------------------------+-----------------------------------------|
-| Hermitian_Matrix<T>,                       | Hermitian Matrix (lower part is stored) |
+
+
+| Hermitian_Matrix<T>                        | Hermitian Matrix (lower part is stored) |
 | Tiny_Hermitian_Matrix<T,N,M>               |                                         |
-|--------------------------------------------+-----------------------------------------|
+
 
 CAVEAT: add Triangular matrices! (missing)
+
+For each case you can also use *views*, there are two types of view:
+mutable one and constant one. For instance:
+
+#+begin_src cpp :eval never
+Matrix<double> M(10, 5);
+
+auto view = view_as_lower_triangular_strict(M.as_const());
+#+end_src
+
+will return a constant view (a lightweight matrix where only pointers
+are stored and not owned) of type:
+
+#+begin_src cpp :eval never
+Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>
+#+end_src
+

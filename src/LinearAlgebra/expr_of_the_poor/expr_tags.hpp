@@ -32,12 +32,12 @@ namespace LinearAlgebra
   struct _plus_t_
   {
   };
-  constexpr auto _plus_ = _plus_t_();
+  inline constexpr auto _plus_ = _plus_t_();
 
   struct _assign_t_
   {
   };
-  constexpr auto _assign_ = _assign_t_();
+  inline constexpr auto _assign_ = _assign_t_();
 
   //////////////////////////////////
   // Tags used to notify argument //
@@ -62,9 +62,9 @@ namespace LinearAlgebra
   struct _vector_2_t_
   {
   };
-  constexpr auto _vector_0_ = _vector_0_t_();
-  constexpr auto _vector_1_ = _vector_1_t_();
-  constexpr auto _vector_2_ = _vector_2_t_();
+  inline constexpr auto _vector_0_ = _vector_0_t_();
+  inline constexpr auto _vector_1_ = _vector_1_t_();
+  inline constexpr auto _vector_2_ = _vector_2_t_();
 
   //================================================================
 
@@ -77,9 +77,9 @@ namespace LinearAlgebra
   struct _matrix_2_t_
   {
   };
-  constexpr auto _matrix_0_ = _matrix_0_t_();
-  constexpr auto _matrix_1_ = _matrix_1_t_();
-  constexpr auto _matrix_2_ = _matrix_2_t_();
+  inline constexpr auto _matrix_0_ = _matrix_0_t_();
+  inline constexpr auto _matrix_1_ = _matrix_1_t_();
+  inline constexpr auto _matrix_2_ = _matrix_2_t_();
 
   //////////////////////////////////////////////
   // Matrix unary operators (like transpose) //
@@ -99,7 +99,7 @@ namespace LinearAlgebra
   };
 
   template <Matrix_Unary_Op_Enum OP_A, Matrix_Unary_Op_Enum OP_B>
-  constexpr bool
+  inline constexpr bool
   operator==(const _matrix_unary_op_t_<OP_A>, const _matrix_unary_op_t_<OP_B>) noexcept
   {
     return OP_A == OP_B;
@@ -110,18 +110,18 @@ namespace LinearAlgebra
   using _conjugate_t_ = _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>;
   using _transConj_t_ = _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>;
 
-  constexpr auto _identity_  = _identity_t_();
-  constexpr auto _transpose_ = _transpose_t_();
-  constexpr auto _conjugate_ = _conjugate_t_();
-  constexpr auto _transConj_ = _transConj_t_();
+  inline constexpr auto _identity_  = _identity_t_();
+  inline constexpr auto _transpose_ = _transpose_t_();
+  inline constexpr auto _conjugate_ = _conjugate_t_();
+  inline constexpr auto _transConj_ = _transConj_t_();
 
   ///////////////////////////////////////////////////
   // Does _matrix_unary_op_t_ modifies dimensions? //
   ///////////////////////////////////////////////////
   //
   template <Matrix_Unary_Op_Enum OP>
-  constexpr bool
-  does_it_transpose_matrix_dimension(const _matrix_unary_op_t_<OP>)
+  inline constexpr bool
+  does_it_transpose_matrix_dimension(const _matrix_unary_op_t_<OP>) noexcept
   {
     return (OP == Matrix_Unary_Op_Enum::Transpose or OP == Matrix_Unary_Op_Enum::TransConj) ? true
                                                                                             : false;
@@ -135,46 +135,46 @@ namespace LinearAlgebra
   //
   // _identity_ <= transpose(_transpose_)
   //
-  constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>
-  transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>)
+  inline constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>
+  transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>) noexcept
   {
     return {};
   }
-  constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>
-  transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>)
+  inline constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>
+  transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>) noexcept
   {
     return {};
   }
-  constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>
-  transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>)
+  inline constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>
+  transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>) noexcept
   {
     return {};
   }
-  constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>
-  transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>)
+  inline constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>
+  transpose(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>) noexcept
   {
     return {};
   }
 
   //----------------------------------------------------------------
 
-  constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>
-  conjugate(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>)
+  inline constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>
+  conjugate(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>) noexcept
   {
     return {};
   }
-  constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>
-  conjugate(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>)
+  inline constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>
+  conjugate(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>) noexcept
   {
     return {};
   }
-  constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>
-  conjugate(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>)
+  inline constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>
+  conjugate(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Transpose>) noexcept
   {
     return {};
   }
-  constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>
-  conjugate(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>)
+  inline constexpr _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>
+  conjugate(const _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Identity>) noexcept
   {
     return {};
   }
@@ -182,8 +182,8 @@ namespace LinearAlgebra
   //----------------------------------------------------------------
 
   template <Matrix_Unary_Op_Enum OP>
-  constexpr auto
-  transconjugate(const _matrix_unary_op_t_<OP> op)
+  inline constexpr auto
+  transconjugate(const _matrix_unary_op_t_<OP> op) noexcept
   {
     return conjugate(transpose(op));
   }
@@ -197,15 +197,15 @@ namespace LinearAlgebra
   // z_bar = transform_scalar(_transconjugate_,z)
   //
   template <Matrix_Unary_Op_Enum OP, typename SCALAR>
-  auto
-  transform_scalar(const _matrix_unary_op_t_<OP>, const SCALAR& scalar)
+  inline constexpr auto
+  transform_scalar(const _matrix_unary_op_t_<OP>, const SCALAR& scalar) noexcept
   {
     return scalar;
   }
 
   template <Matrix_Unary_Op_Enum OP, typename SCALAR>
-  auto
-  transform_scalar(const _matrix_unary_op_t_<OP> op, const std::complex<SCALAR>& scalar)
+  inline constexpr auto
+  transform_scalar(const _matrix_unary_op_t_<OP> op, const std::complex<SCALAR>& scalar) noexcept
   {
     if constexpr (op == _conjugate_ or op == _transConj_)
     {

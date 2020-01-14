@@ -1,5 +1,6 @@
 #include "LinearAlgebra/vector.hpp"
 
+#include <ccomplex>
 #include <iostream>
 
 using namespace LinearAlgebra;
@@ -7,7 +8,7 @@ using namespace LinearAlgebra;
 int
 main()
 {
-  using T = float;
+  using T = std::complex<double>;
 
   Vector<T> V_1(5), V_2(5);
 

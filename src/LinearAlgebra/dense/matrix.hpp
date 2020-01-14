@@ -99,9 +99,9 @@ namespace LinearAlgebra
               typename LEADING_DIMENSION>
     constexpr bool sanity_check_v =
         is_structure_mask_combination_allowed_v<SPECIAL_STRUCTURE, MASK>and
-            is_std_integral_constant_size_or_std_size_v<N_TYPE>and
-                is_std_integral_constant_size_or_std_size_v<M_TYPE>and
-                    is_std_integral_constant_size_or_std_size_v<LEADING_DIMENSION>;
+            Is_Std_Integral_Constant_Size_Or_Std_Size_v<N_TYPE>and
+                Is_Std_Integral_Constant_Size_Or_Std_Size_v<M_TYPE>and
+                    Is_Std_Integral_Constant_Size_Or_Std_Size_v<LEADING_DIMENSION>;
 
   }
 

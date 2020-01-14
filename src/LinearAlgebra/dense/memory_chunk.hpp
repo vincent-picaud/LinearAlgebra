@@ -78,7 +78,7 @@ namespace LinearAlgebra
   template <typename T, typename CAPACITY_TYPE>
   class View_Default_Memory_Chunk
   {
-    static_assert(is_std_integral_constant_size_or_std_size_v<CAPACITY_TYPE>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<CAPACITY_TYPE>);
 
    public:
     using capacity_type = CAPACITY_TYPE;
@@ -120,7 +120,7 @@ namespace LinearAlgebra
   template <typename T, typename CAPACITY_TYPE>
   class Const_View_Default_Memory_Chunk
   {
-    static_assert(is_std_integral_constant_size_or_std_size_v<CAPACITY_TYPE>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<CAPACITY_TYPE>);
 
    public:
     using capacity_type = CAPACITY_TYPE;

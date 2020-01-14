@@ -3,3 +3,6 @@ subprojects/googletest-release-1.8.0/
 subprojects/packagecache/
 *~
 /README.html
+/LinearAlgebra.srctrlbm
+/LinearAlgebra.srctrldb
+/LinearAlgebra.srctrlprj

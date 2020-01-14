@@ -14,7 +14,7 @@ namespace LinearAlgebra
     constexpr auto
     increment_default_value_helper()
     {
-      static_assert(is_std_integral_constant_size_or_std_size_v<INCREMENT>);
+      static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<INCREMENT>);
 
       if constexpr (std::is_same_v<std::size_t, INCREMENT>)
       {
@@ -50,8 +50,8 @@ namespace LinearAlgebra
   template <typename N_TYPE, typename INCREMENT>
   class Default_Vector_Storage_Scheme
   {
-    static_assert(is_std_integral_constant_size_or_std_size_v<N_TYPE>);
-    static_assert(is_std_integral_constant_size_or_std_size_v<INCREMENT>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<N_TYPE>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<INCREMENT>);
 
    public:
     using required_capacity_type = Detail::vector_required_capacity_helper_t<N_TYPE, INCREMENT>;

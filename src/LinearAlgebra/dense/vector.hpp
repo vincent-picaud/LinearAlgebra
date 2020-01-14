@@ -29,8 +29,8 @@ namespace LinearAlgebra
   {
     // Sanity checks
     //
-    static_assert(is_std_integral_constant_size_or_std_size_v<N_TYPE>);
-    static_assert(is_std_integral_constant_size_or_std_size_v<INCREMENT>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<N_TYPE>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<INCREMENT>);
 
     ///////////
     // Types //
@@ -116,8 +116,8 @@ namespace LinearAlgebra
   {
     // Sanity checks
     //
-    static_assert(is_std_integral_constant_size_or_std_size_v<N_TYPE>);
-    static_assert(is_std_integral_constant_size_or_std_size_v<INCREMENT>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<N_TYPE>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<INCREMENT>);
 
     ///////////
     // Types //
@@ -184,8 +184,8 @@ namespace LinearAlgebra
   {
     // Sanity checks
     //
-    static_assert(is_std_integral_constant_size_or_std_size_v<N_TYPE>);
-    static_assert(is_std_integral_constant_size_or_std_size_v<INCREMENT>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<N_TYPE>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<INCREMENT>);
 
     ///////////
     // Types //

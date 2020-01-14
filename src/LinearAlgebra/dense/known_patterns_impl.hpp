@@ -46,7 +46,7 @@ namespace LinearAlgebra
        const typename V_0_TYPE::element_type scalar  // scalar
        )
       //  SFINAE restricts to static size
-      -> std::enable_if_t<is_std_integral_constant_of_type_v<size_t, typename V_0_TYPE::size_type>>
+      -> std::enable_if_t<Is_Std_Integral_Constant_Of_Type_v<size_t, typename V_0_TYPE::size_type>>
   {
     expr(Expr_Order<Expr_Order_Enum::Generic>(), v, _assign_, scalar);
   }

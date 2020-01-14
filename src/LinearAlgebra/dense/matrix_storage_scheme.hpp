@@ -78,9 +78,9 @@ namespace LinearAlgebra
             typename LEADING_DIMENSION>
   class Default_Matrix_Storage_Scheme
   {
-    static_assert(is_std_integral_constant_size_or_std_size_v<N_TYPE>);
-    static_assert(is_std_integral_constant_size_or_std_size_v<M_TYPE>);
-    static_assert(is_std_integral_constant_size_or_std_size_v<LEADING_DIMENSION>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<N_TYPE>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<M_TYPE>);
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<LEADING_DIMENSION>);
 
    public:
     using required_capacity_type =

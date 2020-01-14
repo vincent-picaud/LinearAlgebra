@@ -7,10 +7,16 @@ vectors and matrices. The expected goal is a reasonable compilation
 time and a concise implementation wrapping libraries like Blas,
 Lapacke, etc. with a minimal number of lines of code.
 
-In peculiar, for the moment I will not jump on Expression Templates
-(even If I know how to implement this), but provide call sites like
-this:
-TODO
+In peculiar, for the moment I will not immediately implement Expression Templates
+(even If I know how to), but simply provide call sites like:
+
+#+begin_src cpp :eval never
+TODO! expr(....)
+#+end_src
+
+*Reasons:* expression templates
+- increase compilation time
+- can always "hide" some temporary creation
 
 ** Disclaimer
 

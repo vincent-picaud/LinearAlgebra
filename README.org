@@ -1,0 +1,64 @@
+#+TITLE: Another C++ Linear Algerba library
+
+* Disclaimer
+
+The library is as its early development stage, for the moment only for the curious...
+
+
+* Matrix types 
+
+** Example 
+
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/some_matrix_types.cpp
+#+END_SRC
+
+#+RESULTS:
+#+begin_src cpp :eval never
+#include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/dense/vector.hpp"
+
+#include <iostream>
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  Matrix<double> M_1(4, 5);
+
+  Symmetric_Matrix<int> M_2(4, 4);
+
+  Tiny_Lower_Triangular_Strict_Matrix<float, 4, 7> M_3;
+
+  std::cout << M_1 << std::endl;
+  std::cout << M_2 << std::endl;
+  std::cout << M_3 << std::endl;
+}
+#+end_src
+
+prints
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/some_matrix_types
+#+END_SRC
+
+#+RESULTS:
+#+begin_example :eval never
+
+               0               0               0               0               0
+               0               0               0               0               0
+               0               0               0               0               0
+               0               0               0               0               0
+
+               0               X               X               X
+               0               0               X               X
+               0               0               0               X
+               0               0               0               0
+
+               X               X               X               X               X               X               X
+               0               X               X               X               X               X               X
+               0               0               X               X               X               X               X
+               0               0               0               X               X               X               X
+#+end_example

@@ -17,14 +17,31 @@ In peculiar, for the moment I will not immediately implement
  Expression Templates, but simply provide call sites like:
 
 #+begin_src cpp :eval never
-expr(M, _assign_, 1, A, _transpose_, B, _plus_, 3, _matrix_0_);
+expr(M, _assign_,  3, _matrix_0_, _plus_, _identity_, A, _transpose_, B);
 #+end_src
 
-which means: M = 1.A.B^t+3.M, where M, A and B are matrices.
+which means: M = 3.M + A.B^t, where M, A and B are matrices.
+
+The =_matrix_0_= tag means reuse the first (=0) already seen matrix
+argument.
 
 *Reasons:* expression templates
 - increase compilation time
 - can always "hide" some temporary creation
+
+
+** Compromises
+
+To make the code simpler I have done some compromises
+
+- Vector/Matrix cannot be resized (reason: static vector/matrix
+  cannot be resized whereas dynamic one can. This introduce an
+  asymmetry in the code that comes with some extra complications),
+- I did not introduce =aligned= or =packed= template parameters (by
+  consequence I did not introduce simd intrinsics). This can be a
+  performance limitation for small vector/matrix objects. However,
+  this has no effect for big vector/matrix as we use BLAS whenever
+  this is possible.
 
 ** Disclaimer
 
@@ -172,21 +189,28 @@ There are some alias covering the usual cases. Those with the =Tiny=
 prefix denote *static size* (no memory allocation).
 
 
+|--------------------------------------------+-----------------------------------------|
 | Matrix<T>                                  | Regular matrix                          |
-| Tiny_Matrix<T,N,M>                         |                                         |
+| Tiny_Matrix<T,N,M>                         | (+ with static size)                    |
+|--------------------------------------------+-----------------------------------------|
 | Lower_Triangular_Strict_Matrix<T>          | Lower Triangular Strict (no diagonal)   |
-| Tiny_Lower_Triangular_Strict_Matrix<T,N,M> |                                         |
+| Tiny_Lower_Triangular_Strict_Matrix<T,N,M> | (+ with static size)                    |
+|--------------------------------------------+-----------------------------------------|
 | Upper_Triangular_Strict_Matrix<T>          | Upper Triangular Strict (no diagonal)   |
-| Tiny_Upper_Triangular_Strict_Matrix<T,N,M> |                                         |
+| Tiny_Upper_Triangular_Strict_Matrix<T,N,M> | (+ with static size)                    |
+|--------------------------------------------+-----------------------------------------|
 | Lower_Unit_Triangular_Matrix<T>            | Lower Unit Triangular (diagonal=1)      |
-| Tiny_Lower_Unit_Triangular_Matrix<T,N,M>   |                                         |
+| Tiny_Lower_Unit_Triangular_Matrix<T,N,M>   | (+ with static size)                    |
+|--------------------------------------------+-----------------------------------------|
 | Upper_Unit_Triangular_Matrix<T>            | Upper Unit Triangular (no diagonal=1)   |
-| Tiny_Upper_Unit_Triangular_Matrix<T,N,M>   |                                         |
+| Tiny_Upper_Unit_Triangular_Matrix<T,N,M>   | (+ with static size)                    |
+|--------------------------------------------+-----------------------------------------|
 | Symmetric_Matrix<T>                        | Symmetric Matrix (lower part is stored) |
-| Tiny_Symmetric_Matrix<T,N,M>               |                                         |
+| Tiny_Symmetric_Matrix<T,N,M>               | (+ with static size)                    |
+|--------------------------------------------+-----------------------------------------|
 | Hermitian_Matrix<T>                        | Hermitian Matrix (lower part is stored) |
-| Tiny_Hermitian_Matrix<T,N,M>               |                                         |
-
+| Tiny_Hermitian_Matrix<T,N,M>               | (+ with static size)                    |
+|--------------------------------------------+-----------------------------------------|
 
 CAVEAT: add Triangular matrices! (missing)
 

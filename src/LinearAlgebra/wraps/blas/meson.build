@@ -6,15 +6,15 @@ blas_config = configuration_data({
 				})
 
 
-
-
-
 #################################################################
-# Here define a list of candidate blas lib...
-# Here we currently only check one 
+# TODO:
+#
+# for the moment only one attempt (=OpenBlas), would be nice to have a
+# list of candidate BLAS lib (MKL...)
 #################################################################
+#
 # find cblas lib 
-# 
+#----------------------------------------------------------------
 # Note: a priori for Debian, one has to search blas.so lib and NOT
 # cblas.so lib.
 #
@@ -23,6 +23,8 @@ cpp = meson.get_compiler('cpp')
 blas_lib = cpp.find_library('blas', required: false, disabler: true)
 blas_include = '#include <cblas.h>'
 
+# try to compile and link with it
+#----------------------------------------------------------------
 # important: use ''' and not simply ' as we want to take into account
 # end line jumps
 #
@@ -37,18 +39,40 @@ if cpp.links(blas_include+'''
   blas_config.set('HAS_BLAS','true')
   blas_config.set('BLAS_INCLUDE',blas_include)
 else
-  blas_lib = disabler() # reset flag
+  blas_lib = disabler() # link failed -> creset flag
 endif
 
 #################################################################
-# If not found we are done...
+# Generate configure file
 #################################################################
-
+#
 configure_file(input : 'blas_config.hpp.in',
                output : 'blas_config.hpp',
                configuration : blas_config)
 
 
+# if not found, done...
 if not blas_lib.found()
   subdir_done()
 endif
+
+# here other stuff depending on blas_lib
+
+# NOTE: for the moment, blas_lib is used in
+#
+# LinearAlgebra/src/LinearAlgebra/meson.build
+#
+# LinearAlgebra_dep = declare_dependency(include_directories : inc,
+# 				       link_with : [LinearAlgebra_lib,],
+# 				       dependencies : [blas_lib,])
+#
+# However It must certainly be better to use:
+# https://mesonbuild.com/Reference-manual.html#declare_dependency
+#
+# I guess something like:
+#
+# blas_dep=dependency_object declare_dependency(include_directories : ???,
+#    	                                        link_with : [blas_lib,])
+#
+# but I do know how to fill the ???
+#

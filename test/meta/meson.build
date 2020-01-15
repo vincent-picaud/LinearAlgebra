@@ -1,5 +1,6 @@
 test_array = [
   ['is_std_integral_constant_test','is_std_integral_constant_exe','is_std_integral_constant.cpp'],
+  ['size_utils_test','size_utils_exe','size_utils.cpp'],
 ]
 
 foreach test : test_array

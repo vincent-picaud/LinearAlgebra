@@ -61,7 +61,9 @@ namespace LinearAlgebra
     Blas::copy(v_0.size(), v_1.data(), v_1.increment(), v_0.data(), v_0.increment());
   }
 #endif
-
+  // TODO: Implementation: Static size
+  //
+  
   //
   // User interface
   //

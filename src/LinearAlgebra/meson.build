@@ -1,6 +1,8 @@
 LinearAlgebra_headers = [
   'hello.hpp',
-  'vector.hpp'
+  # Dense vector/matrix user header 
+  'vector.hpp',
+  'matrix.hpp'
 ]
 LinearAlgebra_sources = ['hello.cpp']
 

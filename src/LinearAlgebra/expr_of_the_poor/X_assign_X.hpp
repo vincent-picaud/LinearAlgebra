@@ -43,7 +43,7 @@ namespace LinearAlgebra
   }
 
   //
-  //  Implementation: Blas
+  //  Implementation: CBlas
   //
 #if (HAS_BLAS)
   template <typename V_0_TYPE, typename V_1_TYPE>

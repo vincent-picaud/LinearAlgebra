@@ -5,3 +5,7 @@ executable('some_matrix_types',
 executable('expr_usage',
 	   'expr_usage.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('expr_usage_2',
+	   'expr_usage_2.cpp',
+	   dependencies : [LinearAlgebra_dep])

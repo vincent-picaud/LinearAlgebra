@@ -234,6 +234,6 @@ Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DI
 
 ** =meta=
 
-| =Has_Static_Size_v<>=        | .file:/test/meta/size_utils.cpp |
-| =Any_Has_Static_Size_v<...>= |                                 |
+| =Has_Static_Size_v<>=        | [[file:src/LinearAlgebra/meta/size_utils.hpp][file:src/LinearAlgebra/meta/size_utils.hpp]] |
+| =Any_Has_Static_Size_v<...>= |                                            |
 

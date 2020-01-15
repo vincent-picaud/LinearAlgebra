@@ -9,8 +9,6 @@ namespace LinearAlgebra
   // get_size //
   //////////////
   //
-  // CAVEAT: we do *not* check that these sizes are identical
-  //
   namespace Detail
   {
     template <typename IMPL, typename... IMPLs>
@@ -30,6 +28,11 @@ namespace LinearAlgebra
     }
   }
 
+  // Returns vector size, a static one if any
+  //
+  // CAVEAT: we do *not* check that these sizes are identical
+  //
+  //
   template <typename IMPL, typename... IMPLs>
   inline constexpr auto
   get_size(const Vector_Crtp<IMPL>& V, const Vector_Crtp<IMPLs>&... Vs) noexcept

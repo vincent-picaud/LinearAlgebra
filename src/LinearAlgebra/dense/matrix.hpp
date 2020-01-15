@@ -1,11 +1,11 @@
 // TODO: for hermitian matrices, check that diagonal is real
 #pragma once
 
-#include "LinearAlgebra/meta/is_std_integral_constant.hpp"
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/matrix_special_structure_enum.hpp"
 #include "LinearAlgebra/dense/matrix_storage_scheme.hpp"
 #include "LinearAlgebra/dense/memory_chunk.hpp"
+#include "LinearAlgebra/meta/is_std_integral_constant.hpp"
 
 // Allowed combination Structure + Mask
 //
@@ -140,10 +140,6 @@ namespace LinearAlgebra
         std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
 
-}
-
-namespace LinearAlgebra
-{
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
@@ -322,10 +318,7 @@ namespace LinearAlgebra
     using matrix_special_structure_type =
         std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
-}
 
-namespace LinearAlgebra
-{
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>

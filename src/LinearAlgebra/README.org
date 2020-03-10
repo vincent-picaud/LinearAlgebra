@@ -1,0 +1,44 @@
+#+SETUPFILE: ../../Setup/setupFile-2.org
+#+TITLE: Library main headers
+
+* Library main headers
+
+- [[id:37ca8895-814e-4808-882f-fff1bde88bcc][Vector classes]]
+
+
+* The meson file 
+
+The meson file is 
+#+begin_src sh :exports results :results raw :evals no-export :wrap "src meson"
+cat ./meson.build
+#+end_src
+
+#+RESULTS:
+#+begin_src meson
+LinearAlgebra_headers = [
+  'hello.hpp',
+  # Dense vector/matrix user header 
+  'vector.hpp',
+  'matrix.hpp'
+]
+LinearAlgebra_sources = ['hello.cpp']
+
+subdir('meta')
+subdir('dense')
+subdir('wraps')
+
+
+
+LinearAlgebra_lib = library('LinearAlgebra',
+			    include_directories : inc,
+			    install : true,
+			    sources: [LinearAlgebra_headers,LinearAlgebra_sources])
+
+LinearAlgebra_dep = declare_dependency(include_directories : inc,
+				       link_with : [LinearAlgebra_lib,],
+				       dependencies : [blas_lib,])
+
+install_headers(LinearAlgebra_headers,
+		subdir : 'LinearAlgebra')
+
+#+end_src

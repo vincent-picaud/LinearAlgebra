@@ -6,3 +6,4 @@ subprojects/packagecache/
 /LinearAlgebra.srctrlbm
 /LinearAlgebra.srctrldb
 /LinearAlgebra.srctrlprj
+*.html

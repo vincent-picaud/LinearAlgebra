@@ -10,5 +10,5 @@ subdir('test')
 subdir('bin')
 subdir('sandbox')
 subdir('examples')
-subdir('doc')
+
 

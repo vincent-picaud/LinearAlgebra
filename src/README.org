@@ -1,0 +1,16 @@
+#+SETUPFILE: ../Setup/setupFile-1.org
+#+TITLE: Library (meson build)
+
+* The meson file 
+
+The meson file is 
+#+begin_src sh :exports result :results raw :evals no-export :wrap "src meson"
+cat ./meson.build
+#+end_src
+
+#+RESULTS:
+#+begin_src meson
+inc = include_directories('.')
+
+subdir('LinearAlgebra')
+#+end_src

@@ -1,9 +1,9 @@
 #+SETUPFILE: ../../../Setup/setupFile-3.org
-#+TITLE: The =LinearAlgebra/dense/= directory
+#+TITLE:  =LinearAlgebra/dense/= 
 
 * Role
 
-This directory contains dense vector/matrix containers. It use crtp.
+This directory contains dense vector/matrix containers. It uses crtp.
 
 The genericity is obtained by using a *design by policies* to define:
 - storage scheme: static size, etc...
@@ -161,7 +161,7 @@ Must follow the same scheme as [[id:37ca8895-814e-4808-882f-fff1bde88bcc][Vector
 | vector_storage_scheme.hpp         |                                      |
 
 
-** =get_size()=
+** get_size()
    :PROPERTIES:
    :ID:       32e3648d-7757-47a8-b934-f640c47b4dc0
    :END:

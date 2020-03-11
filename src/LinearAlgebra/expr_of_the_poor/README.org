@@ -1,0 +1,108 @@
+#+SETUPFILE: ../../../Setup/setupFile-3.org
+#+TITLE: =LinearAlgebra/expr_of_the_poor/=
+
+* Role
+
+This directory contains all the ingredient to call the computational subroutines:
+- trying to improve *readability*
+- *without* using expression template (for the moment)
+
+** The files 
+
+#+BEGIN_SRC sh :results output drawer :exports results
+   orgTree.sh -P "*.?pp"
+#+END_SRC
+
+#+RESULTS:
+:results:
++ [[file:.//expr_of_the_poor.hpp][expr_of_the_poor.hpp]]
++ [[file:.//expr_selector.hpp][expr_selector.hpp]]
++ [[file:.//expr_tags.hpp][expr_tags.hpp]]
++ [[file:.//known_patterns.hpp][known_patterns.hpp]]
++ [[file:.//known_patterns_impl.hpp][known_patterns_impl.hpp]]
++ [[file:.//scalar_functions.hpp][scalar_functions.hpp]]
++ [[file:.//V0_assign_a_transpose_M_V1_plus_b_V0.hpp][V0_assign_a_transpose_M_V1_plus_b_V0.hpp]]
++ [[file:.//X_assign_X.hpp][X_assign_X.hpp]]
+:end:
+
+
+** The idea 
+
+The main header is [[file:.//expr_of_the_poor.hpp][expr_of_the_poor.hpp]]
+
+Some "tags" like =assign=, =plus= are defined in  [[file:.//expr_tags.hpp][expr_tags.hpp]]. This allows to write
+
+#+begin_src cpp :eval never
+expr(V0,_assign_,3,_product_,V1);
+#+end_src
+
+Then the "known" expressions, aka =expr(...)= are defined in  [[file:.//known_patterns.hpp][known_patterns.hpp]]
+
+An expression is basically build using 2 levels:
+
+- the user entry point:
+  #+begin_src cpp :eval never
+expr(V0,_assign_,3,_product_,_vector_0_,_plus_,4,_product_,_identity_,M,V1);
+  #+end_src
+  See [[id:f559a28e-65ee-4f24-938a-5e1137bc69ae][make product explicit]]
+
+- the implementation 
+  #+begin_src cpp :eval never
+template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
+          typename V_1_TYPE>
+void
+expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
+     Vector_Crtp<V_0_TYPE>& v_0,                           // v_0
+     _assign_t_,                                           // =
+     const typename V_0_TYPE::element_type alpha,          // alpha
+     _vector_0_t_,                                         // v_0
+     _plus_t_,                                             // +
+     const typename V_1_TYPE::element_type beta,           // beta
+     _matrix_unary_op_t_<M_OP> op,                         // op
+     const Matrix_Crtp<M_TYPE>& M,                         // M
+     const Vector_Crtp<V_1_TYPE>& v_1)                     // v_1
+{
+  static_assert(not std::is_same_v<M, M>, "Not implemented");
+}
+  #+end_src
+
+  Important: "Expr_Selector<Expr_Selector_Enum::Undefined>" allows to
+  introduce an order to select the right specialization, it is defined
+  in [[file:.//expr_selector.hpp][expr_selector.hpp]]
+
+
+
+Then the concrete implementation is defined else where, in files:
+
++ [[file:.//known_patterns_impl.hpp][known_patterns_impl.hpp]]
++ [[file:.//V0_assign_a_transpose_M_V1_plus_b_V0.hpp][V0_assign_a_transpose_M_V1_plus_b_V0.hpp]]
++ [[file:.//X_assign_X.hpp][X_assign_X.hpp]]
+
+*** TODO make product explicit
+    :PROPERTIES:
+    :ID:       f559a28e-65ee-4f24-938a-5e1137bc69ae
+    :END:
+
+    - [ ] make \_product\_ explicit, reason: if missing maybe will make
+      expression template interfacing more difficult. Example:
+      #+begin_example
+     (M assign product M V)
+      #+end_example
+      can be translated into
+      #+begin_example
+     eval(M, assign, M, product, V)
+      #+end_example
+      If product operator is implicit it would have to have a special
+      treatment (compared to plus, minus etc...)
+      #+begin_example
+     (M assign product M V)
+      #+end_example
+      #+begin_example
+     eval(M, assign, M, NOTHING, V)
+      #+end_example
+    
+
+*** Other category of computational routines like <,> (dot)
+
+Generally functions that returns a scalar can be implement directly. For the moment in file
+ + [[file:.//scalar_functions.hpp][scalar_functions.hpp]]

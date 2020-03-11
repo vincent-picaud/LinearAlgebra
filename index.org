@@ -11,4 +11,8 @@
 - [[file:www_links.org][WWW links]]
 - src
   - [[file:src/README.org][Library (meson build)]]
+  - LinearAlgebra
+    - [[file:src/LinearAlgebra/README.org][Library main headers]]
+    - dense
+      - [[file:src/LinearAlgebra/dense/README.org][The =LinearAlgebra/dense/= directory]]
 

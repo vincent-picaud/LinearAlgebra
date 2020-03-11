@@ -6,6 +6,7 @@
 
 namespace LinearAlgebra
 {
+  // [BEGIN_V]
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector;
 
@@ -23,7 +24,8 @@ namespace LinearAlgebra
 
     using increment_type = typename storage_scheme_type::increment_type;
   };
-
+  // [END_V]
+  
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector : public Default_Vector_Crtp<Default_Vector<T, N_TYPE, INCREMENT>>
   {

@@ -8,59 +8,73 @@
 
 The hierachy is as follows:
 
-** Vector_Crtp 
-
-- Constructors 
-#+begin_src cpp :eval never
-Default_Vector()
-Default_Vector(const N_TYPE n, const INCREMENT inc) 
-Default_Vector(const N_TYPE n)
-#+end_src
-
-#+CALL: Cpp_Extract_Snippet("vector.hpp",tag="V")
-
-#+RESULTS:
-#+begin_SRC cpp :eval never
-#+end_SRC
-
-*** Default_Vector
-
-
-   - Default_Vecto
-
-
-
   #+begin_src plantuml :file ./figures/vector_hierarchy.png :eval no-export
-abstract Vector_Crtp
-abstract Default_Vector_Crtp
+interface Vector_Crtp
+interface Default_Vector_Crtp
 
 class Default_Vector
+class Tiny_Vector<E,N>
+class Vector<E>
+
 class Default_Vector_View
+class Tiny_Vector_View<E,N>
+class Vector_View<E>
+
 class Default_Vector_Const_View
+class Tiny_Vector_Const_View<E,N>
+class Vector_Const_View<E>
 
 Vector_Crtp <|--- Default_Vector_Crtp
 Default_Vector_Crtp  <|--- Default_Vector
+Default_Vector  <|--- Tiny_Vector
+Default_Vector  <|--- Vector
+
 Default_Vector_Crtp  <|--- Default_Vector_View
+Default_Vector_View  <|--- Tiny_Vector_View 
+Default_Vector_View  <|--- Vector_View 
+
 Default_Vector_Crtp  <|--- Default_Vector_Const_View
+Default_Vector_Const_View  <|--- Tiny_Vector_Const_View 
+Default_Vector_Const_View  <|--- Vector_Const_View 
+
+class Vector_Crtp {
+	.. Methods ..
+	size size() const
+	const this& as_const() const
+}
+
+class Default_Vector_Crtp {
+	.. Methods ..
+	E* data() 
+	const E* data() const
+
+	inc increment() const
+	const storage_scheme_type& storage_scheme() const 
+
+	E& operator[i]
+	const E& operator[i] const
+
+	void map(lambda) const/mutable
+	void map_indexed(lambda) const/mutable
+}
 
 class Default_Vector {
- .. Constructors ..
-+ Default_Vector()
-+ Default_Vector(const N_TYPE n, const INCREMENT inc) 
-+ Default_Vector(const N_TYPE n)
+	.. Constructors ..
+	()
+	(size,increment)
+	(size)
 }
 
 class Default_Vector_View {
- .. Constructors ..
-+ Default_Vector_View(T* data)
-+ Default_Vector_View(T* data, const N_TYPE n, const INCREMENT inc)  
+	.. Constructors ..
+	(E* data)
+	(E* data,size,inc)  
 }
 
 class Default_Vector_Const_View {
- .. Constructors ..
-+ Default_Vector_Const_View(const T* data)
-+ Default_Vector_Const_View(const T* data, 
-                          const N_TYPE n, const INCREMENT inc)  
+	.. Constructors ..
+	(const E* data)
+	(const E* data,size,inc)  
 }
 
   #+End_src
@@ -69,21 +83,3 @@ class Default_Vector_Const_View {
   #+RESULTS:
   [[file:./figures/vector_hierarchy.png]]
 
-
-  #+begin_src plantuml :file ./figures/default_vector_crtp.png :eval no-export
-class Default_Vector_Crtp {
- .. Methods ..
-	+ element_type* data() mutable/const
-	+ increment_type increment() const
-	
-	+ element_type& operator[](const size_t idx) mutable/const
-	
-	+ void map(const LAMBDA& lambda) mutable/const
-	+ void map_indexed(const LAMBDA& lambda) mutable/const
-	
-	+ const storage_scheme_type& storage_scheme() const
-}
-  #+end_src
-
-  #+RESULTS:
-  [[file:./figures/default_vector_crtp.png]]

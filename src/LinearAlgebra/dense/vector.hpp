@@ -6,7 +6,6 @@
 
 namespace LinearAlgebra
 {
-  // [BEGIN_V]
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector;
 
@@ -24,13 +23,10 @@ namespace LinearAlgebra
 
     using increment_type = typename storage_scheme_type::increment_type;
   };
-  // [END_V]
-  
+
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector : public Default_Vector_Crtp<Default_Vector<T, N_TYPE, INCREMENT>>
   {
-    // Sanity checks
-    //
     static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<N_TYPE>);
     static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<INCREMENT>);
 
@@ -50,11 +46,6 @@ namespace LinearAlgebra
 
     using increment_type = typename base_type::increment_type;
 
-    /////////////
-    // Members //
-    /////////////
-    //
-   protected:
     //////////////////
     // Constructors //
     //////////////////
@@ -63,6 +54,7 @@ namespace LinearAlgebra
     Default_Vector() : base_type(storage_scheme_type()) {}
     Default_Vector(const N_TYPE n, const INCREMENT inc) : base_type(storage_scheme_type(n, inc)) {}
     Default_Vector(const N_TYPE n) : base_type(storage_scheme_type(n)) {}
+
     ////////////////////
     // Public Methods //
     ////////////////////

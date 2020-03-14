@@ -2,9 +2,9 @@
 
 #include "LinearAlgebra/wraps/blas/blas_config.hpp"
 
-BLAS_GUARD();
-
-#if (HAS_BLAS)
+#if !(HAS_BLAS)
+#error
+#endif
 
 #include <ccomplex>
 #include <cstddef>
@@ -81,6 +81,8 @@ namespace LinearAlgebra::Blas
        const std::size_t n, const float alpha, const float *a, const std::size_t lda,
        const float *x, const std::size_t incx, const float beta, float *y, const std::size_t incy)
   {
+    BLAS_DEBUG_LOG;
+
     cblas_sgemv(order, trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
   }
   void
@@ -89,6 +91,8 @@ namespace LinearAlgebra::Blas
        const double *x, const std::size_t incx, const double beta, double *y,
        const std::size_t incy)
   {
+    BLAS_DEBUG_LOG;
+
     cblas_dgemv(order, trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
   }
   void
@@ -97,6 +101,8 @@ namespace LinearAlgebra::Blas
        const std::size_t lda, const std::complex<float> *x, const std::size_t incx,
        const std::complex<float> beta, std::complex<float> *y, const std::size_t incy)
   {
+    BLAS_DEBUG_LOG;
+
     cblas_cgemv(order, trans, m, n, &alpha, a, lda, x, incx, &beta, y, incy);
   }
   void
@@ -105,8 +111,8 @@ namespace LinearAlgebra::Blas
        const std::size_t lda, const std::complex<double> *x, const std::size_t incx,
        const std::complex<double> beta, std::complex<double> *y, const std::size_t incy)
   {
+    BLAS_DEBUG_LOG;
+
     cblas_zgemv(order, trans, m, n, &alpha, a, lda, x, incx, &beta, y, incy);
   }
 }
-
-#endif  // HAS_BLAS

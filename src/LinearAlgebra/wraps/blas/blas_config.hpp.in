@@ -14,11 +14,4 @@
 
 @BLAS_INCLUDE@
 
-#define BLAS_GUARD()
-
-#else
-
-#define BLAS_GUARD()				\
-#error "Blas not supported"
-
 #endif

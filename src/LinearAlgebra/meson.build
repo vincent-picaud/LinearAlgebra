@@ -7,6 +7,7 @@ LinearAlgebra_headers = [
 LinearAlgebra_sources = ['hello.cpp']
 
 subdir('meta')
+subdir('expr_of_the_poor')
 subdir('dense')
 subdir('wraps')
 

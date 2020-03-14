@@ -1,5 +1,5 @@
 build/
-subprojects/googletest-release-1.8.0/
+subprojects/googletest-release-*
 subprojects/packagecache/
 *~
 /README.html

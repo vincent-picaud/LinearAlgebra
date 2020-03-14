@@ -13,7 +13,7 @@
 #include "LinearAlgebra/meta/element_type.hpp"
 
 #include "LinearAlgebra/wraps/blas/to_cblas_transpose.hpp"
-#include "LinearAlgebra/wraps/blas/blas_subroutines.hpp"
+#include "LinearAlgebra/wraps/blas/subroutines.hpp"
 
 namespace LinearAlgebra
 {

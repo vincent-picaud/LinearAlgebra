@@ -85,5 +85,6 @@ endif
 
 LinearAlgebra_headers += [
   'wraps/blas/blas.hpp',
-  'wraps/blas/blas_subroutines.hpp',
+  'wraps/blas/subroutines.hpp',
+  'wraps/blas/to_cblas_transpose.hpp',
 ]

@@ -2,6 +2,8 @@
 
 #include "LinearAlgebra/wraps/blas/blas_config.hpp"
 
+BLAS_GUARD();
+
 #if (HAS_BLAS)
 
 #include <ccomplex>

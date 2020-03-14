@@ -76,3 +76,14 @@ endif
 #
 # but I do know how to fill the ???
 #
+
+
+#################################################################
+# Header files
+#################################################################
+#
+
+LinearAlgebra_headers += [
+  'wraps/blas/blas.hpp',
+  'wraps/blas/blas_subroutines.hpp',
+]

@@ -11,7 +11,9 @@
 #include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
 #include "LinearAlgebra/meta/always.hpp"
 #include "LinearAlgebra/meta/element_type.hpp"
-#include "LinearAlgebra/wraps/blas/blas.hpp"
+
+#include "LinearAlgebra/wraps/blas/to_cblas_transpose.hpp"
+#include "LinearAlgebra/wraps/blas/blas_subroutines.hpp"
 
 namespace LinearAlgebra
 {

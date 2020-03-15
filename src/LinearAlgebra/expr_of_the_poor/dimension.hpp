@@ -3,6 +3,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
+#include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
 #include "LinearAlgebra/meta/is_std_integral_constant.hpp"
 
 namespace LinearAlgebra
@@ -54,4 +55,26 @@ namespace LinearAlgebra
     return return_type{M.I_size(), M.J_size()};
   }
 
+  template <typename I0_SIZE, typename J0_SIZE, typename I1_SIZE, typename J1_SIZE>
+  Matrix_Dimension_Predicate<I0_SIZE, J1_SIZE> operator*(
+      const Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>& M0_dimension,
+      const Matrix_Dimension_Predicate<I1_SIZE, J1_SIZE>& M1_dimension) noexcept
+  {
+    if (M0_dimension and M1_dimension and M0_dimension.J_size() == M1_dimension.I_size())
+    {
+      return {M0_dimension.I_size(), M1_dimension.J_size()};
+    }
+    return {};
+  }
+
+  template <Matrix_Unary_Op_Enum OP, typename I0_SIZE, typename J0_SIZE>
+  auto
+  matrix_op(const _matrix_unary_op_t_<OP> op,
+            const Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>& dim) noexcept
+  {
+    if constexpr (does_it_transpose_matrix_dimension(op))
+      return Matrix_Dimension_Predicate<J0_SIZE, I0_SIZE>{dim.J_size(), dim.I_size()};
+    else
+      return Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>{dim.I_size(), dim.J_size()};
+  }
 }

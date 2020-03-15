@@ -110,10 +110,10 @@ namespace LinearAlgebra
   using _conjugate_t_ = _matrix_unary_op_t_<Matrix_Unary_Op_Enum::Conjugate>;
   using _transConj_t_ = _matrix_unary_op_t_<Matrix_Unary_Op_Enum::TransConj>;
 
-  inline constexpr auto _identity_  = _identity_t_();
-  inline constexpr auto _transpose_ = _transpose_t_();
-  inline constexpr auto _conjugate_ = _conjugate_t_();
-  inline constexpr auto _transConj_ = _transConj_t_();
+  constexpr auto _identity_  = _identity_t_();
+  constexpr auto _transpose_ = _transpose_t_();
+  constexpr auto _conjugate_ = _conjugate_t_();
+  constexpr auto _transConj_ = _transConj_t_();
 
   ///////////////////////////////////////////////////
   // Does _matrix_unary_op_t_ modifies dimensions? //

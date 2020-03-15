@@ -8,9 +8,9 @@ using namespace LinearAlgebra;
 
 TEST(Dimension, dimension)
 {
-  Tiny_Matrix<int, 3,2> M;
+  Tiny_Matrix<int, 3, 2> M;
   auto M_dim = dimension(M);
 
-  EXPECT_EQ(M_dim._I_size, 3);
-  EXPECT_EQ(M_dim._J_size, 2);
+  EXPECT_EQ(M_dim.I_size(), 3);
+  EXPECT_EQ(M_dim.J_size(), 2);
 }

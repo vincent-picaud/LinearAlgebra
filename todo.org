@@ -3,3 +3,17 @@
 * 2020
 ** 2020-03 March
 *** 2020-03-11 Wednesday
+*** 2020-03-15 Sunday
+
+**** TODO size management [0/2]                                      :Urgent:
+     :PROPERTIES:
+     :Created:  [2020-03-15 Sun 12:31]
+     :END:
+     
+     - Note taken on [2020-03-15 Sun 12:36] \\
+       Finally get_static_size() is unused
+    - [ ] refactoring of get_static_size() and move it to meta/
+          
+    - [ ] better to rename meta -> utils
+
+

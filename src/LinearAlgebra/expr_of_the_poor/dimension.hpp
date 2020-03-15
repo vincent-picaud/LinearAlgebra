@@ -4,11 +4,16 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
+#include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
 #include "LinearAlgebra/meta/is_std_integral_constant.hpp"
 
 namespace LinearAlgebra
 {
+  ////////////////////////////////
+  // Matrix_Dimension_Predicate //
+  ////////////////////////////////
+
   template <typename I_SIZE, typename J_SIZE>
   class Matrix_Dimension_Predicate
   {
@@ -89,6 +94,57 @@ namespace LinearAlgebra
         M0_dimension.J_size() == M1_dimension.J_size())
     {
       return {M0_dimension.I_size(), M0_dimension.J_size()};
+    }
+    return {};
+  }
+
+  ////////////////////////////////
+  // Vector_Dimension_Predicate //
+  ////////////////////////////////
+
+  template <typename SIZE>
+  class Vector_Dimension_Predicate
+  {
+    static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<SIZE>);
+
+   public:
+    using size_type = SIZE;
+
+   private:
+    size_type _size;
+    bool _is_valid;
+
+   public:
+    Vector_Dimension_Predicate() noexcept : _size{}, _is_valid{false} {}
+    Vector_Dimension_Predicate(const size_type size) noexcept : _size{size}, _is_valid{true} {}
+
+    operator bool() const noexcept { return _is_valid; }
+
+    size_type
+    size() const noexcept
+    {
+      assert(*this);
+      return _size;
+    }
+  };
+
+  template <typename IMPL>
+  Vector_Dimension_Predicate<typename IMPL::size_type>
+  dimension_predicate(const Vector_Crtp<IMPL>& V)
+  {
+    using return_type = decltype(dimension_predicate(V));
+    return return_type{V.size()};
+  }
+
+  // TODO: chose static size if any (here we systematically chose the first one).
+  template <typename SIZE0, typename SIZE1>
+  Vector_Dimension_Predicate<SIZE0>
+  operator+(const Vector_Dimension_Predicate<SIZE0>& V0_dimension,
+            const Vector_Dimension_Predicate<SIZE1>& V1_dimension) noexcept
+  {
+    if (V0_dimension and V1_dimension and V0_dimension.size() == V1_dimension.size())
+    {
+      return {V0_dimension.size()};
     }
     return {};
   }

@@ -4,6 +4,7 @@
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
 #include "LinearAlgebra/expr_of_the_poor/expr_selector.hpp"
+#include "LinearAlgebra/expr_of_the_poor/dimension.hpp"
 
 namespace LinearAlgebra
 {

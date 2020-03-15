@@ -98,6 +98,19 @@ namespace LinearAlgebra
     return {};
   }
 
+  template <typename I0_SIZE, typename J0_SIZE, typename I1_SIZE, typename J1_SIZE>
+  bool
+  operator==(const Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>& M0_dimension,
+             const Matrix_Dimension_Predicate<I1_SIZE, J1_SIZE>& M1_dimension) noexcept
+  {
+    if (M0_dimension and M1_dimension and M0_dimension.I_size() == M1_dimension.I_size() and
+        M0_dimension.J_size() == M1_dimension.J_size())
+    {
+      return true;
+    }
+    return false;
+  }
+
   ////////////////////////////////
   // Vector_Dimension_Predicate //
   ////////////////////////////////
@@ -145,6 +158,33 @@ namespace LinearAlgebra
     if (V0_dimension and V1_dimension and V0_dimension.size() == V1_dimension.size())
     {
       return {V0_dimension.size()};
+    }
+    return {};
+  }
+
+  template <typename SIZE0, typename SIZE1>
+  bool
+  operator==(const Vector_Dimension_Predicate<SIZE0>& V0_dimension,
+             const Vector_Dimension_Predicate<SIZE1>& V1_dimension) noexcept
+  {
+    if (V0_dimension and V1_dimension and V0_dimension.size() == V1_dimension.size())
+    {
+      return true;
+    }
+    return false;
+  }
+
+  // Matrix.Vector
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename I0_SIZE, typename J0_SIZE, typename SIZE>
+  Vector_Dimension_Predicate<SIZE> operator*(
+      const Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>& M0_dimension,
+      const Vector_Dimension_Predicate<SIZE>& V_dimension) noexcept
+  {
+    if (M0_dimension and V_dimension and M0_dimension.J_size() == V_dimension.size())
+    {
+      return {M0_dimension.I_size()};
     }
     return {};
   }

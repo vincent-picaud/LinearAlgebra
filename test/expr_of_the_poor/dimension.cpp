@@ -27,4 +27,16 @@ TEST(Dimension, dimension)
 
   EXPECT_EQ(M_Mt_dim.I_size(), 3);
   EXPECT_EQ(M_Mt_dim.J_size(), 3);
+
+  /////////////////
+
+  auto M_p_Mt_dim = M_dim + Mt_dim;
+
+  EXPECT_FALSE(M_p_Mt_dim);
+
+  auto M_p_M_dim = M_dim + M_dim;
+
+  EXPECT_TRUE(M_p_M_dim);
+  EXPECT_EQ(M_p_M_dim.I_size(), 3);
+  EXPECT_EQ(M_p_M_dim.J_size(), 2);
 }

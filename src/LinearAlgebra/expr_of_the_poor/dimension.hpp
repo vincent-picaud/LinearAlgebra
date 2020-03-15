@@ -1,4 +1,5 @@
-// Role: provides functions to check operand dimensions
+// Role: provides functions to compute and check operand dimensions
+//       validity
 //
 #pragma once
 
@@ -77,4 +78,19 @@ namespace LinearAlgebra
     else
       return Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>{dim.I_size(), dim.J_size()};
   }
+
+  // TODO: chose static size if any (here we systematically chose the first one).
+  template <typename I0_SIZE, typename J0_SIZE, typename I1_SIZE, typename J1_SIZE>
+  Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>
+  operator+(const Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>& M0_dimension,
+            const Matrix_Dimension_Predicate<I1_SIZE, J1_SIZE>& M1_dimension) noexcept
+  {
+    if (M0_dimension and M1_dimension and M0_dimension.I_size() == M1_dimension.I_size() and
+        M0_dimension.J_size() == M1_dimension.J_size())
+    {
+      return {M0_dimension.I_size(), M0_dimension.J_size()};
+    }
+    return {};
+  }
+
 }

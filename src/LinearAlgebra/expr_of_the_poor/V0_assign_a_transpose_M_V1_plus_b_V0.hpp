@@ -1,6 +1,3 @@
-//
-// Role:
-//
 // Compute:
 //
 // \begin{equation*}

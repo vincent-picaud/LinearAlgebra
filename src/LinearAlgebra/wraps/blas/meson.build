@@ -87,4 +87,5 @@ LinearAlgebra_headers += [
   'wraps/blas/blas.hpp',
   'wraps/blas/subroutines.hpp',
   'wraps/blas/to_cblas_transpose.hpp',
+  'wraps/blas/is_cblas_supported_scalar.hpp',
 ]

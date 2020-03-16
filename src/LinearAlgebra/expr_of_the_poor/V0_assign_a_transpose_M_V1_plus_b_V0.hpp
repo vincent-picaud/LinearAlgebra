@@ -16,9 +16,12 @@
 #include "LinearAlgebra/expr_of_the_poor/dimension.hpp"
 #include "LinearAlgebra/expr_of_the_poor/expr_selector.hpp"
 #include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
+
+#include "LinearAlgebra/meta/all_same_type.hpp"
 #include "LinearAlgebra/meta/always.hpp"
 #include "LinearAlgebra/meta/element_type.hpp"
 
+#include "LinearAlgebra/wraps/blas/is_cblas_supported_scalar.hpp"
 #include "LinearAlgebra/wraps/blas/subroutines.hpp"
 #include "LinearAlgebra/wraps/blas/to_cblas_transpose.hpp"
 
@@ -139,11 +142,11 @@ namespace LinearAlgebra
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP_M> &&
-          // Blas function availability?
-          Always_True_v<decltype(Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<OP_M>,
-                                            M.I_size(), M.J_size(), alpha, M.data(),
-                                            M.leading_dimension(), v_1.data(), v_1.increment(),
-                                            beta, v_0.data(), v_0.increment()))> &&
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V_0_TYPE>,
+                          Element_Type_t<V_1_TYPE>> &&
+          // Scalar support
+          Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
           // Generic matrix
           (M_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None)>
   {

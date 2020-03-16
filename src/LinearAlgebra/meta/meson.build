@@ -5,4 +5,5 @@ LinearAlgebra_headers += [
   'meta/always.hpp',
   'meta/size_utils.hpp',
   'meta/is_complete.hpp',
+  'meta/all_same_type.hpp',
 ]

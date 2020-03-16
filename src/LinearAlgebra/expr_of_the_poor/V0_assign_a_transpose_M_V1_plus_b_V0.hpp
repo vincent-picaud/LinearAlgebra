@@ -28,6 +28,10 @@ namespace LinearAlgebra
   // Fallback
   //////////////////////////////////////////////////////////////////
   //
+  // \begin{equation*}
+  // v_0 = \alpha v_0 + \beta op(M) v_1
+  // \end{equation*}
+  //
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
@@ -42,9 +46,6 @@ namespace LinearAlgebra
             const Vector_Crtp<V_1_TYPE>& v_1)                     // v_1
   {
     static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
-
-    //std::cerr << __PRETTY_FUNCTION__;
-    //  assert(0);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -95,23 +96,23 @@ namespace LinearAlgebra
   // v_0 = \beta v_0 + \alpha op(M) v_1
   // \end{equation*}
   //
-  // template <typename V_0_TYPE, Matrix_Unary_Op_Enum OP_M, typename M_TYPE,
-  //           typename V_1_TYPE>
-  // void
-  // expr(Vector_Crtp<V_0_TYPE>& v_0,           // v_0
-  //      _assign_t_,                           // =
-  //      const Element_Type_t<M_TYPE>& alpha,  // α
-  //      const _matrix_unary_op_t_<OP_M> op,   // op
-  //      const Matrix_Crtp<M_TYPE>& M,         // M
-  //      const Vector_Crtp<V_1_TYPE>& v_1,     // v_1
-  //      const _plus_t_,                       // +
-  //      const Element_Type_t<M_TYPE>& beta,   // β
-  //      const _vector_0_t_                    // v_0
+  template <typename V_0_TYPE, Matrix_Unary_Op_Enum OP_M, typename M_TYPE,
+            typename V_1_TYPE>
+  void
+  expr(Vector_Crtp<V_0_TYPE>& v_0,           // v_0
+       _assign_t_,                           // =
+       const Element_Type_t<M_TYPE>& alpha,  // α
+       const _matrix_unary_op_t_<OP_M> op,   // op
+       const Matrix_Crtp<M_TYPE>& M,         // M
+       const Vector_Crtp<V_1_TYPE>& v_1,     // v_1
+       const _plus_t_,                       // +
+       const Element_Type_t<M_TYPE>& beta,   // β
+       const _vector_0_t_                    // v_0
 
-  // )
-  // {
-  //   expr(v_0, _assign_, beta, _vector_0_, _plus_, alpha, op, M, v_1);
-  // }
+  )
+  {
+    expr(v_0, _assign_, beta, _vector_0_, _plus_, alpha, op, M, v_1);
+  }
 
   //////////////////////////////////////////////////////////////////
   // Implementation
@@ -125,50 +126,30 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum OP_M, typename M_TYPE, typename V_1_TYPE>
   auto
   expr(const Expr_Selector<Expr_Selector_Enum::Blas>,
-       Default_Vector_Crtp<V_0_TYPE>& v_0,        // v_0
-       _assign_t_,                                // =
-       const Element_Type_t<M_TYPE>& alpha,       // α
-       const _matrix_unary_op_t_<OP_M>,           // op
-       const Default_Matrix_Crtp<M_TYPE>& M,      // M
-       const Default_Vector_Crtp<V_1_TYPE>& v_1,  // v_1
-       const _plus_t_,                            // +
-       const Element_Type_t<M_TYPE>& beta,        // β
-       const _vector_0_t_                         // v_0
-
-  )
-  // -> std::enable_if_t<
-  //     // Blas function availability?
-  //     Always_True_v<decltype(Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<OP_M>,
-  //                                       M.I_size(), M.J_size(), alpha, M.data(),
-  //                                       M.leading_dimension(), v_1.data(), v_1.increment(),
-  //                                       beta, v_0.data(), v_0.increment()))> &&
-  //     // Supported matrix op?
-  //     Always_True_v<decltype(Blas::To_CBlas_Transpose_v<OP_M>)> &&
-  //     // Generic matrix
-  //     (M_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None)>
-
+       Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+       _assign_t_,                               // =
+       const Element_Type_t<M_TYPE> alpha,       // α
+       const _vector_0_t_,                       // v_0
+       const _plus_t_,                           // +
+       const Element_Type_t<M_TYPE> beta,        // β
+       const _matrix_unary_op_t_<OP_M>,          // op
+       const Default_Matrix_Crtp<M_TYPE>& M,     // M
+       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+       )
+      -> std::enable_if_t<
+          // Supported matrix op?
+          Blas::Support_CBlas_Transpose_v<OP_M> &&
+          // Blas function availability?
+          Always_True_v<decltype(Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<OP_M>,
+                                            M.I_size(), M.J_size(), alpha, M.data(),
+                                            M.leading_dimension(), v_1.data(), v_1.increment(),
+                                            beta, v_0.data(), v_0.increment()))> &&
+          // Generic matrix
+          (M_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None)>
   {
     Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<OP_M>, M.I_size(), M.J_size(), alpha,
                M.data(), M.leading_dimension(), v_1.data(), v_1.increment(), beta, v_0.data(),
                v_0.increment());
   }
 #endif
-
-  template <typename V_0_TYPE, Matrix_Unary_Op_Enum OP_M, typename M_TYPE,
-            typename V_1_TYPE>
-  void
-  expr(Vector_Crtp<V_0_TYPE>& v_0,          // v_0
-       _assign_t_,                          // =
-       const Element_Type_t<M_TYPE> alpha,  // α
-       const _matrix_unary_op_t_<OP_M> op,  // op
-       const Matrix_Crtp<M_TYPE>& M,        // M
-       const Vector_Crtp<V_1_TYPE>& v_1,    // v_1
-       const _plus_t_,                      // +
-       const Element_Type_t<M_TYPE> beta,   // β
-       const _vector_0_t_                   // v_0
-
-  )
-  {
-    expr(v_0, _assign_, beta, _vector_0_, _plus_, alpha, op, M, v_1);
-  }
 }

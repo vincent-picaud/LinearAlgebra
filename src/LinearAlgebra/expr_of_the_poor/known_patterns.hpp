@@ -2,9 +2,9 @@
 
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/vector_crtp.hpp"
-#include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
-#include "LinearAlgebra/expr_of_the_poor/expr_selector.hpp"
 #include "LinearAlgebra/expr_of_the_poor/dimension.hpp"
+#include "LinearAlgebra/expr_of_the_poor/expr_selector.hpp"
+#include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
 
 namespace LinearAlgebra
 {
@@ -42,10 +42,11 @@ namespace LinearAlgebra
   {
     // Here is the right place to check dimension once for all.
     //
-    assert(v_0.size() == (does_it_transpose_matrix_dimension(op) ? M.J_size() : M.I_size()));
-    assert(v_1.size() == (does_it_transpose_matrix_dimension(op) ? M.I_size() : M.J_size()));
+    assert(matrix_op(op, dimension_predicate(M)) * dimension_predicate(v_1) +
+           dimension_predicate(v_0));
 
     // Delegate computation
+    //
     expr(Expr_Selector<>(), v_0.impl(), _assign_, alpha, _vector_0_, _plus_, beta, op, M.impl(),
          v_1.impl());
   }

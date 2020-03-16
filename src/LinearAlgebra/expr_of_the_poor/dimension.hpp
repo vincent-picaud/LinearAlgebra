@@ -178,7 +178,7 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename I0_SIZE, typename J0_SIZE, typename SIZE>
-  Vector_Dimension_Predicate<SIZE> operator*(
+  Vector_Dimension_Predicate<I0_SIZE> operator*(
       const Matrix_Dimension_Predicate<I0_SIZE, J0_SIZE>& M0_dimension,
       const Vector_Dimension_Predicate<SIZE>& V_dimension) noexcept
   {

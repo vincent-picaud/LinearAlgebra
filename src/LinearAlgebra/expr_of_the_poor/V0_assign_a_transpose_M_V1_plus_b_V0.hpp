@@ -20,7 +20,49 @@ namespace LinearAlgebra
   //
   // User interface
   //
+  //****************************************************************
+  // v_0 = alpha.v_0 + beta.op(M).v_1 (Blas's gemv, trmv, symv etc...)
+  //****************************************************************
+  //
+  template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
+            typename V_1_TYPE>
+  void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
+            Vector_Crtp<V_0_TYPE>& v_0,                           // v_0
+            _assign_t_,                                           // =
+            const typename V_0_TYPE::element_type alpha,          // alpha
+            _vector_0_t_,                                         // v_0
+            _plus_t_,                                             // +
+            const typename V_1_TYPE::element_type beta,           // beta
+            _matrix_unary_op_t_<M_OP> op,                         // op
+            const Matrix_Crtp<M_TYPE>& M,                         // M
+            const Vector_Crtp<V_1_TYPE>& v_1)                     // v_1
+  {
+    static_assert(not std::is_same_v<M, M>, "Not implemented");
+  }
 
+  template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
+            typename V_1_TYPE>
+  void expr(Vector_Crtp<V_0_TYPE>& v_0,                   // v_0
+            _assign_t_,                                   // =
+            const typename V_0_TYPE::element_type alpha,  // alpha
+            _vector_0_t_,                                 // v_0
+            _plus_t_,                                     // +
+            const typename V_1_TYPE::element_type beta,   // beta
+            _matrix_unary_op_t_<M_OP> op,                 // op
+            const Matrix_Crtp<M_TYPE>& M,                 // M
+            const Vector_Crtp<V_1_TYPE>& v_1)             // v_1
+  {
+    // Here is the right place to check dimension once for all.
+    //
+    assert(matrix_op(op, dimension_predicate(M)) * dimension_predicate(v_1) +
+           dimension_predicate(v_0));
+
+    // Delegate computation
+    //
+    expr(Expr_Selector<>(), v_0.impl(), _assign_, alpha, _vector_0_, _plus_, beta, op, M.impl(),
+         v_1.impl());
+  }
+    
   //
   //  Implementation: CBlas
   //

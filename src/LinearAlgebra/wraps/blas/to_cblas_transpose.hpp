@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"  // for _matrix_unary_op_t_<Matrix_Unary_Op_Enum::XXX>
+#include "LinearAlgebra/wraps/blas/blas_config.hpp"
 
 namespace LinearAlgebra
 {

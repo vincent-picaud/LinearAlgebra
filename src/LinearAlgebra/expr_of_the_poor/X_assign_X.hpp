@@ -22,14 +22,47 @@
 
 namespace LinearAlgebra
 {
-  ///////////
-  // V0=V1 //
-  ///////////
+  //////////////////////////////////////////////////////////////////
+  // Fallback
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename V_0_TYPE, typename V_1_TYPE>
+  void
+  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,
+       Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+       _assign_t_,                               // =
+       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+  )
+  {
+    static_assert(Always_False_v<V_0_TYPE>, "Undefined implementation");
+  }
+
+  //////////////////////////////////////////////////////////////////
+  // User interface
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename V_0_TYPE, typename V_1_TYPE>
+  void
+  expr(Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+       _assign_t_,                               // =
+       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+  )
+  {
+    assert(v_0.size() == v_1.size());
+
+    expr(Expr_Selector<>(), v_0.impl(), _assign_, v_1.impl());
+  }
+
+  //////////////////////////////////////////////////////////////////
+  // Implementation
+  //////////////////////////////////////////////////////////////////
   //
 
-  //
+  //================================================================
   //  Implementation: Generic
+  //================================================================
   //
+
   template <typename V_0_TYPE, typename V_1_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,
@@ -42,8 +75,9 @@ namespace LinearAlgebra
     v_0.map_indexed([&](auto& v_0_i, const std::size_t i) { v_0_i = v_1[i]; });
   }
 
-  //
+  //================================================================
   //  Implementation: CBlas
+  //================================================================
   //
 #if (HAS_BLAS)
   template <typename V_0_TYPE, typename V_1_TYPE>
@@ -63,19 +97,5 @@ namespace LinearAlgebra
 #endif
   // TODO: Implementation: Static size
   //
-  
-  //
-  // User interface
-  //
 
-  template <typename V_0_TYPE,
-            typename V_1_TYPE>
-  void
-  expr(Vector_Crtp<V_0_TYPE>& v_0,       // v_0
-       _assign_t_,                       // =
-       const Vector_Crtp<V_1_TYPE>& v_1  // v_1
-  )
-  {
-    expr(Expr_Selector<>(), v_0.impl(), _assign_, v_1.impl());
-  }
 }

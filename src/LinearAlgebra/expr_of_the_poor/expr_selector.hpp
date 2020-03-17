@@ -44,9 +44,11 @@ namespace LinearAlgebra
       : Expr_Selector<static_cast<Expr_Selector_Enum>(
             static_cast<std::underlying_type_t<Expr_Selector_Enum>>(EXPR_ORDER) - 1)>
   {
+    static constexpr Expr_Selector_Enum value = EXPR_ORDER;
   };
   template <>
   struct Expr_Selector<Expr_Selector_Enum::Undefined>
   {
+    static constexpr Expr_Selector_Enum value = Expr_Selector_Enum::Undefined;
   };
 }

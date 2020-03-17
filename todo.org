@@ -15,5 +15,19 @@
     - [ ] refactoring of get_static_size() and move it to meta/
           
     - [ ] better to rename meta -> utils
+*** 2020-03-17 Tuesday
 
+**** TODO add selected as return value [0/1]                         :Urgent:
+     :PROPERTIES:
+     :Created:  [2020-03-17 Tue 08:33]
+     :END:
+
+   Back link: [[file:src/LinearAlgebra/expr_of_the_poor/X_assign_X.hpp::return%20expr(Expr_Selector<>(),%20v_0.impl(),%20_assign_,%20v_1.impl());][X_assign_X as example]]
+
+   #+BEGIN_QUOTE
+       return expr(Expr_Selector<>(), v_0.impl(), _assign_, v_1.impl());
+
+   #+END_QUOTE
+
+    - [ ] allows to check what is the used method 
 

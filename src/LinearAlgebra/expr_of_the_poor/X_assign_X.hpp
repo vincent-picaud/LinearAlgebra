@@ -18,6 +18,7 @@
 #include "LinearAlgebra/expr_of_the_poor/expr_selector.hpp"
 #include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"
 #include "LinearAlgebra/meta/always.hpp"
+#include "LinearAlgebra/meta/size_utils.hpp"
 #include "LinearAlgebra/wraps/blas/blas.hpp"
 
 namespace LinearAlgebra
@@ -42,7 +43,7 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename V_0_TYPE, typename V_1_TYPE>
-  void
+  auto
   expr(Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                               // =
        const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
@@ -50,7 +51,7 @@ namespace LinearAlgebra
   {
     assert(v_0.size() == v_1.size());
 
-    expr(Expr_Selector<>(), v_0.impl(), _assign_, v_1.impl());
+    return expr(Expr_Selector<>(), v_0.impl(), _assign_, v_1.impl());
   }
 
   //////////////////////////////////////////////////////////////////
@@ -64,7 +65,7 @@ namespace LinearAlgebra
   //
 
   template <typename V_0_TYPE, typename V_1_TYPE>
-  void
+  std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Generic>
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,
        Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                               // =
@@ -73,6 +74,7 @@ namespace LinearAlgebra
   {
     assert(v_0.size() == v_1.size());
     v_0.map_indexed([&](auto& v_0_i, const std::size_t i) { v_0_i = v_1[i]; });
+    return {};
   }
 
   //================================================================
@@ -88,14 +90,40 @@ namespace LinearAlgebra
        const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
        )
       -> std::enable_if_t<Always_True_v<decltype(Blas::copy(v_0.size(), v_1.data(), v_1.increment(),
-                                                            v_0.data(), v_0.increment()))>>
+                                                            v_0.data(), v_0.increment()))>,
+                          std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Blas>>
   {
     assert(v_0.size() == v_1.size());
 
     Blas::copy(v_0.size(), v_1.data(), v_1.increment(), v_0.data(), v_0.increment());
+
+    return {};
   }
 #endif
-  // TODO: Implementation: Static size
-  //
 
+  //================================================================
+  //  Implementation: Static
+  //================================================================
+  //
+  template <typename V_0_TYPE, typename V_1_TYPE>
+  auto
+  expr(const Expr_Selector<Expr_Selector_Enum::Static>&,
+       Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+       _assign_t_,                               // =
+       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+       ) -> std::enable_if_t<Any_Has_Static_Size_v<V_0_TYPE, V_1_TYPE>,
+                             std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Static>>
+
+  {
+    assert(v_0.size() == v_1.size());
+    if constexpr (Has_Static_Size_v<V_0_TYPE>)
+    {
+      v_0.map_indexed([&](auto& v_0_i, const std::size_t i) { v_0_i = v_1[i]; });
+    }
+    else
+    {
+      v_1.map_indexed([&](const auto& v_1_i, const std::size_t i) { v_0[i] = v_1_i; });
+    }
+    return {};
+  }
 }

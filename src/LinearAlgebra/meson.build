@@ -20,8 +20,7 @@ LinearAlgebra_lib = library('LinearAlgebra',
 
 LinearAlgebra_dep = declare_dependency(include_directories : inc,
 				       link_with : [LinearAlgebra_lib,],
-				      )
-#				       dependencies : [blas_lib,])
+				       dependencies : [blas_lib,])
 
 install_headers(LinearAlgebra_headers,
 		subdir : 'LinearAlgebra')

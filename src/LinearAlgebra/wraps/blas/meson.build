@@ -20,7 +20,7 @@ blas_config = configuration_data({
 #
 cpp = meson.get_compiler('cpp')
 
-blas_lib = cpp.find_library('blas', required: false, disabler: true)
+blas_lib = cpp.find_library('blas', required: false) 
 blas_include = '#include <cblas.h>'
 
 # try to compile and link with it
@@ -39,7 +39,7 @@ if cpp.links(blas_include+'''
   blas_config.set('HAS_BLAS','true')
   blas_config.set('BLAS_INCLUDE',blas_include)
 else
-  blas_lib = disabler() # link failed -> creset flag
+#  blas_lib = disabler() # link failed -> creset flag
 endif
 
 #################################################################

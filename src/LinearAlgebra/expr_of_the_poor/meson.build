@@ -7,7 +7,7 @@ LinearAlgebra_headers += [
   'expr_of_the_poor/scalar_functions.hpp',
 
   'expr_of_the_poor/X_assign_X.hpp',
-  'expr_of_the_poor/V0_assign_a_transpose_M_V1_plus_b_V0.hpp',
+  'expr_of_the_poor/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp',
   
   'expr_of_the_poor/expr_of_the_poor.hpp', # main header: include all expr 
 ]

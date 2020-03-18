@@ -1,5 +1,5 @@
 #include "LinearAlgebra/expr_of_the_poor/known_patterns_impl.hpp"
-#include "LinearAlgebra/expr_of_the_poor/V0_assign_a_transpose_M_V1_plus_b_V0.hpp"
+#include "LinearAlgebra/expr_of_the_poor/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp"
 
 #include <gtest/gtest.h>
 

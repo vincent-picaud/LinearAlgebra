@@ -29,5 +29,22 @@
 
    #+END_QUOTE
 
-    - [ ] allows to check what is the used method 
+    - [ ] allows to check what is the used method
+*** 2020-03-18 Wednesday
+
+**** TODO Bug to fix! [0/1]                                          :Urgent:
+     :PROPERTIES:
+     :Created:  [2020-03-18 Wed 12:23]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr_of_the_poor/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp::assert(0);%20//return%20expr(v_0,%20_assign_,%20alpha,%20op,%20M,%20v_1,%20_plus_,%20beta,%20_vector_0_);]]
+
+   #+BEGIN_QUOTE
+      assert(0);
+
+       //return expr(v_0, _assign_, alpha, op, M, v_1, _plus_, beta, _vector_0_);
+
+   #+END_QUOTE
+
+    - [ ] to fix
 

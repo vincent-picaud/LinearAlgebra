@@ -6,7 +6,7 @@
 
 using namespace LinearAlgebra;
 
-TEST(V0_assign_alpha_V0_plus_beta_op_M_V1,basic)
+TEST(V0_assign_alpha_V0_plus_beta_op_M_V1, basic)
 {
   using T = double;
 
@@ -24,7 +24,8 @@ TEST(V0_assign_alpha_V0_plus_beta_op_M_V1,basic)
   x[0] = 1;
   x[1] = 2;
 
-  Expr_Selector_Enum selected = expr(y, _assign_, 0, _vector_0_, _plus_, 2, _identity_, M, x);
+  //  Expr_Selector_Enum selected = expr(y, _assign_, 0, _vector_0_, _plus_, 2, _identity_, M, x);
+  Expr_Selector_Enum selected = expr(y, _assign_, 2, _identity_, M, x, _plus_, 0, _vector_0_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
 

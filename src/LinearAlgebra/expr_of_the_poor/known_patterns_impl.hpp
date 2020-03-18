@@ -1,8 +1,8 @@
 #pragma once
 
-#include "LinearAlgebra/expr_of_the_poor/known_patterns.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
+#include "LinearAlgebra/expr_of_the_poor/known_patterns.hpp"
 
 namespace LinearAlgebra
 {
@@ -25,10 +25,11 @@ namespace LinearAlgebra
   // the generic implementation.
   //
   template <typename V_TYPE>
-  void expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-            Default_Vector_Crtp<V_TYPE>& v,                     // v
-            _assign_t_,                                         // =
-            const typename V_TYPE::element_type scalar)         // scalar
+  void
+  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
+       Default_Vector_Crtp<V_TYPE>& v,                     // v
+       _assign_t_,                                         // =
+       const typename V_TYPE::element_type scalar)         // scalar
 
   {
     v.map([scalar](auto& v_i) { v_i = scalar; });
@@ -54,10 +55,11 @@ namespace LinearAlgebra
   // Matrix version
   //
   template <typename M_0_TYPE>
-  void expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-            Default_Matrix_Crtp<M_0_TYPE>& M_0,                 // matrix_0
-            _assign_t_,                                         // =
-            const typename M_0_TYPE::element_type scalar)       // scalar
+  void
+  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
+       Default_Matrix_Crtp<M_0_TYPE>& M_0,                 // matrix_0
+       _assign_t_,                                         // =
+       const typename M_0_TYPE::element_type scalar)       // scalar
   {
     static_assert(Default_Matrix_Crtp<M_0_TYPE>::matrix_special_structure_type::value !=
                   Matrix_Special_Structure_Enum::Unit_Triangular);
@@ -217,27 +219,27 @@ namespace LinearAlgebra
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
        Default_Vector_Crtp<V_0_TYPE>& v_0,                 // v_0
        _assign_t_,                                         // =
-       const typename V_0_TYPE::element_type alpha,        // alpha
-       _vector_0_t_,                                       // v_0
-       _plus_t_,                                           // +
-       const typename V_1_TYPE::element_type beta,         // beta
+       const typename V_1_TYPE::element_type alpha,        // alpha
        _matrix_unary_op_t_<M_OP> op,                       // op
        const Default_Matrix_Crtp<M_TYPE>& M,               // M
-       const Default_Vector_Crtp<V_1_TYPE>& v_1            // v_1
+       const Default_Vector_Crtp<V_1_TYPE>& v_1,           // v_1
+       _plus_t_,                                           // +
+       const typename V_0_TYPE::element_type beta,         // beta
+       _vector_0_t_                                        // v_0
   )
   {
     assert((void*)&v_0 != (void*)&v_1);
 
-    // v_0 = alpha.v_0
+    // v_0 = beta.v_0
     //
-    expr(v_0, _assign_, alpha, _vector_0_);
+    expr(v_0, _assign_, beta, _vector_0_);
 
-    // beta = 0 ? -> nothing to do
+    // alpha = 0 ? -> nothing to do
     //
-    if (beta == 0) return;
+    if (alpha == 0) return;
 
     //
-    // TODO:beta != 1 ? -> you can reduce products by v_2 = beta v_1 then recall with beta = 1
+    // TODO:alpha != 1 ? -> you can reduce products by v_2 = alpha v_1 then recall with alpha = 1
     //
 
     // expr: v_0 = v_0 + β.op(M).v_1 ( = v_0 + op(M).(β.v_1))
@@ -247,7 +249,7 @@ namespace LinearAlgebra
       case Matrix_Special_Structure_Enum::Unit_Triangular:
         // Diagonal contribution: v_0 = v_0 + β.v_1
         //
-        expr(v_0, _assign_, _vector_0_, _plus_, beta, v_1);
+        expr(v_0, _assign_, _vector_0_, _plus_, alpha, v_1);
         //
         // no break here
         //
@@ -257,16 +259,16 @@ namespace LinearAlgebra
       {
         if (op == _identity_ or op == _conjugate_)
         {
-          M.map_indexed([&v_0, &v_1, op, beta](const auto m_ij, const size_t i, const size_t j) {
-            v_0[i] += beta * transform_scalar(op, m_ij) * v_1[j];
+          M.map_indexed([&v_0, &v_1, op, alpha](const auto m_ij, const size_t i, const size_t j) {
+            v_0[i] += alpha * transform_scalar(op, m_ij) * v_1[j];
           });
         }
         else
         {
           assert(op == _transpose_ or op == _transConj_);
 
-          M.map_indexed([&v_0, &v_1, op, beta](const auto m_ij, const size_t i, const size_t j) {
-            v_0[j] += beta * transform_scalar(op, m_ij) * v_1[i];
+          M.map_indexed([&v_0, &v_1, op, alpha](const auto m_ij, const size_t i, const size_t j) {
+            v_0[j] += alpha * transform_scalar(op, m_ij) * v_1[i];
           });
         }
       }
@@ -276,8 +278,8 @@ namespace LinearAlgebra
       {
         // invariant by transposition
         //
-        M.map_indexed([&v_0, &v_1, op, beta](const auto m_ij, const size_t i, const size_t j) {
-          v_0[i] += beta * transform_scalar(op, m_ij) * v_1[j];
+        M.map_indexed([&v_0, &v_1, op, alpha](const auto m_ij, const size_t i, const size_t j) {
+          v_0[i] += alpha * transform_scalar(op, m_ij) * v_1[j];
         });
 
         // Missing part
@@ -287,15 +289,15 @@ namespace LinearAlgebra
 
         if constexpr (M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)
         {
-          expr(v_0, _assign_, 1, _vector_0_, _plus_, beta, transpose(op),
-               view_as_upper_triangular_strict(M), v_1);
+          expr(v_0, _assign_, alpha, transpose(op), view_as_upper_triangular_strict(M), v_1, _plus_,
+               1, _vector_0_);
         }
         else
         {
           assert(M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower);
 
-          expr(v_0, _assign_, 1, _vector_0_, _plus_, beta, transpose(op),
-               view_as_lower_triangular_strict(M), v_1);
+          expr(v_0, _assign_, alpha, transpose(op), view_as_lower_triangular_strict(M), v_1, _plus_,
+               1, _vector_0_);
         }
       }
       break;
@@ -310,16 +312,16 @@ namespace LinearAlgebra
         //
         if constexpr (op == _identity_ or op == _transConj_)
         {
-          M.map_indexed([&v_0, &v_1, beta](const auto m_ij, const size_t i, const size_t j) {
-            v_0[i] += beta * m_ij * v_1[j];
+          M.map_indexed([&v_0, &v_1, alpha](const auto m_ij, const size_t i, const size_t j) {
+            v_0[i] += alpha * m_ij * v_1[j];
           });
         }
         else
         {
           assert(op == _transpose_ or op == _conjugate_);
 
-          M.map_indexed([&v_0, &v_1, beta](const auto m_ij, const size_t i, const size_t j) {
-            v_0[i] += beta * transform_scalar(_conjugate_, m_ij) * v_1[j];
+          M.map_indexed([&v_0, &v_1, alpha](const auto m_ij, const size_t i, const size_t j) {
+            v_0[i] += alpha * transform_scalar(_conjugate_, m_ij) * v_1[j];
           });
         }
 
@@ -330,15 +332,15 @@ namespace LinearAlgebra
 
         if constexpr (M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)
         {
-          expr(v_0, _assign_, 1, _vector_0_, _plus_, beta, transconjugate(op),
-               view_as_upper_triangular_strict(M), v_1);
+          expr(v_0, _assign_, alpha, transconjugate(op), view_as_upper_triangular_strict(M), v_1,
+               _plus_, 1, _vector_0_);
         }
         else
         {
           assert(M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower);
 
-          expr(v_0, _assign_, 1, _vector_0_, _plus_, beta, transconjugate(op),
-               view_as_lower_triangular_strict(M), v_1);
+          expr(v_0, _assign_, alpha, transconjugate(op), view_as_lower_triangular_strict(M), v_1,
+               _plus_, 1, _vector_0_);
         }
       }
       break;

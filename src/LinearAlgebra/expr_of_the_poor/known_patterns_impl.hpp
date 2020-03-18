@@ -3,6 +3,7 @@
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/expr_of_the_poor/known_patterns.hpp"
+#include "LinearAlgebra/meta/element_type.hpp"
 
 namespace LinearAlgebra
 {
@@ -216,16 +217,16 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   void
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Default_Vector_Crtp<V_0_TYPE>& v_0,                 // v_0
-       _assign_t_,                                         // =
-       const typename V_1_TYPE::element_type alpha,        // alpha
-       _matrix_unary_op_t_<M_OP> op,                       // op
-       const Default_Matrix_Crtp<M_TYPE>& M,               // M
-       const Default_Vector_Crtp<V_1_TYPE>& v_1,           // v_1
-       _plus_t_,                                           // +
-       const typename V_0_TYPE::element_type beta,         // beta
-       _vector_0_t_                                        // v_0
+  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,              // Generic implementation
+       Default_Vector_Crtp<V_0_TYPE>& v_0,                             // v_0
+       _assign_t_,                                                     // =
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
+       _matrix_unary_op_t_<M_OP> op,                                   // op
+       const Default_Matrix_Crtp<M_TYPE>& M,                           // M
+       const Default_Vector_Crtp<V_1_TYPE>& v_1,                       // v_1
+       _plus_t_,                                                       // +
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
+       _vector_0_t_                                                    // v_0
   )
   {
     assert((void*)&v_0 != (void*)&v_1);

@@ -32,16 +32,16 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   void
-  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-       Vector_Crtp<V_0_TYPE>& v_0,                           // v_0
-       _assign_t_,                                           // =
-       const typename V_0_TYPE::element_type alpha,          // alpha
-       _matrix_unary_op_t_<M_OP> op,                         // op
-       const Matrix_Crtp<M_TYPE>& M,                         // M
-       const Vector_Crtp<V_1_TYPE>& v_1,                     // v_1
-       _plus_t_,                                             // +
-       const typename V_1_TYPE::element_type beta,           // beta
-       _vector_0_t_)                                         // v_0
+  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,            // Undefined implementation
+       Vector_Crtp<V_0_TYPE>& v_0,                                     // v_0
+       _assign_t_,                                                     // =
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
+       _matrix_unary_op_t_<M_OP> op,                                   // op
+       const Matrix_Crtp<M_TYPE>& M,                                   // M
+       const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
+       _plus_t_,                                                       // +
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
+       _vector_0_t_)                                                   // v_0
   {
     static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
   }
@@ -59,14 +59,14 @@ namespace LinearAlgebra
   auto
   expr(Vector_Crtp<V_0_TYPE>& v_0,  // v_0
        _assign_t_,                  // =
-       const typename V_0_TYPE::element_type alpha,
-       //       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-       _matrix_unary_op_t_<M_OP> op,                // op
-       const Matrix_Crtp<M_TYPE>& M,                // M
-       const Vector_Crtp<V_1_TYPE>& v_1,            // v_1
-       _plus_t_,                                    // +
-       const typename V_1_TYPE::element_type beta,  // beta
-       _vector_0_t_)                                // v_0
+       // const typename V_0_TYPE::element_type alpha,
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
+       _matrix_unary_op_t_<M_OP> op,                                   // op
+       const Matrix_Crtp<M_TYPE>& M,                                   // M
+       const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
+       _plus_t_,                                                       // +
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
+       _vector_0_t_)                                                   // v_0
   {
     // Here is the right place to check dimension once for all.
     //
@@ -90,15 +90,15 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   auto
-  expr(Vector_Crtp<V_0_TYPE>& v_0,           // v_0
-       _assign_t_,                           // =
-       const Element_Type_t<M_TYPE>& beta,   // β
-       const _vector_0_t_,                   // v_0,
-       const _plus_t_,                       // +
-       const Element_Type_t<M_TYPE>& alpha,  // α
-       const _matrix_unary_op_t_<M_OP> op,   // op
-       const Matrix_Crtp<M_TYPE>& M,         // M
-       const Vector_Crtp<V_1_TYPE>& v_1)     // v_1
+  expr(Vector_Crtp<V_0_TYPE>& v_0,                                      // v_0
+       _assign_t_,                                                      // =
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& beta,   // β
+       const _vector_0_t_,                                              // v_0,
+       const _plus_t_,                                                  // +
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& alpha,  // α
+       const _matrix_unary_op_t_<M_OP> op,                              // op
+       const Matrix_Crtp<M_TYPE>& M,                                    // M
+       const Vector_Crtp<V_1_TYPE>& v_1)                                // v_1
   {
     assert(0);
 
@@ -117,15 +117,15 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V_1_TYPE>
   auto
   expr(const Expr_Selector<Expr_Selector_Enum::Blas>,
-       Default_Vector_Crtp<V_0_TYPE>& v_0,           // v_0
-       _assign_t_,                                   // =
-       const typename V_0_TYPE::element_type alpha,  // alpha
-       _matrix_unary_op_t_<M_OP> op,                 // op
-       const Default_Matrix_Crtp<M_TYPE>& M,         // M
-       const Default_Vector_Crtp<V_1_TYPE>& v_1,     // v_1
-       _plus_t_,                                     // +
-       const typename V_1_TYPE::element_type beta,   // beta
-       _vector_0_t_)                                 // v_0
+       Default_Vector_Crtp<V_0_TYPE>& v_0,                             // v_0
+       _assign_t_,                                                     // =
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
+       _matrix_unary_op_t_<M_OP> op,                                   // op
+       const Default_Matrix_Crtp<M_TYPE>& M,                           // M
+       const Default_Vector_Crtp<V_1_TYPE>& v_1,                       // v_1
+       _plus_t_,                                                       // +
+       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
+       _vector_0_t_)                                                   // v_0
 
       -> std::enable_if_t<
           // Supported matrix op?

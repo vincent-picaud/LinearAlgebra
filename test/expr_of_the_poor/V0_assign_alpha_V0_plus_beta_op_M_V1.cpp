@@ -10,6 +10,7 @@ TEST(Known_Pattern, copy)
 {
   using T = double;
 
+  
   Tiny_Matrix<T, 3, 2> M;
   Vector<T> y(3);
   Tiny_Vector<T, 2> x;

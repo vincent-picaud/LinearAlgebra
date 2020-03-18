@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 namespace LinearAlgebra
 {
   // Syntactic sugar
@@ -13,5 +15,5 @@ namespace LinearAlgebra
   using Element_Type_t = typename Element_Type<T>::type;
 
   template <typename... T>
-  using Common_Element_Type_t = typename std::common_type_t<Element_Type_t<T>...>::type;
+  using Common_Element_Type_t = std::common_type_t<Element_Type_t<T>...>;
 }

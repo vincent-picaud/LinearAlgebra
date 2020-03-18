@@ -3,6 +3,7 @@ test_array = [
   ['size_utils_test','size_utils_exe','size_utils.cpp'],
   ['is_complete_test','is_complete_exe','is_complete.cpp'],
   ['all_same_type_test','all_same_type_exe','all_same_type.cpp'],
+  ['element_type_test','element_type_exe','element_type.cpp'],
 ]
 
 foreach test : test_array

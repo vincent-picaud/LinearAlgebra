@@ -27,3 +27,22 @@ TEST(Vector_Transform, basic)
   EXPECT_EQ(v[1], 2 + 1);
   EXPECT_EQ(v[2], 3 + 2);
 }
+TEST(Vector_Transform, lambda_with_mutable_state)
+{
+  Tiny_Vector<int, 3> v;
+
+  EXPECT_EQ(v.size(), 3);
+
+  v[0] = 0;
+  v[1] = 1;
+  v[2] = 2;
+
+  int sum = 0;
+
+  transform(v, [&sum](const auto v_i) {
+    sum += v_i;
+    return v_i + 1;
+  });
+
+  EXPECT_EQ(sum, 3);
+}

@@ -43,7 +43,7 @@ blas_include = '#include <cblas.h>'
 #         account end line jumps
 #
 if cpp.links(blas_include+'''
-   int main()
+   int main() 
    {
      double v[6] = {1, 3, 5, 2, 4, 6};
      cblas_dnrm2(6,v,1);

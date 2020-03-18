@@ -1,7 +1,15 @@
+///////////////////////////////////////////////////////////////////////////////////////
+// CAVEAT: DO NOT MODIFY ME, BUT MODIFY LinearAlgebra/wraps/blas/blas_config.hpp.in  //
+///////////////////////////////////////////////////////////////////////////////////////
+
+// Be sure that namespace is declared at least once
 //
-// CAVEAT:
-// DO NOT MODIFY ME, BUT MODIFY LinearAlgebra/wraps/blas/blas_config.hpp.in //
-//
+namespace LinearAlgebra
+{
+  namespace Blas
+  {
+  }
+}
 
 // Ignore clang formatting
 // (otherwise formatting turns things like @HAS_BLAS@ into: @HAS_BLAS @)

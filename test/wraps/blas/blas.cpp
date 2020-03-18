@@ -4,7 +4,8 @@
 
 using namespace LinearAlgebra;
 
-TEST(Blas, demo)
-{
-  ASSERT_TRUE(HAS_BLAS);
-}
+#if (HAS_BLAS)
+
+TEST(Blas, demo) { ASSERT_TRUE(HAS_BLAS); }
+
+#endif

@@ -4,6 +4,10 @@
 //
 #pragma once
 
+#if !(HAS_BLAS)
+#error
+#endif
+
 #include "LinearAlgebra/expr_of_the_poor/expr_tags.hpp"  // for _matrix_unary_op_t_<Matrix_Unary_Op_Enum::XXX>
 #include "LinearAlgebra/meta/is_complete.hpp"
 #include "LinearAlgebra/wraps/blas/blas_config.hpp"

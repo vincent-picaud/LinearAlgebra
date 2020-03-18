@@ -1,5 +1,9 @@
 #pragma once
 
+#if !(HAS_BLAS)
+#error
+#endif
+
 #include <ccomplex>
 #include <type_traits>
 

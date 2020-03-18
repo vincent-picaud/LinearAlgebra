@@ -1,3 +1,15 @@
+# Note: whatever happen always include files
+#================================================================
+#
+LinearAlgebra_headers += [
+  'wraps/blas/blas.hpp',
+  'wraps/blas/subroutines.hpp',
+  'wraps/blas/to_cblas_transpose.hpp',
+  'wraps/blas/is_cblas_supported_scalar.hpp',
+]
+
+# Prepare blas_config.hpp.in
+#================================================================
 # See: https://mesonbuild.com/Configuration.html
 #
 blas_config = configuration_data({
@@ -6,27 +18,29 @@ blas_config = configuration_data({
 				})
 
 
-#################################################################
-# TODO:
+# Try to find system blas library
+#================================================================
 #
-# for the moment only one attempt (=OpenBlas), would be nice to have a
-# list of candidate BLAS lib (MKL...)
-#################################################################
+# TODO: for the moment only one attempt (=OpenBlas), would be nice to
+#       have a list of candidate BLAS lib (MKL...)
+
+cpp = meson.get_compiler('cpp')
+
 #
 # find cblas lib 
 #----------------------------------------------------------------
 # Note: a priori for Debian, one has to search blas.so lib and NOT
-# cblas.so lib.
+#       cblas.so lib.
 #
-cpp = meson.get_compiler('cpp')
+
 
 blas_lib = cpp.find_library('blas', required: false) 
 blas_include = '#include <cblas.h>'
 
 # try to compile and link with it
 #----------------------------------------------------------------
-# important: use ''' and not simply ' as we want to take into account
-# end line jumps
+# CAVEAT: important: use ''' and not simply ' as we want to take into
+#         account end line jumps
 #
 if cpp.links(blas_include+'''
    int main()
@@ -38,33 +52,35 @@ if cpp.links(blas_include+'''
 
   blas_config.set('HAS_BLAS','true')
   blas_config.set('BLAS_INCLUDE',blas_include)
-else
-#  blas_lib = disabler() # link failed -> creset flag
+endif
+
+
+if not blas_lib.found()
+  message('try to find another cblas lib')
 endif
 
 #################################################################
 # Generate configure file
 #################################################################
 #
+if not blas_lib.found()
+  warning('Blas library NOT found... compiling without it')
+endif
+
 configure_file(input : 'blas_config.hpp.in',
                output : 'blas_config.hpp',
                configuration : blas_config)
 
 
-# if not found, done...
-if not blas_lib.found()
-  subdir_done()
-endif
-
-# here other stuff depending on blas_lib
-
-# NOTE: for the moment, blas_lib is used in
+# TODO/NOTE: for the moment, I directly use blas_lib:
 #
+#----------------
 # LinearAlgebra/src/LinearAlgebra/meson.build
 #
 # LinearAlgebra_dep = declare_dependency(include_directories : inc,
 # 				       link_with : [LinearAlgebra_lib,],
 # 				       dependencies : [blas_lib,])
+#----------------
 #
 # However It must certainly be better to use:
 # https://mesonbuild.com/Reference-manual.html#declare_dependency
@@ -78,14 +94,3 @@ endif
 #
 
 
-#################################################################
-# Header files
-#################################################################
-#
-
-LinearAlgebra_headers += [
-  'wraps/blas/blas.hpp',
-  'wraps/blas/subroutines.hpp',
-  'wraps/blas/to_cblas_transpose.hpp',
-  'wraps/blas/is_cblas_supported_scalar.hpp',
-]

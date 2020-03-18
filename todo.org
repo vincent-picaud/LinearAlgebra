@@ -48,3 +48,12 @@
 
     - [ ] to fix
 
+   Back link: [[file:~/GitHub/LinearAlgebra/test/expr_of_the_poor/known_patterns_impl.cpp:://%20does%20not%20compile%20ANYMORE%20//%20something%20has%20changed....%20TO%20FIX]]
+
+   #+BEGIN_QUOTE
+      does not compile ANYMORE
+      something has changed.... TO FIX
+   #+END_QUOTE
+
+    - [ ] To fix
+

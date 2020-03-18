@@ -100,9 +100,9 @@ namespace LinearAlgebra
        const Matrix_Crtp<M_TYPE>& M,                                    // M
        const Vector_Crtp<V_1_TYPE>& v_1)                                // v_1
   {
-    assert(0);
+    //assert(0);
 
-    //return expr(v_0, _assign_, alpha, op, M, v_1, _plus_, beta, _vector_0_);
+    return expr(v_0, _assign_, alpha, op, M, v_1, _plus_, beta, _vector_0_);
   }
 
   //////////////////////////////////////////////////////////////////

@@ -4,7 +4,7 @@ LinearAlgebra_headers += [
   'dense/memory_chunk.hpp',
   'dense/vector_storage_scheme.hpp',
   'dense/vector.hpp',
-
+  'dense/vector_transform.hpp',
 
   'dense/matrix_crtp_fwd.hpp',
   'dense/matrix_crtp.hpp',

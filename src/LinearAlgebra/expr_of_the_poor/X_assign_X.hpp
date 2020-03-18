@@ -1,5 +1,5 @@
 //
-// Copy operations
+// Vector copy operations
 //
 
 //

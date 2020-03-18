@@ -4,6 +4,7 @@ test_array = [
   ['matrix_test','matrix_exe','matrix.cpp'],
 
   ['vector_crtp_size_utils_test','vector_crtp_size_utils_exe','vector_crtp_size_utils.cpp'],
+  ['vector_transform_test','vector_transform_exe','vector_transform.cpp'],
 ]
 
 foreach test : test_array

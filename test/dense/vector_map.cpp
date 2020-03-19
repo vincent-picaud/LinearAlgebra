@@ -15,7 +15,7 @@ TEST(Vector_Map, basic)
   v[1] = 1;
   v[2] = 2;
 
-  auto w = map(v, [](const auto v_i) { return (double)v_i + 1; });
+  auto w = map([](const auto v_i) { return (double)v_i + 1; }, v);
 
   EXPECT_EQ(v[0], 0);
   EXPECT_EQ(v[1], 1);

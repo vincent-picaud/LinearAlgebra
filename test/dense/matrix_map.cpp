@@ -12,7 +12,7 @@ TEST(Matrix_Map, basic)
   mat(0, 0) = 1;
   mat(2, 1) = 2;
 
-  auto mat_dest = map(mat, [](const auto mat_i) { return (double)mat_i + 1; });
+  auto mat_dest = map([](const auto mat_i) { return (double)mat_i + 1; }, mat);
 
   EXPECT_EQ(mat(0, 0), 1);
   EXPECT_EQ(mat(2, 1), 2);

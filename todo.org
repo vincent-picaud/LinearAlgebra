@@ -57,15 +57,26 @@
 
     - [ ] To fix
 
-**** TODO Demain [2/3] 
+**** DONE Demain [2/3] 
      :PROPERTIES:
      :Created:  [2020-03-18 Wed 23:50]
      :END:
 
     - [X] Finir implementation map & map_indexed
     - [X] Finir implementation pour matrix?
-    - [ ] Cleaning 
-      + ajout return type de X_assign_X
-      + reactoring map
-      + remove map
+
+*** 2020-03-19 Thursday
+
+**** TODO Remove inplace_map [0/1]                                 :Critical:
+     :PROPERTIES:
+     :Created:  [2020-03-19 Thu 12:56]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/vector_map.hpp::inplace_map]]
+
+   #+BEGIN_QUOTE
+    inplace_map
+   #+END_QUOTE
+
+    - [ ] as ambiguous with transform. Use transform_indexed to do the job
 

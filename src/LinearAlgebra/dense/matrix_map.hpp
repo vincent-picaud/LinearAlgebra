@@ -25,8 +25,7 @@ namespace LinearAlgebra
   {
     using matrix_dest_element_type = decltype(lambda(matrix_src(0, 0)));
 
-    auto matrix_dest = create_default_storable_matrix_custom_element_type<matrix_dest_element_type>(
-        matrix_src.impl());
+    auto matrix_dest = create_default_storable(type_v<matrix_dest_element_type>, matrix_src.impl());
 
     inplace_map(matrix_dest, matrix_src, lambda);
 

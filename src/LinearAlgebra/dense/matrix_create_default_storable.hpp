@@ -6,12 +6,13 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/meta/type.hpp"
 
 namespace LinearAlgebra
 {
   template <typename T, typename IMPL>
   auto
-  create_default_storable_matrix_custom_element_type(const Default_Matrix_Crtp<IMPL>& matrix)
+  create_default_storable(const Type<T>, const Default_Matrix_Crtp<IMPL>& matrix)
   {
     // Like we use column major storage, ld is directly related to I_size
     using leading_dimension_type = typename IMPL::I_size_type;
@@ -26,6 +27,6 @@ namespace LinearAlgebra
   auto
   create_default_storable_matrix(const Default_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_default_storable_matrix_custom_element_type<typename IMPL::element_type>(matrix);
+    return create_default_storable(type_v<typename IMPL::element_type>, matrix);
   }
 }

@@ -6,7 +6,7 @@ LinearAlgebra_headers += [
   'dense/vector.hpp',
   'dense/vector_transform.hpp',
   'dense/vector_map.hpp',
-
+  'dense/vector_create_default_storable.hpp',
 
   'dense/matrix_crtp_fwd.hpp',
   'dense/matrix_crtp.hpp',
@@ -15,4 +15,5 @@ LinearAlgebra_headers += [
   'dense/matrix.hpp',
   'dense/matrix_map.hpp',
   'dense/matrix_create_default_storable.hpp',
+
 ]

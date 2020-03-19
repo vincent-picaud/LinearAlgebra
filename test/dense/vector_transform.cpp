@@ -15,13 +15,13 @@ TEST(Vector_Transform, basic)
   v[1] = 1;
   v[2] = 2;
 
-  transform(v, [](const auto v_i) { return v_i + 1; });
+  transform([](const auto v_i) { return v_i + 1; }, v);
 
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(v[1], 2);
   EXPECT_EQ(v[2], 3);
 
-  transform_indexed(v, [](const auto v_i, const std::size_t i) { return v_i + i; });
+  transform_indexed([](const auto v_i, const std::size_t i) { return v_i + i; }, v);
 
   EXPECT_EQ(v[0], 1 + 0);
   EXPECT_EQ(v[1], 2 + 1);
@@ -39,10 +39,12 @@ TEST(Vector_Transform, lambda_with_mutable_state)
 
   int sum = 0;
 
-  transform(v, [&sum](const auto v_i) {
-    sum += v_i;
-    return v_i + 1;
-  });
+  transform(
+      [&sum](const auto v_i) {
+        sum += v_i;
+        return v_i + 1;
+      },
+      v);
 
   EXPECT_EQ(sum, 3);
 }

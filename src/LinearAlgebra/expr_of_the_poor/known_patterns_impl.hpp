@@ -101,11 +101,11 @@ namespace LinearAlgebra
 
     if (scalar == -1)
     {
-      transform(v_0, [](const auto& v_0_i) { return -v_0_i; });
+      transform([](const auto& v_0_i) { return -v_0_i; }, v_0);
       return;
     }
 
-    transform(v_0, [&](const auto& v_0_i) { return v_0_i * scalar; });
+    transform([&](const auto& v_0_i) { return v_0_i * scalar; }, v_0);
   }
   //
   // Matrix version
@@ -135,11 +135,11 @@ namespace LinearAlgebra
 
     if (scalar == -1)
     {
-      transform(m_0, [](const auto& m_0_ij) { return -m_0_ij; });
+      transform([](const auto& m_0_ij) { return -m_0_ij; }, m_0);
       return;
     }
 
-    transform(m_0, [&](const auto& m_0_ij) { return m_0_ij * scalar; });
+    transform([&](const auto& m_0_ij) { return m_0_ij * scalar; }, m_0);
   }
   //****************************************************************
   // v_0 = v_0 + alpha v_1 (Blas's axpy)

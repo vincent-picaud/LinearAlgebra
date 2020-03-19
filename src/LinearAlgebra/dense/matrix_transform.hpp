@@ -10,9 +10,9 @@ namespace LinearAlgebra
   //
   // M(i,j)=lambda(M(i,j))
   //
-  template <typename IMPL, typename LAMBDA>
+  template <typename LAMBDA, typename IMPL>
   void
-  transform(Dense_Matrix_Crtp<IMPL>& matrix, const LAMBDA& lambda)
+  transform(const LAMBDA& lambda, Dense_Matrix_Crtp<IMPL>& matrix)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i, const std::size_t j) {
       matrix(i, j) = lambda(matrix.as_const()(i, j));
@@ -23,9 +23,9 @@ namespace LinearAlgebra
   //
   // M(i,j)=lambda(M(i,j),i,j)
   //
-  template <typename IMPL, typename LAMBDA>
+  template <typename LAMBDA, typename IMPL>
   void
-  transform_indexed(Dense_Matrix_Crtp<IMPL>& matrix, const LAMBDA& lambda)
+  transform_indexed(const LAMBDA& lambda, Dense_Matrix_Crtp<IMPL>& matrix)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i, const std::size_t j) {
       matrix(i, j) = lambda(matrix.as_const()(i, j), i, j);

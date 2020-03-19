@@ -67,6 +67,9 @@ namespace LinearAlgebra
                       const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
                       const I_SIZE I_size, const J_SIZE J_size)
     {
+      static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<I_SIZE>);
+      static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<J_SIZE>);
+
       switch (MASK)
       {
         case Matrix_Storage_Mask_Enum::None:

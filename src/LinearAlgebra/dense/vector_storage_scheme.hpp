@@ -6,6 +6,22 @@
 
 namespace LinearAlgebra
 {
+  // For future reuses, split apart loop_over_indices() as in "matrix_storage_mask_enum.hpp"
+  namespace Detail
+  {
+    template <typename LAMBDA, typename SIZE>
+    constexpr void
+    loop_over_indices(const LAMBDA& lambda, const SIZE size)
+    {
+      static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<SIZE>);
+
+      for (size_t i = 0; i < size; ++i)
+      {
+        lambda(i);
+      }
+    }
+  }
+
   namespace Detail
   {
     // substitute to partial specializations
@@ -109,10 +125,7 @@ namespace LinearAlgebra
     void
     loop_over_indices(const LAMBDA& lambda) const
     {
-      for (size_t i = 0; i < _n; ++i)
-      {
-        lambda(i);
-      }
+      Detail::loop_over_indices(lambda, _n);
     }
   };
 

@@ -1,5 +1,5 @@
 //
-// Like matrix_transform but matrix_dest <- map(matrix_source)
+// CAVEAT: keep sync with vector_map.hpp
 //
 #pragma once
 

@@ -77,15 +77,16 @@ namespace LinearAlgebra
     using increment_type = INCREMENT;
 
    protected:
-    N_TYPE _n;
-    INCREMENT _inc;
+    size_type _size;
+    increment_type _increment;
 
    public:
-    constexpr Default_Vector_Storage_Scheme() : _n(), _inc() {}
+    constexpr Default_Vector_Storage_Scheme() : _size(), _increment() {}
 
-    constexpr Default_Vector_Storage_Scheme(const N_TYPE n, const INCREMENT inc) : _n(n), _inc(inc)
+    constexpr Default_Vector_Storage_Scheme(const N_TYPE n, const INCREMENT inc)
+        : _size(n), _increment(inc)
     {
-      assert(_inc > 0);
+      assert(_increment > 0);
     }
     constexpr Default_Vector_Storage_Scheme(const N_TYPE n)
         : Default_Vector_Storage_Scheme(n, Detail::increment_default_value_helper<INCREMENT>())
@@ -95,37 +96,37 @@ namespace LinearAlgebra
     constexpr required_capacity_type
     required_capacity() const
     {
-      return Detail::vector_required_capacity_helper(_n, _inc);
+      return Detail::vector_required_capacity_helper(_size, _increment);
     }
     constexpr size_type
     size() const
     {
-      return _n;
+      return _size;
     }
 
     constexpr increment_type
     increment() const
     {
-      return _inc;
+      return _increment;
     }
 
     constexpr bool
     check_index(const size_t i) const
     {
-      return i < _n;
+      return i < _size;
     };
 
     constexpr size_t
     offset(const size_t i) const
     {
-      return i * _inc;
+      return i * _increment;
     }
 
     template <typename LAMBDA>
     void
     loop_over_indices(const LAMBDA& lambda) const
     {
-      Detail::loop_over_indices(lambda, _n);
+      Detail::loop_over_indices(lambda, _size);
     }
   };
 

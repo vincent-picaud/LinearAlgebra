@@ -168,6 +168,12 @@ namespace LinearAlgebra
 
     using leading_dimension_type = typename base_type::leading_dimension_type;
 
+    // note: these static enum values
+    //   - matrix_special_structure_type     : Triangular, Symmetric...
+    //   - matrix_storage_mask_type          : Upper, None...
+    // can be accessed and are defined in the inherited Default_Matrix_Crtp class
+    //
+
     /////////////
     // Members //
     /////////////

@@ -1,7 +1,11 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/dense/matrix_map.hpp"
+#include "LinearAlgebra/dense/matrix_transform.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
+#include "LinearAlgebra/dense/vector_map.hpp"
+#include "LinearAlgebra/dense/vector_transform.hpp"
 #include "LinearAlgebra/expr_of_the_poor/known_patterns.hpp"
 #include "LinearAlgebra/meta/element_type.hpp"
 

@@ -15,7 +15,7 @@ TEST(Vector_Map, basic)
   v[1] = 1;
   v[2] = 2;
 
-  auto w = map(v, [](const auto v_i) { return v_i + 1; });
+  auto w = map(v, [](const auto v_i) { return (double)v_i + 1; });
 
   EXPECT_EQ(v[0], 0);
   EXPECT_EQ(v[1], 1);
@@ -28,4 +28,6 @@ TEST(Vector_Map, basic)
   EXPECT_EQ(w.size(), 3);
   EXPECT_TRUE(
       (std::is_same_v<typename decltype(w)::size_type, std::integral_constant<std::size_t, 3>>));
+  EXPECT_TRUE((std::is_same_v<typename decltype(v)::element_type, int>));
+  EXPECT_TRUE((std::is_same_v<typename decltype(w)::element_type, double>));
 }

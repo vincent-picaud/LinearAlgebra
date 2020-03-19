@@ -17,6 +17,9 @@ LinearAlgebra_headers += [
   'dense/vector.hpp',
   'dense/matrix.hpp',
 
+  'dense/vector_fill.hpp',
+  'dense/matrix_fill.hpp',
+
   'dense/vector_transform.hpp',
   'dense/matrix_transform.hpp',
 

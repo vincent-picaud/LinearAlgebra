@@ -43,4 +43,48 @@ namespace LinearAlgebra
   template <typename... IMPLs>
   inline constexpr bool Any_Has_Static_Size_v = Any_Has_Static_Size<IMPLs...>::value;
 
+  //////////////////////////////////////////////////////////////////
+
+  //
+  // From a list of size / integral_constant<size> return the first
+  // static size if any, otherwise return the last dynamic size
+  //
+  // CAVEAT: declaration *order* of these two functions is important!
+  //
+  template <size_t N, typename... STATIC_DYNAMIC_SIZE>
+  constexpr auto
+  get_static_size_if_any(const std::integral_constant<size_t, N>,
+                         const STATIC_DYNAMIC_SIZE... other_size) noexcept
+  {
+    return std::integral_constant<size_t, N>{};
+  }
+
+  template <typename... STATIC_DYNAMIC_SIZE>
+  constexpr auto
+  get_static_size_if_any(const size_t n, const STATIC_DYNAMIC_SIZE... other_size) noexcept
+  {
+    if constexpr (sizeof...(STATIC_DYNAMIC_SIZE) == 0)
+    {
+      return n;
+    }
+    else
+    {
+      return get_static_size_if_any(other_size...);
+    }
+  }
+
+  //
+  // Check that all sizes are equal
+  //
+  template <typename STATIC_DYNAMIC_SIZE, typename... STATIC_DYNAMIC_SIZE_TAIL>
+  constexpr auto
+  all_sizes_are_equal_p(const STATIC_DYNAMIC_SIZE size,
+                        const STATIC_DYNAMIC_SIZE_TAIL... size_tail) noexcept
+      -> std::enable_if_t<
+          Is_Std_Integral_Constant_Size_Or_Std_Size_v<STATIC_DYNAMIC_SIZE> and
+              (Is_Std_Integral_Constant_Size_Or_Std_Size_v<STATIC_DYNAMIC_SIZE_TAIL> and ...),
+          bool>
+  {
+    return ((size == size_tail) and ...);
+  }
 }

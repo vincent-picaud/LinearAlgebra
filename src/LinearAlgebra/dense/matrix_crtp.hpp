@@ -55,14 +55,14 @@ namespace LinearAlgebra
   };
 
   template <typename IMPL>
-  class Default_Matrix_Crtp : public Crtp_Find_Impl<Default_Matrix_Crtp, IMPL, Matrix_Crtp>
+  class Dense_Matrix_Crtp : public Crtp_Find_Impl<Dense_Matrix_Crtp, IMPL, Matrix_Crtp>
   {
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = Crtp_Find_Impl<Default_Matrix_Crtp, IMPL, Matrix_Crtp>;
+    using base_type = Crtp_Find_Impl<Dense_Matrix_Crtp, IMPL, Matrix_Crtp>;
 
     using exact_type  = typename base_type::exact_type;
     using traits_type = typename base_type::traits_type;
@@ -108,19 +108,19 @@ namespace LinearAlgebra
     // }
 
     // This constructor assumes than memory_chunk allocates its memory
-    Default_Matrix_Crtp(const storage_scheme_type& storage_scheme)
+    Dense_Matrix_Crtp(const storage_scheme_type& storage_scheme)
         : _storage_scheme(storage_scheme), _memory_chunk(_storage_scheme.required_capacity())
     {
       assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
     }
     // This constructor assumes a view
-    Default_Matrix_Crtp(const storage_scheme_type& storage_scheme, element_type* p)
+    Dense_Matrix_Crtp(const storage_scheme_type& storage_scheme, element_type* p)
         : _storage_scheme(storage_scheme), _memory_chunk(p, _storage_scheme.required_capacity())
     {
       assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
     }
     // This constructor assumes a const view
-    Default_Matrix_Crtp(const storage_scheme_type& storage_scheme, const element_type* p)
+    Dense_Matrix_Crtp(const storage_scheme_type& storage_scheme, const element_type* p)
         : _storage_scheme(storage_scheme), _memory_chunk(p, _storage_scheme.required_capacity())
     {
       assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
@@ -283,7 +283,7 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   std::ostream&
-  operator<<(std::ostream& out, const Default_Matrix_Crtp<IMPL>& to_print)
+  operator<<(std::ostream& out, const Dense_Matrix_Crtp<IMPL>& to_print)
   {
     const auto& storage_scheme = to_print.storage_scheme();
 

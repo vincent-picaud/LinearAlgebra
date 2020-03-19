@@ -10,8 +10,8 @@ namespace LinearAlgebra
 {
   template <typename IMPL_DEST, typename IMPL_SRC, typename LAMBDA>
   void
-  inplace_map(Default_Vector_Crtp<IMPL_DEST>& vector_dest,
-              const Default_Vector_Crtp<IMPL_SRC>& vector_src, const LAMBDA& lambda)
+  inplace_map(Dense_Vector_Crtp<IMPL_DEST>& vector_dest,
+              const Dense_Vector_Crtp<IMPL_SRC>& vector_src, const LAMBDA& lambda)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i) {
       vector_dest[i] = lambda(vector_src.as_const()[i]);
@@ -21,7 +21,7 @@ namespace LinearAlgebra
 
   template <typename IMPL_SRC, typename LAMBDA>
   auto
-  map(const Default_Vector_Crtp<IMPL_SRC>& vector_src, const LAMBDA& lambda)
+  map(const Dense_Vector_Crtp<IMPL_SRC>& vector_src, const LAMBDA& lambda)
   {
     using vector_dest_element_type = decltype(lambda(vector_src[0]));
 

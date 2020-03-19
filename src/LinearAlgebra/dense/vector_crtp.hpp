@@ -52,14 +52,14 @@ namespace LinearAlgebra
   // By "default" we assume that we use the storage_scheme,
   // memory_chunk policies
   template <typename IMPL>
-  class Default_Vector_Crtp : public Crtp_Find_Impl<Default_Vector_Crtp, IMPL, Vector_Crtp>
+  class Dense_Vector_Crtp : public Crtp_Find_Impl<Dense_Vector_Crtp, IMPL, Vector_Crtp>
   {
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = Crtp_Find_Impl<Default_Vector_Crtp, IMPL, Vector_Crtp>;
+    using base_type = Crtp_Find_Impl<Dense_Vector_Crtp, IMPL, Vector_Crtp>;
 
     using exact_type  = typename base_type::exact_type;
     using traits_type = typename base_type::traits_type;
@@ -97,19 +97,19 @@ namespace LinearAlgebra
     // }
 
     // This constructor assumes than memory_chunk allocates its memory
-    Default_Vector_Crtp(const storage_scheme_type& storage_scheme)
+    Dense_Vector_Crtp(const storage_scheme_type& storage_scheme)
         : _storage_scheme(storage_scheme), _memory_chunk(_storage_scheme.required_capacity())
     {
       assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
     }
     // This constructor assumes a view
-    Default_Vector_Crtp(const storage_scheme_type& storage_scheme, element_type* p)
+    Dense_Vector_Crtp(const storage_scheme_type& storage_scheme, element_type* p)
         : _storage_scheme(storage_scheme), _memory_chunk(p, _storage_scheme.required_capacity())
     {
       assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
     }
     // This constructor assumes a const view
-    Default_Vector_Crtp(const storage_scheme_type& storage_scheme, const element_type* p)
+    Dense_Vector_Crtp(const storage_scheme_type& storage_scheme, const element_type* p)
         : _storage_scheme(storage_scheme), _memory_chunk(p, _storage_scheme.required_capacity())
     {
       assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
@@ -259,7 +259,7 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   void
-  iota(Default_Vector_Crtp<IMPL>& to_fill, typename Default_Vector_Crtp<IMPL>::element_type start)
+  iota(Dense_Vector_Crtp<IMPL>& to_fill, typename Dense_Vector_Crtp<IMPL>::element_type start)
   {
     to_fill.map([&start](auto& v_i) {
       v_i = start;
@@ -269,7 +269,7 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   std::ostream&
-  operator<<(std::ostream& out, const Default_Vector_Crtp<IMPL>& to_print)
+  operator<<(std::ostream& out, const Dense_Vector_Crtp<IMPL>& to_print)
   {
     const auto n = to_print.size();
 

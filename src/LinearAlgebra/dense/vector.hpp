@@ -25,7 +25,7 @@ namespace LinearAlgebra
   };
 
   template <typename T, typename N_TYPE, typename INCREMENT>
-  class Default_Vector : public Default_Vector_Crtp<Default_Vector<T, N_TYPE, INCREMENT>>
+  class Default_Vector : public Dense_Vector_Crtp<Default_Vector<T, N_TYPE, INCREMENT>>
   {
     static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<N_TYPE>);
     static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<INCREMENT>);
@@ -35,7 +35,7 @@ namespace LinearAlgebra
     ///////////
     //
    public:
-    using base_type = Default_Vector_Crtp<Default_Vector<T, N_TYPE, INCREMENT>>;
+    using base_type = Dense_Vector_Crtp<Default_Vector<T, N_TYPE, INCREMENT>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
     using memory_chunk_type   = typename base_type::memory_chunk_type;
@@ -103,7 +103,7 @@ namespace LinearAlgebra
   };
 
   template <typename T, typename N_TYPE, typename INCREMENT>
-  class Default_Vector_View : public Default_Vector_Crtp<Default_Vector_View<T, N_TYPE, INCREMENT>>
+  class Default_Vector_View : public Dense_Vector_Crtp<Default_Vector_View<T, N_TYPE, INCREMENT>>
   {
     // Sanity checks
     //
@@ -115,7 +115,7 @@ namespace LinearAlgebra
     ///////////
     //
    public:
-    using base_type = Default_Vector_Crtp<Default_Vector_View<T, N_TYPE, INCREMENT>>;
+    using base_type = Dense_Vector_Crtp<Default_Vector_View<T, N_TYPE, INCREMENT>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
     using memory_chunk_type   = typename base_type::memory_chunk_type;
@@ -171,7 +171,7 @@ namespace LinearAlgebra
 
   template <typename T, typename N_TYPE, typename INCREMENT>
   class Default_Vector_Const_View
-      : public Default_Vector_Crtp<Default_Vector_Const_View<T, N_TYPE, INCREMENT>>
+      : public Dense_Vector_Crtp<Default_Vector_Const_View<T, N_TYPE, INCREMENT>>
   {
     // Sanity checks
     //
@@ -183,7 +183,7 @@ namespace LinearAlgebra
     ///////////
     //
    public:
-    using base_type = Default_Vector_Crtp<Default_Vector_Const_View<T, N_TYPE, INCREMENT>>;
+    using base_type = Dense_Vector_Crtp<Default_Vector_Const_View<T, N_TYPE, INCREMENT>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
     using memory_chunk_type   = typename base_type::memory_chunk_type;

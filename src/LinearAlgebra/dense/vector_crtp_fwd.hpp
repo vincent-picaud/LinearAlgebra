@@ -8,5 +8,5 @@ namespace LinearAlgebra
   class Vector_Crtp;
 
   template <typename IMPL = Crtp_Final_Impl>
-  class Default_Vector_Crtp;
+  class Dense_Vector_Crtp;
 }

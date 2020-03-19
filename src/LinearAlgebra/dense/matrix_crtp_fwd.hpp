@@ -8,5 +8,5 @@ namespace LinearAlgebra
   class Matrix_Crtp;
 
   template <typename IMPL = Crtp_Final_Impl>
-  class Default_Matrix_Crtp;
+  class Dense_Matrix_Crtp;
 }

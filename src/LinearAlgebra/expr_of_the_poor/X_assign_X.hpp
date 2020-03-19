@@ -30,9 +30,9 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, typename V_1_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,
-       Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+       Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                               // =
-       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+       const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
   )
   {
     static_assert(Always_False_v<V_0_TYPE>, "Undefined implementation");
@@ -44,9 +44,9 @@ namespace LinearAlgebra
   //
   template <typename V_0_TYPE, typename V_1_TYPE>
   auto
-  expr(Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+  expr(Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                               // =
-       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+       const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
   )
   {
     assert(v_0.size() == v_1.size());
@@ -67,9 +67,9 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, typename V_1_TYPE>
   std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Generic>
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,
-       Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+       Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                               // =
-       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+       const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
   )
   {
     assert(v_0.size() == v_1.size());
@@ -85,9 +85,9 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, typename V_1_TYPE>
   auto
   expr(const Expr_Selector<Expr_Selector_Enum::Blas>&,
-       Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+       Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                               // =
-       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+       const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
        )
       -> std::enable_if_t<Always_True_v<decltype(Blas::copy(v_0.size(), v_1.data(), v_1.increment(),
                                                             v_0.data(), v_0.increment()))>,
@@ -108,9 +108,9 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, typename V_1_TYPE>
   auto
   expr(const Expr_Selector<Expr_Selector_Enum::Static>&,
-       Default_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
+       Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                               // =
-       const Default_Vector_Crtp<V_1_TYPE>& v_1  // v_1
+       const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
        ) -> std::enable_if_t<Any_Has_Static_Size_v<V_0_TYPE, V_1_TYPE>,
                              std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Static>>
 

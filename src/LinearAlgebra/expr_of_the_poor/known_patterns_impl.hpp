@@ -28,7 +28,7 @@ namespace LinearAlgebra
   template <typename V_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Default_Vector_Crtp<V_TYPE>& v,                     // v
+       Dense_Vector_Crtp<V_TYPE>& v,                     // v
        _assign_t_,                                         // =
        const typename V_TYPE::element_type scalar)         // scalar
 
@@ -43,7 +43,7 @@ namespace LinearAlgebra
   template <typename V_0_TYPE>
   auto
   expr(const Expr_Selector<Expr_Selector_Enum::Static>&,  // Static implementation
-       Default_Vector_Crtp<V_0_TYPE>& v,                  // v
+       Dense_Vector_Crtp<V_0_TYPE>& v,                  // v
        _assign_t_,                                        // =
        const typename V_0_TYPE::element_type scalar       // scalar
        )
@@ -58,11 +58,11 @@ namespace LinearAlgebra
   template <typename M_0_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Default_Matrix_Crtp<M_0_TYPE>& M_0,                 // matrix_0
+       Dense_Matrix_Crtp<M_0_TYPE>& M_0,                 // matrix_0
        _assign_t_,                                         // =
        const typename M_0_TYPE::element_type scalar)       // scalar
   {
-    static_assert(Default_Matrix_Crtp<M_0_TYPE>::matrix_special_structure_type::value !=
+    static_assert(Dense_Matrix_Crtp<M_0_TYPE>::matrix_special_structure_type::value !=
                   Matrix_Special_Structure_Enum::Unit_Triangular);
 
     M_0.map([scalar](auto& m_ij) { m_ij = scalar; });
@@ -75,7 +75,7 @@ namespace LinearAlgebra
   template <typename V_0_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Default_Vector_Crtp<V_0_TYPE>& v_0,                 // vector_0
+       Dense_Vector_Crtp<V_0_TYPE>& v_0,                 // vector_0
        _assign_t_,                                         // =
        const typename V_0_TYPE::element_type scalar,       // scalar
        _vector_0_t_                                        // vector_0
@@ -105,13 +105,13 @@ namespace LinearAlgebra
   template <typename M_0_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Default_Matrix_Crtp<M_0_TYPE>& m_0,                 // matrix_0
+       Dense_Matrix_Crtp<M_0_TYPE>& m_0,                 // matrix_0
        _assign_t_,                                         // =
        const typename M_0_TYPE::element_type scalar,       // scalar
        _matrix_0_t_                                        // matrix_0
   )
   {
-    static_assert(Default_Matrix_Crtp<M_0_TYPE>::matrix_special_structure_type::value !=
+    static_assert(Dense_Matrix_Crtp<M_0_TYPE>::matrix_special_structure_type::value !=
                   Matrix_Special_Structure_Enum::Unit_Triangular);
     //
     // TODO check Hermitian: only real coef (otherwise diagonal is no
@@ -142,12 +142,12 @@ namespace LinearAlgebra
   template <typename V_0, typename V_1>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Default_Vector_Crtp<V_0>& v_0,                      // vector_0
+       Dense_Vector_Crtp<V_0>& v_0,                      // vector_0
        _assign_t_,                                         // =
        _vector_0_t_,                                       // vector_0
        _plus_t_,                                           // +
        const typename V_1::element_type scalar,            // scalar
-       const Default_Vector_Crtp<V_1>& v_1                 // vector_1
+       const Dense_Vector_Crtp<V_1>& v_1                 // vector_1
   )
   {
     assert(are_compatibles(v_0.storage_scheme(), v_1.storage_scheme()));
@@ -179,13 +179,13 @@ namespace LinearAlgebra
   template <typename M_0_TYPE, typename V_1_TYPE>
   auto
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Default_Matrix_Crtp<M_0_TYPE>& M_0,                 // matrix_0
+       Dense_Matrix_Crtp<M_0_TYPE>& M_0,                 // matrix_0
        _assign_t_,                                         // =
        const typename M_0_TYPE::element_type alpha,        // alpha
        _matrix_0_t_,                                       // matrix_0
        _plus_t_,                                           // +
        const typename V_1_TYPE::element_type beta,         // beta
-       Default_Vector_Crtp<V_1_TYPE>& v_1,                 // vector_1
+       Dense_Vector_Crtp<V_1_TYPE>& v_1,                 // vector_1
        _transpose_t_,                                      // transpose
        _vector_1_t_                                        // vector_1
        ) -> std::enable_if_t<M_0_TYPE::matrix_special_structure_type::value ==
@@ -218,12 +218,12 @@ namespace LinearAlgebra
             typename V_1_TYPE>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,              // Generic implementation
-       Default_Vector_Crtp<V_0_TYPE>& v_0,                             // v_0
+       Dense_Vector_Crtp<V_0_TYPE>& v_0,                             // v_0
        _assign_t_,                                                     // =
        const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
        _matrix_unary_op_t_<M_OP> op,                                   // op
-       const Default_Matrix_Crtp<M_TYPE>& M,                           // M
-       const Default_Vector_Crtp<V_1_TYPE>& v_1,                       // v_1
+       const Dense_Matrix_Crtp<M_TYPE>& M,                           // M
+       const Dense_Vector_Crtp<V_1_TYPE>& v_1,                       // v_1
        _plus_t_,                                                       // +
        const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
        _vector_0_t_                                                    // v_0

@@ -6,7 +6,7 @@ namespace LinearAlgebra
 {
   template <typename IMPL, typename LAMBDA>
   void
-  transform(Default_Vector_Crtp<IMPL>& v, const LAMBDA& lambda)
+  transform(Dense_Vector_Crtp<IMPL>& v, const LAMBDA& lambda)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i) {
       v[i] = lambda(v.as_const()[i]);
@@ -16,7 +16,7 @@ namespace LinearAlgebra
 
   template <typename IMPL, typename LAMBDA>
   void
-  transform_indexed(Default_Vector_Crtp<IMPL>& v, const LAMBDA& lambda)
+  transform_indexed(Dense_Vector_Crtp<IMPL>& v, const LAMBDA& lambda)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i) {
       v[i] = lambda(v.as_const()[i], i);

@@ -117,12 +117,12 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V_1_TYPE>
   auto
   expr(const Expr_Selector<Expr_Selector_Enum::Blas>,
-       Default_Vector_Crtp<V_0_TYPE>& v_0,                             // v_0
+       Dense_Vector_Crtp<V_0_TYPE>& v_0,                             // v_0
        _assign_t_,                                                     // =
        const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
        _matrix_unary_op_t_<M_OP> op,                                   // op
-       const Default_Matrix_Crtp<M_TYPE>& M,                           // M
-       const Default_Vector_Crtp<V_1_TYPE>& v_1,                       // v_1
+       const Dense_Matrix_Crtp<M_TYPE>& M,                           // M
+       const Dense_Vector_Crtp<V_1_TYPE>& v_1,                       // v_1
        _plus_t_,                                                       // +
        const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
        _vector_0_t_)                                                   // v_0

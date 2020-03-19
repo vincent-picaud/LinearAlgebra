@@ -144,7 +144,7 @@ namespace LinearAlgebra
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
   class Default_Matrix
-      : public Default_Matrix_Crtp<
+      : public Dense_Matrix_Crtp<
             Default_Matrix<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>
   {
     static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE,
@@ -155,7 +155,7 @@ namespace LinearAlgebra
     ///////////
     //
    public:
-    using base_type = Default_Matrix_Crtp<
+    using base_type = Dense_Matrix_Crtp<
         Default_Matrix<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
@@ -329,7 +329,7 @@ namespace LinearAlgebra
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
   class Default_Matrix_View
-      : public Default_Matrix_Crtp<
+      : public Dense_Matrix_Crtp<
             Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>
   {
     static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE,
@@ -340,7 +340,7 @@ namespace LinearAlgebra
     ///////////
     //
    public:
-    using base_type = Default_Matrix_Crtp<
+    using base_type = Dense_Matrix_Crtp<
         Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
@@ -455,7 +455,7 @@ namespace LinearAlgebra
             Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
             typename LEADING_DIMENSION>
   class Default_Matrix_Const_View
-      : public Default_Matrix_Crtp<Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
+      : public Dense_Matrix_Crtp<Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
                                                              M_TYPE, LEADING_DIMENSION>>
   {
     static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE,
@@ -466,7 +466,7 @@ namespace LinearAlgebra
     ///////////
     //
    public:
-    using base_type = Default_Matrix_Crtp<
+    using base_type = Dense_Matrix_Crtp<
         Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
@@ -570,7 +570,7 @@ namespace LinearAlgebra
   // triangular strict
   template <typename IMPL>
   auto
-  view_as_upper_triangular_strict(const Default_Matrix_Crtp<IMPL>& M)
+  view_as_upper_triangular_strict(const Dense_Matrix_Crtp<IMPL>& M)
   {
     return create_view(M.data(),
                        std::integral_constant<Matrix_Special_Structure_Enum,
@@ -580,7 +580,7 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   auto
-  view_as_lower_triangular_strict(const Default_Matrix_Crtp<IMPL>& M)
+  view_as_lower_triangular_strict(const Dense_Matrix_Crtp<IMPL>& M)
   {
     return create_view(M.data(),
                        std::integral_constant<Matrix_Special_Structure_Enum,

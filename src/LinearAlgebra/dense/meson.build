@@ -1,7 +1,9 @@
 LinearAlgebra_headers += [
 
   'dense/memory_chunk.hpp',
+  
   'dense/matrix_special_structure_enum.hpp',
+  'dense/matrix_storage_mask_enum.hpp',
   
   # Common to vector, matrix etc..
   #

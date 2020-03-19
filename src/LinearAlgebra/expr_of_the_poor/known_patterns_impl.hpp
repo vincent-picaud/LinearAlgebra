@@ -167,12 +167,13 @@ namespace LinearAlgebra
 
     if (scalar == 1)
     {
-      return v_0.map_indexed([&v_1](auto& v_0_i, const size_t i) { v_0_i += v_1[i]; });
+      // transinplace_map(v_0, v_1, [](const auto& v_0_i, const auto& v_1_i) { return v_0_i + v_1_i; });
+      v_0.map_indexed([&v_1](auto& v_0_i, const size_t i) { v_0_i += v_1[i]; });
     }
 
     if (scalar == -1)
     {
-      return v_0.map_indexed([&v_1](auto& v_0_i, const size_t i) { v_0_i -= v_1[i]; });
+      v_0.map_indexed([&v_1](auto& v_0_i, const size_t i) { v_0_i -= v_1[i]; });
     }
 
     v_0.map_indexed([&v_1, scalar](auto& v_0_i, const size_t i) { v_0_i += scalar * v_1[i]; });

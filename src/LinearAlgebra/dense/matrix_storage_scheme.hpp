@@ -3,19 +3,12 @@
 #include <array>
 #include <cassert>
 #include <type_traits>
+
+#include "LinearAlgebra/dense/matrix_storage_mask_enum.hpp"
 #include "LinearAlgebra/meta/is_std_integral_constant.hpp"
 
 namespace LinearAlgebra
 {
-  enum class Matrix_Storage_Mask_Enum
-  {
-    None,
-    Upper,
-    Upper_Strict,
-    Lower,
-    Lower_Strict
-  };
-
   namespace Detail
   {
     // substitute to partial specializations
@@ -94,23 +87,26 @@ namespace LinearAlgebra
     using matrix_storage_mask_type = std::integral_constant<Matrix_Storage_Mask_Enum, MASK>;
 
    protected:
-    N_TYPE _n;
-    M_TYPE _m;
-    LEADING_DIMENSION _ld;
+    I_size_type _I_size;
+    J_size_type _J_size;
+    leading_dimension_type _ld;
 
    protected:
     constexpr bool
     check_invariant() const
     {
-      return _n <= _ld;
+      return _I_size <= _ld;
     }
 
    public:
-    constexpr Default_Matrix_Storage_Scheme() : _n(), _m(), _ld() { assert(check_invariant()); }
+    constexpr Default_Matrix_Storage_Scheme() : _I_size(), _J_size(), _ld()
+    {
+      assert(check_invariant());
+    }
 
     constexpr Default_Matrix_Storage_Scheme(const N_TYPE n, const M_TYPE m,
                                             const LEADING_DIMENSION ld)
-        : _n(n), _m(m), _ld(ld)
+        : _I_size(n), _J_size(m), _ld(ld)
     {
       assert(check_invariant());
     }
@@ -123,17 +119,17 @@ namespace LinearAlgebra
     constexpr required_capacity_type
     required_capacity() const
     {
-      return Detail::matrix_required_capacity_helper(_n, _m, _ld);
+      return Detail::matrix_required_capacity_helper(_I_size, _J_size, _ld);
     }
     constexpr I_size_type
     I_size() const
     {
-      return _n;
+      return _I_size;
     }
     constexpr J_size_type
     J_size() const
     {
-      return _m;
+      return _J_size;
     }
 
     constexpr leading_dimension_type
@@ -145,67 +141,19 @@ namespace LinearAlgebra
     constexpr bool
     check_index(const size_t i, const size_t j) const
     {
-      bool ok = i < _n and j < _m;
-      switch (MASK)
-      {
-        case Matrix_Storage_Mask_Enum::None:
-          break;
-        case Matrix_Storage_Mask_Enum::Upper:
-          ok &= i <= j;
-          break;
-        case Matrix_Storage_Mask_Enum::Upper_Strict:
-          ok &= i < j;
-          break;
-        case Matrix_Storage_Mask_Enum::Lower:
-          ok &= i >= j;
-          break;
-        case Matrix_Storage_Mask_Enum::Lower_Strict:
-          ok &= i > j;
-          break;
-      }
+      bool ok = true;
+
+      ok &= i < _I_size and j < _J_size;
+      ok &= Detail::check_index(matrix_storage_mask_type(), i, j);
+
       return ok;
     };
-
-    template <Matrix_Storage_Mask_Enum MASK_OTHER, typename LAMBDA>
-    void
-    loop_over_indices(const LAMBDA& lambda) const
-    {
-      switch (MASK_OTHER)
-      {
-        case Matrix_Storage_Mask_Enum::None:
-          for (size_t j = 0; j < _m; ++j)
-            for (size_t i = 0; i < _n; ++i) lambda(i, j);
-          break;
-        case Matrix_Storage_Mask_Enum::Upper:
-          for (size_t j = 0; j < _m; ++j)
-          {
-            const auto i_end = (j + 1 < _n) ? j + 1 : _n;
-            for (size_t i = 0; i < i_end; ++i) lambda(i, j);
-          }
-          break;
-        case Matrix_Storage_Mask_Enum::Upper_Strict:
-          for (size_t j = 0; j < _m; ++j)
-          {
-            const auto i_end = (j < _n) ? j : _n;
-            for (size_t i = 0; i < i_end; ++i) lambda(i, j);
-          }
-          break;
-        case Matrix_Storage_Mask_Enum::Lower:
-          for (size_t j = 0; j < _m; ++j)
-            for (size_t i = j; i < _n; ++i) lambda(i, j);
-          break;
-        case Matrix_Storage_Mask_Enum::Lower_Strict:
-          for (size_t j = 0; j < _m; ++j)
-            for (size_t i = j + 1; i < _n; ++i) lambda(i, j);
-          break;
-      }
-    }
 
     template <typename LAMBDA>
     void
     loop_over_indices(const LAMBDA& lambda) const
     {
-      loop_over_indices<MASK>(lambda);
+      Detail::loop_over_indices(lambda, matrix_storage_mask_type(), _I_size, _J_size);
     }
 
     constexpr size_t
@@ -219,7 +167,7 @@ namespace LinearAlgebra
     Default_Matrix_Storage_Scheme<MASK_OTHER, N_TYPE, M_TYPE, LEADING_DIMENSION>
     as() const
     {
-      return {_n, _m, _ld};
+      return {_I_size, _J_size, _ld};
     }
   };
 

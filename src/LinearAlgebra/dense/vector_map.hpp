@@ -1,3 +1,6 @@
+//
+// Like vector_transform but v_dest <- map(v_source)
+//
 #pragma once
 
 #include "LinearAlgebra/dense/vector.hpp"
@@ -6,7 +9,7 @@ namespace LinearAlgebra
 {
   template <typename IMPL_DEST, typename IMPL_SRC, typename LAMBDA>
   void
-  map(Default_Vector_Crtp<IMPL_DEST>& v_dest, const Default_Vector_Crtp<IMPL_SRC>& v_src,
+  inplace_map(Default_Vector_Crtp<IMPL_DEST>& v_dest, const Default_Vector_Crtp<IMPL_SRC>& v_src,
       const LAMBDA& lambda)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i) {
@@ -23,7 +26,7 @@ namespace LinearAlgebra
                                        std::integral_constant<std::size_t, 1>>;
     v_dest_type v_dest(v_src.size());
 
-    map(v_dest, v_src, lambda);
+    inplace_map(v_dest, v_src, lambda);
 
     return v_dest;
   }

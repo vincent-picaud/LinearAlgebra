@@ -32,7 +32,7 @@
     - [ ] allows to check what is the used method
 *** 2020-03-18 Wednesday
 
-**** TODO Bug to fix! [0/1]                                          :Urgent:
+**** TODO Bug to fix! [0/2]                                          :Urgent:
      :PROPERTIES:
      :Created:  [2020-03-18 Wed 12:23]
      :END:
@@ -56,4 +56,16 @@
    #+END_QUOTE
 
     - [ ] To fix
+
+**** TODO Demain [0/3] 
+     :PROPERTIES:
+     :Created:  [2020-03-18 Wed 23:50]
+     :END:
+
+    - [ ] Finir implementation map & map_indexed
+    - [ ] Finir implementation pour matrix?
+    - [ ] Cleaning 
+          + ajout return type de X_assign_X
+          + reactoring map
+          + remove map
 

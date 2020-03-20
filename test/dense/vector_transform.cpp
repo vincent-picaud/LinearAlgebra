@@ -21,7 +21,7 @@ TEST(Vector_Transform, basic)
   EXPECT_EQ(v[1], 2);
   EXPECT_EQ(v[2], 3);
 
-  transform_indexed([](const auto v_i, const std::size_t i) { return v_i + i; }, v);
+  transform_indexed([](const std::size_t i, const auto v_i) { return v_i + i; }, v);
 
   EXPECT_EQ(v[0], 1 + 0);
   EXPECT_EQ(v[1], 2 + 1);

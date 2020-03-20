@@ -2,6 +2,7 @@
 // Check that vectors are compatible (same structure)
 //
 
+#include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_storage_scheme.hpp"
 
 namespace LinearAlgebra
@@ -17,6 +18,6 @@ namespace LinearAlgebra
   are_compatible_from_to_p(const Dense_Vector_Crtp<IMPL>& vector,
                            const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional) noexcept
   {
-    return (are_compatible(vector.impl(), vector_optional.impl()) and ...);
+    return (are_compatible_p(vector.storage_scheme(), vector_optional.storage_scheme()) and ...);
   }
 }

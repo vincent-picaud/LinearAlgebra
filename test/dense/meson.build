@@ -8,6 +8,9 @@ test_array = [
   ['vector_map_test','vector_map_exe','vector_map.cpp'],
 
   ['matrix_map_test','matrix_map_exe','matrix_map.cpp'],
+
+  ['vector_are_compatible_test','vector_are_compatible_exe','vector_are_compatible.cpp'],
+  ['matrix_are_compatible_test','matrix_are_compatible_exe','matrix_are_compatible.cpp'],
 ]
 
 foreach test : test_array

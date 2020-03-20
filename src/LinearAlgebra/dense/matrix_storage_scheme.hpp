@@ -177,7 +177,7 @@ namespace LinearAlgebra
             typename LEADING_DIMENSION_0, Matrix_Storage_Mask_Enum MASK_1, typename N_1_TYPE,
             typename M_1_TYPE, typename LEADING_DIMENSION_1>
   constexpr bool
-  are_compatibles(const Default_Matrix_Storage_Scheme<MASK_0, N_0_TYPE, M_0_TYPE,
+  are_compatible_p(const Default_Matrix_Storage_Scheme<MASK_0, N_0_TYPE, M_0_TYPE,
                                                       LEADING_DIMENSION_0>& matrix_storage_0,
                   const Default_Matrix_Storage_Scheme<MASK_1, N_1_TYPE, M_1_TYPE,
                                                       LEADING_DIMENSION_1>& matrix_storage_1) noexcept

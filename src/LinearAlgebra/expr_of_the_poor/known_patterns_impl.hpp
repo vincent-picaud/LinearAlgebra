@@ -156,7 +156,7 @@ namespace LinearAlgebra
        const Dense_Vector_Crtp<V_1>& v_1                   // vector_1
   )
   {
-    assert(are_compatibles_p(v_0.storage_scheme(), v_1.storage_scheme()));
+    assert(are_compatible_p(v_0.storage_scheme(), v_1.storage_scheme()));
 
     if (scalar == 0) return;
 

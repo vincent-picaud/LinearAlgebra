@@ -79,4 +79,18 @@
    #+END_QUOTE
 
     - [ ] as ambiguous with transform. Use transform_indexed to do the job
+*** 2020-03-20 Friday
+
+**** TODO add vector view [0/1] 
+     :PROPERTIES:
+     :Created:  [2020-03-20 Fri 11:34]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/vector.hpp::#include%20"LinearAlgebra/dense/memory_chunk.hpp"]]
+
+   #+BEGIN_QUOTE
+
+   #+END_QUOTE
+
+    - [ ] add vector view (like matrix.hpp)
 

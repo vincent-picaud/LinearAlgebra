@@ -3,7 +3,9 @@
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/matrix_fill.hpp"
 #include "LinearAlgebra/dense/matrix_map.hpp"
+#include "LinearAlgebra/dense/matrix_scan.hpp"
 #include "LinearAlgebra/dense/matrix_transform.hpp"
+
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/dense/vector_fill.hpp"
 #include "LinearAlgebra/dense/vector_map.hpp"
@@ -40,7 +42,7 @@ namespace LinearAlgebra
        const typename V_TYPE::element_type scalar)         // scalar
 
   {
-    fill(v, [&]() { return scalar; });
+    fill(v, [scalar]() { return scalar; });
   }
 
   //
@@ -73,7 +75,7 @@ namespace LinearAlgebra
     // - for Unit_Triangular diagonal is left unchanged
     // - for Hermitian matrix  "scalar" must be a real number
     //
-    fill(M_0, [&]() { return scalar; });
+    fill(M_0, [scalar]() { return scalar; });
   }
 
   //****************************************************************
@@ -105,7 +107,7 @@ namespace LinearAlgebra
       return;
     }
 
-    transform([&](const auto& v_0_i) { return v_0_i * scalar; }, v_0);
+    transform([scalar](const auto& v_0_i) { return v_0_i * scalar; }, v_0);
   }
   //
   // Matrix version
@@ -139,7 +141,7 @@ namespace LinearAlgebra
       return;
     }
 
-    transform([&](const auto& m_0_ij) { return m_0_ij * scalar; }, m_0);
+    transform([scalar](const auto& m_0_ij) { return m_0_ij * scalar; }, m_0);
   }
   //****************************************************************
   // v_0 = v_0 + alpha v_1 (Blas's axpy)
@@ -167,16 +169,16 @@ namespace LinearAlgebra
 
     if (scalar == 1)
     {
-      // transinplace_map(v_0, v_1, [](const auto& v_0_i, const auto& v_1_i) { return v_0_i + v_1_i; });
-      v_0.map_indexed([&v_1](auto& v_0_i, const size_t i) { v_0_i += v_1[i]; });
+      transform([](const auto v0_i, const auto v1_i) { return v0_i + v1_i; }, v_0, v_1);
     }
 
     if (scalar == -1)
     {
-      v_0.map_indexed([&v_1](auto& v_0_i, const size_t i) { v_0_i -= v_1[i]; });
+      transform([](const auto v0_i, const auto v1_i) { return v0_i - v1_i; }, v_0, v_1);
     }
 
-    v_0.map_indexed([&v_1, scalar](auto& v_0_i, const size_t i) { v_0_i += scalar * v_1[i]; });
+    transform([scalar](const auto v0_i, const auto v1_i) { return v0_i + scalar * v1_i; }, v_0,
+              v_1);
   }
 
   //****************************************************************
@@ -200,9 +202,9 @@ namespace LinearAlgebra
   {
     expr(M_0, _assign_, alpha, _matrix_0_);
 
-    M_0.map_indexed([beta, &v_1](auto& m_ij, const size_t i, const size_t j) {
-      m_ij += beta * v_1[i] * v_1[j];
-    });
+    transform_indexed([beta, &v_1](const size_t i, const size_t j,
+                                   const auto m_ij) { return m_ij + beta * v_1[i] * v_1[j]; },
+                      M_0);
   }
 
   //****************************************************************
@@ -267,17 +269,21 @@ namespace LinearAlgebra
       {
         if (op == _identity_ or op == _conjugate_)
         {
-          M.map_indexed([&v_0, &v_1, op, alpha](const auto m_ij, const size_t i, const size_t j) {
-            v_0[i] += alpha * transform_scalar(op, m_ij) * v_1[j];
-          });
+          scan_indexed(
+              [&v_0, &v_1, op, alpha](const size_t i, const size_t j, const auto m_ij) {
+                v_0[i] += alpha * transform_scalar(op, m_ij) * v_1[j];
+              },
+              M);
         }
         else
         {
           assert(op == _transpose_ or op == _transConj_);
 
-          M.map_indexed([&v_0, &v_1, op, alpha](const auto m_ij, const size_t i, const size_t j) {
-            v_0[j] += alpha * transform_scalar(op, m_ij) * v_1[i];
-          });
+          scan_indexed(
+              [&v_0, &v_1, op, alpha](const size_t i, const size_t j, const auto m_ij) {
+                v_0[j] += alpha * transform_scalar(op, m_ij) * v_1[i];
+              },
+              M);
         }
       }
       break;
@@ -286,9 +292,11 @@ namespace LinearAlgebra
       {
         // invariant by transposition
         //
-        M.map_indexed([&v_0, &v_1, op, alpha](const auto m_ij, const size_t i, const size_t j) {
-          v_0[i] += alpha * transform_scalar(op, m_ij) * v_1[j];
-        });
+        scan_indexed(
+            [&v_0, &v_1, op, alpha](const size_t i, const size_t j, const auto m_ij) {
+              v_0[i] += alpha * transform_scalar(op, m_ij) * v_1[j];
+            },
+            M);
 
         // Missing part
         //
@@ -320,17 +328,19 @@ namespace LinearAlgebra
         //
         if constexpr (op == _identity_ or op == _transConj_)
         {
-          M.map_indexed([&v_0, &v_1, alpha](const auto m_ij, const size_t i, const size_t j) {
-            v_0[i] += alpha * m_ij * v_1[j];
-          });
+          scan_indexed([&v_0, &v_1, alpha](const size_t i, const size_t j,
+                                           const auto m_ij) { v_0[i] += alpha * m_ij * v_1[j]; },
+                       M);
         }
         else
         {
           assert(op == _transpose_ or op == _conjugate_);
 
-          M.map_indexed([&v_0, &v_1, alpha](const auto m_ij, const size_t i, const size_t j) {
-            v_0[i] += alpha * transform_scalar(_conjugate_, m_ij) * v_1[j];
-          });
+          scan_indexed(
+              [&v_0, &v_1, alpha](const size_t i, const size_t j, const auto m_ij) {
+                v_0[i] += alpha * transform_scalar(_conjugate_, m_ij) * v_1[j];
+              },
+              M);
         }
 
         // Missing part

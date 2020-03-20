@@ -23,7 +23,7 @@ namespace LinearAlgebra
   create_default_storable(const Type<T>, const Dense_Vector_Crtp<IMPL>& vector,
                           const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
-    assert(are_compatible_from_to_p(vector.impl(), vector_optional.impl()...));
+    assert(are_compatible_p(vector.impl(), vector_optional.impl()...));
 
     auto vector_dest_size = get_static_size_if_any(vector.size(), vector_optional.size()...);
 

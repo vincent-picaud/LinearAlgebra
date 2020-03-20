@@ -17,7 +17,7 @@ namespace LinearAlgebra
   transform(const LAMBDA& lambda, Dense_Matrix_Crtp<IMPL>& matrix,
             const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
-    assert(are_compatible_from_to_p(matrix, matrix_optional...));
+    assert(are_compatible_p(matrix, matrix_optional...));
 
     const auto loop_over_indices_lambda = [&](const std::size_t i, const std::size_t j) {
       matrix(i, j) = lambda(matrix.as_const()(i, j), matrix_optional(i, j)...);

@@ -17,7 +17,7 @@ namespace LinearAlgebra
   transform(const LAMBDA& lambda, Dense_Vector_Crtp<IMPL>& vector,
             const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
-    assert(are_compatible_from_to_p(vector, vector_optional...));
+    assert(are_compatible_p(vector, vector_optional...));
 
     const auto loop_over_indices_lambda = [&](const std::size_t i) {
       vector[i] = lambda(vector.as_const()[i], vector_optional[i]...);
@@ -37,7 +37,7 @@ namespace LinearAlgebra
   transform_indexed(const LAMBDA& lambda, Dense_Vector_Crtp<IMPL>& vector,
                     const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
-    assert(are_compatible_from_to_p(vector, vector_optional...));
+    assert(are_compatible_p(vector, vector_optional...));
 
     const auto loop_over_indices_lambda = [&](const std::size_t i) {
       vector[i] = lambda(i, vector.as_const()[i], vector_optional[i]...);

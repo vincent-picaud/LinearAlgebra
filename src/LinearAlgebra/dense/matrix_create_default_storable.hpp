@@ -26,7 +26,7 @@ namespace LinearAlgebra
   create_default_storable(const Type<T>, const Dense_Matrix_Crtp<IMPL>& matrix,
                           const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
-    assert(are_compatible_from_to_p(matrix.impl(), matrix_optional.impl()...));
+    assert(are_compatible_p(matrix.impl(), matrix_optional.impl()...));
 
     auto matrix_dest_I_size = get_static_size_if_any(matrix.I_size(), matrix_optional.I_size()...);
     auto matrix_dest_J_size = get_static_size_if_any(matrix.J_size(), matrix_optional.J_size()...);

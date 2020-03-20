@@ -8,16 +8,10 @@
 
 namespace LinearAlgebra
 {
-  // CAVEAT: this relation is asymmetric.
-  //
-  // For instance if the first matrix is sparse and the other dense (but with the same size), then
-  // we can safely loop over sparse matrix indices to access other matrixs components.
-  // The reverse is *false*
-  //
   template <typename IMPL, typename... IMPL_OPTIONAL>
   constexpr bool
-  are_compatible_from_to_p(const Dense_Matrix_Crtp<IMPL>& matrix,
-                           const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional) noexcept
+  are_compatible_p(const Dense_Matrix_Crtp<IMPL>& matrix,
+                   const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional) noexcept
   {
     return (are_compatible_p(matrix.storage_scheme(), matrix_optional.storage_scheme()) and ...);
   }

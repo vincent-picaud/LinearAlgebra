@@ -1,4 +1,5 @@
 #include "LinearAlgebra/expr/known_patterns_impl.hpp"
+#include "LinearAlgebra/dense/matrix_fill.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp"
 
 #include <gtest/gtest.h>
@@ -66,10 +67,7 @@ TEST(Known_Pattern, Sym_Mat_Vect_Prod)
   iota(v, 1);
 
   int count = 0;
-  M.map([&count](auto& m_ij) {
-    m_ij = count;
-    ++count;
-  });
+  fill([&count]() { return count++; }, M);
 
   expr(w, _assign_, 0, _vector_0_, _plus_, 2, _identity_, M, v);
 
@@ -93,21 +91,17 @@ TEST(Known_Pattern, Herm_Mat_Vect_Prod)
   iota(v, 1);
 
   int count = 0;
-  M.map_indexed([&count](auto& m_ij, const size_t i, const size_t j) {
-    if (i != j)
-    {
-      m_ij = std::complex<int>(count, 4 * count);
-    }
-    else
-    {
-      m_ij = count;
-    }
-    ++count;
-  });
+  fill_indexed(
+      [&count](const size_t i, const size_t j) {
+        auto m_ij = (i != j) ? std::complex<int>(count, 4 * count) : count;
+        ++count;
+        return m_ij;
+      },
+      M);
 
   // does not compile ANYMORE
   // something has changed.... TO FIX
-  
+
   //  expr(w, _assign_, std::complex<int>(0), _vector_0_, _plus_, std::complex<int>(2), _identity_, M, v);
 
   // EXPECT_EQ(w[0], std::complex<int>(16, -64));
@@ -130,10 +124,7 @@ TEST(Known_Pattern, Lower_Triangular_Strict_Vect_Prod)
   iota(v, 1);
 
   int count = 1;
-  M.map([&count](auto& m_ij) {
-    m_ij = count;
-    ++count;
-  });
+  fill([&count]() { return count++; }, M);
 
   expr(w, _assign_, 0, _vector_0_, _plus_, 2, _transpose_, M, v);
 
@@ -157,10 +148,7 @@ TEST(Known_Pattern, Unit_Triangular_Upper_Vect_Prod)
   iota(v, 1);
 
   int count = 1;
-  M.map([&count](auto& m_ij) {
-    m_ij = count;
-    ++count;
-  });
+  fill([&count]() { return count++; }, M);
 
   expr(w, _assign_, 0, _vector_0_, _plus_, 2, _transpose_, M, v);
 

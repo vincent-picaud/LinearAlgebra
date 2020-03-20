@@ -210,7 +210,7 @@ namespace LinearAlgebra
   iota(Dense_Vector_Crtp<IMPL>& to_fill, typename Dense_Vector_Crtp<IMPL>::element_type start)
   {
     const auto n = to_fill.size();
-    for (auto i = 0; i < n; ++i)
+    for (size_t i = 0; i < n; ++i)
     {
       to_fill[i] = start + i;
     };

@@ -42,7 +42,7 @@ namespace LinearAlgebra
        const typename V_TYPE::element_type scalar)         // scalar
 
   {
-    fill(v, [scalar]() { return scalar; });
+    fill([scalar]() { return scalar; }, v);
   }
 
   //
@@ -75,7 +75,7 @@ namespace LinearAlgebra
     // - for Unit_Triangular diagonal is left unchanged
     // - for Hermitian matrix  "scalar" must be a real number
     //
-    fill(M_0, [scalar]() { return scalar; });
+    fill([scalar]() { return scalar; }, M_0);
   }
 
   //****************************************************************

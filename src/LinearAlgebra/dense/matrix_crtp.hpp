@@ -162,34 +162,6 @@ namespace LinearAlgebra
       return base_type::impl().impl_random_access(i, j);
     }
 
-    // Maps λ over  matrix components
-    //
-    template <typename LAMBDA>
-    void
-    map(const LAMBDA& lambda) const
-    {
-      base_type::impl().impl_map(lambda);
-    }
-    template <typename LAMBDA>
-    void
-    map(const LAMBDA& lambda)
-    {
-      base_type::impl().impl_map(lambda);
-    }
-    template <typename LAMBDA>
-    void
-    map_indexed(const LAMBDA& lambda) const
-    {
-      base_type::impl().impl_map_indexed(lambda);
-    }
-
-    template <typename LAMBDA>
-    void
-    map_indexed(const LAMBDA& lambda)
-    {
-      base_type::impl().impl_map_indexed(lambda);
-    }
-
     const storage_scheme_type&
     storage_scheme() const
     {
@@ -249,35 +221,6 @@ namespace LinearAlgebra
     {
       assert(_storage_scheme.check_index(i, j));
       return *(data() + _storage_scheme.offset(i, j));
-    }
-
-    template <typename LAMBDA>
-    void
-    impl_map(const LAMBDA& lambda) const
-    {
-      _storage_scheme.loop_over_indices(
-          [&lambda, this](const size_t i, const size_t j) { lambda((*this)(i, j)); });
-    }
-    template <typename LAMBDA>
-    void
-    impl_map(const LAMBDA& lambda)
-    {
-      _storage_scheme.loop_over_indices(
-          [&lambda, this](const size_t i, const size_t j) { lambda((*this)(i, j)); });
-    }
-    template <typename LAMBDA>
-    void
-    impl_map_indexed(const LAMBDA& lambda) const
-    {
-      _storage_scheme.loop_over_indices(
-          [&lambda, this](const size_t i, const size_t j) { lambda((*this)(i, j), i, j); });
-    }
-    template <typename LAMBDA>
-    void
-    impl_map_indexed(const LAMBDA& lambda)
-    {
-      _storage_scheme.loop_over_indices(
-          [&lambda, this](const size_t i, const size_t j) { lambda((*this)(i, j), i, j); });
     }
   };
 

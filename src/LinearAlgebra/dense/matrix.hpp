@@ -5,7 +5,7 @@
 #include "LinearAlgebra/dense/matrix_special_structure_enum.hpp"
 #include "LinearAlgebra/dense/matrix_storage_scheme.hpp"
 #include "LinearAlgebra/dense/memory_chunk.hpp"
-#include "LinearAlgebra/meta/is_std_integral_constant.hpp"
+#include "LinearAlgebra/utils/is_std_integral_constant.hpp"
 
 // Allowed combination Structure + Mask
 //

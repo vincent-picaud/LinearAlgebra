@@ -5,7 +5,7 @@
 
 #include "LinearAlgebra/dense/matrix_are_compatible.hpp"
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
-#include "LinearAlgebra/meta/size_utils.hpp"
+#include "LinearAlgebra/utils/size_utils.hpp"
 
 namespace LinearAlgebra
 {

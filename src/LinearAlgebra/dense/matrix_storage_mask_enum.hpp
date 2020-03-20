@@ -9,7 +9,7 @@
 //
 #pragma once
 
-#include "LinearAlgebra/meta/is_std_integral_constant.hpp"
+#include "LinearAlgebra/utils/is_std_integral_constant.hpp"
 
 namespace LinearAlgebra
 {

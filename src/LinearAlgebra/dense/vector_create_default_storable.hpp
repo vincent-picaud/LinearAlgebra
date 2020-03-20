@@ -7,9 +7,9 @@
 
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/dense/vector_are_compatible.hpp"
-#include "LinearAlgebra/meta/element_type.hpp"
-#include "LinearAlgebra/meta/size_utils.hpp"
-#include "LinearAlgebra/meta/type.hpp"
+#include "LinearAlgebra/utils/element_type.hpp"
+#include "LinearAlgebra/utils/size_utils.hpp"
+#include "LinearAlgebra/utils/type.hpp"
 
 namespace LinearAlgebra
 {

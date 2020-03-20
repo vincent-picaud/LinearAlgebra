@@ -5,7 +5,7 @@
 #include <type_traits>
 
 #include "LinearAlgebra/dense/matrix_storage_mask_enum.hpp"
-#include "LinearAlgebra/meta/is_std_integral_constant.hpp"
+#include "LinearAlgebra/utils/is_std_integral_constant.hpp"
 
 namespace LinearAlgebra
 {

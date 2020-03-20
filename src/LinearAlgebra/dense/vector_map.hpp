@@ -5,7 +5,7 @@
 
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/dense/vector_create_default_storable.hpp"
-#include "LinearAlgebra/meta/size_utils.hpp"
+#include "LinearAlgebra/utils/size_utils.hpp"
 
 namespace LinearAlgebra
 {

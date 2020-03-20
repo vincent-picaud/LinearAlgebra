@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LinearAlgebra/meta/crtp.hpp"
+#include "LinearAlgebra/utils/crtp.hpp"
 
 namespace LinearAlgebra
 {

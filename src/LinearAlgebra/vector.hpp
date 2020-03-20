@@ -4,5 +4,5 @@
 #pragma once
 
 #include "LinearAlgebra/dense/vector.hpp"
-#include "LinearAlgebra/expr_of_the_poor/expr_of_the_poor.hpp"
+#include "LinearAlgebra/expr/expr.hpp"
 

@@ -14,9 +14,10 @@ namespace LinearAlgebra
   map(const LAMBDA& lambda, const Dense_Vector_Crtp<IMPL_SRC>& vector_src,
       const Dense_Vector_Crtp<IMPL_SRC_OPTIONAL>&... vector_src_optional)
   {
-    auto vector_dest = create_default_storable(
-        type_v<decltype(lambda(vector_src.as_const()[0], vector_src_optional.as_const()[0]...))>,
-        vector_src, vector_src_optional...);
+    using vector_dest_element_type =
+        decltype(lambda(vector_src.as_const()[0], vector_src_optional.as_const()[0]...));
+    auto vector_dest = create_default_storable(type_v<vector_dest_element_type>, vector_src,
+                                               vector_src_optional...);
 
     //----------------
 
@@ -27,7 +28,7 @@ namespace LinearAlgebra
     // Note: create_default_storable() has already selected
     //       vector_dest with a static size (if possible) hence we can
     //       use vector_dest for loop_over_indices().
-    //
+    // CAVEAT: we will have to modify/adapt this when vector_src is sparse
     vector_dest.storage_scheme().loop_over_indices(loop_over_indices_lambda);
 
     return vector_dest;

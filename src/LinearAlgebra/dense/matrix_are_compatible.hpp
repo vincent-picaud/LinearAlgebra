@@ -1,6 +1,7 @@
 //
 // Check that matrixs are compatible (same structure)
 //
+#pragma once
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/matrix_storage_scheme.hpp"

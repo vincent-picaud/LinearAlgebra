@@ -1,6 +1,7 @@
 //
 // Check that vectors are compatible (same structure)
 //
+#pragma once
 
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_storage_scheme.hpp"

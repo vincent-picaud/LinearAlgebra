@@ -148,33 +148,6 @@ namespace LinearAlgebra
       return base_type::impl().impl_random_access(idx);
     }
 
-    // Note: pass by reference (allows to use noncopyable lambda)
-    template <typename LAMBDA>
-    void
-    map(const LAMBDA& lambda) const
-    {
-      base_type::impl().impl_map(lambda);
-    }
-    template <typename LAMBDA>
-    void
-    map(const LAMBDA& lambda)
-    {
-      base_type::impl().impl_map(lambda);
-    }
-
-    template <typename LAMBDA>
-    void
-    map_indexed(const LAMBDA& lambda) const
-    {
-      base_type::impl().impl_map_indexed(lambda);
-    }
-    template <typename LAMBDA>
-    void
-    map_indexed(const LAMBDA& lambda)
-    {
-      base_type::impl().impl_map_indexed(lambda);
-    }
-
     const storage_scheme_type&
     storage_scheme() const
     {
@@ -229,42 +202,18 @@ namespace LinearAlgebra
       assert(_storage_scheme.check_index(idx));
       return *(_memory_chunk.data() + _storage_scheme.offset(idx));
     }
-
-    template <typename LAMBDA>
-    void
-    impl_map(const LAMBDA& lambda) const
-    {
-      _storage_scheme.loop_over_indices([&lambda, this](const size_t i) { lambda((*this)[i]); });
-    }
-    template <typename LAMBDA>
-    void
-    impl_map(const LAMBDA& lambda)
-    {
-      _storage_scheme.loop_over_indices([&lambda, this](const size_t i) { lambda((*this)[i]); });
-    }
-
-    template <typename LAMBDA>
-    void
-    impl_map_indexed(const LAMBDA& lambda) const
-    {
-      _storage_scheme.loop_over_indices([&lambda, this](const size_t i) { lambda((*this)[i], i); });
-    }
-    template <typename LAMBDA>
-    void
-    impl_map_indexed(const LAMBDA& lambda)
-    {
-      _storage_scheme.loop_over_indices([&lambda, this](const size_t i) { lambda((*this)[i], i); });
-    }
   };
 
+  // TODO to move elsewhere and use transform
   template <typename IMPL>
   void
   iota(Dense_Vector_Crtp<IMPL>& to_fill, typename Dense_Vector_Crtp<IMPL>::element_type start)
   {
-    to_fill.map([&start](auto& v_i) {
-      v_i = start;
-      start += 1;
-    });
+    const auto n = to_fill.size();
+    for (auto i = 0; i < n; ++i)
+    {
+      to_fill[i] = start + i;
+    };
   }
 
   template <typename IMPL>

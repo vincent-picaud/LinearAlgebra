@@ -29,7 +29,7 @@ TEST(Known_Pattern, Rank_One_Update)
 
   iota(v, 1);
 
-  expr(S, _assign_, 0, _matrix_0_, _plus_, 2, v, _transpose_, _vector_1_);
+  expr(S, _assign_, 0, _matrix_0_, _plus_, 2, v, _transpose_, _vector_0_);
 
   std::cerr << "\nS\n" << S;
 

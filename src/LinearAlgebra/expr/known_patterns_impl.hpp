@@ -58,27 +58,27 @@ namespace LinearAlgebra
   // M_0 = α.M_0 + β.v_1 transpose v_1 (rank-one udpate, M_0 is symmetric)
   //****************************************************************
   //
-  template <typename M_0_TYPE, typename V_1_TYPE>
-  auto
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Dense_Matrix_Crtp<M_0_TYPE>& M_0,                   // matrix_0
-       _assign_t_,                                         // =
-       const typename M_0_TYPE::element_type alpha,        // alpha
-       _matrix_0_t_,                                       // matrix_0
-       _plus_t_,                                           // +
-       const typename V_1_TYPE::element_type beta,         // beta
-       Dense_Vector_Crtp<V_1_TYPE>& v_1,                   // vector_1
-       _transpose_t_,                                      // transpose
-       _vector_1_t_                                        // vector_1
-       ) -> std::enable_if_t<M_0_TYPE::matrix_special_structure_type::value ==
-                             Matrix_Special_Structure_Enum::Symmetric>
-  {
-    expr(M_0, _assign_, alpha, _matrix_0_);
+  // template <typename M_0_TYPE, typename V_1_TYPE>
+  // auto
+  // expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
+  //      Dense_Matrix_Crtp<M_0_TYPE>& M_0,                   // matrix_0
+  //      _assign_t_,                                         // =
+  //      const typename M_0_TYPE::element_type alpha,        // alpha
+  //      _matrix_0_t_,                                       // matrix_0
+  //      _plus_t_,                                           // +
+  //      const typename V_1_TYPE::element_type beta,         // beta
+  //      Dense_Vector_Crtp<V_1_TYPE>& v_1,                   // vector_1
+  //      _transpose_t_,                                      // transpose
+  //      _vector_1_t_                                        // vector_1
+  //      ) -> std::enable_if_t<M_0_TYPE::matrix_special_structure_type::value ==
+  //                            Matrix_Special_Structure_Enum::Symmetric>
+  // {
+  //   expr(M_0, _assign_, alpha, _matrix_0_);
 
-    transform_indexed([beta, &v_1](const size_t i, const size_t j,
-                                   const auto m_ij) { return m_ij + beta * v_1[i] * v_1[j]; },
-                      M_0);
-  }
+  //   transform_indexed([beta, &v_1](const size_t i, const size_t j,
+  //                                  const auto m_ij) { return m_ij + beta * v_1[i] * v_1[j]; },
+  //                     M_0);
+  // }
 
   //****************************************************************
   // v_0 = alpha.v_0 + beta.op(M).v_1

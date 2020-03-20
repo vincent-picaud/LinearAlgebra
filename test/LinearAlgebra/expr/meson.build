@@ -5,6 +5,7 @@ test_array = [
   ['dimension_test','dimension_exe','dimension.cpp'],
   ['X_assign_X_test','X_assign_X_exe','X_assign_X.cpp'],
   ['V0_assign_alpha_V0_plus_beta_op_M_V1_test','V0_assign_alpha_V0_plus_beta_op_M_V1_exe','V0_assign_alpha_V0_plus_beta_op_M_V1.cpp'],
+  ['M0_assign_alpha_M0_plus_beta_V0_op_V0_test','M0_assign_alpha_M0_plus_beta_V0_op_V0_exe','M0_assign_alpha_M0_plus_beta_V0_op_V0.cpp'],
 ]
 
 foreach test : test_array

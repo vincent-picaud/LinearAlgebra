@@ -4,5 +4,4 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix.hpp"
-#include "LinearAlgebra/expr/expr.hpp"
-
+#include "LinearAlgebra/expr/matrix_expr.hpp"

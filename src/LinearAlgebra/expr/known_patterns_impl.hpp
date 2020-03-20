@@ -34,16 +34,16 @@ namespace LinearAlgebra
   // called (if element_type is ok). Otherwise the fall back is again
   // the generic implementation.
   //
-  template <typename V_TYPE>
-  void
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Dense_Vector_Crtp<V_TYPE>& v,                       // v
-       _assign_t_,                                         // =
-       const typename V_TYPE::element_type scalar)         // scalar
+  // template <typename V_TYPE>
+  // void
+  // expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
+  //      Dense_Vector_Crtp<V_TYPE>& v,                       // v
+  //      _assign_t_,                                         // =
+  //      const typename V_TYPE::element_type scalar)         // scalar
 
-  {
-    fill([scalar]() { return scalar; }, v);
-  }
+  // {
+  //   fill([scalar]() { return scalar; }, v);
+  // }
 
   //
   // TODO: Blas wrapping with const Expr_Selector<Expr_Selector_Enum::Blas>

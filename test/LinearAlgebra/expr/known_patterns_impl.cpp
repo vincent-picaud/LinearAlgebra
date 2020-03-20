@@ -1,6 +1,7 @@
 #include "LinearAlgebra/expr/known_patterns_impl.hpp"
-#include "LinearAlgebra/dense/matrix_fill.hpp"
-#include "LinearAlgebra/expr/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp"
+
+#include "LinearAlgebra/expr/matrix_expr.hpp"
+#include "LinearAlgebra/expr/vector_expr.hpp"
 
 #include <gtest/gtest.h>
 

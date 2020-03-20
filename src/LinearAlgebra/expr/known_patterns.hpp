@@ -14,22 +14,22 @@ namespace LinearAlgebra
   //****************************************************************
   //
 
-  template <typename V>
-  void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-            Vector_Crtp<V>& v_0,                                  // vector_0
-            _assign_t_,                                           // =
-            const typename V::element_type scalar)                // scalar
-  {
-    static_assert(not(std::is_same_v<V, V>), "Undefined implementation");
-  }
+  // template <typename V>
+  // void expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
+  //           Vector_Crtp<V>& v_0,                                  // vector_0
+  //           _assign_t_,                                           // =
+  //           const typename V::element_type scalar)                // scalar
+  // {
+  //   static_assert(not(std::is_same_v<V, V>), "Undefined implementation");
+  // }
 
-  template <typename V>
-  void expr(Vector_Crtp<V>& v_0,                    // vector_0
-            _assign_t_,                             // =
-            const typename V::element_type scalar)  // scalar
-  {
-    expr(Expr_Selector<>(), v_0.impl(), _assign_, scalar);
-  }
+  // template <typename V>
+  // void expr(Vector_Crtp<V>& v_0,                    // vector_0
+  //           _assign_t_,                             // =
+  //           const typename V::element_type scalar)  // scalar
+  // {
+  //   expr(Expr_Selector<>(), v_0.impl(), _assign_, scalar);
+  // }
 
   //****************************************************************
   // M_0 = alpha

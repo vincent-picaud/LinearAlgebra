@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include "LinearAlgebra/dense/vector_crtp.hpp"
+#include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/utils/always.hpp"
@@ -18,7 +18,7 @@ namespace LinearAlgebra
   template <typename IMPL>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-       Vector_Crtp<IMPL>& v_0,                               // vector_0
+       Matrix_Crtp<IMPL>& matrix_0,                          // matrix_0
        _assign_t_,                                           // =
        const typename IMPL::element_type scalar)             // scalar
   {
@@ -32,11 +32,11 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   auto
-  expr(Vector_Crtp<IMPL>& v_0,                    // vector_0
+  expr(Matrix_Crtp<IMPL>& matrix_0,               // matrix_0
        _assign_t_,                                // =
        const typename IMPL::element_type scalar)  // scalar
   {
-    return expr(Expr_Selector<>(), v_0.impl(), _assign_, scalar);
+    return expr(Expr_Selector<>(), matrix_0.impl(), _assign_, scalar);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -59,12 +59,12 @@ namespace LinearAlgebra
   template <typename IMPL>
   std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Generic>
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Dense_Vector_Crtp<IMPL>& v_0,                       // v_0
+       Dense_Matrix_Crtp<IMPL>& matrix_0,                  // matrix_0
        _assign_t_,                                         // =
        const typename IMPL::element_type scalar)           // scalar
 
   {
-    fill([scalar]() { return scalar; }, v_0);
+    fill([scalar]() { return scalar; }, matrix_0);
     return {};
   }
 

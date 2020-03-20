@@ -94,3 +94,19 @@
 
     - [ ] add vector view (like matrix.hpp)
 
+**** TODO implement blas [0/1]                                         :Blas:
+     :PROPERTIES:
+     :Created:  [2020-03-20 Fri 17:28]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_scalar_V0.hpp::#if%20(HAS_BLAS)%20#endif]]
+
+   #+BEGIN_QUOTE
+   #if (HAS_BLAS)
+
+   #endif
+
+   #+END_QUOTE
+
+    - [ ] do not forget matrix too
+

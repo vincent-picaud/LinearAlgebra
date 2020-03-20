@@ -17,138 +17,11 @@
 namespace LinearAlgebra
 {
   //****************************************************************
-  // v = alpha
-  //****************************************************************
-  //
-  // An example to show how to:
-  // - provide a generic implementation
-  // - a blas wrapping (to do)
-  // - a static size implementation
-  //
-  // It works as follows:
-  //
-  // We first check for static size, if size are static here we call
-  // generic implementation (that will unroll loops).
-  //
-  // If the vector has no static size, the Blas subroutine will be
-  // called (if element_type is ok). Otherwise the fall back is again
-  // the generic implementation.
-  //
-  // template <typename V_TYPE>
-  // void
-  // expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-  //      Dense_Vector_Crtp<V_TYPE>& v,                       // v
-  //      _assign_t_,                                         // =
-  //      const typename V_TYPE::element_type scalar)         // scalar
-
-  // {
-  //   fill([scalar]() { return scalar; }, v);
-  // }
-
-  //
-  // TODO: Blas wrapping with const Expr_Selector<Expr_Selector_Enum::Blas>
-  //
-  template <typename V_0_TYPE>
-  auto
-  expr(const Expr_Selector<Expr_Selector_Enum::Static>&,  // Static implementation
-       Dense_Vector_Crtp<V_0_TYPE>& v,                    // v
-       _assign_t_,                                        // =
-       const typename V_0_TYPE::element_type scalar       // scalar
-       )
-      //  SFINAE restricts to static size
-      -> std::enable_if_t<Is_Std_Integral_Constant_Of_Type_v<size_t, typename V_0_TYPE::size_type>>
-  {
-    expr(Expr_Selector<Expr_Selector_Enum::Generic>(), v, _assign_, scalar);
-  }
-
-  //
-  // Matrix version
-  //
-  template <typename M_0_TYPE>
-  void
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Dense_Matrix_Crtp<M_0_TYPE>& M_0,                   // matrix_0
-       _assign_t_,                                         // =
-       const typename M_0_TYPE::element_type scalar)       // scalar
-  {
-    // CAVEAT:
-    // - for Unit_Triangular diagonal is left unchanged
-    // - for Hermitian matrix  "scalar" must be a real number
-    //
-    fill([scalar]() { return scalar; }, M_0);
-  }
-
-  //****************************************************************
-  // v_0 = alpha v_0 (Blas's scal)
-  //****************************************************************
-  //
-  template <typename V_0_TYPE>
-  void
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Dense_Vector_Crtp<V_0_TYPE>& v_0,                   // vector_0
-       _assign_t_,                                         // =
-       const typename V_0_TYPE::element_type scalar,       // scalar
-       _vector_0_t_                                        // vector_0
-  )
-  {
-    if (scalar == 0)
-    {
-      return expr(v_0, _assign_, 0);
-    }
-
-    if (scalar == 1)
-    {
-      return;
-    }
-
-    if (scalar == -1)
-    {
-      transform([](const auto& v_0_i) { return -v_0_i; }, v_0);
-      return;
-    }
-
-    transform([scalar](const auto& v_0_i) { return v_0_i * scalar; }, v_0);
-  }
-  //
-  // Matrix version
-  //
-  template <typename M_0_TYPE>
-  void
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Dense_Matrix_Crtp<M_0_TYPE>& m_0,                   // matrix_0
-       _assign_t_,                                         // =
-       const typename M_0_TYPE::element_type scalar,       // scalar
-       _matrix_0_t_                                        // matrix_0
-  )
-  {
-    // CAVEAT:
-    // - for Unit_Triangular diagonal is left unchanged
-    // - for Hermitian matrix  "scalar" must be a real number
-    //
-    if (scalar == 0)
-    {
-      return expr(m_0, _assign_, 0);
-    }
-
-    if (scalar == 1)
-    {
-      return;
-    }
-
-    if (scalar == -1)
-    {
-      transform([](const auto& m_0_ij) { return -m_0_ij; }, m_0);
-      return;
-    }
-
-    transform([scalar](const auto& m_0_ij) { return m_0_ij * scalar; }, m_0);
-  }
-  //****************************************************************
   // v_0 = v_0 + alpha v_1 (Blas's axpy)
   //****************************************************************
   //
   template <typename V_0, typename V_1>
-  void
+  auto
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
        Dense_Vector_Crtp<V_0>& v_0,                        // vector_0
        _assign_t_,                                         // =
@@ -164,7 +37,7 @@ namespace LinearAlgebra
 
     if ((void*)&v_0 == (void*)&v_1)
     {
-      return expr(v_0, _assign_, 1 + scalar, _vector_0_);
+      /*      return*/ expr(v_0, _assign_, 1 + scalar, _vector_0_);
     }
 
     if (scalar == 1)

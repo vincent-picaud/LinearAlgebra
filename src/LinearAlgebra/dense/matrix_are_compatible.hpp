@@ -8,7 +8,7 @@
 
 namespace LinearAlgebra
 {
-  // CAVEAT: this relation is assymetric.
+  // CAVEAT: this relation is asymmetric.
   //
   // For instance if the first matrix is sparse and the other dense (but with the same size), then
   // we can safely loop over sparse matrix indices to access other matrixs components.

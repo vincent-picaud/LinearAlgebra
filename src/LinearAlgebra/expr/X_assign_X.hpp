@@ -15,6 +15,7 @@
 #pragma once
 
 #include "LinearAlgebra/blas/blas.hpp"
+#include "LinearAlgebra/dense/vector_are_compatible.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_transform.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
@@ -50,8 +51,6 @@ namespace LinearAlgebra
        const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
   )
   {
-    assert(v_0.size() == v_1.size());
-
     return expr(Expr_Selector<>(), v_0.impl(), _assign_, v_1.impl());
   }
 
@@ -100,7 +99,7 @@ namespace LinearAlgebra
                                                             v_0.data(), v_0.increment()))>,
                           std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Blas>>
   {
-    assert(v_0.size() == v_1.size());
+    assert(are_compatible_p(v_0, v_1));
 
     Blas::copy(v_0.size(), v_1.data(), v_1.increment(), v_0.data(), v_0.increment());
 

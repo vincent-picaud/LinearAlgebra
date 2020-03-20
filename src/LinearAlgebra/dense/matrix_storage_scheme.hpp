@@ -180,7 +180,7 @@ namespace LinearAlgebra
   are_compatibles(const Default_Matrix_Storage_Scheme<MASK_0, N_0_TYPE, M_0_TYPE,
                                                       LEADING_DIMENSION_0>& matrix_storage_0,
                   const Default_Matrix_Storage_Scheme<MASK_1, N_1_TYPE, M_1_TYPE,
-                                                      LEADING_DIMENSION_1>& matrix_storage_1)
+                                                      LEADING_DIMENSION_1>& matrix_storage_1) noexcept
   {
     return (MASK_0 == MASK_1 and matrix_storage_0.I_size() == matrix_storage_1.I_size() and
             matrix_storage_0.J_size() == matrix_storage_1.J_size());

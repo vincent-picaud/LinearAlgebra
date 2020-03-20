@@ -6,6 +6,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/vector.hpp"
+#include "LinearAlgebra/dense/vector_are_compatible.hpp"
 #include "LinearAlgebra/meta/element_type.hpp"
 #include "LinearAlgebra/meta/size_utils.hpp"
 #include "LinearAlgebra/meta/type.hpp"
@@ -22,7 +23,7 @@ namespace LinearAlgebra
   create_default_storable(const Type<T>, const Dense_Vector_Crtp<IMPL>& vector,
                           const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
-    assert(all_sizes_are_equal_p(vector.size(), vector_optional.size()...));
+    assert(are_compatible_from_to_p(vector.impl(), vector_optional.impl()...));
 
     auto vector_dest_size = get_static_size_if_any(vector.size(), vector_optional.size()...);
 

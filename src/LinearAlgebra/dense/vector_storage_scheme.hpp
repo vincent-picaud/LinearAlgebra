@@ -135,7 +135,7 @@ namespace LinearAlgebra
   template <typename N_0_TYPE, typename INCREMENT_0_INCREMENT, typename N_1_TYPE,
             typename INCREMENT_1_INCREMENT>
   constexpr bool
-  are_compatibles(
+  are_compatibles_p(
       const Default_Vector_Storage_Scheme<N_0_TYPE, INCREMENT_0_INCREMENT>& vector_storage_0,
       const Default_Vector_Storage_Scheme<N_1_TYPE, INCREMENT_1_INCREMENT>& vector_storage_1)
   {

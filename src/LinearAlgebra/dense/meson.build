@@ -7,6 +7,8 @@ LinearAlgebra_headers += [
   
   # Common to vector, matrix etc..
   #
+  'dense/vector_are_compatible.hpp',
+  
   'dense/vector_crtp_fwd.hpp',
   'dense/matrix_crtp_fwd.hpp',
 

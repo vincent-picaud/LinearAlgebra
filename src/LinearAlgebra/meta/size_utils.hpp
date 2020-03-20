@@ -47,7 +47,7 @@ namespace LinearAlgebra
 
   //
   // From a list of size / integral_constant<size> return the first
-  // static size if any, otherwise return the last dynamic size
+  // static size if any, otherwise returns the last dynamic size
   //
   // CAVEAT: declaration *order* of these two functions is important!
   //

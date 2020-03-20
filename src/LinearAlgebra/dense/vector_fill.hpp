@@ -10,9 +10,9 @@ namespace LinearAlgebra
   //
   // V[i]=lambda()
   //
-  template <typename IMPL, typename LAMBDA>
+  template <typename LAMBDA, typename IMPL>
   void
-  fill(Dense_Vector_Crtp<IMPL>& vector, const LAMBDA& lambda)
+  fill(const LAMBDA& lambda, Dense_Vector_Crtp<IMPL>& vector)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i) { vector[i] = lambda(); };
     vector.storage_scheme().loop_over_indices(loop_over_indices_lambda);
@@ -21,9 +21,9 @@ namespace LinearAlgebra
   //
   // V[i]=lambda(i)
   //
-  template <typename IMPL, typename LAMBDA>
+  template <typename LAMBDA, typename IMPL>
   void
-  fill_indexed(Dense_Vector_Crtp<IMPL>& vector, const LAMBDA& lambda)
+  fill_indexed(const LAMBDA& lambda, Dense_Vector_Crtp<IMPL>& vector)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i) { vector[i] = lambda(i); };
     vector.storage_scheme().loop_over_indices(loop_over_indices_lambda);

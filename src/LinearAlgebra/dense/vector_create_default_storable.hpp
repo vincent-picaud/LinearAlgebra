@@ -15,7 +15,7 @@ namespace LinearAlgebra
 {
   // Create default a storable vector from vector
   //
-  // If IMPL_OPTIONAL is not empty, checks that all these vector have
+  // If IMPL_OPTIONAL is not empty, checks that all these vectors have
   // a compatible structure and try to use any static size if any.
   //
   template <typename T, typename IMPL, typename... IMPL_OPTIONAL>

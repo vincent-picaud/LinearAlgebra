@@ -6,6 +6,7 @@
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/utils/always.hpp"
 
 namespace LinearAlgebra
 {
@@ -14,14 +15,14 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
 
-  template <typename V>
+  template <typename IMPL>
   void
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-       Vector_Crtp<V>& v_0,                                  // vector_0
+       Vector_Crtp<IMPL>& v_0,                               // vector_0
        _assign_t_,                                           // =
-       const typename V::element_type scalar)                // scalar
+       const typename IMPL::element_type scalar)             // scalar
   {
-    static_assert(not(std::is_same_v<V, V>), "Undefined implementation");
+    static_assert(Always_False_v<IMPL>, "Undefined implementation");
   }
 
   //////////////////////////////////////////////////////////////////
@@ -29,13 +30,13 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
 
-  template <typename V>
-  void
-  expr(Vector_Crtp<V>& v_0,                    // vector_0
-       _assign_t_,                             // =
-       const typename V::element_type scalar)  // scalar
+  template <typename IMPL>
+  auto
+  expr(Vector_Crtp<IMPL>& v_0,                    // vector_0
+       _assign_t_,                                // =
+       const typename IMPL::element_type scalar)  // scalar
   {
-    expr(Expr_Selector<>(), v_0.impl(), _assign_, scalar);
+    return expr(Expr_Selector<>(), v_0.impl(), _assign_, scalar);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -55,15 +56,16 @@ namespace LinearAlgebra
   //  Implementation: Generic
   //================================================================
   //
-  template <typename V_TYPE>
-  void
+  template <typename IMPL>
+  std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Generic>
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Dense_Vector_Crtp<V_TYPE>& v,                       // v
+       Dense_Vector_Crtp<IMPL>& v_0,                       // v_0
        _assign_t_,                                         // =
-       const typename V_TYPE::element_type scalar)         // scalar
+       const typename IMPL::element_type scalar)           // scalar
 
   {
-    fill([scalar]() { return scalar; }, v);
+    fill([scalar]() { return scalar; }, v_0);
+    return {};
   }
 
   //================================================================

@@ -2,6 +2,7 @@
 //
 // CAVEAT: for views our convention is *always* to use [begin,end[ and NOT (begin,size)
 //         by example view(2,4) mean {v_2,v_3}, begin=2, end=4 (and NOT {v_2,v_3,v_4,v_5}, begin=2, size=4))
+//
 #pragma once
 
 #include "LinearAlgebra/dense/vector.hpp"
@@ -69,7 +70,9 @@ namespace LinearAlgebra
   // std::size_t                                 | std::size_t
   //
   // reduces to 2 cases:
+  //
   //   1/ both   BEGIN, END are std::integral_constant<std::size_t, ... >
+  //
   //   2/ one of BEGIN, END is std::size_t
   //
   namespace Detail
@@ -87,8 +90,12 @@ namespace LinearAlgebra
           &vector[begin], size,  // CAVEAT: and not data()+begin
           vector.increment());   //         which does not take into account increment
     }
-    // Const version is identical except the "const" declaration of
-    // the "vector" argument and the returned const view
+    // Const version is identical except:
+    //
+    //  1/ the "const" declaration of the "vector" argument
+    //
+    //  2/ the returned const view
+    //
     template <typename IMPL, typename BEGIN, typename END>
     auto
     view(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept

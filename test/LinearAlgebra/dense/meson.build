@@ -13,6 +13,7 @@ test_array = [
   ['matrix_are_compatible_test','matrix_are_compatible_exe','matrix_are_compatible.cpp'],
 
   ['vector_view_test','vector_view_exe','vector_view.cpp'],
+  ['matrix_view_test','matrix_view_exe','matrix_view.cpp'],
 ]
 
 foreach test : test_array

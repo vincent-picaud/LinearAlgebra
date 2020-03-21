@@ -5,6 +5,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/matrix_special_structure_enum.hpp"
 #include "LinearAlgebra/dense/matrix_transform.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 #include "LinearAlgebra/utils/always.hpp"

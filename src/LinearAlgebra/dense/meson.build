@@ -38,6 +38,7 @@ LinearAlgebra_headers += [
   'dense/vector_create_default_storable.hpp',
   'dense/matrix_create_default_storable.hpp',
 
-  'dense/vector_view.hpp'
+  'dense/vector_view.hpp',
+  'dense/matrix_view.hpp',
   
 ]

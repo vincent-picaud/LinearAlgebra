@@ -11,6 +11,8 @@ test_array = [
 
   ['vector_are_compatible_test','vector_are_compatible_exe','vector_are_compatible.cpp'],
   ['matrix_are_compatible_test','matrix_are_compatible_exe','matrix_are_compatible.cpp'],
+
+  ['vector_view_test','vector_view_exe','vector_view.cpp'],
 ]
 
 foreach test : test_array

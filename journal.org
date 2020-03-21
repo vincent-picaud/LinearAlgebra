@@ -6,52 +6,65 @@
 
 ****  =transform=, =map= design error                                    :Design:
 
-   Refactoring of =transform=, =map=...
+     Refactoring of =transform=, =map=...
 
-#+BEGIN_SRC cpp :eval never
+     #+BEGIN_SRC cpp :eval never
 template <typename IMPL, typename LAMBDA>
 void
 transform_indexed(Dense_Matrix_Crtp<IMPL>& matrix, const LAMBDA& lambda)
 {
   ...
 }
-#+END_SRC
+     #+END_SRC
 
-to 
+     to 
 
-#+BEGIN_SRC cpp :eval never
+     #+BEGIN_SRC cpp :eval never
 template <typename LAMBDA, typename... IMPL>
 void
 transform_indexed(const LAMBDA& lambda, Dense_Matrix_Crtp<IMPL>& matrix...)
 {
   ...
 }
-#+END_SRC
+     #+END_SRC
 
-Reason: having several =IMPL...= allow us to chose the one that have static size
+     Reason: having several =IMPL...= allow us to chose the one that have static size
 
 **** Usage example
 
-To compute
-$$
-v_0=v_0 + v_1
-$$
+     To compute
+     $$
+     v_0=v_0 + v_1
+     $$
 
-with $v_1$ *static* size and $v_0$ *dynamic* size.
+     with $v_1$ *static* size and $v_0$ *dynamic* size.
 
-*Before:*
+     *Before:*
 
-#+BEGIN_SRC cpp :eval never
+     #+BEGIN_SRC cpp :eval never
 transform_indexed(v_0,[&v_1](const auto& v_0_i,const size_t i){ return v_0_i + v_1[i]; });
-#+END_SRC
+     #+END_SRC
 
-Problem -> the loop is performed using $v_0$'s dynamic size
+     Problem -> the loop is performed using $v_0$'s dynamic size
 
-*After:*
+     *After:*
 
-#+BEGIN_SRC cpp :eval never
+     #+BEGIN_SRC cpp :eval never
 transform(v_0,v_1,[](const auto& v_0_i,const auto v_1_i){ return v_0_i + v_1_i; });
-#+END_SRC
+     #+END_SRC
 
--> all the burden of testing/choosing the static size value is
-   encapsulated into the =transform= procedure & static size is chosen.
+     -> all the burden of testing/choosing the static size value is
+     encapsulated into the =transform= procedure & static size is chosen.
+*** 2020-03-21 Saturday
+
+**** Bound convention                                     :Design:Convention:
+
+     Back link: [[file:src/LinearAlgebra/dense/vector_view.hpp][vector_view.hpp example]]
+
+     #+BEGIN_EXAMPLE
+     CAVEAT: for views our convention is *always* to use [begin,end[ and NOT (begin,size)
+             by example view(2,4) mean {v_2,v_3}, begin=2, end=4 (and NOT {v_2,v_3,v_4,v_5}, begin=2, size=4)) 
+     #+END_EXAMPLE
+
+   
+

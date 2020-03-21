@@ -109,4 +109,33 @@
    #+END_QUOTE
 
     - [ ] do not forget matrix too
+*** 2020-03-21 Saturday
+
+**** TODO change file name [0/1] 
+     :PROPERTIES:
+     :Created:  [2020-03-21 Sat 10:44]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_scalar_V0.hpp:://%20Compute:%20V0%20=%20alpha%20V0]]
+
+   #+BEGIN_QUOTE
+   // Compute: V0 = alpha V0
+
+   #+END_QUOTE
+
+    - [ ] scalar -> alpha
+
+**** TODO expr return type must be an enum [0/1]                        :Mid:
+     :PROPERTIES:
+     :Created:  [2020-03-21 Sat 10:51]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_V0_plus_alpha_V1.hpp::return%20Expr_Selector_Enum::Generic;]]
+
+   #+BEGIN_QUOTE
+       return Expr_Selector_Enum::Generic;
+
+   #+END_QUOTE
+
+    - [ ] as dynamic choice can occur it is not possible to return an =integral_constant=
 

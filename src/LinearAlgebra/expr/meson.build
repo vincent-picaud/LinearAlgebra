@@ -2,8 +2,7 @@ LinearAlgebra_headers += [
   'expr/expr_tags.hpp',
   'expr/expr_selector.hpp',
   'expr/dimension.hpp',
-  'expr/known_patterns.hpp',
-  'expr/known_patterns_impl.hpp',
+
   'expr/scalar_functions.hpp',
 
   'expr/V0_assign_scalar.hpp',
@@ -12,6 +11,9 @@ LinearAlgebra_headers += [
   'expr/V0_assign_scalar_V0.hpp',
   'expr/M0_assign_scalar_M0.hpp',
 
+  'expr/V0_assign_V0_plus_alpha_V1.hpp',
+
+  
   'expr/X_assign_X.hpp',
 
   'expr/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp',

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/vector_crtp.hpp"
+#include "LinearAlgebra/dense/vector_fill.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/utils/always.hpp"

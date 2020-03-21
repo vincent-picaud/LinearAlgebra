@@ -72,7 +72,8 @@ namespace LinearAlgebra
        const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
   )
   {
-    // v0 is unused, but the advantage is that transform check for possible static size in both v0 & v1
+    // v0 is unused, but the advantage is that transform checks for
+    // possible static size in both v0 & v1
     transform(
         [](const auto v0_i, const auto v1_i) {
           (void)v0_i;
@@ -121,7 +122,8 @@ namespace LinearAlgebra
                              std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Static>>
 
   {
-    // v0 is unused, but the advantage is that transform check for possible static size in both v0 & v1
+    // v0 is unused, but the advantage is that transform checks for
+    // possible static size in both v0 & v1
     expr(Expr_Selector<Expr_Selector_Enum::Generic>(), v_0.impl(), _assign_, v_1.impl());
 
     return {};

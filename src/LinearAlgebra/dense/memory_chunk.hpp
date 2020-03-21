@@ -142,7 +142,7 @@ namespace LinearAlgebra
       return _capacity;
     }
 
-    constexpr element_type*
+    constexpr const element_type*
     data()
     {
       return _data;

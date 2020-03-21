@@ -82,8 +82,9 @@ namespace LinearAlgebra
       auto size = compute_size_from_begin_end(begin, end);
 
       return Default_Vector_View<typename IMPL::element_type, decltype(size),
-                                 typename IMPL::increment_type>(vector.data() + begin, size,
-                                                                vector.increment());
+                                 typename IMPL::increment_type>(
+          &vector[begin], size,  // CAVEAT: and not data()+begin
+          vector.increment());   //         which does not take into account increment
     }
   }
 

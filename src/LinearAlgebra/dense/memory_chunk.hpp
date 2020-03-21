@@ -21,20 +21,20 @@ namespace LinearAlgebra
     std::array<T, N> _data;
 
    public:
-    Default_Memory_Chunk(const capacity_type capacity) {}
+    Default_Memory_Chunk(const capacity_type capacity) noexcept {}
     constexpr capacity_type
-    capacity() const
+    capacity() const noexcept
     {
       return {};
     }
 
     constexpr element_type*
-    data()
+    data() noexcept
     {
       return _data.data();
     }
     constexpr const element_type*
-    data() const
+    data() const noexcept
     {
       return _data.data();
     }
@@ -53,18 +53,18 @@ namespace LinearAlgebra
    public:
     Default_Memory_Chunk(const capacity_type capacity) : _data(capacity) {}
     capacity_type
-    capacity() const
+    capacity() const noexcept
     {
       return _data.size();
     }
 
     element_type*
-    data()
+    data() noexcept
     {
       return _data.data();
     }
     const element_type*
-    data() const
+    data() const noexcept
     {
       return _data.data();
     }
@@ -89,24 +89,24 @@ namespace LinearAlgebra
     capacity_type _capacity;
 
    public:
-    constexpr View_Default_Memory_Chunk(T* data, capacity_type capacity)
+    constexpr View_Default_Memory_Chunk(T* data, capacity_type capacity) noexcept
         : _data(data), _capacity(capacity)
     {
     }
 
     constexpr capacity_type
-    capacity() const
+    capacity() const noexcept
     {
       return _capacity;
     }
 
     constexpr element_type*
-    data()
+    data() noexcept
     {
       return _data;
     }
     constexpr const element_type*
-    data() const
+    data() const noexcept
     {
       return _data;
     }
@@ -131,24 +131,24 @@ namespace LinearAlgebra
     capacity_type _capacity;
 
    public:
-    constexpr Const_View_Default_Memory_Chunk(const T* data, capacity_type capacity)
+    constexpr Const_View_Default_Memory_Chunk(const T* data, capacity_type capacity) noexcept
         : _data(data), _capacity(capacity)
     {
     }
 
     constexpr capacity_type
-    capacity() const
+    capacity() const noexcept
     {
       return _capacity;
     }
 
     constexpr const element_type*
-    data()
+    data() noexcept
     {
       return _data;
     }
     constexpr const element_type*
-    data() const
+    data() const noexcept
     {
       return _data;
     }

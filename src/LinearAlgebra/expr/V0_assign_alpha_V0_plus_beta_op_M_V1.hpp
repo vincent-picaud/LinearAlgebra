@@ -1,5 +1,5 @@
 //
-// CAVEAT: in order to avoid confusion between alpha, beta it is better to stick to blas conventions:
+// CAVEAT: in order to aExpr_Selector_Enum confusion between alpha, beta it is better to stick to blas conventions:
 //
 // v_0 = \alpha op(M) v_1 + \beta v_0
 //
@@ -32,7 +32,7 @@ namespace LinearAlgebra
   //
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
-  void
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,            // Undefined implementation
        Vector_Crtp<V_0_TYPE>& v_0,                                     // v_0
        _assign_t_,                                                     // =
@@ -45,6 +45,7 @@ namespace LinearAlgebra
        _vector_0_t_)                                                   // v_0
   {
     static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
+    return Expr_Selector_Enum::Undefined;
   }
 
   //////////////////////////////////////////////////////////////////
@@ -57,7 +58,7 @@ namespace LinearAlgebra
   //
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
-  auto
+  Expr_Selector_Enum
   expr(Vector_Crtp<V_0_TYPE>& v_0,  // v_0
        _assign_t_,                  // =
        // const typename V_0_TYPE::element_type alpha,
@@ -90,7 +91,7 @@ namespace LinearAlgebra
   //
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
-  auto
+  Expr_Selector_Enum
   expr(Vector_Crtp<V_0_TYPE>& v_0,                                      // v_0
        _assign_t_,                                                      // =
        const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& beta,   // β
@@ -127,7 +128,7 @@ namespace LinearAlgebra
   //
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
-  void
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,              // Generic implementation
        Dense_Vector_Crtp<V_0_TYPE>& v_0,                               // v_0
        _assign_t_,                                                     // =
@@ -148,7 +149,10 @@ namespace LinearAlgebra
 
     // alpha = 0 ? -> nothing to do
     //
-    if (alpha == 0) return;
+    if (alpha == 0)
+    {
+      return Expr_Selector_Enum::Generic;
+    }
 
     //
     // TODO:alpha != 1 ? -> you can reduce products by v_2 = alpha v_1 then recall with alpha = 1
@@ -268,6 +272,7 @@ namespace LinearAlgebra
       default:
         throw "not implemented";
     }
+    return Expr_Selector_Enum::Generic;
   }
 
   //================================================================
@@ -298,12 +303,12 @@ namespace LinearAlgebra
               Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
               // Generic matrix
               (M_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None),
-          std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Blas>>
+          Expr_Selector_Enum>
   {
     Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<M_OP>, M.I_size(), M.J_size(), alpha,
                M.data(), M.leading_dimension(), v_1.data(), v_1.increment(), beta, v_0.data(),
                v_0.increment());
-    return {};
+    return Expr_Selector_Enum::Blas;
   }
 #endif
 }

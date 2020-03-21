@@ -125,7 +125,7 @@
 
     - [ ] scalar -> alpha
 
-**** TODO expr return type must be an enum [0/1]                        :Mid:
+**** DONE expr return type must be an enum [0/1]                        :Mid:
      :PROPERTIES:
      :Created:  [2020-03-21 Sat 10:51]
      :END:

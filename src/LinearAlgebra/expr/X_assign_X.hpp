@@ -30,7 +30,7 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename V_0_TYPE, typename V_1_TYPE>
-  void
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,
        Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                             // =
@@ -38,6 +38,7 @@ namespace LinearAlgebra
   )
   {
     static_assert(Always_False_v<V_0_TYPE>, "Undefined implementation");
+    return Expr_Selector_Enum::Undefined;
   }
 
   //////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename V_0_TYPE, typename V_1_TYPE>
-  auto
+  Expr_Selector_Enum
   expr(Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                             // =
        const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
@@ -65,7 +66,7 @@ namespace LinearAlgebra
   //
 
   template <typename V_0_TYPE, typename V_1_TYPE>
-  std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Generic>
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,
        Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                             // =
@@ -81,7 +82,7 @@ namespace LinearAlgebra
         },
         v_0, v_1);
 
-    return {};
+    return Expr_Selector_Enum::Generic;
   }
 
   //================================================================
@@ -98,13 +99,13 @@ namespace LinearAlgebra
        )
       -> std::enable_if_t<Always_True_v<decltype(Blas::copy(v_0.size(), v_1.data(), v_1.increment(),
                                                             v_0.data(), v_0.increment()))>,
-                          std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Blas>>
+                          Expr_Selector_Enum>
   {
     assert(are_compatible_p(v_0, v_1));
 
     Blas::copy(v_0.size(), v_1.data(), v_1.increment(), v_0.data(), v_0.increment());
 
-    return {};
+    return Expr_Selector_Enum::Blas;
   }
 #endif
 
@@ -118,14 +119,13 @@ namespace LinearAlgebra
        Dense_Vector_Crtp<V_0_TYPE>& v_0,       // v_0
        _assign_t_,                             // =
        const Dense_Vector_Crtp<V_1_TYPE>& v_1  // v_1
-       ) -> std::enable_if_t<Any_Has_Static_Size_v<V_0_TYPE, V_1_TYPE>,
-                             std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Static>>
+       ) -> std::enable_if_t<Any_Has_Static_Size_v<V_0_TYPE, V_1_TYPE>, Expr_Selector_Enum>
 
   {
     // v0 is unused, but the advantage is that transform checks for
     // possible static size in both v0 & v1
     expr(Expr_Selector<Expr_Selector_Enum::Generic>(), v_0.impl(), _assign_, v_1.impl());
 
-    return {};
+    return Expr_Selector_Enum::Static;
   }
 }

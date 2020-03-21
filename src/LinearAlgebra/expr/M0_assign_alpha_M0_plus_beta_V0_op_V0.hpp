@@ -16,7 +16,7 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename M_0_IMPL, typename V_0_IMPL>
-  void
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Matrix_Crtp<M_0_IMPL>& M_0,                           // matrix_0
        _assign_t_,                                           // =
@@ -30,6 +30,7 @@ namespace LinearAlgebra
   )
   {
     static_assert(Always_False_v<M_0_IMPL>, "Undefined implementation");
+    return Expr_Selector_Enum::Undefined;
   }
 
   //////////////////////////////////////////////////////////////////
@@ -37,7 +38,7 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename M_0_IMPL, typename V_0_IMPL>
-  void
+  Expr_Selector_Enum
   expr(Matrix_Crtp<M_0_IMPL>& M_0,                   // matrix_0
        _assign_t_,                                   // =
        const typename M_0_IMPL::element_type alpha,  // alpha
@@ -52,8 +53,8 @@ namespace LinearAlgebra
     assert(M_0.I_size() == M_0.J_size());
     assert(M_0.I_size() == v_0.size());
 
-    expr(Expr_Selector<>(), M_0.impl(), _assign_, alpha, _matrix_0_, _plus_, beta, v_0.impl(),
-         _transpose_, _vector_0_);
+    return expr(Expr_Selector<>(), M_0.impl(), _assign_, alpha, _matrix_0_, _plus_, beta,
+                v_0.impl(), _transpose_, _vector_0_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -86,13 +87,15 @@ namespace LinearAlgebra
        _transpose_t_,                                      // transpose
        _vector_0_t_                                        // vector_0
        ) -> std::enable_if_t<M_0_IMPL::matrix_special_structure_type::value ==
-                             Matrix_Special_Structure_Enum::Symmetric>
+                                 Matrix_Special_Structure_Enum::Symmetric,
+                             Expr_Selector_Enum>
   {
     expr(M_0, _assign_, alpha, _matrix_0_);
 
     transform_indexed([beta, &v_0](const size_t i, const size_t j,
                                    const auto m_ij) { return m_ij + beta * v_0[i] * v_0[j]; },
                       M_0);
+    return Expr_Selector_Enum::Generic;
   }
 
   //================================================================

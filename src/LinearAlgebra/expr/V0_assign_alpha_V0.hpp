@@ -17,7 +17,7 @@ namespace LinearAlgebra
   //
 
   template <typename IMPL>
-  void
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Vector_Crtp<IMPL>& vector_0,                          // vector_0
        _assign_t_,                                           // =
@@ -26,6 +26,7 @@ namespace LinearAlgebra
   )
   {
     static_assert(Always_False_v<IMPL>, "Undefined implementation");
+    return Expr_Selector_Enum::Undefined;
   }
 
   //////////////////////////////////////////////////////////////////
@@ -34,7 +35,7 @@ namespace LinearAlgebra
   //
 
   template <typename IMPL>
-  auto
+  Expr_Selector_Enum
   expr(Vector_Crtp<IMPL>& vector_0,               // vector_0
        _assign_t_,                                // =
        const typename IMPL::element_type scalar,  // scalar
@@ -63,7 +64,7 @@ namespace LinearAlgebra
   //
   //
   template <typename IMPL>
-  std::integral_constant<Expr_Selector_Enum, Expr_Selector_Enum::Generic>
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
        Dense_Vector_Crtp<IMPL>& vector_0,                  // vector_0
        _assign_t_,                                         // =
@@ -78,18 +79,18 @@ namespace LinearAlgebra
 
     if (scalar == 1)
     {
-      return {};
+      return Expr_Selector_Enum::Generic;
     }
 
     if (scalar == -1)
     {
       transform([](const auto& vector_0_i) { return -vector_0_i; }, vector_0);
-      return {};
+      return Expr_Selector_Enum::Generic;
     }
 
     transform([scalar](const auto& vector_0_i) { return vector_0_i * scalar; }, vector_0);
 
-    return {};
+    return Expr_Selector_Enum::Generic;
   }
 
   //================================================================

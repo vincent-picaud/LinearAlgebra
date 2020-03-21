@@ -17,7 +17,7 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename VECTOR_0_IMPL, typename VECTOR_1_IMPL>
-  void
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Vector_Crtp<VECTOR_0_IMPL>& vector_0,                 // vector_0
        _assign_t_,                                           // =
@@ -28,6 +28,7 @@ namespace LinearAlgebra
   )
   {
     static_assert(Always_False_v<VECTOR_0_IMPL>, "Undefined implementation");
+    return Expr_Selector_Enum::Undefined;
   }
 
   //////////////////////////////////////////////////////////////////

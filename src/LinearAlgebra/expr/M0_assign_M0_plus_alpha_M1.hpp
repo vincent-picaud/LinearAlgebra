@@ -17,7 +17,7 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename MATRIX_0_IMPL, typename MATRIX_1_IMPL>
-  void
+  Expr_Selector_Enum
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Matrix_Crtp<MATRIX_0_IMPL>& matrix_0,                 // matrix_0
        _assign_t_,                                           // =
@@ -28,6 +28,7 @@ namespace LinearAlgebra
   )
   {
     static_assert(Always_False_v<MATRIX_0_IMPL>, "Undefined implementation");
+    return Expr_Selector_Enum::Undefined;
   }
 
   //////////////////////////////////////////////////////////////////
@@ -90,11 +91,13 @@ namespace LinearAlgebra
 
     if (alpha == 1)
     {
-      transform([](const auto mat_0_ij, const auto mat_1_ij) { return mat_0_ij + mat_1_ij; }, m_0, m_1);
+      transform([](const auto mat_0_ij, const auto mat_1_ij) { return mat_0_ij + mat_1_ij; }, m_0,
+                m_1);
     }
     else if (alpha == -1)
     {
-      transform([](const auto mat_0_ij, const auto mat_1_ij) { return mat_0_ij - mat_1_ij; }, m_0, m_1);
+      transform([](const auto mat_0_ij, const auto mat_1_ij) { return mat_0_ij - mat_1_ij; }, m_0,
+                m_1);
     }
     else
     {

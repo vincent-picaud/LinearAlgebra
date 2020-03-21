@@ -9,3 +9,7 @@ executable('expr_usage',
 executable('expr_usage_2',
 	   'expr_usage_2.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('vector_block',
+	   'vector_block.cpp',
+	   dependencies : [LinearAlgebra_dep])

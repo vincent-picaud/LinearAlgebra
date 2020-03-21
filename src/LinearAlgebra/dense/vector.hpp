@@ -53,7 +53,9 @@ namespace LinearAlgebra
    public:
     Default_Vector() : base_type(storage_scheme_type()) {}
     Default_Vector(const N_TYPE n, const INCREMENT inc) : base_type(storage_scheme_type(n, inc)) {}
-    Default_Vector(const N_TYPE n) : base_type(storage_scheme_type(n)) {}
+    // Note: explicit blocks to possible wrong interpreation of V=3
+    //       which would be the construction of a vector of size 3.
+    explicit Default_Vector(const N_TYPE n) : base_type(storage_scheme_type(n)) {}
 
     ////////////////////
     // Public Methods //

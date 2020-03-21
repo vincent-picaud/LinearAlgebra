@@ -12,6 +12,7 @@ LinearAlgebra_headers += [
   'expr/M0_assign_scalar_M0.hpp',
 
   'expr/V0_assign_V0_plus_alpha_V1.hpp',
+  'expr/M0_assign_M0_plus_alpha_M1.hpp',
 
   
   'expr/X_assign_X.hpp',

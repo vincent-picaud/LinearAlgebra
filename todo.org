@@ -5,31 +5,8 @@
 *** 2020-03-11 Wednesday
 *** 2020-03-15 Sunday
 
-**** TODO size management [0/2]                                      :Urgent:
-     :PROPERTIES:
-     :Created:  [2020-03-15 Sun 12:31]
-     :END:
-     
-     - Note taken on [2020-03-15 Sun 12:36] \\
-       Finally get_static_size() is unused
-    - [ ] refactoring of get_static_size() and move it to meta/
-          
-    - [ ] better to rename meta -> utils
 *** 2020-03-17 Tuesday
 
-**** TODO add selected as return value [0/1]                         :Urgent:
-     :PROPERTIES:
-     :Created:  [2020-03-17 Tue 08:33]
-     :END:
-
-   Back link: [[file:src/LinearAlgebra/expr_of_the_poor/X_assign_X.hpp::return%20expr(Expr_Selector<>(),%20v_0.impl(),%20_assign_,%20v_1.impl());][X_assign_X as example]]
-
-   #+BEGIN_QUOTE
-       return expr(Expr_Selector<>(), v_0.impl(), _assign_, v_1.impl());
-
-   #+END_QUOTE
-
-    - [ ] allows to check what is the used method
 *** 2020-03-18 Wednesday
 
 **** TODO Bug to fix! [0/2]                                          :Urgent:
@@ -67,7 +44,7 @@
 
 *** 2020-03-19 Thursday
 
-**** TODO Remove inplace_map [0/1]                                 :Critical:
+**** DONE Remove inplace_map [1/1]                                 :Critical:
      :PROPERTIES:
      :Created:  [2020-03-19 Thu 12:56]
      :END:
@@ -78,7 +55,7 @@
     inplace_map
    #+END_QUOTE
 
-    - [ ] as ambiguous with transform. Use transform_indexed to do the job
+    - [X] as ambiguous with transform. Use transform_indexed to do the job
 *** 2020-03-20 Friday
 
 **** TODO add vector view [0/1] 
@@ -111,7 +88,7 @@
     - [ ] do not forget matrix too
 *** 2020-03-21 Saturday
 
-**** DONE change file name [0/1] 
+**** DONE change file name [1/1] 
      :PROPERTIES:
      :Created:  [2020-03-21 Sat 10:44]
      :END:
@@ -123,9 +100,9 @@
 
    #+END_QUOTE
 
-    - [ ] scalar -> alpha
+    - [X] scalar -> alpha
 
-**** DONE expr return type must be an enum [0/1]                        :Mid:
+**** DONE expr return type must be an enum [1/1]                        :Mid:
      :PROPERTIES:
      :Created:  [2020-03-21 Sat 10:51]
      :END:
@@ -137,5 +114,5 @@
 
    #+END_QUOTE
 
-    - [ ] as dynamic choice can occur it is not possible to return an =integral_constant=
+    - [X] as dynamic choice can occur it is not possible to return an =integral_constant=
 

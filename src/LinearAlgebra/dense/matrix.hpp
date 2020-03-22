@@ -203,99 +203,6 @@ namespace LinearAlgebra
     //
    public:
   };
-
-  //================
-
-  template <typename T, size_t N, size_t M>
-  using Tiny_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
-                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, M>,
-                     std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::None,
-                                Matrix_Storage_Mask_Enum::None, size_t, size_t, size_t>;
-
-  //================ Triangular_Strict
-
-  // Lower
-  template <typename T, size_t N, size_t M>
-  using Tiny_Lower_Triangular_Strict_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
-                     Matrix_Storage_Mask_Enum::Lower_Strict, std::integral_constant<std::size_t, N>,
-                     std::integral_constant<std::size_t, M>,
-                     std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Lower_Triangular_Strict_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
-                     Matrix_Storage_Mask_Enum::Lower_Strict, size_t, size_t, size_t>;
-
-  // Upper
-  template <typename T, size_t N, size_t M>
-  using Tiny_Upper_Triangular_Strict_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
-                     Matrix_Storage_Mask_Enum::Upper_Strict, std::integral_constant<std::size_t, N>,
-                     std::integral_constant<std::size_t, M>,
-                     std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Upper_Triangular_Strict_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
-                     Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
-
-  //================ Unit_Triangular
-
-  // Lower
-  template <typename T, size_t N, size_t M>
-  using Tiny_Lower_Unit_Triangular_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
-                     Matrix_Storage_Mask_Enum::Lower_Strict, std::integral_constant<std::size_t, N>,
-                     std::integral_constant<std::size_t, M>,
-                     std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Lower_Unit_Triangular_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
-                     Matrix_Storage_Mask_Enum::Lower_Strict, size_t, size_t, size_t>;
-
-  // Upper
-  template <typename T, size_t N, size_t M>
-  using Tiny_Upper_Unit_Triangular_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
-                     Matrix_Storage_Mask_Enum::Upper_Strict, std::integral_constant<std::size_t, N>,
-                     std::integral_constant<std::size_t, M>,
-                     std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Upper_Unit_Triangular_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
-                     Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
-
-  //================ Symmetric (are square)
-
-  template <typename T, size_t N>
-  using Tiny_Symmetric_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Symmetric, Matrix_Storage_Mask_Enum::Lower,
-                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, N>,
-                     std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Symmetric_Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::Symmetric,
-                                          Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
-
-  //================ Hermitian (are square)
-
-  template <typename T, size_t N>
-  using Tiny_Hermitian_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Hermitian, Matrix_Storage_Mask_Enum::Lower,
-                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, N>,
-                     std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Hermitian_Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::Hermitian,
-                                          Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
-
   //****************************************************************
 
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
@@ -400,33 +307,6 @@ namespace LinearAlgebra
    public:
   };
 
-  // Regular matrices
-  //
-  template <typename T, size_t N, size_t M>
-  using Tiny_Matrix_View =
-      Default_Matrix_View<T, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
-                          std::integral_constant<std::size_t, N>,
-                          std::integral_constant<std::size_t, M>,
-                          std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Matrix_View = Default_Matrix_View<T, Matrix_Special_Structure_Enum::None,
-                                          Matrix_Storage_Mask_Enum::None, size_t, size_t, size_t>;
-
-  // Symmetric matrices
-  //
-  template <typename T, size_t N, size_t M>
-  using Tiny_Symmetric_Matrix_View =
-      Default_Matrix_View<T, Matrix_Special_Structure_Enum::Symmetric,
-                          Matrix_Storage_Mask_Enum::Lower, std::integral_constant<std::size_t, N>,
-                          std::integral_constant<std::size_t, M>,
-                          std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Symmetric_Matrix_View =
-      Default_Matrix_View<T, Matrix_Special_Structure_Enum::Symmetric,
-                          Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
-
   //================================================================
 
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
@@ -527,17 +407,6 @@ namespace LinearAlgebra
    public:
   };
 
-  template <typename T, size_t N, size_t M>
-  using Tiny_Matrix_Const_View = Default_Matrix_Const_View<
-      T, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
-      std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, M>,
-      std::integral_constant<std::size_t, N>>;
-
-  template <typename T>
-  using Matrix_Const_View =
-      Default_Matrix_Const_View<T, Matrix_Special_Structure_Enum::None,
-                                Matrix_Storage_Mask_Enum::None, size_t, size_t, size_t>;
-
   ////////////////
   // Some views //
   ////////////////
@@ -569,5 +438,102 @@ namespace LinearAlgebra
     return Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>(
         default_matrix_storage_scheme, data);
   }
+
+  ////////////////
+  // Some Alias //
+  ////////////////
+  //
+
+  //================
+
+  template <typename T, size_t N, size_t M>
+  using Tiny_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
+                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::None,
+                                Matrix_Storage_Mask_Enum::None, size_t, size_t, size_t>;
+
+  //================ Triangular_Strict
+
+  // Lower
+  template <typename T, size_t N, size_t M>
+  using Tiny_Lower_Triangular_Strict_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
+                     Matrix_Storage_Mask_Enum::Lower_Strict, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Lower_Triangular_Strict_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
+                     Matrix_Storage_Mask_Enum::Lower_Strict, size_t, size_t, size_t>;
+
+  // Upper
+  template <typename T, size_t N, size_t M>
+  using Tiny_Upper_Triangular_Strict_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
+                     Matrix_Storage_Mask_Enum::Upper_Strict, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Upper_Triangular_Strict_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
+                     Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
+
+  //================ Unit_Triangular
+
+  // Lower
+  template <typename T, size_t N, size_t M>
+  using Tiny_Lower_Unit_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
+                     Matrix_Storage_Mask_Enum::Lower_Strict, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Lower_Unit_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
+                     Matrix_Storage_Mask_Enum::Lower_Strict, size_t, size_t, size_t>;
+
+  // Upper
+  template <typename T, size_t N, size_t M>
+  using Tiny_Upper_Unit_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
+                     Matrix_Storage_Mask_Enum::Upper_Strict, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, M>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Upper_Unit_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
+                     Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
+
+  //================ Symmetric (are square)
+
+  template <typename T, size_t N>
+  using Tiny_Symmetric_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Symmetric, Matrix_Storage_Mask_Enum::Lower,
+                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Symmetric_Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::Symmetric,
+                                          Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
+
+  //================ Hermitian (are square)
+
+  template <typename T, size_t N>
+  using Tiny_Hermitian_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Hermitian, Matrix_Storage_Mask_Enum::Lower,
+                     std::integral_constant<std::size_t, N>, std::integral_constant<std::size_t, N>,
+                     std::integral_constant<std::size_t, N>>;
+
+  template <typename T>
+  using Hermitian_Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::Hermitian,
+                                          Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
 
 }

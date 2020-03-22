@@ -13,3 +13,7 @@ executable('expr_usage_2',
 executable('vector_block',
 	   'vector_block.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('matrix_view',
+	   'matrix_view.cpp',
+	   dependencies : [LinearAlgebra_dep])

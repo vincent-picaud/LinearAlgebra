@@ -115,4 +115,21 @@
    #+END_QUOTE
 
     - [X] as dynamic choice can occur it is not possible to return an =integral_constant=
+*** 2020-03-22 Sunday
+
+**** TODO change with Matrix::Special structure [0/1]                :Urgent:
+     :PROPERTIES:
+     :Created:  [2020-03-22 Sun 09:46]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/matrix.hpp::template%20<typename%20IMPL>%20auto%20view_as_upper_triangular_strict(const%20Dense_Matrix_Crtp<IMPL>&%20M)]]
+
+   #+BEGIN_QUOTE
+     template <typename IMPL>
+     auto
+     view_as_upper_triangular_strict(const Dense_Matrix_Crtp<IMPL>& M)
+
+   #+END_QUOTE
+
+    - [ ] use enum types type instead of function with long name
 

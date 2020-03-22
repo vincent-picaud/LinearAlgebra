@@ -1,7 +1,7 @@
 // Role: create vector views
 //
 // CAVEAT: for views our convention is *always* to use [begin,end[ and NOT (begin,size)
-//         by example view(2,4) mean {v_2,v_3}, begin=2, end=4 (and NOT {v_2,v_3,v_4,v_5}, begin=2, size=4))
+//         by example create_view(2,4) mean {v_2,v_3}, begin=2, end=4 (and NOT {v_2,v_3,v_4,v_5}, begin=2, size=4))
 //
 #pragma once
 
@@ -56,7 +56,7 @@ namespace LinearAlgebra
 
   // Note: we are constrained to filter arguments by a two-steps approach, otherwise calling
   //
-  // view(v,1,2)
+  // create_view(v,1,2)
   //
   // gives BEGIN=int, END=int
   //
@@ -79,7 +79,7 @@ namespace LinearAlgebra
   {
     template <typename IMPL, typename BEGIN, typename END>
     auto
-    view(Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
+    create_view(Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
     {
       assert(check_size_begin_end_p(vector.size(), begin, end));
 
@@ -98,7 +98,7 @@ namespace LinearAlgebra
     //
     template <typename IMPL, typename BEGIN, typename END>
     auto
-    view(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
+    create_view(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
     {
       assert(check_size_begin_end_p(vector.size(), begin, end));
 
@@ -113,31 +113,33 @@ namespace LinearAlgebra
 
   template <typename IMPL, std::size_t BEGIN, std::size_t END>
   auto
-  view(Dense_Vector_Crtp<IMPL>& vector, const std::integral_constant<std::size_t, BEGIN> begin,
-       const std::integral_constant<std::size_t, END> end) noexcept
+  create_view(Dense_Vector_Crtp<IMPL>& vector,
+              const std::integral_constant<std::size_t, BEGIN> begin,
+              const std::integral_constant<std::size_t, END> end) noexcept
   {
-    return Detail::view(vector, begin, end);
+    return Detail::create_view(vector, begin, end);
   }
   template <typename IMPL>
   auto
-  view(Dense_Vector_Crtp<IMPL>& vector, const std::size_t begin, const std::size_t end) noexcept
+  create_view(Dense_Vector_Crtp<IMPL>& vector, const std::size_t begin,
+              const std::size_t end) noexcept
   {
-    return Detail::view(vector, begin, end);
+    return Detail::create_view(vector, begin, end);
   }
   // Const versions
   template <typename IMPL, std::size_t BEGIN, std::size_t END>
   auto
-  view(const Dense_Vector_Crtp<IMPL>& vector,
-       const std::integral_constant<std::size_t, BEGIN> begin,
-       const std::integral_constant<std::size_t, END> end) noexcept
+  create_view(const Dense_Vector_Crtp<IMPL>& vector,
+              const std::integral_constant<std::size_t, BEGIN> begin,
+              const std::integral_constant<std::size_t, END> end) noexcept
   {
-    return Detail::view(vector, begin, end);
+    return Detail::create_view(vector, begin, end);
   }
   template <typename IMPL>
   auto
-  view(const Dense_Vector_Crtp<IMPL>& vector, const std::size_t begin,
-       const std::size_t end) noexcept
+  create_view(const Dense_Vector_Crtp<IMPL>& vector, const std::size_t begin,
+              const std::size_t end) noexcept
   {
-    return Detail::view(vector, begin, end);
+    return Detail::create_view(vector, begin, end);
   }
 }

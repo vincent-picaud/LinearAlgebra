@@ -8,7 +8,7 @@ main()
   Tiny_Matrix<int, 5, 6> mat;
 
   expr(mat, _assign_, 1);
-  auto view_mat = view(mat, 1, 3, 2, 5);
+  auto view_mat = create_view(mat, 1, 3, 2, 5);
 
   expr(view_mat, _assign_, -1);
 
@@ -20,7 +20,7 @@ main()
 
   expr(mat_S, _assign_, 1);
   
-  auto view_mat_S = view(mat_S, 1, 3, 1, 3);
+  auto view_mat_S = create_view(mat_S, 1, 3, 1, 3);
 
   expr(view_mat_S, _assign_, -1);
 

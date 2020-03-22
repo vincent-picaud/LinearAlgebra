@@ -13,8 +13,8 @@ namespace LinearAlgebra
   {
     template <typename IMPL, typename I_BEGIN, typename I_END, typename J_BEGIN, typename J_END>
     auto
-    view(Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin, const I_END I_end,
-         const J_BEGIN J_begin, const J_END J_end) noexcept
+    create_view(Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin, const I_END I_end,
+                const J_BEGIN J_begin, const J_END J_end) noexcept
     {
       assert(check_size_begin_end_p(matrix.I_size(), I_begin, I_end));
       assert(check_size_begin_end_p(matrix.J_size(), J_begin, J_end));
@@ -35,8 +35,8 @@ namespace LinearAlgebra
     // Const view version: see vector_view.hpp for extra comments
     template <typename IMPL, typename I_BEGIN, typename I_END, typename J_BEGIN, typename J_END>
     auto
-    view(const Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin, const I_END I_end,
-         const J_BEGIN J_begin, const J_END J_end) noexcept
+    create_view(const Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin, const I_END I_end,
+                const J_BEGIN J_begin, const J_END J_end) noexcept
     {
       assert(check_size_begin_end_p(matrix.I_size(), I_begin, I_end));
       assert(check_size_begin_end_p(matrix.J_size(), J_begin, J_end));
@@ -62,80 +62,82 @@ namespace LinearAlgebra
   //
   template <typename IMPL>
   auto
-  view(Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_begin, const std::size_t I_end,
-       const std::size_t J_begin, const std::size_t J_end) noexcept
+  create_view(Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_begin, const std::size_t I_end,
+              const std::size_t J_begin, const std::size_t J_end) noexcept
 
   {
-    return Detail::view(matrix, I_begin, I_end, J_begin, J_end);
+    return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
   template <typename IMPL, std::size_t I_BEGIN, std::size_t I_END>
   auto
-  view(Dense_Matrix_Crtp<IMPL>& matrix, const std::integral_constant<std::size_t, I_BEGIN> I_begin,
-       const std::integral_constant<std::size_t, I_END> I_end, const std::size_t J_begin,
-       const std::size_t J_end) noexcept
+  create_view(Dense_Matrix_Crtp<IMPL>& matrix,
+              const std::integral_constant<std::size_t, I_BEGIN> I_begin,
+              const std::integral_constant<std::size_t, I_END> I_end, const std::size_t J_begin,
+              const std::size_t J_end) noexcept
 
   {
-    return Detail::view(matrix, I_begin, I_end, J_begin, J_end);
+    return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
   template <typename IMPL, std::size_t J_BEGIN, std::size_t J_END>
   auto
-  view(Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_begin, const std::size_t I_end,
-       const std::integral_constant<std::size_t, J_BEGIN> J_begin,
-       const std::integral_constant<std::size_t, J_END> J_end) noexcept
+  create_view(Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_begin, const std::size_t I_end,
+              const std::integral_constant<std::size_t, J_BEGIN> J_begin,
+              const std::integral_constant<std::size_t, J_END> J_end) noexcept
 
   {
-    return Detail::view(matrix, I_begin, I_end, J_begin, J_end);
+    return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
   template <typename IMPL, std::size_t I_BEGIN, std::size_t I_END, std::size_t J_BEGIN,
             std::size_t J_END>
   auto
-  view(Dense_Matrix_Crtp<IMPL>& matrix, const std::integral_constant<std::size_t, I_BEGIN> I_begin,
-       const std::integral_constant<std::size_t, I_END> I_end,
-       const std::integral_constant<std::size_t, J_BEGIN> J_begin,
-       const std::integral_constant<std::size_t, J_END> J_end) noexcept
+  create_view(Dense_Matrix_Crtp<IMPL>& matrix,
+              const std::integral_constant<std::size_t, I_BEGIN> I_begin,
+              const std::integral_constant<std::size_t, I_END> I_end,
+              const std::integral_constant<std::size_t, J_BEGIN> J_begin,
+              const std::integral_constant<std::size_t, J_END> J_end) noexcept
 
   {
-    return Detail::view(matrix, I_begin, I_end, J_begin, J_end);
+    return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
   // Const view versions: only add a const to matrix argument
   //
   template <typename IMPL>
   auto
-  view(const Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_begin, const std::size_t I_end,
-       const std::size_t J_begin, const std::size_t J_end) noexcept
+  create_view(const Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_begin,
+              const std::size_t I_end, const std::size_t J_begin, const std::size_t J_end) noexcept
 
   {
-    return Detail::view(matrix, I_begin, I_end, J_begin, J_end);
+    return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
   template <typename IMPL, std::size_t I_BEGIN, std::size_t I_END>
   auto
-  view(const Dense_Matrix_Crtp<IMPL>& matrix,
-       const std::integral_constant<std::size_t, I_BEGIN> I_begin,
-       const std::integral_constant<std::size_t, I_END> I_end, const std::size_t J_begin,
-       const std::size_t J_end) noexcept
+  create_view(const Dense_Matrix_Crtp<IMPL>& matrix,
+              const std::integral_constant<std::size_t, I_BEGIN> I_begin,
+              const std::integral_constant<std::size_t, I_END> I_end, const std::size_t J_begin,
+              const std::size_t J_end) noexcept
 
   {
-    return Detail::view(matrix, I_begin, I_end, J_begin, J_end);
+    return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
   template <typename IMPL, std::size_t J_BEGIN, std::size_t J_END>
   auto
-  view(const Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_begin, const std::size_t I_end,
-       const std::integral_constant<std::size_t, J_BEGIN> J_begin,
-       const std::integral_constant<std::size_t, J_END> J_end) noexcept
+  create_view(const Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_begin,
+              const std::size_t I_end, const std::integral_constant<std::size_t, J_BEGIN> J_begin,
+              const std::integral_constant<std::size_t, J_END> J_end) noexcept
 
   {
-    return Detail::view(matrix, I_begin, I_end, J_begin, J_end);
+    return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
   template <typename IMPL, std::size_t I_BEGIN, std::size_t I_END, std::size_t J_BEGIN,
             std::size_t J_END>
   auto
-  view(const Dense_Matrix_Crtp<IMPL>& matrix,
-       const std::integral_constant<std::size_t, I_BEGIN> I_begin,
-       const std::integral_constant<std::size_t, I_END> I_end,
-       const std::integral_constant<std::size_t, J_BEGIN> J_begin,
-       const std::integral_constant<std::size_t, J_END> J_end) noexcept
+  create_view(const Dense_Matrix_Crtp<IMPL>& matrix,
+              const std::integral_constant<std::size_t, I_BEGIN> I_begin,
+              const std::integral_constant<std::size_t, I_END> I_end,
+              const std::integral_constant<std::size_t, J_BEGIN> J_begin,
+              const std::integral_constant<std::size_t, J_END> J_end) noexcept
 
   {
-    return Detail::view(matrix, I_begin, I_end, J_begin, J_end);
+    return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
 }

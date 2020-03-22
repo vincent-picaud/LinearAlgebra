@@ -9,7 +9,7 @@ TEST(Matrix_View, dynamic_of_static)
 {
   Tiny_Matrix<int, 5, 6> mat;
   expr(mat, _assign_, 1);
-  auto view_mat = view(mat, 1, 3, 2, 5);
+  auto view_mat = create_view(mat, 1, 3, 2, 5);
   expr(view_mat, _assign_, 2);
 
   // EXPECT_TRUE((std::is_same_v<std::size_t, typename decltype(view_mat)::size_type>));
@@ -30,8 +30,8 @@ TEST(Matrix_View, static_of_static_I)
 {
   Tiny_Matrix<int, 5, 6> mat;
   expr(mat, _assign_, 1);
-  auto view_mat = view(mat, std::integral_constant<std::size_t, 1>(),
-                       std::integral_constant<std::size_t, 3>(), 2, 5);
+  auto view_mat = create_view(mat, std::integral_constant<std::size_t, 1>(),
+                              std::integral_constant<std::size_t, 3>(), 2, 5);
   expr(view_mat, _assign_, 2);
 
   EXPECT_TRUE((std::is_same_v<int&, decltype(view_mat(0, 0))>));
@@ -57,8 +57,8 @@ TEST(Matrix_View, static_of_static_J)
 {
   Tiny_Matrix<int, 5, 6> mat;
   expr(mat, _assign_, 1);
-  auto view_mat = view(mat, 1, 3, std::integral_constant<std::size_t, 2>(),
-                       std::integral_constant<std::size_t, 5>());
+  auto view_mat = create_view(mat, 1, 3, std::integral_constant<std::size_t, 2>(),
+                              std::integral_constant<std::size_t, 5>());
   expr(view_mat, _assign_, 2);
 
   EXPECT_TRUE((std::is_same_v<std::size_t, typename decltype(view_mat)::I_size_type>));
@@ -82,9 +82,9 @@ TEST(Matrix_View, static_of_static_IJ)
 {
   Tiny_Matrix<int, 5, 6> mat;
   expr(mat, _assign_, 1);
-  auto view_mat =
-      view(mat, std::integral_constant<std::size_t, 1>(), std::integral_constant<std::size_t, 3>(),
-           std::integral_constant<std::size_t, 2>(), std::integral_constant<std::size_t, 5>());
+  auto view_mat = create_view(
+      mat, std::integral_constant<std::size_t, 1>(), std::integral_constant<std::size_t, 3>(),
+      std::integral_constant<std::size_t, 2>(), std::integral_constant<std::size_t, 5>());
   expr(view_mat, _assign_, 2);
 
   EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>,
@@ -109,12 +109,12 @@ TEST(Matrix_View, const_static_of_static_I)
 {
   Tiny_Matrix<int, 5, 6> mat;
   expr(mat, _assign_, 1);
-  auto view_mat_mutable = view(mat, std::integral_constant<std::size_t, 1>(),
-                               std::integral_constant<std::size_t, 3>(), 2, 5);
+  auto view_mat_mutable = create_view(mat, std::integral_constant<std::size_t, 1>(),
+                                      std::integral_constant<std::size_t, 3>(), 2, 5);
   expr(view_mat_mutable, _assign_, 2);
 
-  auto view_mat = view(mat.as_const(), std::integral_constant<std::size_t, 1>(),
-                       std::integral_constant<std::size_t, 3>(), 2, 5);
+  auto view_mat = create_view(mat.as_const(), std::integral_constant<std::size_t, 1>(),
+                              std::integral_constant<std::size_t, 3>(), 2, 5);
 
   EXPECT_TRUE((std::is_same_v<const int&, decltype(view_mat(0, 0))>));
 

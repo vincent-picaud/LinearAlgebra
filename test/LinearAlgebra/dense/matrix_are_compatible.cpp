@@ -1,5 +1,6 @@
 #include "LinearAlgebra/dense/matrix_are_compatible.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/dense/matrix_view.hpp"
 
 #include <gtest/gtest.h>
 
@@ -21,5 +22,5 @@ TEST(Matrix_Are_Compatible, Basic)
   Matrix<double> M6(3, 5);
 
   EXPECT_FALSE(are_compatible_p(M5, M6));
-  EXPECT_TRUE(are_compatible_p(M5, view_as_lower_triangular_strict(M6)));
+  EXPECT_TRUE(are_compatible_p(M5, create_view_strict_lower_triangular(M6)));
 }

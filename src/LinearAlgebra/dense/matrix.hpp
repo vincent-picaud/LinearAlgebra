@@ -387,7 +387,12 @@ namespace LinearAlgebra
       assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
              (base_type::I_size() == base_type::J_size()));
     }
-
+    Default_Matrix_View(const storage_scheme_type& storage_scheme, T* data)
+        : base_type(storage_scheme, data)
+    {
+      assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+             (base_type::I_size() == base_type::J_size()));
+    }
     ////////////////////
     // Public Methods //
     ////////////////////
@@ -456,7 +461,7 @@ namespace LinearAlgebra
             typename LEADING_DIMENSION>
   class Default_Matrix_Const_View
       : public Dense_Matrix_Crtp<Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE,
-                                                             M_TYPE, LEADING_DIMENSION>>
+                                                           M_TYPE, LEADING_DIMENSION>>
   {
     static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE,
                                                         LEADING_DIMENSION>);
@@ -565,28 +570,4 @@ namespace LinearAlgebra
         default_matrix_storage_scheme, data);
   }
 
-  //================================================================
-
-  // triangular strict
-  template <typename IMPL>
-  auto
-  view_as_upper_triangular_strict(const Dense_Matrix_Crtp<IMPL>& M)
-  {
-    return create_view(M.data(),
-                       std::integral_constant<Matrix_Special_Structure_Enum,
-                                              Matrix_Special_Structure_Enum::Triangular_Strict>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Upper_Strict>());
-  }
-
-  template <typename IMPL>
-  auto
-  view_as_lower_triangular_strict(const Dense_Matrix_Crtp<IMPL>& M)
-  {
-    return create_view(M.data(),
-                       std::integral_constant<Matrix_Special_Structure_Enum,
-                                              Matrix_Special_Structure_Enum::Triangular_Strict>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Lower_Strict>());
-  }
-
-  // TODO: to complete
 }

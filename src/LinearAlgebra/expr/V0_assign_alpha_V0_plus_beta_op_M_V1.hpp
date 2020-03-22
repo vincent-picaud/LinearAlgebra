@@ -211,14 +211,14 @@ namespace LinearAlgebra
 
         if constexpr (M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)
         {
-          expr(v_0, _assign_, alpha, transpose(op), view_as_upper_triangular_strict(M), v_1, _plus_,
+          expr(v_0, _assign_, alpha, transpose(op), create_view_strict_upper_triangular(M), v_1, _plus_,
                1, _vector_0_);
         }
         else
         {
           assert(M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower);
 
-          expr(v_0, _assign_, alpha, transpose(op), view_as_lower_triangular_strict(M), v_1, _plus_,
+          expr(v_0, _assign_, alpha, transpose(op), create_view_strict_lower_triangular(M), v_1, _plus_,
                1, _vector_0_);
         }
       }
@@ -256,14 +256,14 @@ namespace LinearAlgebra
 
         if constexpr (M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)
         {
-          expr(v_0, _assign_, alpha, transconjugate(op), view_as_upper_triangular_strict(M), v_1,
+          expr(v_0, _assign_, alpha, transconjugate(op), create_view_strict_upper_triangular(M), v_1,
                _plus_, 1, _vector_0_);
         }
         else
         {
           assert(M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower);
 
-          expr(v_0, _assign_, alpha, transconjugate(op), view_as_lower_triangular_strict(M), v_1,
+          expr(v_0, _assign_, alpha, transconjugate(op), create_view_strict_lower_triangular(M), v_1,
                _plus_, 1, _vector_0_);
         }
       }

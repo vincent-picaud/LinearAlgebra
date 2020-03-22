@@ -64,15 +64,6 @@ namespace LinearAlgebra
    public:
   };
 
-  //================
-
-  template <typename T, size_t N>
-  using Tiny_Vector = Default_Vector<T, std::integral_constant<std::size_t, N>,
-                                     std::integral_constant<std::size_t, 1>>;
-
-  template <typename T>
-  using Vector = Default_Vector<T, size_t, std::integral_constant<std::size_t, 1>>;
-
   //****************************************************************
   // Views
   //
@@ -140,15 +131,6 @@ namespace LinearAlgebra
     }
   };
 
-  //================
-
-  template <typename T, size_t N>
-  using Tiny_Vector_View = Default_Vector_View<T, std::integral_constant<std::size_t, N>,
-                                               std::integral_constant<std::size_t, 1>>;
-
-  template <typename T>
-  using Vector_View = Default_Vector_View<T, size_t, std::integral_constant<std::size_t, 1>>;
-
   //****************************************************************
   // Const_View
   //****************************************************************
@@ -210,14 +192,15 @@ namespace LinearAlgebra
     }
   };
 
-  //================
+  ////////////////
+  // Some Alias //
+  ////////////////
 
   template <typename T, size_t N>
-  using Tiny_Vector_Const_View =
-      Default_Vector_Const_View<T, std::integral_constant<std::size_t, N>,
-                                std::integral_constant<std::size_t, 1>>;
+  using Tiny_Vector = Default_Vector<T, std::integral_constant<std::size_t, N>,
+                                     std::integral_constant<std::size_t, 1>>;
 
   template <typename T>
-  using Vector_Const_View =
-      Default_Vector_Const_View<T, size_t, std::integral_constant<std::size_t, 1>>;
+  using Vector = Default_Vector<T, size_t, std::integral_constant<std::size_t, 1>>;
+
 }

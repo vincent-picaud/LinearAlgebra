@@ -88,8 +88,6 @@ namespace LinearAlgebra
     {
     };
 
-    // TODO:to complete
-
     template <Matrix_Special_Structure_Enum SPECIAL_STRUCTURE, Matrix_Storage_Mask_Enum MASK>
     constexpr bool is_structure_mask_combination_allowed_v =
         Is_Structure_Mask_Combination_Allowed<SPECIAL_STRUCTURE, MASK>::value;

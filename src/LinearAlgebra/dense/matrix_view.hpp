@@ -154,6 +154,10 @@ namespace LinearAlgebra
   //
   // Modify Matrix structure & mask
   //
+
+  //
+  // General routines using Enum (see shorter Alias below)
+  //
   template <typename IMPL, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK>
   auto

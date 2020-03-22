@@ -15,15 +15,16 @@ namespace LinearAlgebra
     //
     template <typename N_TYPE, typename M_TYPE, typename LEADING_DIMENSION>
     constexpr auto
-    matrix_required_capacity_helper(const N_TYPE n, const M_TYPE m, const LEADING_DIMENSION ld)
+    matrix_required_capacity_helper(const N_TYPE n, const M_TYPE m,
+                                    const LEADING_DIMENSION ld) noexcept
     {
       return (n == 0 or m == 0) ? 0 : (n - 1) + (m - 1) * ld + 1;
     }
     template <size_t N, size_t M, size_t LEADING_DIMENSION>
     constexpr auto
-    matrix_required_capacity_helper(const std::integral_constant<size_t, N>,
-                                    const std::integral_constant<size_t, M>,
-                                    const std::integral_constant<size_t, LEADING_DIMENSION>)
+    matrix_required_capacity_helper(
+        const std::integral_constant<size_t, N>, const std::integral_constant<size_t, M>,
+        const std::integral_constant<size_t, LEADING_DIMENSION>) noexcept
     {
       return std::integral_constant<size_t,
                                     matrix_required_capacity_helper(N, M, LEADING_DIMENSION)>();
@@ -38,7 +39,7 @@ namespace LinearAlgebra
     template <typename N_TYPE, size_t LEADING_DIMENSION>
     constexpr auto
     ld_default_value_helper(const N_TYPE n,
-                            const std::integral_constant<size_t, LEADING_DIMENSION> ld)
+                            const std::integral_constant<size_t, LEADING_DIMENSION> ld) noexcept
     {
       return ld;
     }
@@ -46,20 +47,20 @@ namespace LinearAlgebra
     template <size_t N, size_t LEADING_DIMENSION>
     constexpr auto
     ld_default_value_helper(const std::integral_constant<size_t, N>,
-                            const std::integral_constant<size_t, LEADING_DIMENSION> ld)
+                            const std::integral_constant<size_t, LEADING_DIMENSION> ld) noexcept
     {
       return ld;
     }
 
     template <size_t N>
     constexpr auto
-    ld_default_value_helper(const std::integral_constant<size_t, N> n, const size_t ld)
+    ld_default_value_helper(const std::integral_constant<size_t, N> n, const size_t ld) noexcept
     {
       return n;
     }
 
     constexpr auto
-    ld_default_value_helper(const size_t n, const size_t)
+    ld_default_value_helper(const size_t n, const size_t) noexcept
     {
       return n;
     }
@@ -93,53 +94,53 @@ namespace LinearAlgebra
 
    protected:
     constexpr bool
-    check_invariant() const
+    check_invariant() const noexcept
     {
       return _I_size <= _ld;
     }
 
    public:
-    constexpr Default_Matrix_Storage_Scheme() : _I_size(), _J_size(), _ld()
+    constexpr Default_Matrix_Storage_Scheme() noexcept : _I_size(), _J_size(), _ld()
     {
       assert(check_invariant());
     }
 
     constexpr Default_Matrix_Storage_Scheme(const N_TYPE n, const M_TYPE m,
-                                            const LEADING_DIMENSION ld)
+                                            const LEADING_DIMENSION ld) noexcept
         : _I_size(n), _J_size(m), _ld(ld)
     {
       assert(check_invariant());
     }
-    constexpr Default_Matrix_Storage_Scheme(const N_TYPE n, const M_TYPE m)
+    constexpr Default_Matrix_Storage_Scheme(const N_TYPE n, const M_TYPE m) noexcept
         : Default_Matrix_Storage_Scheme(n, m,
                                         Detail::ld_default_value_helper(n, LEADING_DIMENSION()))
     {
     }
 
     constexpr required_capacity_type
-    required_capacity() const
+    required_capacity() const noexcept
     {
       return Detail::matrix_required_capacity_helper(_I_size, _J_size, _ld);
     }
     constexpr I_size_type
-    I_size() const
+    I_size() const noexcept
     {
       return _I_size;
     }
     constexpr J_size_type
-    J_size() const
+    J_size() const noexcept
     {
       return _J_size;
     }
 
     constexpr leading_dimension_type
-    leading_dimension() const
+    leading_dimension() const noexcept
     {
       return _ld;
     }
 
     constexpr bool
-    check_index(const size_t i, const size_t j) const
+    check_index(const size_t i, const size_t j) const noexcept
     {
       bool ok = true;
 
@@ -157,18 +158,10 @@ namespace LinearAlgebra
     }
 
     constexpr size_t
-    offset(const size_t i, const size_t j) const
+    offset(const size_t i, const size_t j) const noexcept
     {
       return i + j * _ld;
     }
-
-    // Change MASK type
-    // template <Matrix_Storage_Mask_Enum MASK_OTHER>
-    // Default_Matrix_Storage_Scheme<MASK_OTHER, N_TYPE, M_TYPE, LEADING_DIMENSION>
-    // as() const
-    // {
-    //   return {_I_size, _J_size, _ld};
-    // }
   };
 
   //================================================================
@@ -177,10 +170,11 @@ namespace LinearAlgebra
             typename LEADING_DIMENSION_0, Matrix_Storage_Mask_Enum MASK_1, typename N_1_TYPE,
             typename M_1_TYPE, typename LEADING_DIMENSION_1>
   constexpr bool
-  are_compatible_p(const Default_Matrix_Storage_Scheme<MASK_0, N_0_TYPE, M_0_TYPE,
-                                                      LEADING_DIMENSION_0>& matrix_storage_0,
-                  const Default_Matrix_Storage_Scheme<MASK_1, N_1_TYPE, M_1_TYPE,
-                                                      LEADING_DIMENSION_1>& matrix_storage_1) noexcept
+  are_compatible_p(
+      const Default_Matrix_Storage_Scheme<MASK_0, N_0_TYPE, M_0_TYPE, LEADING_DIMENSION_0>&
+          matrix_storage_0,
+      const Default_Matrix_Storage_Scheme<MASK_1, N_1_TYPE, M_1_TYPE, LEADING_DIMENSION_1>&
+          matrix_storage_1) noexcept
   {
     return (MASK_0 == MASK_1 and matrix_storage_0.I_size() == matrix_storage_1.I_size() and
             matrix_storage_0.J_size() == matrix_storage_1.J_size());

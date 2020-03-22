@@ -9,6 +9,10 @@
 
 namespace LinearAlgebra
 {
+  /////////////////////////////////////////////////////////
+  // Note: this part is the vector_view.hpp counter part //
+  /////////////////////////////////////////////////////////
+  //
   namespace Detail
   {
     template <typename IMPL, typename I_BEGIN, typename I_END, typename J_BEGIN, typename J_END>
@@ -58,7 +62,10 @@ namespace LinearAlgebra
 
   // CAVEAT: when matrix has a peculiar structure: triangular,
   //         symmetric... only views with I_begin=J_begin and
-  //         I_end=J_end are allowed
+  //         I_end=J_end are allowed. The only case where this
+  //         restriction does not hold is for
+  //
+  //           Matrix_Storage_Mask_Enum::None
   //
   template <typename IMPL>
   auto
@@ -147,7 +154,6 @@ namespace LinearAlgebra
   //
   // Modify Matrix structure & mask
   //
-
   template <typename IMPL, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK>
   auto
@@ -160,10 +166,35 @@ namespace LinearAlgebra
                                typename IMPL::leading_dimension_type>(
         matrix.data(), matrix.I_size(), matrix.J_size(), matrix.leading_dimension());
   }
-  // some alias
+  // const version
+  template <typename IMPL, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK>
+  auto
+  create_view(const Dense_Matrix_Crtp<IMPL>& matrix,
+              const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
+              const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>) noexcept
+  {
+    return Default_Matrix_Const_View<typename IMPL::element_type, SPECIAL_STRUCTURE, MASK,
+                                     typename IMPL::I_size_type, typename IMPL::J_size_type,
+                                     typename IMPL::leading_dimension_type>(
+        matrix.data(), matrix.I_size(), matrix.J_size(), matrix.leading_dimension());
+  }
+  //
+  // some alias: mutable, followed by const version
+  //
   template <typename IMPL>
   auto
   create_view_full(Dense_Matrix_Crtp<IMPL>& matrix) noexcept
+  {
+    return create_view(
+        matrix,
+        std::integral_constant<Matrix_Special_Structure_Enum,
+                               Matrix_Special_Structure_Enum::None>(),
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>());
+  }
+  template <typename IMPL>
+  auto
+  create_view_full(const Dense_Matrix_Crtp<IMPL>& matrix) noexcept
   {
     return create_view(
         matrix,

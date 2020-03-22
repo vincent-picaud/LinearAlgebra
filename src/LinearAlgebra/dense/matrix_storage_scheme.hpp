@@ -163,12 +163,12 @@ namespace LinearAlgebra
     }
 
     // Change MASK type
-    template <Matrix_Storage_Mask_Enum MASK_OTHER>
-    Default_Matrix_Storage_Scheme<MASK_OTHER, N_TYPE, M_TYPE, LEADING_DIMENSION>
-    as() const
-    {
-      return {_I_size, _J_size, _ld};
-    }
+    // template <Matrix_Storage_Mask_Enum MASK_OTHER>
+    // Default_Matrix_Storage_Scheme<MASK_OTHER, N_TYPE, M_TYPE, LEADING_DIMENSION>
+    // as() const
+    // {
+    //   return {_I_size, _J_size, _ld};
+    // }
   };
 
   //================================================================

@@ -140,4 +140,35 @@ namespace LinearAlgebra
   {
     return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////
+  // CAVEAT: this part has no vector_view.hpp equivalent and is spectific to dense matrices //
+  ////////////////////////////////////////////////////////////////////////////////////////////
+  //
+  // Modify Matrix structure & mask
+  //
+
+  template <typename IMPL, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK>
+  auto
+  create_view(Dense_Matrix_Crtp<IMPL>& matrix,
+              const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
+              const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>) noexcept
+  {
+    return Default_Matrix_View<typename IMPL::element_type, SPECIAL_STRUCTURE, MASK,
+                               typename IMPL::I_size_type, typename IMPL::J_size_type,
+                               typename IMPL::leading_dimension_type>(
+        matrix.data(), matrix.I_size(), matrix.J_size(), matrix.leading_dimension());
+  }
+  // some alias
+  template <typename IMPL>
+  auto
+  create_view_full(Dense_Matrix_Crtp<IMPL>& matrix) noexcept
+  {
+    return create_view(
+        matrix,
+        std::integral_constant<Matrix_Special_Structure_Enum,
+                               Matrix_Special_Structure_Enum::None>(),
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>());
+  }
 }

@@ -214,125 +214,125 @@ namespace LinearAlgebra
   //
   template <typename IMPL>
   auto
-  create_view_strict_upper_triangular(Dense_Matrix_Crtp<IMPL>& M)
+  create_view_strict_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Triangular_Strict>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Upper_Strict>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Upper_Strict>());
   }
 
   template <typename IMPL>
   auto
-  create_view_strict_lower_triangular(Dense_Matrix_Crtp<IMPL>& M)
+  create_view_strict_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Triangular_Strict>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Lower_Strict>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower_Strict>());
   }
   // const version
   template <typename IMPL>
   auto
-  create_view_strict_upper_triangular(const Dense_Matrix_Crtp<IMPL>& M)
+  create_view_strict_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Triangular_Strict>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Upper_Strict>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Upper_Strict>());
   }
 
   template <typename IMPL>
   auto
-  create_view_strict_lower_triangular(const Dense_Matrix_Crtp<IMPL>& M)
+  create_view_strict_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Triangular_Strict>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Lower_Strict>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower_Strict>());
   }
   // Triangular
   //
   template <typename IMPL>
   auto
-  create_view_upper_triangular(Dense_Matrix_Crtp<IMPL>& M)
+  create_view_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Triangular>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Upper>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Upper>());
   }
 
   template <typename IMPL>
   auto
-  create_view_lower_triangular(Dense_Matrix_Crtp<IMPL>& M)
+  create_view_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Triangular>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Lower>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower>());
   }
   // const version
   template <typename IMPL>
   auto
-  create_view_upper_triangular(const Dense_Matrix_Crtp<IMPL>& M)
+  create_view_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Triangular>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Upper>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Upper>());
   }
 
   template <typename IMPL>
   auto
-  create_view_lower_triangular(const Dense_Matrix_Crtp<IMPL>& M)
+  create_view_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Triangular>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Lower>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower>());
   }
 
   // Unit triangular
   //
   template <typename IMPL>
   auto
-  create_view_unit_upper_triangular(Dense_Matrix_Crtp<IMPL>& M)
+  create_view_unit_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Unit_Triangular>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Upper_Strict>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Upper_Strict>());
   }
 
   template <typename IMPL>
   auto
-  create_view_unit_lower_triangular(Dense_Matrix_Crtp<IMPL>& M)
+  create_view_unit_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Unit_Triangular>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Lower_Strict>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower_Strict>());
   }
   // const version
   template <typename IMPL>
   auto
-  create_view_unit_upper_triangular(const Dense_Matrix_Crtp<IMPL>& M)
+  create_view_unit_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Unit_Triangular>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Upper_Strict>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Upper_Strict>());
   }
 
   template <typename IMPL>
   auto
-  create_view_unit_lower_triangular(const Dense_Matrix_Crtp<IMPL>& M)
+  create_view_unit_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view(M.data(),
+    return create_view(matrix,
                        std::integral_constant<Matrix_Special_Structure_Enum,
                                               Matrix_Special_Structure_Enum::Unit_Triangular>(),
-                       M.storage_scheme().template as<Matrix_Storage_Mask_Enum::Lower_Strict>());
+                       std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower_Strict>());
   }
 
 }

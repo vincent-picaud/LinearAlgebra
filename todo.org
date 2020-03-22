@@ -133,3 +133,45 @@
 
     - [ ] use enum types type instead of function with long name
 
+**** TODO add symmetric / hermitian view [0/0]                       :Urgent:
+     :PROPERTIES:
+     :Created:  [2020-03-22 Sun 18:25]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/matrix_view.hpp::create_view_unit_lower_triangular(const%20Dense_Matrix_Crtp<IMPL>&%20matrix)]]
+
+   #+BEGIN_QUOTE
+    create_view_unit_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
+ 
+   #+END_QUOTE
+
+**** TODO add vector_view counter part [0/0]                         :Urgent:
+     :PROPERTIES:
+     :Created:  [2020-03-22 Sun 18:26]
+     :END:
+
+   Back link: [[file:src/LinearAlgebra/dense/matrix_view.hpp::create_matrix_view(ELEMENT_TYPE*%20data,%20const%20std::size_t%20I_size,%20const%20std::size_t%20J_size,%20const%20std::size_t%20leading_dimension)][create_matrix_view(ELEMENT_TYPE* data, ...)]]
+
+   #+BEGIN_QUOTE
+     create_matrix_view(ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size,
+			const std::size_t leading_dimension)
+ 
+   #+END_QUOTE
+
+**** TODO define specialization for std::integral_constant... However there 8 such specializations... [0/1] :Critical:
+     :PROPERTIES:
+     :Created:  [2020-03-22 Sun 18:31]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/matrix_view.hpp::template%20<typename%20ELEMENT_TYPE>%20auto%20create_matrix_view(ELEMENT_TYPE*%20data,%20const%20std::size_t%20I_size,%20const%20std::size_t%20J_size,%20const%20std::size_t%20leading_dimension)]]
+
+   #+BEGIN_QUOTE
+     template <typename ELEMENT_TYPE>
+     auto
+     create_matrix_view(ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size,
+			const std::size_t leading_dimension)
+
+   #+END_QUOTE
+
+    - [ ] vraiment a faire!
+

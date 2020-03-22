@@ -65,6 +65,16 @@ transform(v_0,v_1,[](const auto& v_0_i,const auto v_1_i){ return v_0_i + v_1_i; 
      CAVEAT: for views our convention is *always* to use [begin,end[ and NOT (begin,size)
              by example view(2,4) mean {v_2,v_3}, begin=2, end=4 (and NOT {v_2,v_3,v_4,v_5}, begin=2, size=4)) 
      #+END_EXAMPLE
+*** 2020-03-22 Sunday
+
+**** Symmetric/Hermiatian default: lower                                :Doc:
+
+   #+BEGIN_QUOTE
+     template <typename T>
+     using Symmetric_Matrix = Default_Matrix<T, Matrix_Special_Structure_Enum::Symmetric,
+                                             Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
+
+   #+END_QUOTE
 
    
 

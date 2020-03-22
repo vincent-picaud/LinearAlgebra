@@ -106,11 +106,11 @@ TEST(Known_Pattern, Herm_Mat_Vect_Prod)
   // EXPECT_EQ(w[2], std::complex<int>(250, 400));
 }
 
-TEST(Known_Pattern, Lower_Triangular_Strict_Vect_Prod)
+TEST(Known_Pattern, Strict_Lower_Triangular_Vect_Prod)
 {
   Tiny_Vector<int, 3> v;
   Tiny_Vector<int, 3> w;
-  Tiny_Lower_Triangular_Strict_Matrix<int, 3, 3> M;
+  Tiny_Strict_Lower_Triangular_Matrix<int, 3, 3> M;
 
   iota(v, 1);
 
@@ -134,7 +134,7 @@ TEST(Known_Pattern, Unit_Triangular_Upper_Vect_Prod)
 {
   Tiny_Vector<int, 3> v;
   Tiny_Vector<int, 3> w;
-  Tiny_Upper_Unit_Triangular_Matrix<int, 3, 3> M;
+  Tiny_Unit_Upper_Triangular_Matrix<int, 3, 3> M;
 
   iota(v, 1);
 

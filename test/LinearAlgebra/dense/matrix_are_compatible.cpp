@@ -18,7 +18,7 @@ TEST(Matrix_Are_Compatible, Basic)
   EXPECT_FALSE(are_compatible_p(M1, M3, M1));
   EXPECT_FALSE(are_compatible_p(M1, M3, M1));
 
-  Tiny_Lower_Unit_Triangular_Matrix<int, 3, 5> M5;
+  Tiny_Unit_Lower_Triangular_Matrix<int, 3, 5> M5;
   Matrix<double> M6(3, 5);
 
   EXPECT_FALSE(are_compatible_p(M5, M6));

@@ -458,27 +458,27 @@ namespace LinearAlgebra
 
   // Lower
   template <typename T, size_t N, size_t M>
-  using Tiny_Lower_Triangular_Strict_Matrix =
+  using Tiny_Strict_Lower_Triangular_Matrix =
       Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
                      Matrix_Storage_Mask_Enum::Lower_Strict, std::integral_constant<std::size_t, N>,
                      std::integral_constant<std::size_t, M>,
                      std::integral_constant<std::size_t, N>>;
 
   template <typename T>
-  using Lower_Triangular_Strict_Matrix =
+  using Strict_Lower_Triangular_Matrix =
       Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
                      Matrix_Storage_Mask_Enum::Lower_Strict, size_t, size_t, size_t>;
 
   // Upper
   template <typename T, size_t N, size_t M>
-  using Tiny_Upper_Triangular_Strict_Matrix =
+  using Tiny_Strict_Upper_Triangular_Matrix =
       Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
                      Matrix_Storage_Mask_Enum::Upper_Strict, std::integral_constant<std::size_t, N>,
                      std::integral_constant<std::size_t, M>,
                      std::integral_constant<std::size_t, N>>;
 
   template <typename T>
-  using Upper_Triangular_Strict_Matrix =
+  using Strict_Upper_Triangular_Matrix =
       Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
                      Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
 
@@ -486,27 +486,27 @@ namespace LinearAlgebra
 
   // Lower
   template <typename T, size_t N, size_t M>
-  using Tiny_Lower_Unit_Triangular_Matrix =
+  using Tiny_Unit_Lower_Triangular_Matrix =
       Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
                      Matrix_Storage_Mask_Enum::Lower_Strict, std::integral_constant<std::size_t, N>,
                      std::integral_constant<std::size_t, M>,
                      std::integral_constant<std::size_t, N>>;
 
   template <typename T>
-  using Lower_Unit_Triangular_Matrix =
+  using Unit_Lower_Triangular_Matrix =
       Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
                      Matrix_Storage_Mask_Enum::Lower_Strict, size_t, size_t, size_t>;
 
   // Upper
   template <typename T, size_t N, size_t M>
-  using Tiny_Upper_Unit_Triangular_Matrix =
+  using Tiny_Unit_Upper_Triangular_Matrix =
       Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
                      Matrix_Storage_Mask_Enum::Upper_Strict, std::integral_constant<std::size_t, N>,
                      std::integral_constant<std::size_t, M>,
                      std::integral_constant<std::size_t, N>>;
 
   template <typename T>
-  using Upper_Unit_Triangular_Matrix =
+  using Unit_Upper_Triangular_Matrix =
       Default_Matrix<T, Matrix_Special_Structure_Enum::Unit_Triangular,
                      Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
 

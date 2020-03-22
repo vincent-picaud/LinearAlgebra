@@ -178,6 +178,66 @@ namespace LinearAlgebra
     return Detail::create_view(matrix, I_begin, I_end, J_begin, J_end);
   }
 
+  ////////////////////////////////////////////////////
+  // Create view from a raw pointer: user interface //
+  ////////////////////////////////////////////////////
+  //
+  // Note: for simplicity we only provide an interface for Full
+  //       matrix.  If the "user" wants a more specialized matrix
+  //       (like a triangular one), he can build it by calling, by
+  //       example:
+  //
+  //       create_view_strict_lower_triangular(matrix)
+  //
+  //       with the freshly created dense view.
+  //
+  // ----------------
+  //
+  // CAVEAT: here we use "create_matrix_view()" instead of
+  //         "create_view()" to avoid possible ambiguities. By example
+  //         there would be some problem between:
+  //
+  //         create_view(data,I_size,J_size) <- a matrix
+  //         create_view(data, size,stride) <- a dense vector
+  //
+  template <typename ELEMENT_TYPE>
+  auto
+  create_matrix_view(ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size,
+                     const std::size_t leading_dimension)
+  {
+    return Detail::create_view(
+        data,
+        std::integral_constant<Matrix_Special_Structure_Enum,
+                               Matrix_Special_Structure_Enum::None>(),
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>(), I_size,
+        J_size, leading_dimension);
+  }
+  template <typename ELEMENT_TYPE>
+  auto
+  create_matrix_view(ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size)
+  {
+    return create_view(data, I_size, J_size, I_size);
+  }
+  // const version
+  template <typename ELEMENT_TYPE>
+  auto
+  create_matrix_view(const ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size,
+                     const std::size_t leading_dimension)
+  {
+    return Detail::create_view(
+        data,
+        std::integral_constant<Matrix_Special_Structure_Enum,
+                               Matrix_Special_Structure_Enum::None>(),
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>(), I_size,
+        J_size, leading_dimension);
+  }
+  template <typename ELEMENT_TYPE>
+  auto
+  create_matrix_view(const ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size)
+  {
+    return create_view(data, I_size, J_size, I_size);
+  }
+
   ////////////////////////////////////////////////////////////////////////////////////////////
   // CAVEAT: this part has no vector_view.hpp equivalent and is spectific to dense matrices //
   ////////////////////////////////////////////////////////////////////////////////////////////

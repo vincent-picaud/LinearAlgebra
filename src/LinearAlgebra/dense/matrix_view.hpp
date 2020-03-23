@@ -386,7 +386,62 @@ namespace LinearAlgebra
                                Matrix_Special_Structure_Enum::Unit_Triangular>(),
         std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower_Strict>());
   }
-  // TODO symmetric & hermitian
+
+  // Symmetric Matrix
+  //
+  // Note: for the moment, in order to have only one Symmetric matrix
+  // type, we only provide the "default" mask which is Lower
+  //
+  template <typename IMPL>
+  auto
+  create_view_matrix_type_symmetric(Dense_Matrix_Crtp<IMPL>& matrix)
+  {
+    return create_view_matrix_type(
+        matrix,
+        std::integral_constant<Matrix_Special_Structure_Enum,
+                               Matrix_Special_Structure_Enum::Symmetric>(),
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower>());
+  }
+  // const version
+  template <typename IMPL>
+  auto
+  create_view_matrix_type_symmetric(const Dense_Matrix_Crtp<IMPL>& matrix)
+  {
+    return create_view_matrix_type(
+        matrix,
+        std::integral_constant<Matrix_Special_Structure_Enum,
+                               Matrix_Special_Structure_Enum::Symmetric>(),
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower>());
+  }
+
+  // Hermitian Matrix
+  //
+  // Note: for the moment, in order to have only one Hermitian matrix
+  // type, we only provide the "default" mask which is Lower
+  //
+  // CAVEAT: we do not check that diagonal is real
+  //
+  template <typename IMPL>
+  auto
+  create_view_matrix_type_Hermitian(Dense_Matrix_Crtp<IMPL>& matrix)
+  {
+    return create_view_matrix_type(
+        matrix,
+        std::integral_constant<Matrix_Special_Structure_Enum,
+                               Matrix_Special_Structure_Enum::Hermitian>(),
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower>());
+  }
+  // const version
+  template <typename IMPL>
+  auto
+  create_view_matrix_type_Hermitian(const Dense_Matrix_Crtp<IMPL>& matrix)
+  {
+    return create_view_matrix_type(
+        matrix,
+        std::integral_constant<Matrix_Special_Structure_Enum,
+                               Matrix_Special_Structure_Enum::Hermitian>(),
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower>());
+  }
 
   ///////////////////////
   // Row / Column view //

@@ -3,6 +3,14 @@
 // CAVEAT: for views our convention is *always* to use [begin,end[ and NOT (begin,size)
 //         by example create_view(2,4) mean {v_2,v_3}, begin=2, end=4 (and NOT {v_2,v_3,v_4,v_5}, begin=2, size=4))
 //
+// * Available views types:
+//
+//   - create_vector_view(element_type*,size,increment)
+//
+//     - create_vector_view(element_type*,size,increment)
+//
+//   - create_view_subvector(vector, begin, end)
+//
 #pragma once
 
 #include "LinearAlgebra/dense/vector.hpp"

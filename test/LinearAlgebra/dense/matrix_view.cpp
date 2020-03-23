@@ -229,16 +229,16 @@ TEST(Matrix_View, row_view)
 
   expr(M, _assign_, 1);
 
-  // auto row_view = create_view_matrix_row(M, 1);
+  auto row_view = create_view_matrix_row(M, 1);
 
-  // expr(row_view, _assign_, 2);
+  expr(row_view, _assign_, 2);
 
-  // EXPECT_EQ(M(0, 0), 1);
-  // EXPECT_EQ(M(0, 1), 1);
+  EXPECT_EQ(M(0, 0), 1);
+  EXPECT_EQ(M(0, 1), 1);
 
-  // EXPECT_EQ(M(1, 0), 2);
-  // EXPECT_EQ(M(1, 1), 2);
+  EXPECT_EQ(M(1, 0), 2);
+  EXPECT_EQ(M(1, 1), 2);
 
-  // EXPECT_EQ(M(2, 0), 1);
-  // EXPECT_EQ(M(2, 1), 1);
+  EXPECT_EQ(M(2, 0), 1);
+  EXPECT_EQ(M(2, 1), 1);
 }

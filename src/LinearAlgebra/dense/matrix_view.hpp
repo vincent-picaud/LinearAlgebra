@@ -447,10 +447,10 @@ namespace LinearAlgebra
   // Row / Column view //
   ///////////////////////
 
-  // template <typename IMPL, typename I_ROW>
-  // auto
-  // create_view_matrix_row(Dense_Matrix_Crtp<IMPL>& matrix, const I_ROW I_row) noexcept
-  // {
-  //   return create_view_ve
-  // }
+  template <typename IMPL, typename I_ROW>
+  auto
+  create_view_matrix_row(Dense_Matrix_Crtp<IMPL>& matrix, const I_ROW I_row) noexcept
+  {
+    return create_vector_view(&matrix(I_row, 0), matrix.J_size(), matrix.leading_dimension());
+  }
 }

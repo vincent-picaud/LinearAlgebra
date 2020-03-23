@@ -186,13 +186,9 @@ namespace LinearAlgebra
   auto
   create_matrix_view(ELEMENT_TYPE* data, const I_SIZE I_size, const J_SIZE J_size)
   {
-    return Detail::create_view_matrix_helper(
-        data,
-        std::integral_constant<Matrix_Special_Structure_Enum,
-                               Matrix_Special_Structure_Enum::None>(),
-        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>(),
-        Detail::size_type_normalization(I_size), Detail::size_type_normalization(J_size),
-        Detail::size_type_normalization(I_size));
+    return create_matrix_view(data, Detail::size_type_normalization(I_size),
+                              Detail::size_type_normalization(J_size),
+                              Detail::size_type_normalization(I_size));
   }
   //
   // CAVEAT: not need to redifined "const" version, as
@@ -402,5 +398,16 @@ namespace LinearAlgebra
                                Matrix_Special_Structure_Enum::Unit_Triangular>(),
         std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::Lower_Strict>());
   }
+  // TODO symmetric & hermitian
 
+  ///////////////////////
+  // Row / Column view //
+  ///////////////////////
+
+  // template <typename IMPL, typename I_ROW>
+  // auto
+  // create_view_matrix_row(Dense_Matrix_Crtp<IMPL>& matrix, const I_ROW I_row) noexcept
+  // {
+  //   return create_view_ve
+  // }
 }

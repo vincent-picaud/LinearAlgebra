@@ -201,7 +201,7 @@ TEST(Matrix_View, create_matrix_view_const_version)
 
   Matrix<int> M(m.I_size(), m.J_size());
 
-   expr(M, _assign_, m);
+  expr(M, _assign_, m);
 
   EXPECT_EQ(M(0, 0), 1);
   EXPECT_EQ(M(1, 0), 2);
@@ -221,4 +221,24 @@ TEST(Matrix_View, create_matrix_view_check_size_type)
   EXPECT_TRUE((std::is_same_v<std::size_t, decltype(m.J_size())>));
   EXPECT_TRUE(
       (std::is_same_v<std::integral_constant<std::size_t, 2>, decltype(m.leading_dimension())>));
+}
+
+TEST(Matrix_View, row_view)
+{
+  Matrix<int> M(3, 5);
+
+  expr(M, _assign_, 1);
+
+  // auto row_view = create_view_matrix_row(M, 1);
+
+  // expr(row_view, _assign_, 2);
+
+  // EXPECT_EQ(M(0, 0), 1);
+  // EXPECT_EQ(M(0, 1), 1);
+
+  // EXPECT_EQ(M(1, 0), 2);
+  // EXPECT_EQ(M(1, 1), 2);
+
+  // EXPECT_EQ(M(2, 0), 1);
+  // EXPECT_EQ(M(2, 1), 1);
 }

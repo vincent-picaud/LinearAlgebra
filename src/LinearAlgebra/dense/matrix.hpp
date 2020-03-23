@@ -404,39 +404,6 @@ namespace LinearAlgebra
   };
 
   ////////////////
-  // Some views //
-  ////////////////
-
-  // template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-  //           Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE, typename J_SIZE_TYPE,
-  //           typename LEADING_DIMENSION_TYPE>
-  // auto
-  // create_view(
-  //     T* data, const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
-  //     const Default_Matrix_Storage_Scheme<MASK, I_SIZE_TYPE, J_SIZE_TYPE, LEADING_DIMENSION_TYPE>&
-  //         default_matrix_storage_scheme)
-  // {
-  //   return Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE, J_SIZE_TYPE,
-  //                              LEADING_DIMENSION_TYPE>(default_matrix_storage_scheme, data);
-  // }
-
-  // // const views
-  // template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-  //           Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE, typename J_SIZE_TYPE,
-  //           typename LEADING_DIMENSION_TYPE>
-  // auto
-  // create_view(
-  //     const T* data, const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
-  //     const Default_Matrix_Storage_Scheme<MASK, I_SIZE_TYPE, J_SIZE_TYPE, LEADING_DIMENSION_TYPE>&
-  //         default_matrix_storage_scheme)
-  // {
-  //   return Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE, J_SIZE_TYPE,
-  //                                    LEADING_DIMENSION_TYPE>(default_matrix_storage_scheme, data);
-  // }
-
-  // mutable views
-
-  ////////////////
   // Some Alias //
   ////////////////
   //

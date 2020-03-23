@@ -2,6 +2,31 @@
 //
 // CAVEAT: read vector_view.hpp header about convention begin,end and not begin,size
 //         also use this vector_view.hpp as model for internal consistency
+//
+// View types:
+//
+// * Create view from an already existing default matrix M:
+//
+//    - create_view_submatrix(M,I_begin,I_end,J_begin,J_end)
+//
+//    - create_view_matrix_type(M,structure,mask) which is declined into
+//
+//       - create_view_matrix_type_full(M)
+//
+//       - create_view_matrix_type_strict_upper_triangular(M)
+//
+//       - create_view_matrix_type_strict_lower_triangular(M)
+//
+//       - create_view_matrix_type_strict_upper_triangular(M)
+//
+//       - etc...
+//
+// * Create a matrix view from a raw pointer p:
+//
+//    - create_matrix_view(p,I_size,J_size,ld) [column major]
+//
+//    - create_matrix_view(p,I_size,J_size)    [column major, ld=I_size]
+//
 #pragma once
 
 #include "LinearAlgebra/dense/matrix.hpp"

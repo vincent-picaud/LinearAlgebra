@@ -132,7 +132,7 @@ namespace LinearAlgebra
           &vector[begin], size,  // CAVEAT: and not data()+begin
           vector.increment());   //         which does not take into account increment
     }
-  }
+  }  // Detail
 
   // User interface
   //
@@ -152,4 +152,28 @@ namespace LinearAlgebra
     return Detail::create_view_vector_helper(vector, Detail::size_type_normalization(begin),
                                              Detail::size_type_normalization(end));
   }
+
+  ////////////////////////////////////////////////////
+  // Create view from a raw pointer: user interface //
+  ////////////////////////////////////////////////////
+  //
+  // Note: no need for "const" specialization
+  //
+  // (typename ELEMENT_TYPE -> const element_type* is ok)
+  //
+  template <typename ELEMENT_TYPE, typename SIZE, typename INCREMENT>
+  auto
+  create_vector_view(ELEMENT_TYPE* data, const SIZE size, const INCREMENT increment)
+  {
+    return Detail::create_view_vector_helper(data, Detail::size_type_normalization(size),
+                                             Detail::size_type_normalization(increment));
+  }
+  template <typename ELEMENT_TYPE, typename SIZE>
+  auto
+  create_vector_view(ELEMENT_TYPE* data, const SIZE size)
+  {
+    return create_vector_view(data, Detail::size_type_normalization(size),
+                              std::integral_constant<std::size_t, 1>());
+  }
+
 }

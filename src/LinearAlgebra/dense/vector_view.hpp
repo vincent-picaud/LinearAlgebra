@@ -89,12 +89,17 @@ namespace LinearAlgebra
     }
   }
 
-  // Vector views
-  //////////////////////////////////////////////////////////////////
-  //
   namespace Detail
   {
+    /////////////////////////
+    // Vector views DETAIL //
+    /////////////////////////
+
+    //
+    // Most versatile routine that uses all the arguments
+    //
     // Note: use size_type_normalization() before calling me
+    //
     template <typename ELEMENT_TYPE, typename SIZE, typename INCREMENT>
     auto
     create_view_vector_helper(ELEMENT_TYPE* data, const SIZE size,

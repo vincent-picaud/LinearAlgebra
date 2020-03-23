@@ -172,14 +172,14 @@ TEST(Matrix_View, create_matrix_view)
 
   Matrix<int> M(m.I_size(), m.J_size());
 
-  //  expr(M, _assign_, m);
+  expr(M, _assign_, m);
 
-  EXPECT_EQ(M(0, 0), 1);
-  // EXPECT_EQ(M(1, 0), 2);
-  // EXPECT_EQ(M(0, 1), 3);
-  // EXPECT_EQ(M(1, 1), 4);
-  // EXPECT_EQ(M(0, 2), 5);
-  // EXPECT_EQ(M(1, 2), 6);
+  EXPECT_EQ(M(0, 0), 10);
+  EXPECT_EQ(M(1, 0), 2);
+  EXPECT_EQ(M(0, 1), 3);
+  EXPECT_EQ(M(1, 1), 4);
+  EXPECT_EQ(M(0, 2), 5);
+  EXPECT_EQ(M(1, 2), 6);
 }
 
 TEST(Matrix_View, create_matrix_view_const_version)
@@ -201,14 +201,14 @@ TEST(Matrix_View, create_matrix_view_const_version)
 
   Matrix<int> M(m.I_size(), m.J_size());
 
-  //  expr(M, _assign_, m);
+   expr(M, _assign_, m);
 
   EXPECT_EQ(M(0, 0), 1);
-  // EXPECT_EQ(M(1, 0), 2);
-  // EXPECT_EQ(M(0, 1), 3);
-  // EXPECT_EQ(M(1, 1), 4);
-  // EXPECT_EQ(M(0, 2), 5);
-  // EXPECT_EQ(M(1, 2), 6);
+  EXPECT_EQ(M(1, 0), 2);
+  EXPECT_EQ(M(0, 1), 3);
+  EXPECT_EQ(M(1, 1), 4);
+  EXPECT_EQ(M(0, 2), 5);
+  EXPECT_EQ(M(1, 2), 6);
 }
 
 TEST(Matrix_View, create_matrix_view_check_size_type)
@@ -219,5 +219,6 @@ TEST(Matrix_View, create_matrix_view_check_size_type)
 
   EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>, decltype(m.I_size())>));
   EXPECT_TRUE((std::is_same_v<std::size_t, decltype(m.J_size())>));
-  EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>, decltype(m.leading_dimension())>));
+  EXPECT_TRUE(
+      (std::is_same_v<std::integral_constant<std::size_t, 2>, decltype(m.leading_dimension())>));
 }

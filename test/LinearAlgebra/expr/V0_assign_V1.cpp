@@ -1,4 +1,4 @@
-#include "LinearAlgebra/expr/X_assign_X.hpp"
+#include "LinearAlgebra/expr/V0_assign_V1.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 
 #include <gtest/gtest.h>

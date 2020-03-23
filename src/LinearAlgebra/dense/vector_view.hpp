@@ -33,14 +33,14 @@ namespace LinearAlgebra
     //================================================================
 
     // Implicit conversion
-    std::size_t
+    constexpr std::size_t
     size_type_normalization(const std::size_t size) noexcept
     {
       return size;
     }
 
     template <std::size_t SIZE>
-    std::integral_constant<std::size_t, SIZE>
+    constexpr std::integral_constant<std::size_t, SIZE>
     size_type_normalization(const std::integral_constant<std::size_t, SIZE>) noexcept
     {
       return {};

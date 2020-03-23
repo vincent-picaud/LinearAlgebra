@@ -169,43 +169,38 @@ namespace LinearAlgebra
   //         create_view(data,I_size,J_size) <- a matrix
   //         create_view(data, size,stride) <- a dense vector
   //
-  template <typename ELEMENT_TYPE>
+  template <typename ELEMENT_TYPE, typename I_SIZE, typename J_SIZE, typename LEADING_DIMENSION>
   auto
-  create_matrix_view(ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size,
-                     const std::size_t leading_dimension)
+  create_matrix_view(ELEMENT_TYPE* data, const I_SIZE I_size, const J_SIZE J_size,
+                     const LEADING_DIMENSION leading_dimension)
   {
     return Detail::create_view_matrix_helper(
         data,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::None>(),
-        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>(), I_size,
-        J_size, leading_dimension);
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>(),
+        Detail::size_type_normalization(I_size), Detail::size_type_normalization(J_size),
+        Detail::size_type_normalization(leading_dimension));
   }
-  template <typename ELEMENT_TYPE>
+  template <typename ELEMENT_TYPE, typename I_SIZE, typename J_SIZE>
   auto
-  create_matrix_view(ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size)
+  create_matrix_view(ELEMENT_TYPE* data, const I_SIZE I_size, const J_SIZE J_size)
   {
-    return create_view_submatrix(data, I_size, J_size, I_size);
-  }
-  // const version
-  template <typename ELEMENT_TYPE>
-  auto
-  create_matrix_view(const ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size,
-                     const std::size_t leading_dimension)
-  {
-    return Detail::create_view_submatrix(
+    return Detail::create_view_matrix_helper(
         data,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::None>(),
-        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>(), I_size,
-        J_size, leading_dimension);
+        std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>(),
+        Detail::size_type_normalization(I_size), Detail::size_type_normalization(J_size),
+        Detail::size_type_normalization(I_size));
   }
-  template <typename ELEMENT_TYPE>
-  auto
-  create_matrix_view(const ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size)
-  {
-    return create_view_submatrix(data, I_size, J_size, I_size);
-  }
+  //
+  // CAVEAT: not need to redifined "const" version, as
+  //
+  // template <typename ELEMENT_TYPE,...>
+  //
+  // automatically induce "const element_type*" when the pointer is constant
+  //
 
   ////////////////////////////////////////////////////////////////////////////////////////////
   // CAVEAT: this part has no vector_view.hpp equivalent and is spectific to dense matrices //

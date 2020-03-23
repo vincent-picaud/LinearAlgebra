@@ -174,4 +174,18 @@
    #+END_QUOTE
 
     - [ ] vraiment a faire!
+*** 2020-03-23 Monday
+
+**** TODO M=m to fix [0/0]                                         :Critical:
+     :PROPERTIES:
+     :Created:  [2020-03-23 Mon 12:17]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/test/LinearAlgebra/dense/matrix_view.cpp::expr(M,%20_assign_,%20m);]]
+
+   #+BEGIN_QUOTE
+     expr(M, _assign_, m);
+
+   #+END_QUOTE
+
 

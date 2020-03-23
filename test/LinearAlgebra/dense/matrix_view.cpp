@@ -151,3 +151,73 @@ TEST(Matrix_View, matrix_view_type)
   EXPECT_EQ(M(1, 2), 2);
   EXPECT_EQ(M(2, 2), 1);
 }
+
+// Matrix view from raw pointer
+//
+TEST(Matrix_View, create_matrix_view)
+{
+  int data[] = {1, 2, 3, 4, 5, 6};
+
+  auto m = create_matrix_view(data, 2, 3);
+
+  m(0, 0) = 10;
+  EXPECT_EQ(data[0], 10);
+
+  EXPECT_EQ(m(0, 0), 10);
+  EXPECT_EQ(m(1, 0), 2);
+  EXPECT_EQ(m(0, 1), 3);
+  EXPECT_EQ(m(1, 1), 4);
+  EXPECT_EQ(m(0, 2), 5);
+  EXPECT_EQ(m(1, 2), 6);
+
+  Matrix<int> M(m.I_size(), m.J_size());
+
+  //  expr(M, _assign_, m);
+
+  EXPECT_EQ(M(0, 0), 1);
+  // EXPECT_EQ(M(1, 0), 2);
+  // EXPECT_EQ(M(0, 1), 3);
+  // EXPECT_EQ(M(1, 1), 4);
+  // EXPECT_EQ(M(0, 2), 5);
+  // EXPECT_EQ(M(1, 2), 6);
+}
+
+TEST(Matrix_View, create_matrix_view_const_version)
+{
+  const int data[] = {1, 2, 3, 4, 5, 6};
+
+  auto m = create_matrix_view(data, 2, 3);
+
+  // m(0, 0) = 10; <- should not compile
+  //
+  EXPECT_TRUE((std::is_same_v<const int&, decltype(m(0, 0))>));
+
+  EXPECT_EQ(m(0, 0), 1);
+  EXPECT_EQ(m(1, 0), 2);
+  EXPECT_EQ(m(0, 1), 3);
+  EXPECT_EQ(m(1, 1), 4);
+  EXPECT_EQ(m(0, 2), 5);
+  EXPECT_EQ(m(1, 2), 6);
+
+  Matrix<int> M(m.I_size(), m.J_size());
+
+  //  expr(M, _assign_, m);
+
+  EXPECT_EQ(M(0, 0), 1);
+  // EXPECT_EQ(M(1, 0), 2);
+  // EXPECT_EQ(M(0, 1), 3);
+  // EXPECT_EQ(M(1, 1), 4);
+  // EXPECT_EQ(M(0, 2), 5);
+  // EXPECT_EQ(M(1, 2), 6);
+}
+
+TEST(Matrix_View, create_matrix_view_check_size_type)
+{
+  const int data[] = {1, 2, 3, 4, 5, 6};
+
+  auto m = create_matrix_view(data, std::integral_constant<std::size_t, 2>(), 3);
+
+  EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>, decltype(m.I_size())>));
+  EXPECT_TRUE((std::is_same_v<std::size_t, decltype(m.J_size())>));
+  EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>, decltype(m.leading_dimension())>));
+}

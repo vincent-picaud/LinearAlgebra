@@ -32,6 +32,22 @@ namespace LinearAlgebra
 
     //================================================================
 
+    // Implicit conversion
+    std::size_t
+    size_type_normalization(const std::size_t size) noexcept
+    {
+      return size;
+    }
+
+    template <std::size_t SIZE>
+    std::integral_constant<std::size_t, SIZE>
+    size_type_normalization(const std::integral_constant<std::size_t, SIZE>) noexcept
+    {
+      return {};
+    }
+
+    //================================================================
+
     std::size_t
     compute_size_from_begin_end(const std::size_t begin, const std::size_t end) noexcept
     {
@@ -54,32 +70,38 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
 
-  // Note: we are constrained to filter arguments by a two-steps approach, otherwise calling
+  // Note: we are constrained to insure that create_view() size argument types are either:
   //
-  // create_view(v,1,2)
+  // - std::size_t
+  // - std::integral_constant<std::size_t, ... >
   //
-  // gives BEGIN=int, END=int
+  // This is the role of size_type_normalization() functions.
   //
-  // Hopefully as soon as either one of BEGIN or END is of type size_t
-  // the size is dynamic, hence the initial 4 cases:
+  // Then we have to use a two-steps approach:
   //
-  // BEGIN                                       | END
-  // std::integral_constant<std::size_t, BEGIN>  | std::integral_constant<std::size_t, END>
-  // std::integral_constant<std::size_t, BEGIN>  | std::size_t
-  // std::size_t                                 | std::integral_constant<std::size_t, END>
-  // std::size_t                                 | std::size_t
+  //   1. a *user* create_view<BEGIN,END>(...) interface where
+  //   possibly BEGIN=int, END=int In this *user* function,
+  //   size_type_normalization() is used to only produce std::size_t
+  //   or std::integral_constant<std::size_t, ... >
   //
-  // reduces to 2 cases:
+  //   2. a call to Detail::create_view(...) is then performed with
+  //   using the transformed type.
   //
-  //   1/ both   BEGIN, END are std::integral_constant<std::size_t, ... >
-  //
-  //   2/ one of BEGIN, END is std::size_t
+  // CAVEAT: as a side effect, like *user* interfaces do not control
+  //         template parameter *types* anymore, we must avoid name
+  //         collision. To disambiguate all the possible view types we
+  //         use different function *names*. By example the generic
+  //         "create_view()" function name have been declined into
+  //         variants like: create_view_subvector(), create_view_XXX
+  //         etc....
   //
   namespace Detail
   {
+    // Note: use size_type_normalization() before calling me
     template <typename IMPL, typename BEGIN, typename END>
     auto
-    create_view(Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
+    create_view_vector_helper(Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin,
+                              const END end) noexcept
     {
       assert(check_size_begin_end_p(vector.size(), begin, end));
 
@@ -98,7 +120,8 @@ namespace LinearAlgebra
     //
     template <typename IMPL, typename BEGIN, typename END>
     auto
-    create_view(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
+    create_view_vector_helper(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin,
+                              const END end) noexcept
     {
       assert(check_size_begin_end_p(vector.size(), begin, end));
 
@@ -111,35 +134,22 @@ namespace LinearAlgebra
     }
   }
 
-  template <typename IMPL, std::size_t BEGIN, std::size_t END>
+  // User interface
+  //
+  template <typename IMPL, typename BEGIN, typename END>
   auto
-  create_view(Dense_Vector_Crtp<IMPL>& vector,
-              const std::integral_constant<std::size_t, BEGIN> begin,
-              const std::integral_constant<std::size_t, END> end) noexcept
+  create_view_subvector(Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
   {
-    return Detail::create_view(vector, begin, end);
+    return Detail::create_view_vector_helper(vector, Detail::size_type_normalization(begin),
+                                             Detail::size_type_normalization(end));
   }
-  template <typename IMPL>
+  // const version
+  template <typename IMPL, typename BEGIN, typename END>
   auto
-  create_view(Dense_Vector_Crtp<IMPL>& vector, const std::size_t begin,
-              const std::size_t end) noexcept
+  create_view_subvector(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin,
+                        const END end) noexcept
   {
-    return Detail::create_view(vector, begin, end);
-  }
-  // Const versions
-  template <typename IMPL, std::size_t BEGIN, std::size_t END>
-  auto
-  create_view(const Dense_Vector_Crtp<IMPL>& vector,
-              const std::integral_constant<std::size_t, BEGIN> begin,
-              const std::integral_constant<std::size_t, END> end) noexcept
-  {
-    return Detail::create_view(vector, begin, end);
-  }
-  template <typename IMPL>
-  auto
-  create_view(const Dense_Vector_Crtp<IMPL>& vector, const std::size_t begin,
-              const std::size_t end) noexcept
-  {
-    return Detail::create_view(vector, begin, end);
+    return Detail::create_view_vector_helper(vector, Detail::size_type_normalization(begin),
+                                             Detail::size_type_normalization(end));
   }
 }

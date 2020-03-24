@@ -452,56 +452,58 @@ namespace LinearAlgebra
   //       Matrix_Storage_Mask_Enum::None where row size is
   //       independent of i
   //
-#define LINALG_CODE_NO_DUPLICATE(CONST)                                                          \
-  template <typename IMPL>                                                                       \
-  auto create_view_matrix_row(CONST Dense_Matrix_Crtp<IMPL>& matrix,                             \
-                              const std::size_t I_row) noexcept                                  \
-  {                                                                                              \
-    assert(I_row < matrix.I_size());                                                             \
-    constexpr Matrix_Storage_Mask_Enum mask =                                                    \
-        IMPL::storage_scheme_type::matrix_storage_mask_type::value;                              \
-    if constexpr (mask == Matrix_Storage_Mask_Enum::None)                                        \
-    {                                                                                            \
-      return create_vector_view(&matrix(I_row, 0), matrix.J_size(), matrix.leading_dimension()); \
-    }                                                                                            \
-    else                                                                                         \
-    {                                                                                            \
-      std::size_t memory_offset;                                                                 \
-      std::size_t J_size;                                                                        \
-                                                                                                 \
-      /* Note: we use offset as it does not perform bound check */                               \
-      switch (mask)                                                                              \
-      {                                                                                          \
-        case Matrix_Storage_Mask_Enum::Lower:                                                    \
-          memory_offset = matrix.storage_scheme().offset(I_row, 0);                              \
-          J_size        = I_row + 1;                                                             \
-          break;                                                                                 \
-                                                                                                 \
-        case Matrix_Storage_Mask_Enum::Lower_Strict:                                             \
-          memory_offset = matrix.storage_scheme().offset(I_row, 0);                              \
-          J_size        = I_row;                                                                 \
-          break;                                                                                 \
-                                                                                                 \
-        case Matrix_Storage_Mask_Enum::Upper:                                                    \
-          memory_offset = matrix.storage_scheme().offset(I_row, I_row);                          \
-          J_size        = (matrix.J_size() > I_row) ? matrix.J_size() - I_row : 0;               \
-          break;                                                                                 \
-                                                                                                 \
-        case Matrix_Storage_Mask_Enum::Upper_Strict:                                             \
-          memory_offset = matrix.storage_scheme().offset(I_row, I_row + 1);                      \
-          J_size        = (matrix.J_size() > I_row + 1) ? matrix.J_size() - (I_row + 1) : 0;     \
-                                                                                                 \
-          break;                                                                                 \
-                                                                                                 \
-        default:                                                                                 \
-          assert(0 && "Undefined type");                                                         \
-      }                                                                                          \
-                                                                                                 \
-      J_size = std::min<std::size_t>(matrix.J_size(), J_size);                                   \
-                                                                                                 \
-      return create_vector_view(matrix.data() + memory_offset, J_size,                           \
-                                matrix.leading_dimension());                                     \
-    }                                                                                            \
+#define LINALG_CODE_NO_DUPLICATE(CONST)                                                      \
+  template <typename IMPL>                                                                   \
+  auto create_view_matrix_row(CONST Dense_Matrix_Crtp<IMPL>& matrix,                         \
+                              const std::size_t I_row) noexcept                              \
+  {                                                                                          \
+    assert(I_row < matrix.I_size());                                                         \
+    constexpr Matrix_Storage_Mask_Enum mask =                                                \
+        IMPL::storage_scheme_type::matrix_storage_mask_type::value;                          \
+                                                                                             \
+    const auto leading_dimension = matrix.leading_dimension();                               \
+                                                                                             \
+    if constexpr (mask == Matrix_Storage_Mask_Enum::None)                                    \
+    {                                                                                        \
+      return create_vector_view(&matrix(I_row, 0), matrix.J_size(), leading_dimension);      \
+    }                                                                                        \
+    else                                                                                     \
+    {                                                                                        \
+      std::size_t memory_offset;                                                             \
+      std::size_t J_size;                                                                    \
+                                                                                             \
+      /* Note: we use offset as it does not perform bound check */                           \
+      switch (mask)                                                                          \
+      {                                                                                      \
+        case Matrix_Storage_Mask_Enum::Lower:                                                \
+          memory_offset = matrix.storage_scheme().offset(I_row, 0);                          \
+          J_size        = I_row + 1;                                                         \
+          break;                                                                             \
+                                                                                             \
+        case Matrix_Storage_Mask_Enum::Lower_Strict:                                         \
+          memory_offset = matrix.storage_scheme().offset(I_row, 0);                          \
+          J_size        = I_row;                                                             \
+          break;                                                                             \
+                                                                                             \
+        case Matrix_Storage_Mask_Enum::Upper:                                                \
+          memory_offset = matrix.storage_scheme().offset(I_row, I_row);                      \
+          J_size        = (matrix.J_size() > I_row) ? matrix.J_size() - I_row : 0;           \
+          break;                                                                             \
+                                                                                             \
+        case Matrix_Storage_Mask_Enum::Upper_Strict:                                         \
+          memory_offset = matrix.storage_scheme().offset(I_row, I_row + 1);                  \
+          J_size        = (matrix.J_size() > I_row + 1) ? matrix.J_size() - (I_row + 1) : 0; \
+                                                                                             \
+          break;                                                                             \
+                                                                                             \
+        default:                                                                             \
+          assert(0 && "Undefined type");                                                     \
+      }                                                                                      \
+                                                                                             \
+      J_size = std::min<std::size_t>(matrix.J_size(), J_size);                               \
+                                                                                             \
+      return create_vector_view(matrix.data() + memory_offset, J_size, leading_dimension);   \
+    }                                                                                        \
   }
 
   LINALG_CODE_NO_DUPLICATE();
@@ -509,54 +511,61 @@ namespace LinearAlgebra
 
 #undef LINALG_CODE_NO_DUPLICATE
 
-  template <typename IMPL>
-  auto
-  create_view_matrix_column(Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t J_column) noexcept
-  {
-    assert(J_column < matrix.J_size());
-    constexpr Matrix_Storage_Mask_Enum mask =
-        IMPL::storage_scheme_type::matrix_storage_mask_type::value;
-
-    const std::integral_constant<std::size_t, 1> leading_dimension;
-
-    if constexpr (mask == Matrix_Storage_Mask_Enum::None)
-    {
-      return create_vector_view(&matrix(0, J_column), matrix.I_size(), leading_dimension);
-    }
-    else
-    {
-      std::size_t memory_offset;
-      std::size_t I_size;
-
-      switch (mask)
-      {
-        case Matrix_Storage_Mask_Enum::Lower:
-          memory_offset = matrix.storage_scheme().offset(J_column, J_column);
-          I_size        = (matrix.I_size() > J_column) ? matrix.I_size() - J_column : 0;
-          break;
-
-        case Matrix_Storage_Mask_Enum::Lower_Strict:
-          memory_offset = matrix.storage_scheme().offset(J_column + 1, J_column);
-          I_size        = (matrix.I_size() > (J_column + 1)) ? matrix.I_size() - (J_column + 1) : 0;
-          break;
-
-        case Matrix_Storage_Mask_Enum::Upper:
-          memory_offset = matrix.storage_scheme().offset(0, J_column);
-          I_size        = J_column + 1;
-          break;
-
-        case Matrix_Storage_Mask_Enum::Upper_Strict:
-          memory_offset = matrix.storage_scheme().offset(0, J_column);
-          I_size        = J_column;
-          break;
-
-        default:
-          assert(0 && "Undefined type");
-      }
-
-      I_size = std::min<std::size_t>(matrix.I_size(), I_size);
-
-      return create_vector_view(matrix.data() + memory_offset, I_size, leading_dimension);
-    }
+#define LINALG_CODE_NO_DUPLICATE(CONST)                                                              \
+  template <typename IMPL>                                                                           \
+  auto create_view_matrix_column(CONST Dense_Matrix_Crtp<IMPL>& matrix,                              \
+                                 const std::size_t J_column) noexcept                                \
+  {                                                                                                  \
+    assert(J_column < matrix.J_size());                                                              \
+    constexpr Matrix_Storage_Mask_Enum mask =                                                        \
+        IMPL::storage_scheme_type::matrix_storage_mask_type::value;                                  \
+                                                                                                     \
+    const std::integral_constant<std::size_t, 1> leading_dimension;                                  \
+                                                                                                     \
+    if constexpr (mask == Matrix_Storage_Mask_Enum::None)                                            \
+    {                                                                                                \
+      return create_vector_view(&matrix(0, J_column), matrix.I_size(), leading_dimension);           \
+    }                                                                                                \
+    else                                                                                             \
+    {                                                                                                \
+      std::size_t memory_offset;                                                                     \
+      std::size_t I_size;                                                                            \
+                                                                                                     \
+      switch (mask)                                                                                  \
+      {                                                                                              \
+        case Matrix_Storage_Mask_Enum::Lower:                                                        \
+          memory_offset = matrix.storage_scheme().offset(J_column, J_column);                        \
+          I_size        = (matrix.I_size() > J_column) ? matrix.I_size() - J_column : 0;             \
+          break;                                                                                     \
+                                                                                                     \
+        case Matrix_Storage_Mask_Enum::Lower_Strict:                                                 \
+          memory_offset = matrix.storage_scheme().offset(J_column + 1, J_column);                    \
+          I_size        = (matrix.I_size() > (J_column + 1)) ? matrix.I_size() - (J_column + 1) : 0; \
+          break;                                                                                     \
+                                                                                                     \
+        case Matrix_Storage_Mask_Enum::Upper:                                                        \
+          memory_offset = matrix.storage_scheme().offset(0, J_column);                               \
+          I_size        = J_column + 1;                                                              \
+          break;                                                                                     \
+                                                                                                     \
+        case Matrix_Storage_Mask_Enum::Upper_Strict:                                                 \
+          memory_offset = matrix.storage_scheme().offset(0, J_column);                               \
+          I_size        = J_column;                                                                  \
+          break;                                                                                     \
+                                                                                                     \
+        default:                                                                                     \
+          assert(0 && "Undefined type");                                                             \
+      }                                                                                              \
+                                                                                                     \
+      I_size = std::min<std::size_t>(matrix.I_size(), I_size);                                       \
+                                                                                                     \
+      return create_vector_view(matrix.data() + memory_offset, I_size, leading_dimension);           \
+    }                                                                                                \
   }
+
+  LINALG_CODE_NO_DUPLICATE();
+  LINALG_CODE_NO_DUPLICATE(const);
+
+#undef LINALG_CODE_NO_DUPLICATE
+
 }

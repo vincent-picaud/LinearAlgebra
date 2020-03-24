@@ -1,22 +1,24 @@
-#include "LinearAlgebra/matrix.hpp"
+#include "LinearAlgebra/dense/matrix_view.hpp"
+#include "LinearAlgebra/expr/matrix_expr.hpp"
 
+#include <gtest/gtest.h>
 #include <sstream>
 #include <string>
 
 using namespace LinearAlgebra;
 
-enum class Row_Colum_Enum
+enum class Row_Column_Enum
 {
   Row,
   Column
 };
 
-template <Row_Colum_Enum RC, typename IMPL>
+template <Row_Column_Enum RC, typename IMPL>
 void
 fill_all(Dense_Matrix_Crtp<IMPL>& M)
 {
   std::size_t count = 0;
-  if constexpr (RC == Row_Colum_Enum::Row)
+  if constexpr (RC == Row_Column_Enum::Row)
   {
     for (size_t i = 0; i < M.I_size(); ++i)
     {
@@ -26,7 +28,7 @@ fill_all(Dense_Matrix_Crtp<IMPL>& M)
   }
   else
   {
-    static_assert(RC == Row_Colum_Enum::Column);
+    static_assert(RC == Row_Column_Enum::Column);
 
     for (size_t j = 0; j < M.J_size(); ++j)
     {
@@ -36,7 +38,7 @@ fill_all(Dense_Matrix_Crtp<IMPL>& M)
   }
 }
 
-template <Row_Colum_Enum RC, typename IMPL>
+template <Row_Column_Enum RC, typename IMPL>
 std::string
 generate_string(Dense_Matrix_Crtp<IMPL>& M, const std::size_t I_size, const std::size_t J_size)
 {
@@ -203,16 +205,20 @@ const std::string column_wide =
     "               0               0               0               0               0\n"
     "               0               0               0               0               0\n";
 
-int
-main()
+TEST(Matrix_View_Row_Column, Row)
 {
   Matrix<int> M(5, 5);
-
   expr(M, _assign_, 0);
 
-  std::cout << std::boolalpha << (row_tall == generate_string<Row_Colum_Enum::Row>(M, 5, 3));
-  std::cout << std::boolalpha << (row_wide == generate_string<Row_Colum_Enum::Row>(M, 3, 5));
+  EXPECT_EQ(row_tall, generate_string<Row_Column_Enum::Row>(M, 5, 3));
+  EXPECT_EQ(row_wide, generate_string<Row_Column_Enum::Row>(M, 3, 5));
+}
 
-  std::cout << std::boolalpha << (column_tall == generate_string<Row_Colum_Enum::Column>(M, 5, 3));
-  std::cout << std::boolalpha << (column_wide == generate_string<Row_Colum_Enum::Column>(M, 3, 5));
+TEST(Matrix_View_Row_Columnn, Column)
+{
+  Matrix<int> M(5, 5);
+  expr(M, _assign_, 0);
+
+  EXPECT_EQ(column_tall, generate_string<Row_Column_Enum::Column>(M, 5, 3));
+  EXPECT_EQ(column_wide, generate_string<Row_Column_Enum::Column>(M, 3, 5));
 }

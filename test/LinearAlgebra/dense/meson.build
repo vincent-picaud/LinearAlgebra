@@ -14,6 +14,8 @@ test_array = [
 
   ['vector_view_test','vector_view_exe','vector_view.cpp'],
   ['matrix_view_test','matrix_view_exe','matrix_view.cpp'],
+  
+  ['matrix_view_row_column_test','matrix_view_row_column_exe','matrix_view_row_column.cpp'],
 ]
 
 foreach test : test_array

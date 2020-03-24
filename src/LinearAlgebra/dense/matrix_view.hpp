@@ -579,26 +579,50 @@ namespace LinearAlgebra
   // Diagonal view //
   ///////////////////
 
-  template <typename IMPL>
-  auto
-  create_vector_view_matrix_diagonal(Dense_Matrix_Crtp<IMPL>& matrix) noexcept
+  namespace Detail
   {
-    if constexpr (Has_Static_I_Size_v<IMPL> && Has_Static_J_Size_v<IMPL>)
+    constexpr std::size_t
+    increment(const std::size_t ld) noexcept
     {
-      if constexpr (IMPL::I_size_type::value <= IMPL::J_size_type::value)
-      {
-        return create_vector_view(matrix.data(), matrix.I_size(), matrix.leading_dimension() + 1);
-      }
-      else
-      {
-        return create_vector_view(matrix.data(), matrix.J_size(), matrix.leading_dimension() + 1);
-      }
+      return ld + 1;
     }
-    else
+    template <std::size_t N>
+    constexpr std::integral_constant<std::size_t, N + 1>
+    increment(const std::integral_constant<std::size_t, N>) noexcept
     {
-      return create_vector_view(matrix.data(),
-                                std::min<std::size_t>(matrix.I_size(), matrix.J_size()),
-                                matrix.leading_dimension() + 1);
+      return {};
     }
+
   }
+
+#define LINALG_CODE_NO_DUPLICATE(CONST)                                                   \
+  template <typename IMPL>                                                                \
+  auto create_vector_view_matrix_diagonal(CONST Dense_Matrix_Crtp<IMPL>& matrix) noexcept \
+  {                                                                                       \
+    if constexpr (Has_Static_I_Size_v<IMPL> && Has_Static_J_Size_v<IMPL>)                 \
+    {                                                                                     \
+      if constexpr (IMPL::I_size_type::value <= IMPL::J_size_type::value)                 \
+      {                                                                                   \
+        return create_vector_view(matrix.data(), matrix.I_size(),                         \
+                                  Detail::increment(matrix.leading_dimension()));         \
+      }                                                                                   \
+      else                                                                                \
+      {                                                                                   \
+        return create_vector_view(matrix.data(), matrix.J_size(),                         \
+                                  Detail::increment(matrix.leading_dimension()));         \
+      }                                                                                   \
+    }                                                                                     \
+    else                                                                                  \
+    {                                                                                     \
+      return create_vector_view(matrix.data(),                                            \
+                                std::min<std::size_t>(matrix.I_size(), matrix.J_size()),  \
+                                Detail::increment(matrix.leading_dimension()));           \
+    }                                                                                     \
+  }
+
+  LINALG_CODE_NO_DUPLICATE();
+  LINALG_CODE_NO_DUPLICATE(const);
+
+#undef LINALG_CODE_NO_DUPLICATE
+
 }

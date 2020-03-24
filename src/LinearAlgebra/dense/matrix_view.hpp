@@ -27,10 +27,19 @@
 //
 //    - create_matrix_view(p, I_size, J_size)    [column major, ld=I_size]
 //
+// * Create *vector* view from a matrix
+//
+//    - create_vector_view_matrix_row(M,i)
+//
+//    - create_vector_view_matrix_column(M,j)
+//
+//    - create_vector_view_matrix_diagonal(M,j)
+//
 #pragma once
 
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector_view.hpp"
+#include "LinearAlgebra/utils/size_utils.hpp"
 
 namespace LinearAlgebra
 {
@@ -566,4 +575,30 @@ namespace LinearAlgebra
 
 #undef LINALG_CODE_NO_DUPLICATE
 
+  ///////////////////
+  // Diagonal view //
+  ///////////////////
+
+  template <typename IMPL>
+  auto
+  create_vector_view_matrix_diagonal(Dense_Matrix_Crtp<IMPL>& matrix) noexcept
+  {
+    if constexpr (Has_Static_I_Size_v<IMPL> && Has_Static_J_Size_v<IMPL>)
+    {
+      if constexpr (IMPL::I_size_type::value <= IMPL::J_size_type::value)
+      {
+        return create_vector_view(matrix.data(), matrix.I_size(), matrix.leading_dimension() + 1);
+      }
+      else
+      {
+        return create_vector_view(matrix.data(), matrix.J_size(), matrix.leading_dimension() + 1);
+      }
+    }
+    else
+    {
+      return create_vector_view(matrix.data(),
+                                std::min<std::size_t>(matrix.I_size(), matrix.J_size()),
+                                matrix.leading_dimension() + 1);
+    }
+  }
 }

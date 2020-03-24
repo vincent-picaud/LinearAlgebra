@@ -31,7 +31,7 @@ TEST(Matrix_View, static_of_static_I)
   Tiny_Matrix<int, 5, 6> mat;
   expr(mat, _assign_, 1);
   auto view_mat = create_matrix_view(mat, std::integral_constant<std::size_t, 1>(),
-                                        std::integral_constant<std::size_t, 3>(), 2, 5);
+                                     std::integral_constant<std::size_t, 3>(), 2, 5);
   expr(view_mat, _assign_, 2);
 
   EXPECT_TRUE((std::is_same_v<int&, decltype(view_mat(0, 0))>));
@@ -58,7 +58,7 @@ TEST(Matrix_View, static_of_static_J)
   Tiny_Matrix<int, 5, 6> mat;
   expr(mat, _assign_, 1);
   auto view_mat = create_matrix_view(mat, 1, 3, std::integral_constant<std::size_t, 2>(),
-                                        std::integral_constant<std::size_t, 5>());
+                                     std::integral_constant<std::size_t, 5>());
   expr(view_mat, _assign_, 2);
 
   EXPECT_TRUE((std::is_same_v<std::size_t, typename decltype(view_mat)::I_size_type>));
@@ -110,11 +110,11 @@ TEST(Matrix_View, const_static_of_static_I)
   Tiny_Matrix<int, 5, 6> mat;
   expr(mat, _assign_, 1);
   auto view_mat_mutable = create_matrix_view(mat, std::integral_constant<std::size_t, 1>(),
-                                                std::integral_constant<std::size_t, 3>(), 2, 5);
+                                             std::integral_constant<std::size_t, 3>(), 2, 5);
   expr(view_mat_mutable, _assign_, 2);
 
   auto view_mat = create_matrix_view(mat.as_const(), std::integral_constant<std::size_t, 1>(),
-                                        std::integral_constant<std::size_t, 3>(), 2, 5);
+                                     std::integral_constant<std::size_t, 3>(), 2, 5);
 
   EXPECT_TRUE((std::is_same_v<const int&, decltype(view_mat(0, 0))>));
 
@@ -241,4 +241,73 @@ TEST(Matrix_View, row_view)
 
   EXPECT_EQ(M(2, 0), 1);
   EXPECT_EQ(M(2, 1), 1);
+}
+
+//
+// matrix diagonal view
+//
+TEST(Matrix_View, diagonal_view_tall)
+{
+  Matrix<int> M_tall(3, 2);
+
+  int count = 0;
+  fill([&count]() { return ++count; }, M_tall);
+
+  auto diag_tall = create_vector_view_matrix_diagonal(M_tall);
+
+  EXPECT_EQ(diag_tall.size(), 2);
+  EXPECT_FALSE((Has_Static_Size_v<decltype(diag_tall)>));
+
+  EXPECT_EQ(diag_tall[0], 1);
+  EXPECT_EQ(diag_tall[1], 5);
+}
+
+TEST(Matrix_View, diagonal_view_wide)
+{
+  Matrix<int> M_wide(2, 3);
+
+  int count = 0;
+  fill([&count]() { return ++count; }, M_wide);
+
+  auto diag_wide = create_vector_view_matrix_diagonal(M_wide);
+
+  EXPECT_EQ(diag_wide.size(), 2);
+  EXPECT_FALSE((Has_Static_Size_v<decltype(diag_wide)>));
+
+  EXPECT_EQ(diag_wide[0], 1);
+  EXPECT_EQ(diag_wide[1], 4);
+}
+
+// static
+
+TEST(Matrix_View, static_diagonal_view_tall)
+{
+  Tiny_Matrix<int, 3, 2> M_tall;
+
+  int count = 0;
+  fill([&count]() { return ++count; }, M_tall);
+
+  auto diag_tall = create_vector_view_matrix_diagonal(M_tall);
+
+  EXPECT_EQ(diag_tall.size(), 2);
+  EXPECT_TRUE((Has_Static_Size_v<decltype(diag_tall)>));
+
+  EXPECT_EQ(diag_tall[0], 1);
+  EXPECT_EQ(diag_tall[1], 5);
+}
+
+TEST(Matrix_View, static_diagonal_view_wide)
+{
+  Tiny_Matrix<int, 2, 3> M_wide;
+
+  int count = 0;
+  fill([&count]() { return ++count; }, M_wide);
+
+  auto diag_wide = create_vector_view_matrix_diagonal(M_wide);
+
+  EXPECT_EQ(diag_wide.size(), 2);
+  EXPECT_TRUE((Has_Static_Size_v<decltype(diag_wide)>));
+
+  EXPECT_EQ(diag_wide[0], 1);
+  EXPECT_EQ(diag_wide[1], 4);
 }

@@ -22,7 +22,7 @@ fill_all(Dense_Matrix_Crtp<IMPL>& M)
   {
     for (size_t i = 0; i < M.I_size(); ++i)
     {
-      auto row_view = create_view_matrix_row(M, i);
+      auto row_view = create_vector_view_matrix_row(M, i);
       fill([&count]() { return ++count; }, row_view);
     }
   }
@@ -32,7 +32,7 @@ fill_all(Dense_Matrix_Crtp<IMPL>& M)
 
     for (size_t j = 0; j < M.J_size(); ++j)
     {
-      auto column_view = create_view_matrix_column(M, j);
+      auto column_view = create_vector_view_matrix_column(M, j);
       fill([&count]() { return ++count; }, column_view);
     }
   }
@@ -45,8 +45,8 @@ generate_string(Dense_Matrix_Crtp<IMPL>& M, const std::size_t I_size, const std:
   std::stringstream out;
 
   const auto lambda = [&](const auto& special_structure, const auto& mask) {
-    auto M_submatrix             = create_view_submatrix(M, 0, I_size, 0, J_size);
-    auto M_submatrix_with_struct = create_view_matrix_type(M_submatrix, special_structure, mask);
+    auto M_submatrix             = create_matrix_view(M, 0, I_size, 0, J_size);
+    auto M_submatrix_with_struct = create_matrix_view(M_submatrix, special_structure, mask);
     expr(M, _assign_, 0);
     fill_all<RC>(M_submatrix_with_struct);
     out << M << std::endl;

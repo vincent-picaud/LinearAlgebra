@@ -7,17 +7,17 @@
 //
 // * Create view from an already existing default matrix M:
 //
-//    - create_view_submatrix(M, I_begin, I_end, J_begin, J_end)
+//    - create_matrix_view(M, I_begin, I_end, J_begin, J_end)
 //
-//    - create_view_matrix_type(M, structure, mask) which is declined into
+//    - create_matrix_view(M, structure, mask) which is declined into
 //
-//       - create_view_matrix_type_full(M)
+//       - create_matrix_view_full(M)
 //
-//       - create_view_matrix_type_strict_upper_triangular(M)
+//       - create_matrix_view_strict_upper_triangular(M)
 //
-//       - create_view_matrix_type_strict_lower_triangular(M)
+//       - create_matrix_view_strict_lower_triangular(M)
 //
-//       - create_view_matrix_type_strict_upper_triangular(M)
+//       - create_matrix_view_strict_upper_triangular(M)
 //
 //       - etc...
 //
@@ -52,7 +52,7 @@ namespace LinearAlgebra
               Matrix_Storage_Mask_Enum MASK, typename I_SIZE, typename J_SIZE,
               typename LEADING_DIMENSION>
     auto
-    create_view_matrix_helper(
+    create_matrix_view_helper(
         ELEMENT_TYPE* data,
         const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
         const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>, const I_SIZE I_size,
@@ -105,7 +105,7 @@ namespace LinearAlgebra
   create_matrix_view(ELEMENT_TYPE* data, const I_SIZE I_size, const J_SIZE J_size,
                      const LEADING_DIMENSION leading_dimension)
   {
-    return Detail::create_view_matrix_helper(
+    return Detail::create_matrix_view_helper(
         data,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::None>(),
@@ -138,10 +138,10 @@ namespace LinearAlgebra
   {
     template <typename IMPL>
     bool
-    check_create_view_submatrix_arguments_p(const Dense_Matrix_Crtp<IMPL>& matrix,
-                                            const std::size_t I_begin, const std::size_t I_end,
-                                            const std::size_t J_begin,
-                                            const std::size_t J_end) noexcept
+    check_create_matrix_view_arguments_p(const Dense_Matrix_Crtp<IMPL>& matrix,
+                                         const std::size_t I_begin, const std::size_t I_end,
+                                         const std::size_t J_begin,
+                                         const std::size_t J_end) noexcept
     {
       bool ok = true;
       ok &= check_size_begin_end_p(matrix.I_size(), I_begin, I_end);
@@ -155,15 +155,15 @@ namespace LinearAlgebra
 
   template <typename IMPL, typename I_BEGIN, typename I_END, typename J_BEGIN, typename J_END>
   auto
-  create_view_submatrix(Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin, const I_END I_end,
-                        const J_BEGIN J_begin, const J_END J_end) noexcept
+  create_matrix_view(Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin, const I_END I_end,
+                     const J_BEGIN J_begin, const J_END J_end) noexcept
   {
-    assert(Detail::check_create_view_submatrix_arguments_p(matrix, I_begin, I_end, J_begin, J_end));
+    assert(Detail::check_create_matrix_view_arguments_p(matrix, I_begin, I_end, J_begin, J_end));
 
     auto I_size = Detail::compute_size_from_begin_end(I_begin, I_end);
     auto J_size = Detail::compute_size_from_begin_end(J_begin, J_end);
 
-    return Detail::create_view_matrix_helper(
+    return Detail::create_matrix_view_helper(
         &matrix(I_begin, J_begin), typename IMPL::matrix_special_structure_type(),
         typename IMPL::storage_scheme_type::matrix_storage_mask_type(), I_size, J_size,
         matrix.leading_dimension());
@@ -171,15 +171,15 @@ namespace LinearAlgebra
 
   template <typename IMPL, typename I_BEGIN, typename I_END, typename J_BEGIN, typename J_END>
   auto
-  create_view_submatrix(const Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin,
-                        const I_END I_end, const J_BEGIN J_begin, const J_END J_end) noexcept
+  create_matrix_view(const Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin,
+                     const I_END I_end, const J_BEGIN J_begin, const J_END J_end) noexcept
   {
-    assert(Detail::check_create_view_submatrix_arguments_p(matrix, I_begin, I_end, J_begin, J_end));
+    assert(Detail::check_create_matrix_view_arguments_p(matrix, I_begin, I_end, J_begin, J_end));
 
     auto I_size = Detail::compute_size_from_begin_end(I_begin, I_end);
     auto J_size = Detail::compute_size_from_begin_end(J_begin, J_end);
 
-    return Detail::create_view_matrix_helper(
+    return Detail::create_matrix_view_helper(
         &matrix(I_begin, J_begin), typename IMPL::matrix_special_structure_type(),
         typename IMPL::storage_scheme_type::matrix_storage_mask_type(), I_size, J_size,
         matrix.leading_dimension());
@@ -198,10 +198,9 @@ namespace LinearAlgebra
   template <typename IMPL, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK>
   auto
-  create_view_matrix_type(
-      Dense_Matrix_Crtp<IMPL>& matrix,
-      const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
-      const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>) noexcept
+  create_matrix_view(Dense_Matrix_Crtp<IMPL>& matrix,
+                     const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
+                     const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>) noexcept
   {
     return Default_Matrix_View<typename IMPL::element_type, SPECIAL_STRUCTURE, MASK,
                                typename IMPL::I_size_type, typename IMPL::J_size_type,
@@ -212,10 +211,9 @@ namespace LinearAlgebra
   template <typename IMPL, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK>
   auto
-  create_view_matrix_type(
-      const Dense_Matrix_Crtp<IMPL>& matrix,
-      const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
-      const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>) noexcept
+  create_matrix_view(const Dense_Matrix_Crtp<IMPL>& matrix,
+                     const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
+                     const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>) noexcept
   {
     return Default_Matrix_Const_View<typename IMPL::element_type, SPECIAL_STRUCTURE, MASK,
                                      typename IMPL::I_size_type, typename IMPL::J_size_type,
@@ -231,9 +229,9 @@ namespace LinearAlgebra
   //
   template <typename IMPL>
   auto
-  create_view_matrix_type_full(Dense_Matrix_Crtp<IMPL>& matrix) noexcept
+  create_matrix_view_full(Dense_Matrix_Crtp<IMPL>& matrix) noexcept
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::None>(),
@@ -241,9 +239,9 @@ namespace LinearAlgebra
   }
   template <typename IMPL>
   auto
-  create_view_matrix_type_full(const Dense_Matrix_Crtp<IMPL>& matrix) noexcept
+  create_matrix_view_full(const Dense_Matrix_Crtp<IMPL>& matrix) noexcept
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::None>(),
@@ -254,9 +252,9 @@ namespace LinearAlgebra
   //
   template <typename IMPL>
   auto
-  create_view_matrix_type_strict_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_strict_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Triangular_Strict>(),
@@ -265,9 +263,9 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   auto
-  create_view_matrix_type_strict_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_strict_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Triangular_Strict>(),
@@ -276,9 +274,9 @@ namespace LinearAlgebra
   // const version
   template <typename IMPL>
   auto
-  create_view_matrix_type_strict_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_strict_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Triangular_Strict>(),
@@ -287,9 +285,9 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   auto
-  create_view_matrix_type_strict_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_strict_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Triangular_Strict>(),
@@ -299,9 +297,9 @@ namespace LinearAlgebra
   //
   template <typename IMPL>
   auto
-  create_view_matrix_type_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Triangular>(),
@@ -310,9 +308,9 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   auto
-  create_view_matrix_type_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Triangular>(),
@@ -321,9 +319,9 @@ namespace LinearAlgebra
   // const version
   template <typename IMPL>
   auto
-  create_view_matrix_type_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Triangular>(),
@@ -332,9 +330,9 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   auto
-  create_view_matrix_type_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Triangular>(),
@@ -345,9 +343,9 @@ namespace LinearAlgebra
   //
   template <typename IMPL>
   auto
-  create_view_matrix_type_unit_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_unit_upper_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Unit_Triangular>(),
@@ -356,9 +354,9 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   auto
-  create_view_matrix_type_unit_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_unit_lower_triangular(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Unit_Triangular>(),
@@ -367,9 +365,9 @@ namespace LinearAlgebra
   // const version
   template <typename IMPL>
   auto
-  create_view_matrix_type_unit_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_unit_upper_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Unit_Triangular>(),
@@ -378,9 +376,9 @@ namespace LinearAlgebra
 
   template <typename IMPL>
   auto
-  create_view_matrix_type_unit_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_unit_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Unit_Triangular>(),
@@ -394,9 +392,9 @@ namespace LinearAlgebra
   //
   template <typename IMPL>
   auto
-  create_view_matrix_type_symmetric(Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_symmetric(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Symmetric>(),
@@ -405,9 +403,9 @@ namespace LinearAlgebra
   // const version
   template <typename IMPL>
   auto
-  create_view_matrix_type_symmetric(const Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_symmetric(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Symmetric>(),
@@ -423,9 +421,9 @@ namespace LinearAlgebra
   //
   template <typename IMPL>
   auto
-  create_view_matrix_type_Hermitian(Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_Hermitian(Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Hermitian>(),
@@ -434,9 +432,9 @@ namespace LinearAlgebra
   // const version
   template <typename IMPL>
   auto
-  create_view_matrix_type_Hermitian(const Dense_Matrix_Crtp<IMPL>& matrix)
+  create_matrix_view_Hermitian(const Dense_Matrix_Crtp<IMPL>& matrix)
   {
-    return create_view_matrix_type(
+    return create_matrix_view(
         matrix,
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::Hermitian>(),
@@ -454,8 +452,8 @@ namespace LinearAlgebra
   //
 #define LINALG_CODE_NO_DUPLICATE(CONST)                                                      \
   template <typename IMPL>                                                                   \
-  auto create_view_matrix_row(CONST Dense_Matrix_Crtp<IMPL>& matrix,                         \
-                              const std::size_t I_row) noexcept                              \
+  auto create_vector_view_matrix_row(CONST Dense_Matrix_Crtp<IMPL>& matrix,                  \
+                                     const std::size_t I_row) noexcept                       \
   {                                                                                          \
     assert(I_row < matrix.I_size());                                                         \
     constexpr Matrix_Storage_Mask_Enum mask =                                                \
@@ -513,8 +511,8 @@ namespace LinearAlgebra
 
 #define LINALG_CODE_NO_DUPLICATE(CONST)                                                              \
   template <typename IMPL>                                                                           \
-  auto create_view_matrix_column(CONST Dense_Matrix_Crtp<IMPL>& matrix,                              \
-                                 const std::size_t J_column) noexcept                                \
+  auto create_vector_view_matrix_column(CONST Dense_Matrix_Crtp<IMPL>& matrix,                       \
+                                        const std::size_t J_column) noexcept                         \
   {                                                                                                  \
     assert(J_column < matrix.J_size());                                                              \
     constexpr Matrix_Storage_Mask_Enum mask =                                                        \

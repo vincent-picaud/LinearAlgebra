@@ -9,7 +9,7 @@
 //
 //     - create_vector_view(element_type*,size,increment)
 //
-//   - create_view_subvector(vector, begin, end)
+//   - create_vector_view(vector, begin, end)
 //
 #pragma once
 
@@ -47,7 +47,7 @@ namespace LinearAlgebra
     //         collision. To disambiguate all the possible view types we
     //         use different function *names*. By example the generic
     //         "create_view()" function name have been declined into
-    //         variants like: create_view_subvector(), create_view_XXX
+    //         variants like: create_vector_view(), create_view_XXX
     //         etc....
     //
     //
@@ -158,7 +158,7 @@ namespace LinearAlgebra
   //
   template <typename IMPL, typename BEGIN, typename END>
   auto
-  create_view_subvector(Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
+  create_vector_view(Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin, const END end) noexcept
   {
     assert(Detail::check_size_begin_end_p(vector.size(), begin, end));
 
@@ -172,8 +172,8 @@ namespace LinearAlgebra
   // const version
   template <typename IMPL, typename BEGIN, typename END>
   auto
-  create_view_subvector(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin,
-                        const END end) noexcept
+  create_vector_view(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin,
+                     const END end) noexcept
   {
     assert(Detail::check_size_begin_end_p(vector.size(), begin, end));
 

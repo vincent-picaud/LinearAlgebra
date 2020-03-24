@@ -22,5 +22,5 @@ TEST(Matrix_Are_Compatible, Basic)
   Matrix<double> M6(3, 5);
 
   EXPECT_FALSE(are_compatible_p(M5, M6));
-  EXPECT_TRUE(are_compatible_p(M5, create_view_matrix_type_strict_lower_triangular(M6)));
+  EXPECT_TRUE(are_compatible_p(M5, create_matrix_view_strict_lower_triangular(M6)));
 }

@@ -14,8 +14,6 @@ namespace LinearAlgebra
   // Used by LinearAlgebra/expr/ to switch between
   // "Generic" and "Static" subroutines
   //
-  // Also see:  LinearAlgebra/dense/size_utils.hpp
-  //
   template <typename IMPL, typename ENABLE = void>
   struct Has_Static_Size : std::false_type
   {
@@ -42,6 +40,65 @@ namespace LinearAlgebra
   };
   template <typename... IMPLs>
   inline constexpr bool Any_Has_Static_Size_v = Any_Has_Static_Size<IMPLs...>::value;
+
+  // Same as before, extension to Matrix with I_size_type, J_size_type
+  //================================================================
+
+  template <typename IMPL, typename ENABLE = void>
+  struct Has_Static_I_Size : std::false_type
+  {
+  };
+
+  template <typename IMPL>
+  struct Has_Static_I_Size<
+      IMPL,
+      std::enable_if_t<Is_Std_Integral_Constant_Of_Type_v<std::size_t, typename IMPL::I_size_type>>>
+      : std::true_type
+  {
+  };
+
+  template <typename IMPL>
+  inline constexpr bool Has_Static_I_Size_v = Has_Static_I_Size<IMPL>::value;
+
+  /////////////////////////
+  // Any_Has_Static_I_Size //
+  /////////////////////////
+  //
+  template <typename... IMPLs>
+  struct Any_Has_Static_I_Size : std::integral_constant<bool, (Has_Static_I_Size_v<IMPLs> || ...)>
+  {
+  };
+  template <typename... IMPLs>
+  inline constexpr bool Any_Has_Static_I_Size_v = Any_Has_Static_I_Size<IMPLs...>::value;
+
+  //================
+
+  template <typename IMPL, typename ENABLE = void>
+  struct Has_Static_J_Size : std::false_type
+  {
+  };
+
+  template <typename IMPL>
+  struct Has_Static_J_Size<
+      IMPL,
+      std::enable_if_t<Is_Std_Integral_Constant_Of_Type_v<std::size_t, typename IMPL::J_size_type>>>
+      : std::true_type
+  {
+  };
+
+  template <typename IMPL>
+  inline constexpr bool Has_Static_J_Size_v = Has_Static_J_Size<IMPL>::value;
+
+  /////////////////////////
+  // Any_Has_Static_J_Size //
+  /////////////////////////
+  //
+  template <typename... IMPLs>
+  struct Any_Has_Static_J_Size : std::integral_constant<bool, (Has_Static_J_Size_v<IMPLs> || ...)>
+  {
+  };
+  template <typename... IMPLs>
+  inline constexpr bool Any_Has_Static_J_Size_v = Any_Has_Static_J_Size<IMPLs...>::value;
 
   //////////////////////////////////////////////////////////////////
 

@@ -17,3 +17,7 @@ executable('vector_block',
 executable('matrix_view',
 	   'matrix_view.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('row_view',
+	   'row_view.cpp',
+	   dependencies : [LinearAlgebra_dep])

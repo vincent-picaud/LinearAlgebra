@@ -447,10 +447,102 @@ namespace LinearAlgebra
   // Row / Column view //
   ///////////////////////
 
-  template <typename IMPL, typename I_ROW>
+  //
+  // Note: like I_row is dynamic, then row size will be dynamic (wot, thus we know return type
+  //
+  // template <typename IMPL>
+  // auto
+  // create_view_matrix_row(Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_row) noexcept
+  // {
+  //   constexpr Matrix_Storage_Mask_Enum mask =
+  //       IMPL::storage_scheme_type::matrix_storage_mask_type::value;
+
+  //   using std::max;
+  //   using std::min;
+
+  //   if constexpr (mask == Matrix_Storage_Mask_Enum::None)
+  //   {
+  //     return create_vector_view(&matrix(I_row, 0), matrix.J_size(), matrix.leading_dimension());
+  //   }
+  //   else
+  //   {
+  //     std::size_t J_begin;
+  //     std::size_t J_end;
+
+  //     if constexpr (mask == Matrix_Storage_Mask_Enum::Lower)
+  //     {
+  //       J_begin = 0;
+  //       J_end   = min(I_row + 1, matrix.J_size());
+  //     }
+  //     else if constexpr (mask == Matrix_Storage_Mask_Enum::Lower_Strict)
+  //     {
+  //       J_begin = 0;
+  //       J_end   = min(I_row, matrix.J_size());
+  //     }
+  //     else if constexpr (mask == Matrix_Storage_Mask_Enum::Upper)
+  //     {
+  //       J_begin = min(I_row, max(0, matrix.J_size() - 1));
+  //       J_end   = matrix.J_size();
+  //     }
+  //     else
+  //     {
+  //       static_assert(mask == Matrix_Storage_Mask_Enum::Upper_Strict);
+  //       J_begin = min(I_row + 1, max(0, matrix.J_size() - 1));
+  //       J_end   = matrix.J_size();
+  //     }
+  //     std::size_t I_row_size = (J_begin <= J_end) ? J_end - J_begin : 0;
+
+  //     return create_vector_view(&matrix(I_row, J_begin), I_row_size, matrix.leading_dimension());
+  //   }
+  // }
+
+  template <typename IMPL>
   auto
-  create_view_matrix_row(Dense_Matrix_Crtp<IMPL>& matrix, const I_ROW I_row) noexcept
+  create_view_matrix_row(Dense_Matrix_Crtp<IMPL>& matrix, const std::size_t I_row) noexcept
   {
-    return create_vector_view(&matrix(I_row, 0), matrix.J_size(), matrix.leading_dimension());
+    assert(I_row < matrix.I_size());
+    constexpr Matrix_Storage_Mask_Enum mask =
+        IMPL::storage_scheme_type::matrix_storage_mask_type::value;
+    if constexpr (mask == Matrix_Storage_Mask_Enum::None)
+    {
+      return create_vector_view(&matrix(I_row, 0), matrix.J_size(), matrix.leading_dimension());
+    }
+    else
+    {
+      std::size_t memory_offset;
+      std::size_t J_size;
+
+      // Note: we use offset as it does not perform bound check
+      switch (mask)
+      {
+        case Matrix_Storage_Mask_Enum::Lower:
+          memory_offset = matrix.storage_scheme().offset(I_row, 0);
+          J_size        = I_row + 1;
+          break;
+
+        case Matrix_Storage_Mask_Enum::Lower_Strict:
+          memory_offset = matrix.storage_scheme().offset(I_row, 0);
+          J_size        = I_row;
+          break;
+
+        case Matrix_Storage_Mask_Enum::Upper:
+          memory_offset = matrix.storage_scheme().offset(I_row, I_row);
+          J_size        = (matrix.J_size() > I_row) ? matrix.J_size() - I_row : 0;
+          break;
+
+        case Matrix_Storage_Mask_Enum::Upper_Strict:
+          memory_offset = matrix.storage_scheme().offset(I_row, I_row + 1);
+          J_size        = (matrix.J_size() > I_row + 1) ? matrix.J_size() - (I_row + 1) : 0;
+
+          break;
+
+        default:
+          assert(0 && "Undefined type");
+      }
+
+      J_size = std::min<std::size_t>(matrix.J_size(), J_size);
+
+      return create_vector_view(matrix.data() + memory_offset, J_size, matrix.leading_dimension());
+    }
   }
 }

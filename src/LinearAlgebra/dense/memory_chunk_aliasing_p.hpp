@@ -6,6 +6,7 @@
 //       if "are_not_aliased_p()" is TRUE then for sure they are NOT
 //                                             aliased.
 //
+#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/memory_chunk.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 
@@ -25,8 +26,10 @@ namespace LinearAlgebra
     {
       if (mem_chunk_0.data() + mem_chunk_0.capacity() < mem_chunk_1.data()) return true;
       if (mem_chunk_1.data() + mem_chunk_1.capacity() < mem_chunk_0.data()) return true;
+      return false;
     }
-    return false;
+    // 
+    return true;
   }
   template <typename MEM_CHUNK_0, typename MEM_CHUNK_1>
   std::enable_if_t<
@@ -36,7 +39,9 @@ namespace LinearAlgebra
     return not are_not_aliased_p(mem_chunk_0, mem_chunk_1);
   }
 
-  // Default Vector wrapper
+  //////////////////////////////////////////////////////////////////
+  // Dense Vector wrapper
+  //////////////////////////////////////////////////////////////////
   //
   template <typename VECTOR_0, typename VECTOR_1>
   bool
@@ -52,5 +57,57 @@ namespace LinearAlgebra
   {
     return are_possibly_aliased_p(vector_0.memory_chunk(), vector_1.memory_chunk());
   }
-  // TODO for matrix (do not forget to add mem_chunk access)
+
+  //////////////////////////////////////////////////////////////////
+  // Dense Matrix wrapper
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename MATRIX_0, typename MATRIX_1>
+  bool
+  are_not_aliased_p(const Dense_Matrix_Crtp<MATRIX_0>& matrix_0,
+                    const Dense_Matrix_Crtp<MATRIX_1>& matrix_1) noexcept
+  {
+    return are_not_aliased_p(matrix_0.memory_chunk(), matrix_1.memory_chunk());
+  }
+  template <typename MATRIX_0, typename MATRIX_1>
+  bool
+  are_possibly_aliased_p(const Dense_Matrix_Crtp<MATRIX_0>& matrix_0,
+                         const Dense_Matrix_Crtp<MATRIX_1>& matrix_1) noexcept
+  {
+    return are_possibly_aliased_p(matrix_0.memory_chunk(), matrix_1.memory_chunk());
+  }
+
+  //////////////////////////////////////////////////////////////////
+  // Dense Matrix & Dense Vector (aliasing with row/col view)
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename VECTOR_0, typename MATRIX_1>
+  bool
+  are_not_aliased_p(const Dense_Vector_Crtp<VECTOR_0>& vector_0,
+                    const Dense_Matrix_Crtp<MATRIX_1>& matrix_1) noexcept
+  {
+    return are_not_aliased_p(vector_0.memory_chunk(), matrix_1.memory_chunk());
+  }
+  template <typename VECTOR_0, typename MATRIX_1>
+  bool
+  are_possibly_aliased_p(const Dense_Vector_Crtp<VECTOR_0>& vector_0,
+                         const Dense_Matrix_Crtp<MATRIX_1>& matrix_1) noexcept
+  {
+    return are_possibly_aliased_p(vector_0.memory_chunk(), matrix_1.memory_chunk());
+  }
+  // reverse args order
+  template <typename MATRIX_0, typename VECTOR_1>
+  bool
+  are_not_aliased_p(const Dense_Matrix_Crtp<MATRIX_0>& matrix_0,
+                    const Dense_Vector_Crtp<VECTOR_1>& vector_1) noexcept
+  {
+    return are_not_aliased_p(matrix_0.memory_chunk(), vector_1.memory_chunk());
+  }
+  template <typename MATRIX_0, typename VECTOR_1>
+  bool
+  are_possibly_aliased_p(const Dense_Matrix_Crtp<MATRIX_0>& matrix_0,
+                         const Dense_Vector_Crtp<VECTOR_1>& vector_1) noexcept
+  {
+    return are_possibly_aliased_p(matrix_0.memory_chunk(), vector_1.memory_chunk());
+  }
 }

@@ -1,3 +1,8 @@
+
+executable('garbage',
+	   'garbage.cpp',
+	   dependencies : [LinearAlgebra_dep])
+
 # deprecated
 executable('deprecated_experimental_meta_expr',
 	   'deprecated_experimental_meta_expr.cpp',

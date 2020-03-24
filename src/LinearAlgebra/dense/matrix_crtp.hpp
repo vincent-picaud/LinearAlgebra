@@ -100,13 +100,6 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
-    // Default_Matrix_Crtp(storage_scheme_type&& storage_scheme,
-    //                           memory_chunk_type&&   memory_chunk)
-    //     : _storage_scheme(std::move(storage_scheme)), _memory_chunk(std::move(memory_chunk))
-    // {
-    //   assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
-    // }
-
     // This constructor assumes than memory_chunk allocates its memory
     Dense_Matrix_Crtp(const storage_scheme_type& storage_scheme)
         : _storage_scheme(storage_scheme), _memory_chunk(_storage_scheme.required_capacity())
@@ -167,6 +160,11 @@ namespace LinearAlgebra
     {
       return base_type::impl().impl_storage_scheme();
     };
+    const memory_chunk_type&
+    memory_chunk() const
+    {
+      return base_type::impl().impl_memory_chunk();
+    };
 
    public:
     /////////////////////////
@@ -208,6 +206,11 @@ namespace LinearAlgebra
     impl_storage_scheme() const
     {
       return _storage_scheme;
+    }
+    const memory_chunk_type&
+    impl_memory_chunk() const
+    {
+      return _memory_chunk;
     }
 
     auto&

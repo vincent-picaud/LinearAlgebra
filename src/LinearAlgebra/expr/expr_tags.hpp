@@ -34,6 +34,11 @@ namespace LinearAlgebra
   };
   constexpr auto _plus_ = _plus_t_();
 
+  struct _product_t_
+  {
+  };
+  constexpr auto _product_ = _product_t_();
+
   struct _assign_t_
   {
   };

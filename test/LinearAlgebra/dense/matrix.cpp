@@ -4,6 +4,17 @@
 
 using namespace LinearAlgebra;
 
+TEST(Matrix, is_trivially_copyable)
+{
+  using tiny_matrix_type = Tiny_Matrix<int, 3,2>;
+
+  EXPECT_TRUE((std::is_trivially_copyable_v<tiny_matrix_type>));
+
+  using matrix_type = Matrix<int>;
+
+  EXPECT_FALSE((std::is_trivially_copyable_v<matrix_type>));
+}
+
 TEST(Matrix, Static)
 {
   Tiny_Matrix<int, 3, 2> m;

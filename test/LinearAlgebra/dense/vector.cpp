@@ -4,7 +4,18 @@
 
 using namespace LinearAlgebra;
 
-TEST(Tiny_Vector, Constructor)
+TEST(Vector, is_trivially_copyable)
+{
+  using tiny_vector_type = Tiny_Vector<int, 3>;
+
+  EXPECT_TRUE((std::is_trivially_copyable_v<tiny_vector_type>));
+
+  using vector_type = Vector<int>;
+
+  EXPECT_FALSE((std::is_trivially_copyable_v<vector_type>));
+}
+
+TEST(Vector, constructor_static)
 {
   Tiny_Vector<int, 3> v;
 
@@ -13,7 +24,7 @@ TEST(Tiny_Vector, Constructor)
   v[2] = 2;
   EXPECT_EQ(v[2], 2);
 }
-TEST(Vector, Constructor)
+TEST(Vector, constructor_dynamic)
 {
   Vector<int> v(3);
 
@@ -23,7 +34,7 @@ TEST(Vector, Constructor)
   EXPECT_EQ(v[2], 2);
 }
 
-TEST(Tiny_Vector_View, Constructor)
+TEST(Vector_View, constructor_raw_pointer)
 {
   int data[] = {1, 2, 3, 4, 5};
 
@@ -40,7 +51,7 @@ TEST(Tiny_Vector_View, Constructor)
   EXPECT_EQ(data[2], 10);
 }
 
-// TEST(Tiny_Vector_Const_View, Constructor)
+// TEST(Vector_Const_View, Constructor)
 // {
 //   int data[] = {1, 2, 3, 4, 5};
 

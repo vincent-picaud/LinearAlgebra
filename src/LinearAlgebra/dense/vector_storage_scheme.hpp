@@ -81,31 +81,31 @@ namespace LinearAlgebra
     increment_type _increment;
 
    public:
-    constexpr Default_Vector_Storage_Scheme() : _size(), _increment() {}
+    constexpr Default_Vector_Storage_Scheme() noexcept = default;
 
-    constexpr Default_Vector_Storage_Scheme(const N_TYPE n, const INCREMENT inc)
+    constexpr Default_Vector_Storage_Scheme(const N_TYPE n, const INCREMENT inc) noexcept
         : _size(n), _increment(inc)
     {
       assert(_increment > 0);
     }
-    constexpr Default_Vector_Storage_Scheme(const N_TYPE n)
+    constexpr Default_Vector_Storage_Scheme(const N_TYPE n) noexcept
         : Default_Vector_Storage_Scheme(n, Detail::increment_default_value_helper<INCREMENT>())
     {
     }
 
     constexpr required_capacity_type
-    required_capacity() const
+    required_capacity() const noexcept
     {
       return Detail::vector_required_capacity_helper(_size, _increment);
     }
     constexpr size_type
-    size() const
+    size() const noexcept
     {
       return _size;
     }
 
     constexpr increment_type
-    increment() const
+    increment() const noexcept
     {
       return _increment;
     }
@@ -117,14 +117,14 @@ namespace LinearAlgebra
     };
 
     constexpr size_t
-    offset(const size_t i) const
+    offset(const size_t i) const noexcept
     {
       return i * _increment;
     }
 
     template <typename LAMBDA>
     void
-    loop_over_indices(const LAMBDA& lambda) const
+    loop_over_indices(const LAMBDA& lambda) const noexcept
     {
       Detail::loop_over_indices(lambda, _size);
     }
@@ -134,10 +134,11 @@ namespace LinearAlgebra
 
   template <typename N_0_TYPE, typename INCREMENT_0_INCREMENT, typename N_1_TYPE,
             typename INCREMENT_1_INCREMENT>
-  constexpr bool
+  inline constexpr bool
   are_compatible_p(
       const Default_Vector_Storage_Scheme<N_0_TYPE, INCREMENT_0_INCREMENT>& vector_storage_0,
-      const Default_Vector_Storage_Scheme<N_1_TYPE, INCREMENT_1_INCREMENT>& vector_storage_1)
+      const Default_Vector_Storage_Scheme<N_1_TYPE, INCREMENT_1_INCREMENT>&
+          vector_storage_1) noexcept
   {
     return vector_storage_0.size() == vector_storage_1.size();
   }

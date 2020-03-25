@@ -35,6 +35,9 @@ namespace LinearAlgebra
       using exact_type  = typename base_type::exact_type;
       using traits_type = typename base_type::traits_type;
 
+      // element type is required to restrict operator overloading
+      // involving scalar like α.M
+      using element_type  = typename traits_type::element_type;
       using operator_type = typename traits_type::operator_type;
     };
 
@@ -55,6 +58,7 @@ namespace LinearAlgebra
       using exact_type  = typename base_type::exact_type;
       using traits_type = typename base_type::traits_type;
 
+      using element_type  = typename traits_type::element_type;
       using operator_type = typename base_type::operator_type;
     };
 
@@ -76,6 +80,7 @@ namespace LinearAlgebra
       using exact_type  = typename base_type::exact_type;
       using traits_type = typename base_type::traits_type;
 
+      using element_type  = typename traits_type::element_type;
       using operator_type = typename base_type::operator_type;
 
      public:
@@ -103,29 +108,34 @@ namespace LinearAlgebra
 
   namespace Detail
   {
-    template <typename BINARY_OPERATOR_TYPE, typename ARG_0_TYPE, typename ARG_1_TYPE>
+    template <typename ELEMENT_TYPE, typename BINARY_OPERATOR_TYPE, typename ARG_0_TYPE,
+              typename ARG_1_TYPE>
     class MetaExpr_BinaryOp;
   }
 
-  template <typename BINARY_OPERATOR_TYPE, typename ARG_0_TYPE, typename ARG_1_TYPE>
-  struct Crtp_Type_Traits<Detail::MetaExpr_BinaryOp<BINARY_OPERATOR_TYPE, ARG_0_TYPE, ARG_1_TYPE>>
+  template <typename ELEMENT_TYPE, typename BINARY_OPERATOR_TYPE, typename ARG_0_TYPE,
+            typename ARG_1_TYPE>
+  struct Crtp_Type_Traits<
+      Detail::MetaExpr_BinaryOp<ELEMENT_TYPE, BINARY_OPERATOR_TYPE, ARG_0_TYPE, ARG_1_TYPE>>
   {
+    using element_type  = ELEMENT_TYPE;
     using operator_type = BINARY_OPERATOR_TYPE;
   };
 
   namespace Detail
   {
-    template <typename Op, typename ARG_0, typename ARG_1>
+    template <typename ELEMENT_TYPE, typename Op, typename ARG_0, typename ARG_1>
     class MetaExpr_BinaryOp final
-        : public MetaExpr_BinaryOp_Crtp<MetaExpr_BinaryOp<Op, ARG_0, ARG_1>>
+        : public MetaExpr_BinaryOp_Crtp<MetaExpr_BinaryOp<ELEMENT_TYPE, Op, ARG_0, ARG_1>>
     {
       ///////////
       // Types //
       ///////////
       //
      public:
-      using base_type = MetaExpr_BinaryOp_Crtp<MetaExpr_BinaryOp<Op, ARG_0, ARG_1>>;
+      using base_type = MetaExpr_BinaryOp_Crtp<MetaExpr_BinaryOp<ELEMENT_TYPE, Op, ARG_0, ARG_1>>;
 
+      using element_type  = typename base_type::element_type;
       using operator_type = typename base_type::operator_type;
 
       /////////////
@@ -167,7 +177,7 @@ namespace LinearAlgebra
       }
     };
     static_assert(std::is_trivially_copyable_v<
-                  Detail::MetaExpr_BinaryOp<_product_t_, Matrix<double>, Vector<double>>>);
+                  Detail::MetaExpr_BinaryOp<double, _product_t_, Matrix<double>, Vector<double>>>);
 
   }  // Detail
 
@@ -190,14 +200,16 @@ namespace LinearAlgebra
   template <typename A0_IMPL, typename A1_IMPL>
   auto operator*(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
-    return Detail::MetaExpr_BinaryOp<_product_t_, A0_IMPL, A1_IMPL>{arg_0.impl(), arg_1.impl()};
+    return Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _product_t_, A0_IMPL,
+                                     A1_IMPL>{arg_0.impl(), arg_1.impl()};
   }
 
-  template <typename A0_IMPL>
-  auto operator*(const A0_IMPL& arg_0, const _matrix_0_t_& arg_1)
+  template <typename A1_IMPL>
+  auto operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     std::cerr << __PRETTY_FUNCTION__ << std::endl;
-    return Detail::MetaExpr_BinaryOp<_product_t_, A0_IMPL, _matrix_0_t_>{arg_0, arg_1};
+    return Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_, Element_Type_t<A1_IMPL>,
+                                     A1_IMPL>{arg_0, arg_1.impl()};
   }
 
   //  _matrix_0_t_
@@ -209,17 +221,18 @@ namespace LinearAlgebra
   auto
   operator+(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
-    return Detail::MetaExpr_BinaryOp<_plus_t_, A0_IMPL, A1_IMPL>{arg_0.impl(), arg_1.impl()};
+    return Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _plus_t_, A0_IMPL,
+                                     A1_IMPL>{arg_0.impl(), arg_1.impl()};
   }
 
   //////////////////////////////////////////////////////////////////
 
-  // template <typename... ARGS>
-  // void
-  // expr(const ARGS&...)
-  // {
-  //   std::cerr << __PRETTY_FUNCTION__ << std::endl;
-  // }
+  template <typename... ARGS>
+  void
+  expr(const ARGS&...)
+  {
+    std::cerr << __PRETTY_FUNCTION__ << std::endl;
+  }
 
   // Everything that's not a Detail::MetaExpr_Crtp is considered as a
   // final node
@@ -267,7 +280,7 @@ main()
   static_assert(std::is_trivially_copyable_v<Tiny_Matrix<int, 2, 3>>);
 
   //auto expression = M1 * M2;
-  auto expression = 4 * _matrix_0_;
+  auto expression = 4 * M2;
   //print(expression);
   auto expanded = expand(expression);
   print(expand(expression));

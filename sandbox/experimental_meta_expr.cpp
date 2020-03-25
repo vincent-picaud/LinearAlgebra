@@ -192,24 +192,34 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   // Operators overloading
   //////////////////////////////////////////////////////////////////
+  //
+  // Allowed arguments (beside scalar)
+  //
+  template <typename... IMPL>
+  constexpr auto Is_Supported_MetaExpr_Argument_v =
+      ((Is_Crtp_Interface_Of_v<Detail::MetaExpr_Crtp, IMPL> or
+        Is_Crtp_Interface_Of_v<Vector_Crtp, IMPL> or
+        Is_Crtp_Interface_Of_v<Matrix_Crtp, IMPL>)and...);
 
-  //================================================================
   // Product
   //================================================================
   //
   template <typename A0_IMPL, typename A1_IMPL>
-  auto operator*(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
+                   Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _product_t_,
+                                             A0_IMPL, A1_IMPL>>
+  operator*(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
-    return Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _product_t_, A0_IMPL,
-                                     A1_IMPL>{arg_0.impl(), arg_1.impl()};
+    return {arg_0.impl(), arg_1.impl()};
   }
 
   template <typename A1_IMPL>
-  auto operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+                   Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
+                                             Element_Type_t<A1_IMPL>, A1_IMPL>> 
+  operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
-    std::cerr << __PRETTY_FUNCTION__ << std::endl;
-    return Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_, Element_Type_t<A1_IMPL>,
-                                     A1_IMPL>{arg_0, arg_1.impl()};
+    return {arg_0, arg_1.impl()};
   }
 
   //  _matrix_0_t_
@@ -279,8 +289,8 @@ main()
   Tiny_Matrix<int, 2, 3> M2;
   static_assert(std::is_trivially_copyable_v<Tiny_Matrix<int, 2, 3>>);
 
-  //auto expression = M1 * M2;
-  auto expression = 4 * M2;
+  auto expression_2 = M2 * M1 * M2;
+  auto expression   = 4 * M2;
   //print(expression);
   auto expanded = expand(expression);
   print(expand(expression));

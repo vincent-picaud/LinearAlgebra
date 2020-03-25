@@ -1,4 +1,5 @@
 test_array = [
+  ['crtp_test','crtp_exe','crtp.cpp'],
   ['is_std_integral_constant_test','is_std_integral_constant_exe','is_std_integral_constant.cpp'],
   ['size_utils_test','size_utils_exe','size_utils.cpp'],
   ['is_complete_test','is_complete_exe','is_complete.cpp'],

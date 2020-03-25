@@ -181,14 +181,6 @@ namespace LinearAlgebra
 
   }  // Detail
 
-  // template <typename Op, typename ARG_0, typename ARG_1>
-  // struct BinaryOp
-  // {
-  //   const ARG_0& _arg_0;
-  //   const ARG_1& _arg_1;
-  //   BinaryOp(const ARG_0& arg_0, const ARG_1& arg_1) : _arg_0(arg_0), _arg_1(arg_1) {}
-  // };
-
   //////////////////////////////////////////////////////////////////
   // Operators overloading
   //////////////////////////////////////////////////////////////////
@@ -213,26 +205,28 @@ namespace LinearAlgebra
     return {arg_0.impl(), arg_1.impl()};
   }
 
+  // scalar * Crpt<> product
   template <typename A1_IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
                    Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
-                                             Element_Type_t<A1_IMPL>, A1_IMPL>> 
+                                             Element_Type_t<A1_IMPL>, A1_IMPL>>
   operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0, arg_1.impl()};
   }
 
-  //  _matrix_0_t_
+  //
   //================================================================
   // Plus
   //================================================================
   //
   template <typename A0_IMPL, typename A1_IMPL>
-  auto
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
+                   Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _plus_t_,
+                                             A0_IMPL, A1_IMPL>>
   operator+(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
-    return Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _plus_t_, A0_IMPL,
-                                     A1_IMPL>{arg_0.impl(), arg_1.impl()};
+    return {arg_0.impl(), arg_1.impl()};
   }
 
   //////////////////////////////////////////////////////////////////
@@ -254,6 +248,7 @@ namespace LinearAlgebra
     return {t};
   }
 
+  // TODO add Unary op
   template <typename IMPL>
   inline constexpr auto
   expand(const Detail::MetaExpr_BinaryOp_Crtp<IMPL>& expression_tree) noexcept
@@ -271,6 +266,25 @@ namespace LinearAlgebra
                             expand(expression_tree.arg_1()));
     }
   }
+
+  // Functions to use in Vector/Matrix interface
+  // -> here we only define the Matrix case
+
+  template <typename M_DEST_IMPL, typename... ARGS>
+  void
+  compute(Matrix_Crtp<M_DEST_IMPL>& M_dest, const std::tuple<ARGS...>& args_as_tuple)
+  {
+    std::apply([&](const auto&... args) { expr(M_dest, _assign_, args...); }, args_as_tuple);
+  }
+
+  template <typename M_DEST_IMPL, typename SRC_IMPL>
+  void
+  compute(Matrix_Crtp<M_DEST_IMPL>& M_dest, const Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
+  {
+    compute(M_dest, expand(metaExpr.impl()));
+  }
+
+  //================================================================
 
   template <typename T>
   void
@@ -290,7 +304,7 @@ main()
   static_assert(std::is_trivially_copyable_v<Tiny_Matrix<int, 2, 3>>);
 
   auto expression_2 = M2 * M1 * M2;
-  auto expression   = 4 * M2;
+  auto expression   = 4 * M2 + 5 * M1;
   //print(expression);
   auto expanded = expand(expression);
   print(expand(expression));
@@ -301,7 +315,7 @@ main()
   // Call our expr
   // std::apply([](auto&&... args) { expr(args...); }, expanded);
 
-  std::apply([&M2](const auto&... args) { expr(M2, _assign_, args...); }, expanded);
-
+  //std::apply([&M2](const auto&... args) { expr(M2, _assign_, args...); }, expanded);
+  compute(M2, expression_2);
   //expr(M2, _assign_, 2, _matrix_0_);
 }

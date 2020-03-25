@@ -179,19 +179,52 @@ namespace LinearAlgebra
   //   BinaryOp(const ARG_0& arg_0, const ARG_1& arg_1) : _arg_0(arg_0), _arg_1(arg_1) {}
   // };
 
+  //////////////////////////////////////////////////////////////////
+  // Operators overloading
+  //////////////////////////////////////////////////////////////////
+
+  //================================================================
+  // Product
+  //================================================================
+  //
   template <typename A0_IMPL, typename A1_IMPL>
   auto operator*(const Matrix_Crtp<A0_IMPL>& arg_0, const Matrix_Crtp<A1_IMPL>& arg_1)
   {
-    return Detail::MetaExpr_BinaryOp<_product_t_, Matrix_Crtp<A0_IMPL>, Matrix_Crtp<A1_IMPL>>{
-        arg_0, arg_1};
+    return Detail::MetaExpr_BinaryOp<_product_t_, A0_IMPL, A1_IMPL>{arg_0.impl(), arg_1.impl()};
   }
 
   template <typename ARG_0_IMPL, typename A1_IMPL>
   auto operator*(const Detail::MetaExpr_Crtp<ARG_0_IMPL>& arg_0, const Matrix_Crtp<A1_IMPL>& arg_1)
   {
-    return Detail::MetaExpr_BinaryOp<_product_t_, Detail::MetaExpr_Crtp<ARG_0_IMPL>,
-                                     Matrix_Crtp<A1_IMPL>>{arg_0, arg_1};
+    return Detail::MetaExpr_BinaryOp<_product_t_, ARG_0_IMPL, A1_IMPL>{arg_0.impl(), arg_1.impl()};
   }
+
+  //================================================================
+  // Plus
+  //================================================================
+  //
+  template <typename A0_IMPL, typename A1_IMPL>
+  auto
+  operator+(const Matrix_Crtp<A0_IMPL>& arg_0, const Matrix_Crtp<A1_IMPL>& arg_1)
+  {
+    return Detail::MetaExpr_BinaryOp<_plus_t_, A0_IMPL, A1_IMPL>{arg_0.impl(), arg_1.impl()};
+  }
+
+  template <typename ARG_0_IMPL, typename A1_IMPL>
+  auto
+  operator+(const Detail::MetaExpr_Crtp<ARG_0_IMPL>& arg_0, const Matrix_Crtp<A1_IMPL>& arg_1)
+  {
+    return Detail::MetaExpr_BinaryOp<_plus_t_, ARG_0_IMPL, A1_IMPL>{arg_0.impl(), arg_1.impl()};
+  }
+
+  template <typename ARG_0_IMPL, typename ARG_1_IMPL>
+  auto
+  operator+(const Matrix_Crtp<ARG_0_IMPL>& arg_0, const Detail::MetaExpr_Crtp<ARG_1_IMPL>& arg_1)
+  {
+    return Detail::MetaExpr_BinaryOp<_plus_t_, ARG_0_IMPL, ARG_1_IMPL>{arg_0.impl(), arg_1.impl()};
+  }
+
+  //////////////////////////////////////////////////////////////////
 
   template <typename... ARGS>
   void
@@ -200,9 +233,11 @@ namespace LinearAlgebra
     std::cerr << __PRETTY_FUNCTION__ << std::endl;
   }
 
+  // Everything that's not an Detail::MetaExpr_Crtp is considered as a
+  // final node
   template <typename T>
-  inline constexpr std::enable_if_t<
-      not Is_Crtp_Interface_Of<Detail::MetaExpr_Crtp, T>::value, std::tuple<const T&>>
+  inline constexpr std::enable_if_t<not Is_Crtp_Interface_Of<Detail::MetaExpr_Crtp, T>::value,
+                                    std::tuple<const T&>>
   expand(const T& t) noexcept
   {
     return {t};
@@ -234,12 +269,15 @@ main()
   Tiny_Matrix<int, 2, 3> M2;
   static_assert(std::is_trivially_copyable_v<Tiny_Matrix<int, 2, 3>>);
 
-  auto expression = M1 * M2;
-  //auto expression = M1 * M2 * M1 * M2;
+  //auto expression = M1 * M2;
+  auto expression = M2 + M1 * M2;
   //print(expression);
   auto expanded = expand(expression);
   //  print(expand(expression));
   // std::apply(expr, expanded);
   // From:https://stackoverflow.com/a/37100646/2001017
+  //  std::apply([](auto&&... args) { expr(args...); }, expanded);
+
+  // Call our expr
   std::apply([](auto&&... args) { expr(args...); }, expanded);
 }

@@ -25,11 +25,13 @@ namespace LinearAlgebra
     using traits_type = Crtp_Type_Traits<exact_type>;
 
    public:
-    const exact_type& impl() const noexcept  //!< use exact_type instance
+    const exact_type&
+    impl() const noexcept  //!< use exact_type instance
     {
       return static_cast<const exact_type&>(*this);
     };
-    exact_type& impl() noexcept  //!< use exact_type instance
+    exact_type&
+    impl() noexcept  //!< use exact_type instance
     {
       return static_cast<exact_type&>(*this);
     };
@@ -48,4 +50,8 @@ namespace LinearAlgebra
       : std::true_type
   {
   };
+
+  template <template <typename> class CRTP_INTERFACE, typename OBJ>
+  constexpr auto Is_Crtp_Interface_Of_v = Is_Crtp_Interface_Of<CRTP_INTERFACE, OBJ>::value;
+
 }  // namespace LinearAlgebra

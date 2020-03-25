@@ -1,123 +1,84 @@
-// -*- compile-command: "g++ -std=c++17  poub.cpp && ./a.out"; -*-
+// -*- compile-command: "g++ -std=c++17  poub2.cpp && ./a.out"; -*-
 #include <array>
+#include <ccomplex>
 #include <iostream>
 #include <memory>
 #include <tuple>
 #include <type_traits>
 
-#include <LinearAlgebra/utils/type.hpp>
+#include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/matrix.hpp"
+#include "LinearAlgebra/utils/type.hpp"
+#include "LinearAlgebra/vector.hpp"
 
-struct _plus_t_
+namespace LinearAlgebra
 {
-};
-struct _product_t_
-{
-};
-struct _transpose_t_
-{
-};
+  template <typename Op, typename ARG_0, typename ARG_1>
+  struct BinaryOp
+  {
+    const ARG_0& _arg_0;
+    const ARG_1& _arg_1;
+    BinaryOp(const ARG_0& arg_0, const ARG_1& arg_1) : _arg_0(arg_0), _arg_1(arg_1) {}
+  };
 
-struct Matrix
-{
-};
-struct Vector
-{
-};
+  template <typename A0_IMPL, typename A1_IMPL>
+  auto operator*(const Matrix_Crtp<A0_IMPL>& arg_0, const Matrix_Crtp<A1_IMPL>& arg_1)
+  {
+    return BinaryOp<_product_t_, Matrix_Crtp<A0_IMPL>, Matrix_Crtp<A1_IMPL>>{arg_0, arg_1};
+  }
 
-// For sanity checks
-template <typename>
-struct Is_Tuple : std::false_type
-{
-};
+  template <typename ARG_0_Op, typename ARG_0_T0, typename ARG_0_T1, typename A1_IMPL>
+  auto operator*(const BinaryOp<ARG_0_Op, ARG_0_T0, ARG_0_T1>& arg_0,
+                 const Matrix_Crtp<A1_IMPL>& arg_1)
+  {
+    return BinaryOp<_product_t_, BinaryOp<ARG_0_Op, ARG_0_T0, ARG_0_T1>, Matrix_Crtp<A1_IMPL>>{
+        arg_0, arg_1};
+  }
 
-template <typename... T>
-struct Is_Tuple<std::tuple<T...>> : std::true_type
-{
-};
+  template <typename... ARGS>
+  void
+  expr(const ARGS&...)
+  {
+    std::cerr << __PRETTY_FUNCTION__ << std::endl;
+  }
 
-template <typename... T>
-constexpr auto Is_Tuple_v = Is_Tuple<T...>::value;
-// For sanity checks END
+  template <typename T>
+  auto
+  expand(const T& t)
+  {
+    return std::tuple<const T&>(t);
+  }
 
-template <typename ELEMENT_TYPE, typename... ARGS>
-struct Meta_Expression
-{
-  static_assert(((not Is_Tuple_v<ARGS>)and...));
+  template <typename Op, typename T0, typename T1>
+  auto
+  expand(const BinaryOp<Op, T0, T1>& expression_tree)
+  {
+    return std::tuple_cat(expand(expression_tree._arg_0), std::make_tuple(Op()),
+                          expand(expression_tree._arg_1));
+  }
 
-  std::tuple<const ARGS&...> _args;
-  Meta_Expression(const ARGS&... args) : _args(args...) {}
-  Meta_Expression(const std::tuple<const ARGS&...> args) : _args(std::move(args)) {}
-};
+  template <typename T>
+  void
+  print(const T&)
+  {
+    std::cerr << __PRETTY_FUNCTION__ << std::endl;
+  }
+}  // LinearAlgebra;
 
-template <typename ELEMENT_TYPE, typename... ARGS>
-constexpr auto
-create_meta_expression(const LinearAlgebra::Type<ELEMENT_TYPE>, const ARGS&... args) noexcept
-{
-  return Meta_Expression<ELEMENT_TYPE, ARGS...>(args...);
-}
-template <typename ELEMENT_TYPE, typename... ARGS>
-constexpr auto
-create_meta_expression(const LinearAlgebra::Type<ELEMENT_TYPE>,
-                       const std::tuple<const ARGS&...>& args) noexcept
-{
-  return Meta_Expression<ELEMENT_TYPE, ARGS...>(args);
-}
-
-auto
-transpose(const Matrix& M0)
-{
-}
-
-auto operator*(const Matrix& M0, const Matrix& M1)
-{
-  return create_meta_expression(LinearAlgebra::Type<int>(), _product_t_(), M0, M1);
-  //  return Meta_Expression<int>{_product_t_(), M0, M1};
-}
-
-template <typename ELEMENT_TYPE, typename... ARGS>
-auto operator*(const Meta_Expression<ELEMENT_TYPE, ARGS...>& A0, const Matrix& A1)
-{
-  constexpr auto op = _product_t_();
-
-  return create_meta_expression(LinearAlgebra::Type<int>(),
-                                std::tuple_cat(std::tie(op), A0._args, std::tie(A1)));
-
-  //  return Meta_Expression<int>{std::tuple_cat(std::tie(op), A0._args, std::tie(A1))};
-}
-
-// template <typename F, typename A0, typename A1>
-// auto expand(const Meta_Expression<F, A0, A1>& expr)
-// {
-// }
-
-template <typename T>
-void
-print(const T&)
-{
-  std::cerr << __PRETTY_FUNCTION__ << std::endl;
-}
-
-//
-struct A
-{
-  const int& _n;
-};
-
-A
-foo(const int& n)
-{
-  return A{n};
-};
+using namespace LinearAlgebra;
 
 int
 main()
 {
-  Matrix M1, M2;
-  // auto   Meta_Expression = M1 * M2;
-  auto Meta_Expression = M1 * M2 * M1 * M2;
-  print(Meta_Expression);
+  Matrix<double> M1;
+  Tiny_Matrix<int, 2, 3> M2;
 
-  auto a = foo(5);
-  auto b = a;
-  std::cout << b._n;
+  // auto   expression = M1 * M2;
+  auto expression = M1 * M2 * M1 * M2;
+  print(expression);
+  auto expanded = expand(expression);
+  //  print(expand(expression));
+  // std::apply(expr, expanded);
+  // From:https://stackoverflow.com/a/37100646/2001017
+  std::apply([](auto&&... args) { expr(args...); }, expanded);
 }

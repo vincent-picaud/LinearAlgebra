@@ -1,3 +1,8 @@
-experimental_meta_expr_exe = executable('experimental_meta_expr',
-					'experimental_meta_expr.cpp',
-					dependencies : [LinearAlgebra_dep])
+# deprecated
+executable('deprecated_experimental_meta_expr',
+	   'deprecated_experimental_meta_expr.cpp',
+	   dependencies : [LinearAlgebra_dep])
+
+executable('experimental_meta_expr',
+	   'experimental_meta_expr.cpp',
+	   dependencies : [LinearAlgebra_dep])

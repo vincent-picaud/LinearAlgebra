@@ -8,9 +8,9 @@
 //
 #pragma once
 
-#include "LinearAlgebra/utils/crtp.hpp"
-#include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
+#include "LinearAlgebra/dense/vector_crtp.hpp"
+#include "LinearAlgebra/utils/crtp.hpp"
 
 namespace LinearAlgebra
 {
@@ -36,9 +36,9 @@ namespace LinearAlgebra
 
       // element type is required to restrict operator overloading
       // involving scalar like α.M
-      using element_type  = typename traits_type::element_type;
+      using element_type = typename traits_type::element_type;
       // operator type is mainly used by expand() function
-      // its type value is an expr_tag 
+      // its type value is an expr_tag
       using operator_type = typename traits_type::operator_type;
     };
 
@@ -177,9 +177,5 @@ namespace LinearAlgebra
         return _arg_1;
       }
     };
-    // static_assert(std::is_trivially_copyable_v<
-    //               Detail::MetaExpr_BinaryOp<double, _product_t_, Matrix<double>, Vector<double>>>);
-  
-        
   }  // Detail
 }

@@ -7,11 +7,27 @@
 
 namespace LinearAlgebra
 {
+  namespace Detail
+  {
+    // Note: can be replaced by "concept" or by using a Crtp static
+    //       interface. The tag approach as the advantage of using
+    //       less boilerplate code
+    //
+    // Note: this tag must be inherited by _all_ memory chunk classes.
+    //
+    struct Memory_Chunk_Tag
+    {
+    };
+
+    template <typename MEMORY_CHUNK>
+    constexpr auto Is_Memory_Chunk_v = std::is_base_of_v<Memory_Chunk_Tag, MEMORY_CHUNK>;
+  }
+
   template <typename T, typename CAPACITY_TYPE>
   class Default_Memory_Chunk;
 
   template <typename T, std::size_t N>
-  class Default_Memory_Chunk<T, std::integral_constant<std::size_t, N>>
+  class Default_Memory_Chunk<T, std::integral_constant<std::size_t, N>> : public Detail::Memory_Chunk_Tag
   {
    public:
     using capacity_type = std::integral_constant<std::size_t, N>;
@@ -41,7 +57,7 @@ namespace LinearAlgebra
   };
 
   template <typename T>
-  class Default_Memory_Chunk<T, std::size_t>
+  class Default_Memory_Chunk<T, std::size_t> : public Detail::Memory_Chunk_Tag
   {
    public:
     using capacity_type = std::size_t;
@@ -76,7 +92,7 @@ namespace LinearAlgebra
   // & static cases, not need for specialization
   //
   template <typename T, typename CAPACITY_TYPE>
-  class View_Default_Memory_Chunk
+  class View_Default_Memory_Chunk : public Detail::Memory_Chunk_Tag
   {
     static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<CAPACITY_TYPE>);
 
@@ -118,7 +134,7 @@ namespace LinearAlgebra
   // & static cases, not need for specialization
   //
   template <typename T, typename CAPACITY_TYPE>
-  class Const_View_Default_Memory_Chunk
+  class Const_View_Default_Memory_Chunk : public Detail::Memory_Chunk_Tag
   {
     static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<CAPACITY_TYPE>);
 

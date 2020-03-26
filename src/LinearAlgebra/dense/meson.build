@@ -40,5 +40,6 @@ LinearAlgebra_headers += [
 
   'dense/vector_view.hpp',
   'dense/matrix_view.hpp',
-  
+
+  'dense/memory_chunk_aliasing_p.hpp',
 ]

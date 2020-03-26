@@ -154,6 +154,12 @@ namespace LinearAlgebra
       return base_type::impl().impl_storage_scheme();
     };
 
+    const memory_chunk_type&
+    memory_chunk() const
+    {
+      return base_type::impl().impl_memory_chunk();
+    };
+
     /////////////////////////
     // Crtp Implementation //
     /////////////////////////
@@ -188,6 +194,11 @@ namespace LinearAlgebra
     impl_storage_scheme() const
     {
       return _storage_scheme;
+    }
+    const memory_chunk_type&
+    impl_memory_chunk() const
+    {
+      return _memory_chunk;
     }
 
     auto&

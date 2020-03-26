@@ -18,6 +18,7 @@ test_array = [
   ['matrix_view_row_column_test','matrix_view_row_column_exe','matrix_view_row_column.cpp'],
 
   ['memory_chunk_test','memory_chunk_exe','memory_chunk.cpp'],
+  ['memory_chunk_aliasing_p_test','memory_chunk_aliasing_p_exe','memory_chunk_aliasing_p.cpp'],
 ]
 
 foreach test : test_array

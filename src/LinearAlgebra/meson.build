@@ -8,6 +8,7 @@ LinearAlgebra_sources = ['hello.cpp']
 
 subdir('utils')
 subdir('expr')
+subdir('metaexpr')
 subdir('dense')
 subdir('blas')
 

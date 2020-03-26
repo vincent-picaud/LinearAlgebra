@@ -6,6 +6,9 @@
 #include <tuple>
 #include <type_traits>
 
+#include "LinearAlgebra/metaexpr/operator_overloading.hpp"
+
+
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/utils/type.hpp"
@@ -15,228 +18,18 @@
 
 namespace LinearAlgebra
 {
-  namespace Detail
-  {
-    //////////////////////////////////////////////////////////////////
-    // Base class of all operators
-    //////////////////////////////////////////////////////////////////
-    //
-    template <typename IMPL>
-    class MetaExpr_Crtp : public Crtp_Find_Impl<MetaExpr_Crtp, IMPL, Crtp>
-    {
-      ///////////
-      // Types //
-      ///////////
-      //
-     public:
-      using base_type = Crtp_Find_Impl<MetaExpr_Crtp, IMPL, Crtp>;
-      using base_type::impl;
-
-      using exact_type  = typename base_type::exact_type;
-      using traits_type = typename base_type::traits_type;
-
-      // element type is required to restrict operator overloading
-      // involving scalar like α.M
-      using element_type  = typename traits_type::element_type;
-      using operator_type = typename traits_type::operator_type;
-    };
-
-    //////////////////////////////////////////////////////////////////
-    // Base class of all unary operators
-    //////////////////////////////////////////////////////////////////
-    //
-    template <typename IMPL>
-    class MetaExpr_UnaryOp_Crtp : public Crtp_Find_Impl<MetaExpr_UnaryOp_Crtp, IMPL, MetaExpr_Crtp>
-    {
-      ///////////
-      // Types //
-      ///////////
-      //
-     public:
-      using base_type = Crtp_Find_Impl<MetaExpr_UnaryOp_Crtp, IMPL, Vector_Crtp>;
-
-      using exact_type  = typename base_type::exact_type;
-      using traits_type = typename base_type::traits_type;
-
-      using element_type  = typename traits_type::element_type;
-      using operator_type = typename base_type::operator_type;
-    };
-
-    //////////////////////////////////////////////////////////////////
-    // Base class of all binary operators
-    //////////////////////////////////////////////////////////////////
-    //
-    template <typename IMPL>
-    class MetaExpr_BinaryOp_Crtp
-        : public Crtp_Find_Impl<MetaExpr_BinaryOp_Crtp, IMPL, MetaExpr_Crtp>
-    {
-      ///////////
-      // Types //
-      ///////////
-      //
-     public:
-      using base_type = Crtp_Find_Impl<MetaExpr_BinaryOp_Crtp, IMPL, MetaExpr_Crtp>;
-
-      using exact_type  = typename base_type::exact_type;
-      using traits_type = typename base_type::traits_type;
-
-      using element_type  = typename traits_type::element_type;
-      using operator_type = typename base_type::operator_type;
-
-     public:
-      ////////////////////
-      // Crtp Interface //
-      ////////////////////
-      //
-      constexpr auto&
-      arg_0() const noexcept
-      {
-        return base_type::impl().impl_arg_0();
-      }
-
-      constexpr auto&
-      arg_1() const noexcept
-      {
-        return base_type::impl().impl_arg_1();
-      }
-    };
-  }  // Detail
-
-  //////////////////////////////////////////////////////////////////
-  // Binary operator default implementation
   //////////////////////////////////////////////////////////////////
 
-  namespace Detail
-  {
-    template <typename ELEMENT_TYPE, typename BINARY_OPERATOR_TYPE, typename ARG_0_TYPE,
-              typename ARG_1_TYPE>
-    class MetaExpr_BinaryOp;
-  }
+  // CAVEAT: as we test existance of expr function by Is_Complete must return something different of void
+  // template <typename... ARGS>
+  // void
+  // expr(const ARGS&...)
+  // {
+  //   //    std::cerr << __PRETTY_FUNCTION__ << std::endl;
 
-  template <typename ELEMENT_TYPE, typename BINARY_OPERATOR_TYPE, typename ARG_0_TYPE,
-            typename ARG_1_TYPE>
-  struct Crtp_Type_Traits<
-      Detail::MetaExpr_BinaryOp<ELEMENT_TYPE, BINARY_OPERATOR_TYPE, ARG_0_TYPE, ARG_1_TYPE>>
-  {
-    using element_type  = ELEMENT_TYPE;
-    using operator_type = BINARY_OPERATOR_TYPE;
-  };
-
-  namespace Detail
-  {
-    template <typename ELEMENT_TYPE, typename Op, typename ARG_0, typename ARG_1>
-    class MetaExpr_BinaryOp final
-        : public MetaExpr_BinaryOp_Crtp<MetaExpr_BinaryOp<ELEMENT_TYPE, Op, ARG_0, ARG_1>>
-    {
-      ///////////
-      // Types //
-      ///////////
-      //
-     public:
-      using base_type = MetaExpr_BinaryOp_Crtp<MetaExpr_BinaryOp<ELEMENT_TYPE, Op, ARG_0, ARG_1>>;
-
-      using element_type  = typename base_type::element_type;
-      using operator_type = typename base_type::operator_type;
-
-      /////////////
-      // Members //
-      /////////////
-      //
-     protected:
-      const ARG_0& _arg_0;
-      const ARG_1& _arg_1;
-
-      //////////////////
-      // Constructors //
-      //////////////////
-      //
-     public:
-      constexpr MetaExpr_BinaryOp(const ARG_0& arg_0, const ARG_1& arg_1) noexcept
-          : _arg_0(arg_0), _arg_1(arg_1)
-      {
-      }
-
-      /////////////////////////
-      // Crtp Implementation //
-      /////////////////////////
-      //
-     protected:
-      friend base_type;
-      friend typename base_type::base_type;
-
-      constexpr auto&
-      impl_arg_0() const noexcept
-      {
-        return _arg_0;
-      }
-
-      constexpr auto&
-      impl_arg_1() const noexcept
-      {
-        return _arg_1;
-      }
-    };
-    static_assert(std::is_trivially_copyable_v<
-                  Detail::MetaExpr_BinaryOp<double, _product_t_, Matrix<double>, Vector<double>>>);
-
-  }  // Detail
-
-  //////////////////////////////////////////////////////////////////
-  // Operators overloading
-  //////////////////////////////////////////////////////////////////
-  //
-  // Allowed arguments (beside scalar)
-  //
-  template <typename... IMPL>
-  constexpr auto Is_Supported_MetaExpr_Argument_v =
-      ((Is_Crtp_Interface_Of_v<Detail::MetaExpr_Crtp, IMPL> or
-        Is_Crtp_Interface_Of_v<Vector_Crtp, IMPL> or
-        Is_Crtp_Interface_Of_v<Matrix_Crtp, IMPL>)and...);
-
-  // Product
-  //================================================================
-  //
-  template <typename A0_IMPL, typename A1_IMPL>
-  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
-                   Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _product_t_,
-                                             A0_IMPL, A1_IMPL>>
-  operator*(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
-  {
-    return {arg_0.impl(), arg_1.impl()};
-  }
-
-  // scalar * Crpt<> product
-  template <typename A1_IMPL>
-  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
-                   Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
-                                             Element_Type_t<A1_IMPL>, A1_IMPL>>
-  operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
-  {
-    return {arg_0, arg_1.impl()};
-  }
-
-  //
-  //================================================================
-  // Plus
-  //================================================================
-  //
-  template <typename A0_IMPL, typename A1_IMPL>
-  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
-                   Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _plus_t_,
-                                             A0_IMPL, A1_IMPL>>
-  operator+(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
-  {
-    return {arg_0.impl(), arg_1.impl()};
-  }
-
-  //////////////////////////////////////////////////////////////////
-
-  template <typename... ARGS>
-  void
-  expr(const ARGS&...)
-  {
-    std::cerr << __PRETTY_FUNCTION__ << std::endl;
-  }
+  //   static_assert(Always_False_v<ARGS...>,
+  //                 "Undefined implementation");  // <- ne marche pas car capte tout
+  // }
 
   // Everything that's not a Detail::MetaExpr_Crtp is considered as a
   // final node
@@ -297,8 +90,17 @@ namespace LinearAlgebra
 using namespace LinearAlgebra;
 
 int
+foo(double)
+{
+  return 0;
+}
+
+int
 main()
 {
+  //  static_assert(Is_Complete_v<decltype(foo(5))>);
+  static_assert(std::is_invocable_v<decltype(foo), double>);
+
   Matrix<double> M1;
   Tiny_Matrix<int, 2, 3> M2;
   static_assert(std::is_trivially_copyable_v<Tiny_Matrix<int, 2, 3>>);
@@ -316,6 +118,6 @@ main()
   // std::apply([](auto&&... args) { expr(args...); }, expanded);
 
   //std::apply([&M2](const auto&... args) { expr(M2, _assign_, args...); }, expanded);
-  compute(M2, expression_2);
-  //expr(M2, _assign_, 2, _matrix_0_);
+  //compute(M2, expression_2);
+  expr(M2, _assign_, 2, _matrix_0_);
 }

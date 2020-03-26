@@ -27,8 +27,11 @@ namespace LinearAlgebra
   class Default_Memory_Chunk;
 
   template <typename T, std::size_t N>
-  class Default_Memory_Chunk<T, std::integral_constant<std::size_t, N>> : public Detail::Memory_Chunk_Tag
+  class Default_Memory_Chunk<T, std::integral_constant<std::size_t, N>>
+      : public Detail::Memory_Chunk_Tag
   {
+    static_assert(not std::is_const_v<T>);
+
    public:
     using capacity_type = std::integral_constant<std::size_t, N>;
     using element_type  = T;
@@ -59,6 +62,8 @@ namespace LinearAlgebra
   template <typename T>
   class Default_Memory_Chunk<T, std::size_t> : public Detail::Memory_Chunk_Tag
   {
+    static_assert(not std::is_const_v<T>);
+
    public:
     using capacity_type = std::size_t;
     using element_type  = T;
@@ -94,6 +99,7 @@ namespace LinearAlgebra
   template <typename T, typename CAPACITY_TYPE>
   class View_Default_Memory_Chunk : public Detail::Memory_Chunk_Tag
   {
+    static_assert(not std::is_const_v<T>);
     static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<CAPACITY_TYPE>);
 
    public:
@@ -136,6 +142,7 @@ namespace LinearAlgebra
   template <typename T, typename CAPACITY_TYPE>
   class Const_View_Default_Memory_Chunk : public Detail::Memory_Chunk_Tag
   {
+    static_assert(not std::is_const_v<T>);
     static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<CAPACITY_TYPE>);
 
    public:

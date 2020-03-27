@@ -17,67 +17,59 @@
 
 namespace LinearAlgebra
 {
-  //////////////////////////////////////////////////////////////////
-
-  // CAVEAT: as we test existance of expr function by Is_Complete must return something different of void
-  // template <typename... ARGS>
-  // void
-  // expr(const ARGS&...)
-  // {
-  //   //    std::cerr << __PRETTY_FUNCTION__ << std::endl;
-
-  //   static_assert(Always_False_v<ARGS...>,
-  //                 "Undefined implementation");  // <- ne marche pas car capte tout
-  // }
-
-  // Everything that's not a Detail::MetaExpr_Crtp is considered as a
-  // final node
-  template <typename T>
-  inline constexpr std::enable_if_t<not Is_Crtp_Interface_Of<Detail::MetaExpr_Crtp, T>::value,
-                                    std::tuple<const T&>>
-  from_metaexpr_to_argument_tuple(const T& t) noexcept
+  namespace Detail
   {
-    return {t};
-  }
+    //////////////////////////////////////////////////////////////////
 
-  // TODO add Unary op
-  template <typename IMPL>
-  inline constexpr auto
-  from_metaexpr_to_argument_tuple(
-      const Detail::MetaExpr_BinaryOp_Crtp<IMPL>& expression_tree) noexcept
-  {
-    // Attention: our convention is to not explicitly write down "_product_"
-    if constexpr (std::is_same_v<typename Detail::MetaExpr_BinaryOp_Crtp<IMPL>::operator_type,
-                                 _product_t_>)
+    // Everything that's not a Detail::MetaExpr_Crtp is considered as a
+    // final node
+    template <typename T>
+    inline constexpr std::enable_if_t<not Is_Crtp_Interface_Of<Detail::MetaExpr_Crtp, T>::value,
+                                      std::tuple<const T&>>
+    from_metaexpr_to_argument_tuple(const T& t) noexcept
     {
-      return std::tuple_cat(from_metaexpr_to_argument_tuple(expression_tree.arg_0()),
-                            from_metaexpr_to_argument_tuple(expression_tree.arg_1()));
+      return {t};
     }
-    else
+
+    // TODO add Unary op
+    template <typename IMPL>
+    inline constexpr auto
+    from_metaexpr_to_argument_tuple(
+        const Detail::MetaExpr_BinaryOp_Crtp<IMPL>& expression_tree) noexcept
     {
-      return std::tuple_cat(from_metaexpr_to_argument_tuple(expression_tree.arg_0()),
-                            std::make_tuple(typename IMPL::operator_type()),
-                            from_metaexpr_to_argument_tuple(expression_tree.arg_1()));
+      // Attention: our convention is to not explicitly write down "_product_"
+      if constexpr (std::is_same_v<typename Detail::MetaExpr_BinaryOp_Crtp<IMPL>::operator_type,
+                                   _product_t_>)
+      {
+        return std::tuple_cat(from_metaexpr_to_argument_tuple(expression_tree.arg_0()),
+                              from_metaexpr_to_argument_tuple(expression_tree.arg_1()));
+      }
+      else
+      {
+        return std::tuple_cat(from_metaexpr_to_argument_tuple(expression_tree.arg_0()),
+                              std::make_tuple(typename IMPL::operator_type()),
+                              from_metaexpr_to_argument_tuple(expression_tree.arg_1()));
+      }
     }
-  }
 
-  // Functions to use in Vector/Matrix interface
-  // -> here we only define the Matrix case
+    // Functions to use in Vector/Matrix interface
+    // -> here we only define the Matrix case
 
-  template <typename M_DEST_IMPL, typename... ARGS>
-  void
-  call_assign_from_argument_tuple(Matrix_Crtp<M_DEST_IMPL>& M_dest,
-                                  const std::tuple<ARGS...>& args_as_tuple)
-  {
-    std::apply([&](const auto&... args) { assign(M_dest, args...); }, args_as_tuple);
-  }
+    template <typename M_DEST_IMPL, typename... ARGS>
+    auto
+    call_assign_from_argument_tuple(Matrix_Crtp<M_DEST_IMPL>& M_dest,
+                                    const std::tuple<ARGS...>& args_as_tuple)
+    {
+      return std::apply([&](const auto&... args) { return assign(M_dest, args...); }, args_as_tuple);
+    }
 
-  template <typename M_DEST_IMPL, typename SRC_IMPL>
-  void
-  call_assign_from_metaexpr(Matrix_Crtp<M_DEST_IMPL>& M_dest,
-                            const Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
-  {
-    call_assign_from_argument_tuple(M_dest, from_metaexpr_to_argument_tuple(metaExpr.impl()));
+    template <typename M_DEST_IMPL, typename SRC_IMPL>
+    auto
+    call_assign_from_metaexpr(Matrix_Crtp<M_DEST_IMPL>& M_dest,
+                              const Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
+    {
+      call_assign_from_argument_tuple(M_dest, from_metaexpr_to_argument_tuple(metaExpr.impl()));
+    }
   }
 
   //================================================================
@@ -221,8 +213,8 @@ main()
   static_assert(std::is_trivially_copyable_v<Tiny_Matrix<int, 2, 3>>);
 
   auto expression_2 = M1 + 4 * M2 * M1 * M2;
-  auto expression   = M1 + 4 * M2;
+  auto expression   =  4 * M2;
 
   print(from_metaexpr_to_argument_tuple(expression));
-  call_assign_from_metaexpr(M2, expression);
+  Detail::call_assign_from_metaexpr(M2, expression);
 }

@@ -1,11 +1,26 @@
+#include "LinearAlgebra/expr/M0_assign_alpha_M0_new.hpp"
+
 #include "LinearAlgebra/metaexpr/call_assign_from_metaexpr.hpp"
+
+#include "LinearAlgebra/metaexpr/operator_overloading.hpp"
+
+#include "LinearAlgebra/dense/matrix.hpp"
 
 #include <gtest/gtest.h>
 
 using namespace LinearAlgebra;
 
-TEST(Call_Assign_From_Metaexpr, basic)
+TEST(Call_Assign_From_Metaexpr, M0_assign_alpha_M0)
 {
-  // EXPECT_TRUE((std::is_trivially_copyable_v<
-  //              Detail::MetaExpr_BinaryOp<double, _product_t_, Matrix<double>, Vector<double>>>));
+  Tiny_Matrix<int, 2, 3> matrix;
+
+  matrix(0, 0) = 10;
+
+  auto expression = 4 * matrix;
+
+  EXPECT_EQ(matrix(0, 0), 10);
+
+  Detail::call_assign_from_metaexpr(matrix, expression);
+
+  EXPECT_EQ(matrix(0, 0), 40);
 }

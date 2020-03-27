@@ -2,14 +2,14 @@
 //
 #pragma once
 
-#include "LinearAlgebra/utils/crtp.hpp"
-#include "LinearAlgebra/expr/expr_tags.hpp"
-#include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
+#include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
+#include "LinearAlgebra/utils/crtp.hpp"
 
-#include <type_traits>
 #include <tuple>
+#include <type_traits>
 
 namespace LinearAlgebra
 {
@@ -48,15 +48,39 @@ namespace LinearAlgebra
       }
     }
 
+    //////////////////////////////////////////////////////////////////
     // Functions to use in Vector/Matrix interface
-    // -> here we only define the Matrix case
+    //////////////////////////////////////////////////////////////////
+    //
 
+    // Vector
+    //
+    template <typename M_DEST_IMPL, typename... ARGS>
+    auto
+    call_assign_from_argument_tuple(Vector_Crtp<M_DEST_IMPL>& M_dest,
+                                    const std::tuple<ARGS...>& args_as_tuple)
+    {
+      return std::apply([&](const auto&... args) { return assign(M_dest, args...); },
+                        args_as_tuple);
+    }
+
+    template <typename M_DEST_IMPL, typename SRC_IMPL>
+    auto
+    call_assign_from_metaexpr(Vector_Crtp<M_DEST_IMPL>& M_dest,
+                              const Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
+    {
+      call_assign_from_argument_tuple(M_dest, from_metaexpr_to_argument_tuple(metaExpr.impl()));
+    }
+
+    // Matrix
+    //
     template <typename M_DEST_IMPL, typename... ARGS>
     auto
     call_assign_from_argument_tuple(Matrix_Crtp<M_DEST_IMPL>& M_dest,
                                     const std::tuple<ARGS...>& args_as_tuple)
     {
-      return std::apply([&](const auto&... args) { return assign(M_dest, args...); }, args_as_tuple);
+      return std::apply([&](const auto&... args) { return assign(M_dest, args...); },
+                        args_as_tuple);
     }
 
     template <typename M_DEST_IMPL, typename SRC_IMPL>

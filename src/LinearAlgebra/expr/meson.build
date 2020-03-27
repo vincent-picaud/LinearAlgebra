@@ -9,6 +9,8 @@ LinearAlgebra_headers += [
   'expr/M0_assign_alpha.hpp',
 
   'expr/V0_assign_alpha_V0.hpp',
+  'expr/V0_assign_alpha_V0_new.hpp',
+  
   'expr/M0_assign_alpha_M0.hpp',
   'expr/M0_assign_alpha_M0_new.hpp',
 

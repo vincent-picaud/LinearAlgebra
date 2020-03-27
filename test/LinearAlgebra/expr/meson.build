@@ -14,6 +14,7 @@ test_array = [
 
   #
   ['V_assign_alpha_test','V_assign_alpha_exe','V_assign_alpha.cpp'],
+  ['M_assign_alpha_test','M_assign_alpha_exe','M_assign_alpha.cpp'],
   
 ]
 

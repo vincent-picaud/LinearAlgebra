@@ -208,6 +208,12 @@ namespace LinearAlgebra
     {
       return this->impl_assign(metaExpr);
     }
+
+    Default_Matrix&
+    operator=(const element_type& scalar)
+    {
+      return this->impl_assign(scalar);
+    }
   };
   //****************************************************************
 
@@ -320,6 +326,12 @@ namespace LinearAlgebra
     {
       return this->impl_assign(metaExpr);
     }
+
+    Default_Matrix_View&
+    operator=(const element_type& scalar)
+    {
+      return this->impl_assign(scalar);
+    }
   };
 
   //================================================================
@@ -421,6 +433,12 @@ namespace LinearAlgebra
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
       return this->impl_assign(metaExpr);
+    }
+
+    Default_Matrix_Const_View&
+    operator=(const element_type& scalar)
+    {
+      return this->impl_assign(scalar);
     }
   };
 

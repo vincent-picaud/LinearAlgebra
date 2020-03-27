@@ -162,7 +162,7 @@ namespace LinearAlgebra
       return base_type::impl().impl_memory_chunk();
     };
 
-    // Meta expression
+    // = Meta expression
     template <typename METAEXPR_IMPL>
     IMPL&
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
@@ -170,7 +170,7 @@ namespace LinearAlgebra
       return base_type::impl().impl_assign(metaExpr);
     }
 
-    // Basic op=
+    // = scalar
     IMPL&
     operator=(const element_type& scalar)
     {

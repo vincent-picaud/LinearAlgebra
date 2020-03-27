@@ -187,5 +187,19 @@
      expr(M, _assign_, m);
 
    #+END_QUOTE
+*** 2020-03-27 Friday
 
+**** TODO add matrix=matrix & vectot=vector with assign [0/0]        :Urgent:
+     :PROPERTIES:
+     :Created:  [2020-03-27 Fri 16:58]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/test/LinearAlgebra/expr/M_assign_alpha.cpp::matrix%20=%201;]]
+
+   #+BEGIN_QUOTE
+     matrix = 1;
+
+   #+END_QUOTE
+
+    - Do it like matrix=scalar
 

@@ -22,7 +22,8 @@ TEST(Call_Assign_From_Metaexpr, V0_assign_alpha_V0)
 
   EXPECT_EQ(vector[0], 10);
 
-  Detail::call_assign_from_metaexpr(vector, expression);
+  auto selected = Detail::call_assign_from_metaexpr(vector, expression);
+  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
 
   EXPECT_EQ(vector[0], 40);
 
@@ -46,7 +47,7 @@ TEST(Call_Assign_From_Metaexpr, M0_assign_alpha_M0)
   EXPECT_EQ(matrix(0, 0), 10);
 
   auto selected = Detail::call_assign_from_metaexpr(matrix, expression);
-  EXPECT_EQ(selected, Expr_Selector_Enum::Generic);
+  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
 
   // matrix class
   //

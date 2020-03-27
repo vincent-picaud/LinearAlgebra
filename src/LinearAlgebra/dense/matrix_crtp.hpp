@@ -4,6 +4,7 @@
 #include <iomanip>
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
+#include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
 namespace LinearAlgebra
 {
@@ -166,7 +167,14 @@ namespace LinearAlgebra
       return base_type::impl().impl_memory_chunk();
     };
 
-   public:
+    // Meta expression
+    template <typename METAEXPR_IMPL>
+    IMPL&
+    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
+    {
+      return base_type::impl().impl_assign_from_metaexpr(metaExpr);
+    }
+
     /////////////////////////
     // Crtp Implementation //
     /////////////////////////
@@ -174,6 +182,14 @@ namespace LinearAlgebra
    protected:
     friend base_type;
     friend typename base_type::base_type;
+
+    template <typename METAEXPR_IMPL>
+    IMPL&
+    impl_assign_from_metaexpr(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
+    {
+      call_assign_from_metaexpr(*this, metaExpr);
+      return base_type::impl();
+    }
 
     I_size_type
     impl_I_size() const

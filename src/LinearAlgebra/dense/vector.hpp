@@ -66,6 +66,13 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
+    // Meta expression
+    template <typename METAEXPR_IMPL>
+    Default_Vector&
+    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
+    {
+      return this->impl_assign_from_metaexpr(metaExpr);
+    }
   };
 
   //****************************************************************
@@ -134,6 +141,19 @@ namespace LinearAlgebra
         : base_type(storage_scheme_type(n, inc), data)
     {
     }
+
+    ////////////////////
+    // Public Methods //
+    ////////////////////
+    //
+   public:
+    // Meta expression
+    template <typename METAEXPR_IMPL>
+    Default_Vector_View&
+    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
+    {
+      return this->impl_assign_from_metaexpr(metaExpr);
+    }
   };
 
   //****************************************************************
@@ -195,6 +215,18 @@ namespace LinearAlgebra
                               const INCREMENT_TYPE inc)  // <- "CHANGE HERE" T* -> const T*
         : base_type(storage_scheme_type(n, inc), data)
     {
+    }
+    ////////////////////
+    // Public Methods //
+    ////////////////////
+    //
+   public:
+    // Meta expression
+    template <typename METAEXPR_IMPL>
+    Default_Vector_Const_View&
+    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
+    {
+      return this->impl_assign_from_metaexpr(metaExpr);
     }
   };
 

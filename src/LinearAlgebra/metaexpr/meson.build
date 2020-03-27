@@ -1,6 +1,8 @@
 LinearAlgebra_headers += [
   'metaexpr/metaexpr_crtp.hpp',
   'metaexpr/operator_overloading.hpp',
+  'metaexpr/call_assign_from_metaexpr.hpp',
+  'metaexpr/metaexpr_crtp_fwd.hpp',
   
   # 'expr/expr_tags.hpp',
   # 'expr/expr_selector.hpp',

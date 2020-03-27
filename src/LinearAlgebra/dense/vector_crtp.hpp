@@ -167,7 +167,7 @@ namespace LinearAlgebra
     IMPL&
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
-      return base_type::impl().impl_assign_from_metaexpr(metaExpr);
+      return base_type::impl().impl_assign(metaExpr);
     }
 
     // Basic op=
@@ -187,7 +187,7 @@ namespace LinearAlgebra
 
     template <typename METAEXPR_IMPL>
     IMPL&
-    impl_assign_from_metaexpr(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
+    impl_assign(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
       call_assign_from_metaexpr(*this, metaExpr);
       return base_type::impl();

@@ -71,7 +71,7 @@ namespace LinearAlgebra
     Default_Vector&
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
-      return this->impl_assign_from_metaexpr(metaExpr);
+      return this->impl_assign(metaExpr);
     }
 
     Default_Vector&
@@ -158,7 +158,7 @@ namespace LinearAlgebra
     Default_Vector_View&
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
-      return this->impl_assign_from_metaexpr(metaExpr);
+      return this->impl_assign(metaExpr);
     }
 
     Default_Vector_View&
@@ -238,7 +238,7 @@ namespace LinearAlgebra
     Default_Vector_Const_View&
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
-      return this->impl_assign_from_metaexpr(metaExpr);
+      return this->impl_assign(metaExpr);
     }
 
     Default_Vector_Const_View&

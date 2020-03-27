@@ -206,7 +206,7 @@ namespace LinearAlgebra
     Default_Matrix&
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
-      return this->impl_assign_from_metaexpr(metaExpr);
+      return this->impl_assign(metaExpr);
     }
   };
   //****************************************************************
@@ -318,7 +318,7 @@ namespace LinearAlgebra
     Default_Matrix_View&
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
-      return this->impl_assign_from_metaexpr(metaExpr);
+      return this->impl_assign(metaExpr);
     }
   };
 
@@ -420,7 +420,7 @@ namespace LinearAlgebra
     Default_Matrix_Const_View&
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
-      return this->impl_assign_from_metaexpr(metaExpr);
+      return this->impl_assign(metaExpr);
     }
   };
 

@@ -98,7 +98,7 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename IMPL_DEST, typename IMPL_ARG_1>
-  static inline std::enable_if_t<Any_Has_Static_I_Size_v<IMPL_DEST, IMPL_ARG_1> or
+  static inline std::enable_if_t<Any_Has_Static_I_Size_v<IMPL_DEST, IMPL_ARG_1> and
                                      Any_Has_Static_J_Size_v<IMPL_DEST, IMPL_ARG_1>,
                                  Expr_Selector<Expr_Selector_Enum::Static>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,

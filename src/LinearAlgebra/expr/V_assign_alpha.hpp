@@ -10,6 +10,7 @@
 
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
+#include "LinearAlgebra/utils/size_utils.hpp"
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
@@ -88,7 +89,8 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename IMPL>
-  static inline auto
+  static inline std::enable_if_t<Any_Has_Static_Size_v<IMPL>,
+                                 Expr_Selector<Expr_Selector_Enum::Static>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,  // Generic implementation
          Dense_Vector_Crtp<IMPL>& vector_0,                         // vector_0
          const typename IMPL::element_type scalar)                  // scalar

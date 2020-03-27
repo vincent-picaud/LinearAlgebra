@@ -73,6 +73,12 @@ namespace LinearAlgebra
     {
       return this->impl_assign_from_metaexpr(metaExpr);
     }
+
+    Default_Vector&
+    operator=(const element_type& scalar)
+    {
+      return this->impl_assign(scalar);
+    }
   };
 
   //****************************************************************
@@ -154,6 +160,12 @@ namespace LinearAlgebra
     {
       return this->impl_assign_from_metaexpr(metaExpr);
     }
+
+    Default_Vector_View&
+    operator=(const element_type& scalar)
+    {
+      return this->impl_assign(scalar);
+    }
   };
 
   //****************************************************************
@@ -227,6 +239,12 @@ namespace LinearAlgebra
     operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
       return this->impl_assign_from_metaexpr(metaExpr);
+    }
+
+    Default_Vector_Const_View&
+    operator=(const element_type& scalar)
+    {
+      return this->impl_assign(scalar);
     }
   };
 

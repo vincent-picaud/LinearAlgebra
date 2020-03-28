@@ -34,13 +34,6 @@
 
     - [ ] To fix
 
-**** DONE Demain [2/3] 
-     :PROPERTIES:
-     :Created:  [2020-03-18 Wed 23:50]
-     :END:
-
-    - [X] Finir implementation map & map_indexed
-    - [X] Finir implementation pour matrix?
 
 *** 2020-03-19 Thursday
 
@@ -56,124 +49,12 @@
    #+END_QUOTE
 
     - [X] as ambiguous with transform. Use transform_indexed to do the job
-*** 2020-03-20 Friday
 
-**** TODO add vector view [0/1] 
-     :PROPERTIES:
-     :Created:  [2020-03-20 Fri 11:34]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/vector.hpp::#include%20"LinearAlgebra/dense/memory_chunk.hpp"]]
-
-   #+BEGIN_QUOTE
-
-   #+END_QUOTE
-
-    - [ ] add vector view (like matrix.hpp)
-
-**** TODO implement blas [0/1]                                         :Blas:
-     :PROPERTIES:
-     :Created:  [2020-03-20 Fri 17:28]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_scalar_V0.hpp::#if%20(HAS_BLAS)%20#endif]]
-
-   #+BEGIN_QUOTE
-   #if (HAS_BLAS)
-
-   #endif
-
-   #+END_QUOTE
-
-    - [ ] do not forget matrix too
 *** 2020-03-21 Saturday
 
-**** DONE change file name [1/1] 
-     :PROPERTIES:
-     :Created:  [2020-03-21 Sat 10:44]
-     :END:
 
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_scalar_V0.hpp:://%20Compute:%20V0%20=%20alpha%20V0]]
-
-   #+BEGIN_QUOTE
-   // Compute: V0 = alpha V0
-
-   #+END_QUOTE
-
-    - [X] scalar -> alpha
-
-**** DONE expr return type must be an enum [1/1]                        :Mid:
-     :PROPERTIES:
-     :Created:  [2020-03-21 Sat 10:51]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_V0_plus_alpha_V1.hpp::return%20Expr_Selector_Enum::Generic;]]
-
-   #+BEGIN_QUOTE
-       return Expr_Selector_Enum::Generic;
-
-   #+END_QUOTE
-
-    - [X] as dynamic choice can occur it is not possible to return an =integral_constant=
 *** 2020-03-22 Sunday
 
-**** TODO change with Matrix::Special structure [0/1]                :Urgent:
-     :PROPERTIES:
-     :Created:  [2020-03-22 Sun 09:46]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/matrix.hpp::template%20<typename%20IMPL>%20auto%20view_as_upper_triangular_strict(const%20Dense_Matrix_Crtp<IMPL>&%20M)]]
-
-   #+BEGIN_QUOTE
-     template <typename IMPL>
-     auto
-     view_as_upper_triangular_strict(const Dense_Matrix_Crtp<IMPL>& M)
-
-   #+END_QUOTE
-
-    - [ ] use enum types type instead of function with long name
-
-**** TODO add symmetric / hermitian view [0/0]                       :Urgent:
-     :PROPERTIES:
-     :Created:  [2020-03-22 Sun 18:25]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/matrix_view.hpp::create_view_unit_lower_triangular(const%20Dense_Matrix_Crtp<IMPL>&%20matrix)]]
-
-   #+BEGIN_QUOTE
-    create_view_unit_lower_triangular(const Dense_Matrix_Crtp<IMPL>& matrix)
- 
-   #+END_QUOTE
-
-**** TODO add vector_view counter part [0/0]                         :Urgent:
-     :PROPERTIES:
-     :Created:  [2020-03-22 Sun 18:26]
-     :END:
-
-   Back link: [[file:src/LinearAlgebra/dense/matrix_view.hpp::create_matrix_view(ELEMENT_TYPE*%20data,%20const%20std::size_t%20I_size,%20const%20std::size_t%20J_size,%20const%20std::size_t%20leading_dimension)][create_matrix_view(ELEMENT_TYPE* data, ...)]]
-
-   #+BEGIN_QUOTE
-     create_matrix_view(ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size,
-			const std::size_t leading_dimension)
- 
-   #+END_QUOTE
-
-**** TODO define specialization for std::integral_constant... However there 8 such specializations... [0/1] :Critical:
-     :PROPERTIES:
-     :Created:  [2020-03-22 Sun 18:31]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/matrix_view.hpp::template%20<typename%20ELEMENT_TYPE>%20auto%20create_matrix_view(ELEMENT_TYPE*%20data,%20const%20std::size_t%20I_size,%20const%20std::size_t%20J_size,%20const%20std::size_t%20leading_dimension)]]
-
-   #+BEGIN_QUOTE
-     template <typename ELEMENT_TYPE>
-     auto
-     create_matrix_view(ELEMENT_TYPE* data, const std::size_t I_size, const std::size_t J_size,
-			const std::size_t leading_dimension)
-
-   #+END_QUOTE
-
-    - [ ] vraiment a faire!
 *** 2020-03-23 Monday
 
 **** TODO M=m to fix [0/0]                                         :Critical:
@@ -189,31 +70,6 @@
    #+END_QUOTE
 *** 2020-03-27 Friday
 
-**** TODO add matrix=matrix & vectot=vector with assign [0/0]        :Urgent:
-     :PROPERTIES:
-     :Created:  [2020-03-27 Fri 16:58]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/test/LinearAlgebra/expr/M_assign_alpha.cpp::matrix%20=%201;]]
-
-   #+BEGIN_QUOTE
-     matrix = 1;
-
-   #+END_QUOTE
-
-    - Do it like matrix=scalar
-
-**** TODO TODO CRITICAL [0/3]                                      :Critical:
-     :PROPERTIES:
-     :Created:  [2020-03-27 Fri 17:30]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/vector_is_same.hpp:://%20TODO:%20//%20-%20is_same%20vector%20+%20matrix%20//%20-%20create%20V_assign_V%20+%20matrix%20//%20-%20modify%20op=%20for%20V%20and%20M]]
-
-      TODO:
-      - [ ] is_same vector + matrix
-      - [ ] create V_assign_V + matrix
-      - [ ] modify op= for V and M
 *** 2020-03-28 Saturday
 
 **** TODO Document deep copy semantic of views [0/0]                    :Doc:

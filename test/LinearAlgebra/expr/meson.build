@@ -5,8 +5,10 @@ test_array = [
 
   ['V0_assign_V1_test','V0_assign_V1_exe','V0_assign_V1.cpp'], # to remove
   ['V_assign_V_test','V_assign_V_exe','V_assign_V.cpp'],
+  ['M0_assign_M1_test','M0_assign_M1_exe','M0_assign_M1.cpp'], # to remove
+  ['M_assign_M_test','M_assign_M_exe','M_assign_M.cpp'],
 
-  ['M0_assign_M1_test','M0_assign_M1_exe','M0_assign_M1.cpp'],
+
   
   ['V0_assign_V0_plus_alpha_V1_test','V0_assign_V0_plus_alpha_V1_exe','V0_assign_V0_plus_alpha_V1.cpp'],
 

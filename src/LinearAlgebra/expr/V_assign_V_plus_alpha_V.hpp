@@ -16,7 +16,7 @@
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 
 // specific includes
-#include "LinearAlgebra/expr/V_assign_alpha_V.hpp"
+#include "LinearAlgebra/expr/V0_assign_alpha_V1.hpp"
 
 #include "LinearAlgebra/dense/vector_transform.hpp"
 

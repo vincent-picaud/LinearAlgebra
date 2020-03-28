@@ -3,8 +3,8 @@
 #include <cstddef>
 
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
-#include "LinearAlgebra/expr/V_assign_alpha.hpp"
-#include "LinearAlgebra/expr/V_assign_V.hpp"
+#include "LinearAlgebra/expr/V0_assign_alpha.hpp"
+#include "LinearAlgebra/expr/V0_assign_V1.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
 namespace LinearAlgebra

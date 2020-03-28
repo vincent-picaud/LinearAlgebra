@@ -4,8 +4,8 @@
 #include <iomanip>
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
-#include "LinearAlgebra/expr/M_assign_alpha.hpp"
-#include "LinearAlgebra/expr/M_assign_M.hpp"
+#include "LinearAlgebra/expr/M0_assign_alpha.hpp"
+#include "LinearAlgebra/expr/M0_assign_M1.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
 namespace LinearAlgebra

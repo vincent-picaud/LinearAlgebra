@@ -45,8 +45,7 @@ namespace LinearAlgebra
        const Vector_Crtp<VECTOR_1_IMPL>& vector_1         // vector_1
   )
   {
-    return expr(Expr_Selector<>(), vector_0.impl(), _assign_, _vector_0_, _plus_, alpha,
-                vector_1.impl());
+    return expr(Expr_Selector<>(), vector_0.impl(), _vector_0_, _plus_, alpha, vector_1.impl());
   }
 
   //////////////////////////////////////////////////////////////////
@@ -86,7 +85,7 @@ namespace LinearAlgebra
 
     if ((void*)&v_0 == (void*)&v_1)
     {
-      return expr(v_0, _assign_, 1 + alpha, _vector_0_);
+      return expr(v_0, 1 + alpha, _vector_0_);
     }
 
     if (alpha == 1)

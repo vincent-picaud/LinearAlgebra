@@ -5,7 +5,7 @@
 #include <iostream>
 
 using namespace LinearAlgebra;
- 
+
 int
 main()
 {
@@ -25,11 +25,11 @@ main()
 
   x[0] = 1;
   x[1] = 2;
-  //  expr(y, _assign_, 1, _identity_, M, x, _plus_, 2, _vector_0_);
+  //  assign(y,  1, _identity_, M, x, _plus_, 2, _vector_0_);
 
 #if (HAS_BLAS)
-  //expr(y, _assign_, 0, _vector_0_, _plus_, 2, _identity_, M, x);
-    expr(y, _assign_, 2, _identity_, M, x, _plus_, 0, _vector_0_);
+  //assign(y,  0, _vector_0_, _plus_, 2, _identity_, M, x);
+  assign(y, 2, _identity_, M, x, _plus_, 0, _vector_0_);
 #else
   assert(0 && "Not implemented yet");
 #endif

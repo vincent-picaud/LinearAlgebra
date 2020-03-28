@@ -1,4 +1,4 @@
-#include "LinearAlgebra/expr/M_assign_alpha.hpp"
+#include "LinearAlgebra/expr/M0_assign_alpha.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
 

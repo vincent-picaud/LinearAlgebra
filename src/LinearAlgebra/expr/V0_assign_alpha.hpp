@@ -3,11 +3,20 @@
 //
 #pragma once
 
-#include "LinearAlgebra/dense/vector_crtp.hpp"
-#include "LinearAlgebra/dense/vector_fill.hpp"
+#include "LinearAlgebra/blas/blas.hpp"
+
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
+
 #include "LinearAlgebra/utils/always.hpp"
+#include "LinearAlgebra/utils/element_type.hpp"
+#include "LinearAlgebra/utils/size_utils.hpp"
+
+#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
+
+// specific includes
+#include "LinearAlgebra/dense/vector_fill.hpp"
 
 namespace LinearAlgebra
 {
@@ -17,14 +26,13 @@ namespace LinearAlgebra
   //
 
   template <typename IMPL>
-  Expr_Selector_Enum
-  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-       Vector_Crtp<IMPL>& vector_0,                          // vector_0
-       _assign_t_,                                           // =
-       const typename IMPL::element_type scalar)             // scalar
+  static inline auto
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,  // Undefined implementation
+         Vector_Crtp<IMPL>& vector_0,                                  // vector_0
+         const typename IMPL::element_type scalar)                     // scalar
   {
     static_assert(Always_False_v<IMPL>, "Undefined implementation");
-    return Expr_Selector_Enum::Undefined;
+    return selected;
   }
 
   //////////////////////////////////////////////////////////////////
@@ -33,12 +41,11 @@ namespace LinearAlgebra
   //
 
   template <typename IMPL>
-  Expr_Selector_Enum
-  expr(Vector_Crtp<IMPL>& vector_0,               // vector_0
-       _assign_t_,                                // =
-       const typename IMPL::element_type scalar)  // scalar
+  static inline auto
+  assign(Vector_Crtp<IMPL>& vector_0,               // vector_0
+         const typename IMPL::element_type scalar)  // scalar
   {
-    return expr(Expr_Selector<>(), vector_0.impl(), _assign_, scalar);
+    return assign(Expr_Selector<>(), vector_0.impl(), scalar);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -59,15 +66,14 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename IMPL>
-  Expr_Selector_Enum
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
-       Dense_Vector_Crtp<IMPL>& vector_0,                  // vector_0
-       _assign_t_,                                         // =
-       const typename IMPL::element_type scalar)           // scalar
+  static inline auto
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,  // Generic implementation
+         Dense_Vector_Crtp<IMPL>& vector_0,                          // vector_0
+         const typename IMPL::element_type scalar)                   // scalar
 
   {
     fill([scalar]() { return scalar; }, vector_0);
-    return Expr_Selector_Enum::Generic;
+    return selected;
   }
 
   //================================================================
@@ -82,4 +88,18 @@ namespace LinearAlgebra
   //  Implementation: Static
   //================================================================
   //
+  template <typename IMPL>
+  static inline std::enable_if_t<Any_Has_Static_Size_v<IMPL>,
+                                 Expr_Selector<Expr_Selector_Enum::Static>>
+  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,  // Generic implementation
+         Dense_Vector_Crtp<IMPL>& vector_0,                         // vector_0
+         const typename IMPL::element_type scalar)                  // scalar
+
+  {
+    // Directly jump to generic implementation that takes into account
+    // static size without taking the risk of being catch by the BLAS
+    // like specializations
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vector_0, scalar);
+    return selected;
+  }
 }

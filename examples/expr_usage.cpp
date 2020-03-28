@@ -14,7 +14,7 @@ main()
 
   std::cout << V_1 << std::endl;
 
-  expr(V_2, _assign_, V_1);
+  V_2 = V_1;
 
   std::cout << V_2 << std::endl;
 }

@@ -6,15 +6,21 @@ LinearAlgebra_headers += [
   'expr/scalar_functions.hpp',
 
   'expr/V0_assign_alpha.hpp', # ok
-  'expr/V_assign_alpha.hpp',
-
   'expr/M0_assign_alpha.hpp',
-  'expr/M_assign_alpha.hpp', # ok
 
-  'expr/V0_assign_alpha_V0.hpp', # ok
+  'expr/V0_assign_V1.hpp', # ok  
+  'expr/M0_assign_M1.hpp',
+
+
+  
+  
+
+  
+  
+  'expr/V0_assign_alpha_V0.hpp', 
   'expr/V_assign_alpha_V.hpp',
   
-  'expr/M0_assign_alpha_M0.hpp', # ok
+  'expr/M0_assign_alpha_M0.hpp', 
   'expr/M_assign_alpha_M.hpp',
 
   'expr/V0_assign_V0_plus_alpha_V1.hpp', # en cours
@@ -23,15 +29,9 @@ LinearAlgebra_headers += [
   'expr/M0_assign_M0_plus_alpha_M1.hpp',
 
   
-  'expr/V0_assign_V1.hpp', # ok to remove
-  'expr/V_assign_V.hpp',
-  
-  'expr/M0_assign_M1.hpp', # ok to remove
-  'expr/M_assign_M.hpp',
-  
+ 
 
   'expr/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp',
-  'expr/M0_assign_alpha_M0_plus_beta_V0_op_V0.hpp',
   
   'expr/vector_expr.hpp', # main header: include all expr 
   'expr/matrix_expr.hpp', # main header: include all expr 

@@ -33,19 +33,18 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   Expr_Selector_Enum
-  expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,            // Undefined implementation
-       Vector_Crtp<V_0_TYPE>& v_0,                                     // v_0
-       _assign_t_,                                                     // =
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-       _matrix_unary_op_t_<M_OP> op,                                   // op
-       const Matrix_Crtp<M_TYPE>& M,                                   // M
-       const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
-       _plus_t_,                                                       // +
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-       _vector_0_t_)                                                   // v_0
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,    // Undefined implementation
+         Vector_Crtp<V_0_TYPE>& v_0,                                     // v_0 =
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
+         _matrix_unary_op_t_<M_OP> op,                                   // op
+         const Matrix_Crtp<M_TYPE>& M,                                   // M
+         const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
+         _plus_t_,                                                       // +
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
+         _vector_0_t_)                                                   // v_0
   {
     static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
-    return Expr_Selector_Enum::Undefined;
+    return selected;
   }
 
   //////////////////////////////////////////////////////////////////
@@ -59,16 +58,15 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   Expr_Selector_Enum
-  expr(Vector_Crtp<V_0_TYPE>& v_0,  // v_0
-       _assign_t_,                  // =
-       // const typename V_0_TYPE::element_type alpha,
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-       _matrix_unary_op_t_<M_OP> op,                                   // op
-       const Matrix_Crtp<M_TYPE>& M,                                   // M
-       const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
-       _plus_t_,                                                       // +
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-       _vector_0_t_)                                                   // v_0
+  assign(Vector_Crtp<V_0_TYPE>& v_0,  // v_0 =
+         // const typename V_0_TYPE::element_type alpha,
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
+         _matrix_unary_op_t_<M_OP> op,                                   // op
+         const Matrix_Crtp<M_TYPE>& M,                                   // M
+         const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
+         _plus_t_,                                                       // +
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
+         _vector_0_t_)                                                   // v_0
   {
     // Here is the right place to check dimension once for all.
     //
@@ -77,8 +75,8 @@ namespace LinearAlgebra
 
     // Delegate computation
     //
-    return expr(Expr_Selector<>(), v_0.impl(), _assign_, alpha, op, M.impl(), v_1.impl(), _plus_,
-                beta, _vector_0_);
+    return assign(Expr_Selector<>(), v_0.impl(), alpha, op, M.impl(), v_1.impl(), _plus_, beta,
+                  _vector_0_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -92,19 +90,18 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   Expr_Selector_Enum
-  expr(Vector_Crtp<V_0_TYPE>& v_0,                                      // v_0
-       _assign_t_,                                                      // =
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& beta,   // β
-       const _vector_0_t_,                                              // v_0,
-       const _plus_t_,                                                  // +
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& alpha,  // α
-       const _matrix_unary_op_t_<M_OP> op,                              // op
-       const Matrix_Crtp<M_TYPE>& M,                                    // M
-       const Vector_Crtp<V_1_TYPE>& v_1)                                // v_1
+  assign(Vector_Crtp<V_0_TYPE>& v_0,                                      // v_0 =
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& beta,   // β
+         const _vector_0_t_,                                              // v_0,
+         const _plus_t_,                                                  // +
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& alpha,  // α
+         const _matrix_unary_op_t_<M_OP> op,                              // op
+         const Matrix_Crtp<M_TYPE>& M,                                    // M
+         const Vector_Crtp<V_1_TYPE>& v_1)                                // v_1
   {
     //assert(0);
 
-    return expr(v_0, _assign_, alpha, op, M, v_1, _plus_, beta, _vector_0_);
+    return assign(v_0, alpha, op, M, v_1, _plus_, beta, _vector_0_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -129,23 +126,22 @@ namespace LinearAlgebra
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
   Expr_Selector_Enum
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,              // Generic implementation
-       Dense_Vector_Crtp<V_0_TYPE>& v_0,                               // v_0
-       _assign_t_,                                                     // =
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-       _matrix_unary_op_t_<M_OP> op,                                   // op
-       const Dense_Matrix_Crtp<M_TYPE>& M,                             // M
-       const Dense_Vector_Crtp<V_1_TYPE>& v_1,                         // v_1
-       _plus_t_,                                                       // +
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-       _vector_0_t_                                                    // v_0
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,      // Generic implementation
+         Dense_Vector_Crtp<V_0_TYPE>& v_0,                               // v_0 =
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
+         _matrix_unary_op_t_<M_OP> op,                                   // op
+         const Dense_Matrix_Crtp<M_TYPE>& M,                             // M
+         const Dense_Vector_Crtp<V_1_TYPE>& v_1,                         // v_1
+         _plus_t_,                                                       // +
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
+         _vector_0_t_                                                    // v_0
   )
   {
     assert((void*)&v_0 != (void*)&v_1);
 
     // v_0 = beta.v_0
     //
-    expr(v_0, _assign_, beta, _vector_0_);
+    assign(v_0, beta, _vector_0_);
 
     // alpha = 0 ? -> nothing to do
     //
@@ -165,7 +161,7 @@ namespace LinearAlgebra
       case Matrix_Special_Structure_Enum::Unit_Triangular:
         // Diagonal contribution: v_0 = v_0 + β.v_1
         //
-        expr(v_0, _assign_, _vector_0_, _plus_, alpha, v_1);
+        assign(v_0, _vector_0_, _plus_, alpha, v_1);
         //
         // no break here
         //
@@ -211,15 +207,15 @@ namespace LinearAlgebra
 
         if constexpr (M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)
         {
-          expr(v_0, _assign_, alpha, transpose(op),
-               create_matrix_view_strict_upper_triangular(M), v_1, _plus_, 1, _vector_0_);
+          assign(v_0, alpha, transpose(op), create_matrix_view_strict_upper_triangular(M), v_1,
+                 _plus_, 1, _vector_0_);
         }
         else
         {
           assert(M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower);
 
-          expr(v_0, _assign_, alpha, transpose(op),
-               create_matrix_view_strict_lower_triangular(M), v_1, _plus_, 1, _vector_0_);
+          assign(v_0, alpha, transpose(op), create_matrix_view_strict_lower_triangular(M), v_1,
+                 _plus_, 1, _vector_0_);
         }
       }
       break;
@@ -256,15 +252,15 @@ namespace LinearAlgebra
 
         if constexpr (M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)
         {
-          expr(v_0, _assign_, alpha, transconjugate(op),
-               create_matrix_view_strict_upper_triangular(M), v_1, _plus_, 1, _vector_0_);
+          assign(v_0, alpha, transconjugate(op), create_matrix_view_strict_upper_triangular(M), v_1,
+                 _plus_, 1, _vector_0_);
         }
         else
         {
           assert(M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower);
 
-          expr(v_0, _assign_, alpha, transconjugate(op),
-               create_matrix_view_strict_lower_triangular(M), v_1, _plus_, 1, _vector_0_);
+          assign(v_0, alpha, transconjugate(op), create_matrix_view_strict_lower_triangular(M), v_1,
+                 _plus_, 1, _vector_0_);
         }
       }
       break;
@@ -272,7 +268,7 @@ namespace LinearAlgebra
       default:
         throw "not implemented";
     }
-    return Expr_Selector_Enum::Generic;
+    return selected;
   }
 
   //================================================================
@@ -282,17 +278,15 @@ namespace LinearAlgebra
 #if (HAS_BLAS)
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V_1_TYPE>
   auto
-  expr(const Expr_Selector<Expr_Selector_Enum::Blas>,
-       Dense_Vector_Crtp<V_0_TYPE>& v_0,                               // v_0
-       _assign_t_,                                                     // =
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-       _matrix_unary_op_t_<M_OP> op,                                   // op
-       const Dense_Matrix_Crtp<M_TYPE>& M,                             // M
-       const Dense_Vector_Crtp<V_1_TYPE>& v_1,                         // v_1
-       _plus_t_,                                                       // +
-       const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-       _vector_0_t_)                                                   // v_0
-
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+         Dense_Vector_Crtp<V_0_TYPE>& v_0,                               // v_0 =
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
+         _matrix_unary_op_t_<M_OP> op,                                   // op
+         const Dense_Matrix_Crtp<M_TYPE>& M,                             // M
+         const Dense_Vector_Crtp<V_1_TYPE>& v_1,                         // v_1
+         _plus_t_,                                                       // +
+         const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
+         _vector_0_t_)                                                   // v_0
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<M_OP> &&
@@ -308,7 +302,7 @@ namespace LinearAlgebra
     Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<M_OP>, M.I_size(), M.J_size(), alpha,
                M.data(), M.leading_dimension(), v_1.data(), v_1.increment(), beta, v_0.data(),
                v_0.increment());
-    return Expr_Selector_Enum::Blas;
+    return selected;
   }
 #endif
 }

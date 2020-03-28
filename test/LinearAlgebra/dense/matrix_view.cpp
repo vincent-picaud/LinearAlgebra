@@ -8,9 +8,9 @@ using namespace LinearAlgebra;
 TEST(Matrix_View, dynamic_of_static)
 {
   Tiny_Matrix<int, 5, 6> mat;
-  expr(mat, _assign_, 1);
+  mat           = 1;
   auto view_mat = create_matrix_view(mat, 1, 3, 2, 5);
-  expr(view_mat, _assign_, 2);
+  view_mat      = 2;
 
   // EXPECT_TRUE((std::is_same_v<std::size_t, typename decltype(view_mat)::size_type>));
   EXPECT_EQ(view_mat.I_size(), 2);
@@ -29,10 +29,10 @@ TEST(Matrix_View, dynamic_of_static)
 TEST(Matrix_View, static_of_static_I)
 {
   Tiny_Matrix<int, 5, 6> mat;
-  expr(mat, _assign_, 1);
+  mat           = 1;
   auto view_mat = create_matrix_view(mat, std::integral_constant<std::size_t, 1>(),
                                      std::integral_constant<std::size_t, 3>(), 2, 5);
-  expr(view_mat, _assign_, 2);
+  view_mat      = 2;
 
   EXPECT_TRUE((std::is_same_v<int&, decltype(view_mat(0, 0))>));
 
@@ -56,10 +56,10 @@ TEST(Matrix_View, static_of_static_I)
 TEST(Matrix_View, static_of_static_J)
 {
   Tiny_Matrix<int, 5, 6> mat;
-  expr(mat, _assign_, 1);
+  mat           = 1;
   auto view_mat = create_matrix_view(mat, 1, 3, std::integral_constant<std::size_t, 2>(),
                                      std::integral_constant<std::size_t, 5>());
-  expr(view_mat, _assign_, 2);
+  view_mat      = 2;
 
   EXPECT_TRUE((std::is_same_v<std::size_t, typename decltype(view_mat)::I_size_type>));
   EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 3>,
@@ -81,11 +81,11 @@ TEST(Matrix_View, static_of_static_J)
 TEST(Matrix_View, static_of_static_IJ)
 {
   Tiny_Matrix<int, 5, 6> mat;
-  expr(mat, _assign_, 1);
+  mat           = 1;
   auto view_mat = create_matrix_view(
       mat, std::integral_constant<std::size_t, 1>(), std::integral_constant<std::size_t, 3>(),
       std::integral_constant<std::size_t, 2>(), std::integral_constant<std::size_t, 5>());
-  expr(view_mat, _assign_, 2);
+  view_mat = 2;
 
   EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>,
                               typename decltype(view_mat)::I_size_type>));
@@ -108,10 +108,10 @@ TEST(Matrix_View, static_of_static_IJ)
 TEST(Matrix_View, const_static_of_static_I)
 {
   Tiny_Matrix<int, 5, 6> mat;
-  expr(mat, _assign_, 1);
+  mat                   = 1;
   auto view_mat_mutable = create_matrix_view(mat, std::integral_constant<std::size_t, 1>(),
                                              std::integral_constant<std::size_t, 3>(), 2, 5);
-  expr(view_mat_mutable, _assign_, 2);
+  view_mat_mutable      = 2;
 
   auto view_mat = create_matrix_view(mat.as_const(), std::integral_constant<std::size_t, 1>(),
                                      std::integral_constant<std::size_t, 3>(), 2, 5);
@@ -141,11 +141,11 @@ TEST(Matrix_View, matrix_view_type)
 {
   Matrix<int> M(3, 5);
 
-  expr(M, _assign_, 1);
+  M = 1;
 
   auto M_sut = create_matrix_view_strict_upper_triangular(M);
 
-  expr(M_sut, _assign_, 2);
+  M_sut = 2;
 
   EXPECT_EQ(M(0, 2), 2);
   EXPECT_EQ(M(1, 2), 2);
@@ -172,7 +172,7 @@ TEST(Matrix_View, create_matrix_view)
 
   Matrix<int> M(m.I_size(), m.J_size());
 
-  expr(M, _assign_, m);
+  M = m;
 
   EXPECT_EQ(M(0, 0), 10);
   EXPECT_EQ(M(1, 0), 2);
@@ -201,7 +201,7 @@ TEST(Matrix_View, create_matrix_view_const_version)
 
   Matrix<int> M(m.I_size(), m.J_size());
 
-  expr(M, _assign_, m);
+  M = m;
 
   EXPECT_EQ(M(0, 0), 1);
   EXPECT_EQ(M(1, 0), 2);
@@ -227,11 +227,11 @@ TEST(Matrix_View, row_view)
 {
   Matrix<int> M(3, 5);
 
-  expr(M, _assign_, 1);
+  M = 1;
 
   auto row_view = create_vector_view_matrix_row(M, 1);
 
-  expr(row_view, _assign_, 2);
+  row_view = 2;
 
   EXPECT_EQ(M(0, 0), 1);
   EXPECT_EQ(M(0, 1), 1);

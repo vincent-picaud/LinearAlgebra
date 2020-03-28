@@ -75,6 +75,37 @@ transform(v_0,v_1,[](const auto& v_0_i,const auto v_1_i){ return v_0_i + v_1_i; 
                                              Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
 
    #+END_QUOTE
+*** 2020-03-28 Saturday
 
-   
+**** assign return a DYNAMIC value, not a TYPE                       :CAVEAT:
+
+   Back link: [[file:src/LinearAlgebra/expr/V_assign_alpha_V.hpp][file:src/LinearAlgebra/expr/V_assign_alpha_V.hpp]]
+
+   I tried several time to return a type (std::integral_constant...)
+
+   But this is NOT a good idea
+
+   Typical example:
+
+   #+BEGIN_SRC cpp :eval never
+// V0 = α V1
+template <typename IMPL_DEST, typename IMPL_ARG_1>
+static inline auto
+assign(Vector_Crtp<IMPL_DEST>& dest,                              //// dest
+       const Common_Element_Type_t<IMPL_DEST, IMPL_ARG_1> alpha,  //// alpha
+       const Vector_Crtp<IMPL_ARG_1>& arg_1                       // arg_1
+)
+{
+  if (is_same(dest, arg_1))
+  {
+    return assign(Expr_Selector<>(), dest.impl(), alpha, _vector_0_);
+  }
+  else
+  {
+    return assign(Expr_Selector<>(), dest.impl(), alpha, arg_1.impl());
+  }
+}
+   #+END_SRC
+
+   Conclusion one must return a =Expr_Selector_Enum=
 

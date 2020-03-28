@@ -11,7 +11,7 @@ namespace LinearAlgebra
   template <typename IMPL, typename... IMPL_OPTIONAL>
   constexpr bool
   are_compatible_p(const Dense_Vector_Crtp<IMPL>& vector,
-                           const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional) noexcept
+                   const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional) noexcept
   {
     return (are_compatible_p(vector.storage_scheme(), vector_optional.storage_scheme()) and ...);
   }

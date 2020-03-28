@@ -203,3 +203,17 @@
 
     - Do it like matrix=scalar
 
+**** TODO TODO CRITICAL [0/3]                                      :Critical:
+     :PROPERTIES:
+     :Created:  [2020-03-27 Fri 17:30]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/vector_is_same.hpp:://%20TODO:%20//%20-%20is_same%20vector%20+%20matrix%20//%20-%20create%20V_assign_V%20+%20matrix%20//%20-%20modify%20op=%20for%20V%20and%20M]]
+
+      TODO:
+      - [ ] is_same vector + matrix
+      - [ ] create V_assign_V + matrix
+      - [ ] modify op= for V and M
+
+  
+

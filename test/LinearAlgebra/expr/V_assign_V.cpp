@@ -17,7 +17,7 @@ TEST(V_assign_V, copy)
   w[1] = 0;
   w[2] = 0;
 
-  Expr_Selector_Enum selected = expr(w, v);
+  Expr_Selector_Enum selected = assign(w, v);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Static);
 
@@ -33,12 +33,12 @@ TEST(V_assign_V, copy)
 TEST(V_assign_V, copy_assert)
 {
   Tiny_Vector<int, 3> v;
-  EXPECT_DEBUG_DEATH(expr(v, v),"");
+  EXPECT_DEBUG_DEATH(assign(v, v),"");
 }
 
 TEST(V_assign_V, copy_assert_2)
 {
   Tiny_Vector<int, 3> v;
   Tiny_Vector<int, 2> w;
-  EXPECT_DEBUG_DEATH(expr(v, w),"");
+  EXPECT_DEBUG_DEATH(assign(v, w),"");
 }

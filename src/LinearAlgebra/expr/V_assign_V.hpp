@@ -36,7 +36,7 @@ namespace LinearAlgebra
   //
   template <typename VECTOR_0_TYPE, typename VECTOR_1_TYPE>
   auto
-  expr(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
        Vector_Crtp<VECTOR_0_TYPE>& vector_0,       // vector_0
        const Vector_Crtp<VECTOR_1_TYPE>& vector_1  // vector_1
   )
@@ -51,13 +51,13 @@ namespace LinearAlgebra
   //
   template <typename VECTOR_0_TYPE, typename VECTOR_1_TYPE>
   auto
-  expr(Vector_Crtp<VECTOR_0_TYPE>& vector_0,       // vector_0
+  assign(Vector_Crtp<VECTOR_0_TYPE>& vector_0,       // vector_0
        const Vector_Crtp<VECTOR_1_TYPE>& vector_1  // vector_1
   )
   {
     assert(not is_same(vector_0.impl(), vector_1.impl()));
 
-    return expr(Expr_Selector<>(), vector_0.impl(), vector_1.impl());
+    return assign(Expr_Selector<>(), vector_0.impl(), vector_1.impl());
   }
 
   //////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ namespace LinearAlgebra
 
   template <typename VECTOR_0_TYPE, typename VECTOR_1_TYPE>
   auto
-  expr(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
        Vector_Crtp<VECTOR_0_TYPE>& vector_0,       // vector_0
        const Vector_Crtp<VECTOR_1_TYPE>& vector_1  // vector_1
   )
@@ -96,7 +96,7 @@ namespace LinearAlgebra
 #if (HAS_BLAS)
   template <typename VECTOR_0_TYPE, typename VECTOR_1_TYPE>
   auto
-  expr(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
        Dense_Vector_Crtp<VECTOR_0_TYPE>& vector_0,       // vector_0
        const Dense_Vector_Crtp<VECTOR_1_TYPE>& vector_1  // vector_1
        )
@@ -121,13 +121,13 @@ namespace LinearAlgebra
   template <typename VECTOR_0_TYPE, typename VECTOR_1_TYPE>
   std::enable_if_t<Any_Has_Static_Size_v<VECTOR_0_TYPE, VECTOR_1_TYPE>,
                    Expr_Selector<Expr_Selector_Enum::Static>>
-  expr(const Expr_Selector<Expr_Selector_Enum::Static> selected,
+  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,
        Vector_Crtp<VECTOR_0_TYPE>& vector_0,       // vector_0
        const Vector_Crtp<VECTOR_1_TYPE>& vector_1  // vector_1
   )
   {
     // skip blas when V0 or v1 has a static size
-    expr(Expr_Selector<Expr_Selector_Enum::Generic>(), vector_0.impl(), vector_1.impl());
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vector_0.impl(), vector_1.impl());
 
     return selected;
   }

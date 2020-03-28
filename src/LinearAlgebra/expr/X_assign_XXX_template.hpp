@@ -13,7 +13,7 @@
 #include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/size_utils.hpp"
 
-#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
+//#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 
 // specific includes

@@ -21,8 +21,8 @@ LinearAlgebra_headers += [
   'expr/M0_assign_M0_plus_alpha_M1.hpp',
 
   
-  'expr/V0_assign_V1.hpp',
-#  'expr/V_assign_V.hpp',
+  'expr/V0_assign_V1.hpp', # ok to remove
+  'expr/V_assign_V.hpp',
   
   'expr/M0_assign_M1.hpp',
 

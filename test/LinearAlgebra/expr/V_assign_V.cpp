@@ -1,12 +1,12 @@
-// Can be removed
-#include "LinearAlgebra/expr/V0_assign_V1.hpp"
+#include "LinearAlgebra/expr/V_assign_V.hpp"
+
 #include "LinearAlgebra/dense/vector.hpp"
 
 #include <gtest/gtest.h>
 
 using namespace LinearAlgebra;
 
-TEST(Known_Pattern, copy)
+TEST(V_assign_V, copy)
 {
   Tiny_Vector<int, 3> v;
   v[0] = 1;
@@ -17,7 +17,7 @@ TEST(Known_Pattern, copy)
   w[1] = 0;
   w[2] = 0;
 
-  Expr_Selector_Enum selected = expr(w, _assign_, v);
+  Expr_Selector_Enum selected = expr(w, v);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Static);
 
@@ -28,12 +28,17 @@ TEST(Known_Pattern, copy)
   EXPECT_EQ(w[0], 1);
   EXPECT_EQ(w[1], 2);
   EXPECT_EQ(w[2], 3);
+}
 
-  selected = expr(v, _assign_, v);
+TEST(V_assign_V, copy_assert)
+{
+  Tiny_Vector<int, 3> v;
+  EXPECT_DEBUG_DEATH(expr(v, v),"");
+}
 
-  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
-
-  selected = expr(w, _assign_, w);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Generic);
+TEST(V_assign_V, copy_assert_2)
+{
+  Tiny_Vector<int, 3> v;
+  Tiny_Vector<int, 2> w;
+  EXPECT_DEBUG_DEATH(expr(v, w),"");
 }

@@ -5,6 +5,7 @@
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/expr/M_assign_alpha.hpp"
+#include "LinearAlgebra/expr/M_assign_M.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
 namespace LinearAlgebra
@@ -168,21 +169,6 @@ namespace LinearAlgebra
       return base_type::impl().impl_memory_chunk();
     };
 
-    // // = Meta expression
-    // template <typename METAEXPR_IMPL>
-    // IMPL&
-    // operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
-    // {
-    //   return base_type::impl().impl_assign(metaExpr);
-    // }
-
-    // // = scalar
-    // IMPL&
-    // operator=(const element_type& scalar)
-    // {
-    //   return base_type::impl().impl_assign(scalar);
-    // }
-
     /////////////////////////
     // Crtp Implementation //
     /////////////////////////
@@ -203,6 +189,14 @@ namespace LinearAlgebra
     impl_assign(const element_type& scalar)
     {
       assign(*this, scalar);
+      return base_type::impl();
+    }
+
+    template <typename OTHER_IMPL>
+    IMPL&
+    impl_assign(const Matrix_Crtp<OTHER_IMPL>& other_matrix)
+    {
+      assign(*this, other_matrix);
       return base_type::impl();
     }
 

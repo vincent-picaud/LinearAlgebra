@@ -186,6 +186,7 @@ namespace LinearAlgebra
       assign(*this, scalar);
       return base_type::impl();
     }
+    
     template <typename OTHER_IMPL>
     IMPL&
     impl_assign(const Vector_Crtp<OTHER_IMPL>& other_vector)

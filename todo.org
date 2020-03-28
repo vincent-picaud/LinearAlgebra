@@ -214,6 +214,18 @@
       - [ ] is_same vector + matrix
       - [ ] create V_assign_V + matrix
       - [ ] modify op= for V and M
+*** 2020-03-28 Saturday
 
-  
+**** TODO Document deep copy semantic of views [0/0]                    :Doc:
+     :PROPERTIES:
+     :Created:  [2020-03-28 Sat 11:49]
+     :END:
+
+   Back link: [[file:test/LinearAlgebra/expr/V_assign_V.cpp::Note:%20fundamental%20to%20understand%20to%20properly%20use%20this%20library!][operator= overloading meaning]]
+
+   #+BEGIN_QUOTE
+   Note: fundamental to understand to properly use this library!
+   #+END_QUOTE
+
+    - This part is *fundamental*.
 

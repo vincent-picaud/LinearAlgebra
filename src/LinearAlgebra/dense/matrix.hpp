@@ -209,10 +209,35 @@ namespace LinearAlgebra
       return this->impl_assign(metaExpr);
     }
 
+    // = scalar
     Default_Matrix&
     operator=(const element_type& scalar)
     {
       return this->impl_assign(scalar);
+    }
+
+    // CAVEAT: do not define:
+    //
+    // = other_matrix
+    // Default_Matrix&
+    // operator=(const Default_Matrix& other_matrix)
+    // {
+    //   return this->impl().impl_assign(other_matrix);
+    // }
+    //
+    // This is useless here (would be a useless duplicate for
+    // std::array por std::matrix copy) and, most importantly, it
+    // would cause Tiny_Matrix not being trivially_copyable anymore
+    //
+    // CAVEAT: however it is fundamental to define this operator for
+    // view to keep the same copy semantic
+
+    // = other_matrix
+    template <typename OTHER_IMPL>
+    Default_Matrix&
+    operator=(const Matrix_Crtp<OTHER_IMPL>& other_matrix)
+    {
+      return this->impl().impl_assign(other_matrix);
     }
   };
   //****************************************************************
@@ -332,6 +357,21 @@ namespace LinearAlgebra
     {
       return this->impl_assign(scalar);
     }
+
+    // = other_matrix
+    template <typename OTHER_IMPL>
+    Default_Matrix_View&
+    operator=(const Matrix_Crtp<OTHER_IMPL>& other_matrix)
+    {
+      return this->impl().impl_assign(other_matrix);
+    }
+
+    // CAVEAT: fundamental to preserve deep copy semantic of views
+    Default_Matrix_View&
+    operator=(const Default_Matrix_View& other_matrix)
+    {
+      return this->impl().impl_assign(other_matrix);
+    }
   };
 
   //================================================================
@@ -427,19 +467,8 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
-    // Meta expression
-    template <typename METAEXPR_IMPL>
-    Default_Matrix_Const_View&
-    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
-    {
-      return this->impl_assign(metaExpr);
-    }
-
-    Default_Matrix_Const_View&
-    operator=(const element_type& scalar)
-    {
-      return this->impl_assign(scalar);
-    }
+    // CONST view!
+    Default_Matrix_Const_View& operator=(const Default_Matrix_Const_View& other_matrix) = delete;
   };
 
   ////////////////

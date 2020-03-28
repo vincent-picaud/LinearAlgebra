@@ -85,7 +85,7 @@ namespace LinearAlgebra
     //
     // = other_vector
     // Default_Vector&
-    // operator=(const Default_Vector<T, SIZE_TYPE, INCREMENT_TYPE>& other_vector)
+    // operator=(const Default_Vector& other_vector)
     // {
     //   return this->impl().impl_assign(other_vector);
     // }
@@ -190,6 +190,7 @@ namespace LinearAlgebra
     {
       return this->impl_assign(scalar);
     }
+
     // = other_vector
     template <typename OTHER_IMPL>
     Default_Vector_View&
@@ -198,12 +199,7 @@ namespace LinearAlgebra
       return this->impl().impl_assign(other_vector);
     }
 
-    // Default_Vector_View&
-    // operator=(const Default_Vector_View<T, SIZE_TYPE, INCREMENT_TYPE>& other_vector)
-    // {
-    //   return this->impl().impl_assign(other_vector);
-    // }
-
+    // CAVEAT: fundamental to preserve deep copy semantic of views
     Default_Vector_View&
     operator=(const Default_Vector_View& other_vector)
     {

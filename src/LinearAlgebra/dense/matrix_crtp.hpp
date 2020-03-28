@@ -168,20 +168,20 @@ namespace LinearAlgebra
       return base_type::impl().impl_memory_chunk();
     };
 
-    // = Meta expression
-    template <typename METAEXPR_IMPL>
-    IMPL&
-    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
-    {
-      return base_type::impl().impl_assign(metaExpr);
-    }
+    // // = Meta expression
+    // template <typename METAEXPR_IMPL>
+    // IMPL&
+    // operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
+    // {
+    //   return base_type::impl().impl_assign(metaExpr);
+    // }
 
-    // = scalar
-    IMPL&
-    operator=(const element_type& scalar)
-    {
-      return base_type::impl().impl_assign(scalar);
-    }
+    // // = scalar
+    // IMPL&
+    // operator=(const element_type& scalar)
+    // {
+    //   return base_type::impl().impl_assign(scalar);
+    // }
 
     /////////////////////////
     // Crtp Implementation //

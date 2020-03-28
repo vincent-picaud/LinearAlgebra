@@ -74,10 +74,34 @@ namespace LinearAlgebra
       return this->impl_assign(metaExpr);
     }
 
+    // = scalar
     Default_Vector&
     operator=(const element_type& scalar)
     {
       return this->impl_assign(scalar);
+    }
+
+    // CAVEAT: do not define:
+    //
+    // = other_vector
+    // Default_Vector&
+    // operator=(const Default_Vector<T, SIZE_TYPE, INCREMENT_TYPE>& other_vector)
+    // {
+    //   return this->impl().impl_assign(other_vector);
+    // }
+    //
+    // This is useless here (would be a useless duplicate for
+    // std::array por std::vector copy) and, most importantly, it
+    // would cause Tiny_Vector not being trivially_copyable anymore
+    //
+    // CAVEAT: however it is fundamental to define this operator for
+    // view to keep the same copy semantic
+
+    template <typename OTHER_IMPL>
+    Default_Vector&
+    operator=(const Vector_Crtp<OTHER_IMPL>& other_vector)
+    {
+      return this->impl().impl_assign(other_vector);
     }
   };
 
@@ -160,11 +184,30 @@ namespace LinearAlgebra
     {
       return this->impl_assign(metaExpr);
     }
-
+    // = scalar
     Default_Vector_View&
     operator=(const element_type& scalar)
     {
       return this->impl_assign(scalar);
+    }
+    // = other_vector
+    template <typename OTHER_IMPL>
+    Default_Vector_View&
+    operator=(const Vector_Crtp<OTHER_IMPL>& other_vector)
+    {
+      return this->impl().impl_assign(other_vector);
+    }
+
+    // Default_Vector_View&
+    // operator=(const Default_Vector_View<T, SIZE_TYPE, INCREMENT_TYPE>& other_vector)
+    // {
+    //   return this->impl().impl_assign(other_vector);
+    // }
+
+    Default_Vector_View&
+    operator=(const Default_Vector_View& other_vector)
+    {
+      return this->impl().impl_assign(other_vector);
     }
   };
 
@@ -233,19 +276,8 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
-    // Meta expression
-    template <typename METAEXPR_IMPL>
-    Default_Vector_Const_View&
-    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
-    {
-      return this->impl_assign(metaExpr);
-    }
-
-    Default_Vector_Const_View&
-    operator=(const element_type& scalar)
-    {
-      return this->impl_assign(scalar);
-    }
+    // CONST view!
+    Default_Vector_Const_View& operator=(const Default_Vector_Const_View& other_vector) = delete;
   };
 
   ////////////////

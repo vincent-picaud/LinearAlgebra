@@ -85,3 +85,16 @@
 
     - This part is *fundamental*.
 
+**** TODO refactoring M_assign_alpha_M [0/0]                       :Critical:
+     :PROPERTIES:
+     :Created:  [2020-03-28 Sat 12:43]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V_assign_alpha_V.hpp:://%20Define:%20V%20=%20%CE%B1%20V]]
+
+   #+BEGIN_QUOTE
+
+   #+END_QUOTE
+
+    
+

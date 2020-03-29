@@ -40,11 +40,11 @@ namespace LinearAlgebra
     return selected;
   }
 
-  template <typename IMPL_DEST, typename IMPL_ARG_1>
+  template <typename IMPL_DEST>
   static inline Expr_Selector_Enum
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
          Vector_Crtp<IMPL_DEST>& dest,                              // dest
-         const Common_Element_Type_t<IMPL_DEST, IMPL_ARG_1> alpha,  // alpha
+         const Common_Element_Type_t<IMPL_DEST> alpha,  // alpha
          const _vector_0_t_                                         // arg_1
   )
   {

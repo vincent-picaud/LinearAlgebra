@@ -10,21 +10,17 @@ LinearAlgebra_headers += [
 
   'expr/V0_assign_V1.hpp', # ok  
   'expr/M0_assign_M1.hpp',
-
-
-  
-  
-
-  
   
   'expr/V0_assign_alpha_V0.hpp', 
-  'expr/V_assign_alpha_V.hpp',
+  'expr/M0_assign_alpha_M0.hpp',
   
-  'expr/M0_assign_alpha_M0.hpp', 
-  'expr/M_assign_alpha_M.hpp',
+  'expr/V0_assign_alpha_V1.hpp',
+  'expr/M0_assign_alpha_M1.hpp',
 
-  'expr/V0_assign_V0_plus_alpha_V1.hpp', # en cours
-  'expr/V_assign_V_plus_alpha_V.hpp',
+
+
+  'expr/V0_assign_V0_plus_alpha_V1.hpp', # <--- TO CLEAN
+  'expr/V0_assign_V1_plus_alpha_V2.hpp',
   
   'expr/M0_assign_M0_plus_alpha_M1.hpp',
 

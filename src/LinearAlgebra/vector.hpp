@@ -6,3 +6,5 @@
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/dense/vector_view.hpp"
 #include "LinearAlgebra/expr/vector_expr.hpp"
+
+#include "LinearAlgebra/metaexpr/metaexpr.hpp"

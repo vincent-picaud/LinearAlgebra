@@ -20,6 +20,9 @@ test_array = [
   ['memory_chunk_test','memory_chunk_exe','memory_chunk.cpp'],
   ['memory_chunk_aliasing_p_test','memory_chunk_aliasing_p_exe','memory_chunk_aliasing_p.cpp'],
   ['is_same_test','is_same_exe','is_same.cpp'],
+
+  # ---------
+  ['vector_comparison_operators_test','vector_comparison_operators_exe','vector_comparison_operators.cpp'],
 ]
 
 foreach test : test_array

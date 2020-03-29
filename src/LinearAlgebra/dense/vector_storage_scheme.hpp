@@ -20,6 +20,21 @@ namespace LinearAlgebra
         lambda(i);
       }
     }
+
+    template <typename LAMBDA, typename SIZE>
+    constexpr bool
+    loop_over_indices_while(const LAMBDA& lambda, const SIZE size)
+    {
+      static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<SIZE>);
+
+      bool ok = true;
+      for (size_t i = 0; i < size; ++i)
+      {
+        ok = lambda(i);
+        if (not ok) break;
+      }
+      return ok;
+    }
   }
 
   namespace Detail

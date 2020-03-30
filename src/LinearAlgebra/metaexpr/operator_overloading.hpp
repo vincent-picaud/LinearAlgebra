@@ -3,9 +3,9 @@
 //
 #pragma once
 
+#include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
-#include "LinearAlgebra/expr/expr_tags.hpp"
 
 namespace LinearAlgebra
 {
@@ -18,8 +18,7 @@ namespace LinearAlgebra
   template <typename... IMPL>
   constexpr auto Is_Supported_MetaExpr_Argument_v =
       ((Is_Crtp_Interface_Of_v<Detail::MetaExpr_Crtp, IMPL> or
-        Is_Crtp_Interface_Of_v<Vector_Crtp, IMPL> or
-        Is_Crtp_Interface_Of_v<Matrix_Crtp, IMPL>)and...);
+        Is_Crtp_Interface_Of_v<VMT_Crtp, IMPL>)and...);
 
   // Product
   //================================================================

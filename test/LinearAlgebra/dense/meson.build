@@ -23,6 +23,7 @@ test_array = [
 
   # ---------
   ['vector_comparison_operators_test','vector_comparison_operators_exe','vector_comparison_operators.cpp'],
+  ['matrix_comparison_operators_test','matrix_comparison_operators_exe','matrix_comparison_operators.cpp'],
 ]
 
 foreach test : test_array

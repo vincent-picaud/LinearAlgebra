@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LinearAlgebra/dense/VMT_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
 
 #include "LinearAlgebra/utils/crtp.hpp"
 

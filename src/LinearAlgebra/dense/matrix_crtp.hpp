@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <iomanip>
 
-#include "LinearAlgebra/dense/VMT_crtp.hpp"
+#include "LinearAlgebra/dense/vmt_crtp.hpp"
 #include "LinearAlgebra/expr/M0_assign_alpha.hpp"
 #include "LinearAlgebra/expr/M0_assign_M1.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"

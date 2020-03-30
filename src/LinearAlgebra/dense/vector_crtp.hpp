@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-#include "LinearAlgebra/dense/VMT_crtp.hpp"
+#include "LinearAlgebra/dense/vmt_crtp.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha.hpp"
 #include "LinearAlgebra/expr/V0_assign_V1.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"

@@ -1,6 +1,6 @@
 LinearAlgebra_headers += [
-  'dense/VMT_crtp.hpp',
-  'dense/VMT_crtp_fwd.hpp',
+  'dense/vmt_crtp.hpp',
+  'dense/vmt_crtp_fwd.hpp',
   
   'dense/memory_chunk.hpp',
 
@@ -49,6 +49,7 @@ LinearAlgebra_headers += [
   'dense/matrix_is_same.hpp',
 
 
+  'dense/vmt_comparison_operators.hpp',
   'dense/vector_comparison_operators.hpp',
-  # TODO  'dense/matrix_comparison_operators.hpp'
+  'dense/matrix_comparison_operators.hpp',
 ]

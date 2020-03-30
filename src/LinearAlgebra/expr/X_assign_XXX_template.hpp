@@ -11,7 +11,7 @@
 
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
-#include "LinearAlgebra/utils/size_utils.hpp"
+#include "LinearAlgebra/utils/has_static_dimension.hpp"
 
 //#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"

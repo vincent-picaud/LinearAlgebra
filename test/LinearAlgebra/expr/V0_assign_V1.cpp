@@ -1,4 +1,6 @@
-#include "LinearAlgebra/expr/V0_assign_V1.hpp"
+#include "LinearAlgebra/expr/X0_assign_X1.hpp"
+
+//#include "LinearAlgebra/expr/V0_assign_V1.hpp"
 
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/dense/vector_view.hpp"
@@ -30,6 +32,31 @@ TEST(V_assign_V, copy)
   EXPECT_EQ(w[1], 2);
   EXPECT_EQ(w[2], 3);
 }
+
+TEST(V_assign_V, copy_blas)
+{
+  Vector<float> v(3);
+  v[0] = 1;
+  v[1] = 2;
+  v[2] = 3;
+  Vector<float> w(3);
+  w[0] = 0;
+  w[1] = 0;
+  w[2] = 0;
+
+  Expr_Selector_Enum selected = assign(w, v);
+
+  EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
+
+  EXPECT_EQ(v[0], 1);
+  EXPECT_EQ(v[1], 2);
+  EXPECT_EQ(v[2], 3);
+
+  EXPECT_EQ(w[0], 1);
+  EXPECT_EQ(w[1], 2);
+  EXPECT_EQ(w[2], 3);
+}
+
 
 TEST(V_assign_V, copy_assert)
 {

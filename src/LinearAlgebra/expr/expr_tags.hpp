@@ -21,6 +21,8 @@
 //
 #pragma once
 
+#include "LinearAlgebra/utils/crtp.hpp"
+
 #include <ccomplex>
 
 namespace LinearAlgebra
@@ -58,30 +60,47 @@ namespace LinearAlgebra
   //   provide generic routine for which the unknown (vector or
   //   matrix?) argument type is replaced by _arg_0_, _arg_1_ etc...
   //
-  struct _vector_0_t_
+  template <typename IMPL>
+  struct _arg_0_t_ : Crtp_Find_Impl<_arg_0_t_, IMPL, Crtp>
   {
   };
-  struct _vector_1_t_
+  template <typename IMPL>
+  struct _arg_1_t_ : Crtp_Find_Impl<_arg_1_t_, IMPL, Crtp>
   {
   };
-  struct _vector_2_t_
+  template <typename IMPL>
+  struct _arg_2_t_ : Crtp_Find_Impl<_arg_2_t_, IMPL, Crtp>
   {
   };
+
+  //================================================================
+
+  struct _vector_0_t_ final : _arg_0_t_<_vector_0_t_>
+  {
+  };
+  struct _vector_1_t_ final : _arg_1_t_<_vector_1_t_>
+  {
+  };
+  struct _vector_2_t_ final : _arg_2_t_<_vector_2_t_>
+  {
+  };
+
   constexpr auto _vector_0_ = _vector_0_t_();
   constexpr auto _vector_1_ = _vector_1_t_();
   constexpr auto _vector_2_ = _vector_2_t_();
 
-  //================================================================
+  //----------------------------------------------------------------
 
-  struct _matrix_0_t_
+  struct _matrix_0_t_ final : _arg_0_t_<_matrix_0_t_>
   {
   };
-  struct _matrix_1_t_
+  struct _matrix_1_t_ final : _arg_1_t_<_matrix_1_t_>
   {
   };
-  struct _matrix_2_t_
+  struct _matrix_2_t_ final : _arg_2_t_<_matrix_2_t_>
   {
   };
+
   constexpr auto _matrix_0_ = _matrix_0_t_();
   constexpr auto _matrix_1_ = _matrix_1_t_();
   constexpr auto _matrix_2_ = _matrix_2_t_();

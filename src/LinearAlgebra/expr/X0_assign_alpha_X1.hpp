@@ -4,12 +4,21 @@
 //
 #pragma once
 
-#include "LinearAlgebra/expr/expr_selector.hpp"
-#include "LinearAlgebra/expr/expr_tags.hpp"
+//----------------
+// CAVEAT: in order to be sure of not missing any specialization, one
+// must do:
+#include "LinearAlgebra/expr/M0_assign_alpha_M0.hpp"
+#include "LinearAlgebra/expr/V0_assign_alpha_V0.hpp"
+// and not simply
+// #include "LinearAlgebra/expr/X0_assign_alpha_X0.hpp"
+//----------------
 
-#include "LinearAlgebra/utils/always.hpp"
-#include "LinearAlgebra/utils/element_type.hpp"
-#include "LinearAlgebra/utils/has_static_dimension.hpp"
+// #include "LinearAlgebra/expr/expr_selector.hpp"
+// #include "LinearAlgebra/expr/expr_tags.hpp"
+
+// #include "LinearAlgebra/utils/always.hpp"
+// #include "LinearAlgebra/utils/element_type.hpp"
+// #include "LinearAlgebra/utils/has_static_dimension.hpp"
 
 // specific includes
 // #include "LinearAlgebra/dense/vector_is_same.hpp"
@@ -49,8 +58,6 @@ namespace LinearAlgebra
          const VMT_Crtp<IMPL_ARG_1>& arg_1                           // arg_1
   )
   {
-    return assign(Expr_Selector<>(), dest.impl(), alpha, arg_1.impl());
-
     // if (is_same(dest.impl(), arg_1.impl()))
     // {
     //   return assign(Expr_Selector<>(), dest.impl(), alpha, _VMT_0_);
@@ -59,6 +66,9 @@ namespace LinearAlgebra
     // {
     //   return assign(Expr_Selector<>(), dest.impl(), alpha, arg_1.impl());
     // }
+    assert(0);  // Finir specialization
+
+    return assign(Expr_Selector<>(), dest.impl(), alpha, arg_1.impl());
   }
 
   //////////////////////////////////////////////////////////////////

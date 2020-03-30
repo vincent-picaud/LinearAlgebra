@@ -15,6 +15,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
+#include "LinearAlgebra/utils/element_type.hpp"
 
 namespace LinearAlgebra
 {
@@ -48,4 +49,51 @@ namespace LinearAlgebra
   LINALG_CODE(>=);
 
 #undef LINALG_CODE
+
+  // Scalar mixing: scalar - VMT
+#define LINALG_CODE(OP)                                                                           \
+  template <typename IMPL_1>                                                                      \
+  bool operator OP(const Element_Type_t<IMPL_1>& vmt_0, const VMT_Crtp<IMPL_1>& vmt_1)            \
+  {                                                                                               \
+    return scan_while([&vmt_0](const auto& vmt_1_component) { return vmt_0 OP vmt_1_component; }, \
+                      vmt_1.impl());                                                              \
+  }
+
+  LINALG_CODE(==);
+  template <typename IMPL_1>
+  bool
+  operator!=(const Element_Type_t<IMPL_1>& vmt_0, const VMT_Crtp<IMPL_1>& vmt_1)
+  {
+    return not(vmt_0 == vmt_1);
+  }
+  LINALG_CODE(<);
+  LINALG_CODE(>);
+  LINALG_CODE(<=);
+  LINALG_CODE(>=);
+
+#undef LINALG_CODE
+
+  // Scalar mixing: VMT - scalar
+#define LINALG_CODE(OP)                                                                           \
+  template <typename IMPL_0>                                                                      \
+  bool operator OP(const VMT_Crtp<IMPL_0>& vmt_0, const Element_Type_t<IMPL_0>& vmt_1)            \
+  {                                                                                               \
+    return scan_while([&vmt_1](const auto& vmt_0_component) { return vmt_0_component OP vmt_1; }, \
+                      vmt_0.impl());                                                              \
+  }
+
+  LINALG_CODE(==);
+  template <typename IMPL_0>
+  bool
+  operator!=(const VMT_Crtp<IMPL_0>& vmt_0, const Element_Type_t<IMPL_0>& vmt_1)
+  {
+    return not(vmt_0 == vmt_1);
+  }
+  LINALG_CODE(<);
+  LINALG_CODE(>);
+  LINALG_CODE(<=);
+  LINALG_CODE(>=);
+
+#undef LINALG_CODE
+
 }

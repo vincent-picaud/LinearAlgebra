@@ -3,17 +3,21 @@
 //
 // arg_0 = arg_1 op arg_2....
 //
-// arg_0 is ALWAYS the LHS
-// arg_i, i>0belo,g the the RHS, i denotes the rank of the first occurrence
+// arg_0      is ALWAYS the LHS
+// arg_i, i>0 belongs to the RHS, i denotes the rank of the first occurrence
 //
-// Example: $M_0=v_1.v_1^t$ is translated into
+// Example:
 //
-// M_0 = v_1 _transpose_ _vector_1_
+//            assign(M, v, transpose(_vector_1_), _plus_, _matrix_0_);
 //
-// Product is not noted.
+//   is translated into
 //
-// However, please note that special products like (_cwise_product_,
-// _Kronecker_product_) are *noted*.
+//             M = M + v.v^t
+//
+// CAVEAT: _product_ is not noted.
+//
+//         However, please note that special products like
+//         (_cwise_product_, _Kronecker_product_) are noted.
 //
 #pragma once
 
@@ -25,9 +29,9 @@ namespace LinearAlgebra
   // Tags used to notify operations (plus, product...) //
   ///////////////////////////////////////////////////////
   //
-  // Note: as we do not use *capitalized first letter* these are
-  // *legal* C++ identifiers, see
-  // https://en.cppreference.com/w/cpp/language/identifiers
+  // Note: as we do not use capitalized first letter these are LEGAL
+  //       C++ identifiers, see
+  //       https://en.cppreference.com/w/cpp/language/identifiers
   //
   struct _plus_t_
   {
@@ -48,15 +52,11 @@ namespace LinearAlgebra
   // Tags used to notify argument //
   //////////////////////////////////
   //
-  // By example:
+  // Design note:
   //
-  // expr(v,_assign_,2.,_product_,_vector_0_)
-  //
-  // then _vector_0_ refers to the first (=0) vector argument, here v.
-  //
-  // The expression expr must be read as:
-  //
-  // v = 2 * v
+  //   We use CRTP for argument filtering. Moreover this allows use to
+  //   provide generic routine for which the unknown (vector or
+  //   matrix?) argument type is replaced by _arg_0_, _arg_1_ etc...
   //
   struct _vector_0_t_
   {

@@ -5,6 +5,7 @@ test_array = [
   ['is_complete_test','is_complete_exe','is_complete.cpp'],
   ['all_same_type_test','all_same_type_exe','all_same_type.cpp'],
   ['element_type_test','element_type_exe','element_type.cpp'],
+  ['has_static_dimension_test','has_static_dimension_exe','has_static_dimension.cpp'],
 ]
 
 foreach test : test_array

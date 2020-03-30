@@ -95,6 +95,14 @@
    #+BEGIN_QUOTE
 
    #+END_QUOTE
+*** 2020-03-30 Monday
 
-    
+**** TODO X0_assign_X1.hpp [0/0]                                   :Critical:
+     :PROPERTIES:
+     :Created:  [2020-03-30 Mon 13:25]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/X0_assign_X1.hpp][file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/X0_assign_X1.hpp]]
+
+    - A FINIR!!!!
 

@@ -34,6 +34,18 @@ TEST(Size_Utils, Any_Has_Static_Size)
 }
 
 //////////////////////////////////////////////////////////////////
+// Check for Static Dimension -> mainly used by expr
+TEST(Size_Utils, Has_Static_Dimension)
+{
+  EXPECT_FALSE((Any_Has_Static_Size_v<A>));
+  EXPECT_FALSE((Any_Has_Static_Size_v<B>));
+  EXPECT_TRUE((Any_Has_Static_Size_v<C<10>>));
+
+  EXPECT_FALSE((Any_Has_Static_Size_v<A, B, A, B>));
+  EXPECT_TRUE((Any_Has_Static_Size_v<B, B, A, C<10>, A>));
+}
+
+//////////////////////////////////////////////////////////////////
 
 TEST(Size_Utils, get_static_size_if_any)
 {

@@ -8,6 +8,7 @@ LinearAlgebra_headers += [
   'expr/V0_assign_alpha.hpp', # ok
   'expr/M0_assign_alpha.hpp',
 
+  'expr/X0_assign_X1.hpp', 
   'expr/V0_assign_V1.hpp', # ok  
   'expr/M0_assign_M1.hpp',
   
@@ -24,11 +25,10 @@ LinearAlgebra_headers += [
   
   'expr/M0_assign_M0_plus_alpha_M1.hpp',
 
-  
- 
-
   'expr/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp',
   
   'expr/vector_expr.hpp', # main header: include all expr 
-  'expr/matrix_expr.hpp', # main header: include all expr 
+  'expr/matrix_expr.hpp', # main header: include all expr
+
+  
 ]

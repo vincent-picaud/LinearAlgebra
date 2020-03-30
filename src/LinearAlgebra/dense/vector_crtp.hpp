@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-#include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/VMT_crtp.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha.hpp"
 #include "LinearAlgebra/expr/V0_assign_V1.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
@@ -10,14 +10,14 @@
 namespace LinearAlgebra
 {
   template <typename IMPL>
-  class Vector_Crtp : public Crtp_Find_Impl<Vector_Crtp, IMPL, Crtp>
+  class Vector_Crtp : public Crtp_Find_Impl<Vector_Crtp, IMPL, VMT_Crtp>
   {
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = Crtp_Find_Impl<Vector_Crtp, IMPL, Crtp>;
+    using base_type = Crtp_Find_Impl<Vector_Crtp, IMPL, VMT_Crtp>;
     using base_type::impl;
 
     using exact_type  = typename base_type::exact_type;

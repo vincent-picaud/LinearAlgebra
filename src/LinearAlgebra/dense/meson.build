@@ -1,5 +1,7 @@
 LinearAlgebra_headers += [
-
+  'dense/VMT_crtp.hpp',
+  'dense/VMT_crtp_fwd.hpp',
+  
   'dense/memory_chunk.hpp',
 
   'dense/matrix_special_structure_enum.hpp',

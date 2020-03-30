@@ -111,6 +111,9 @@ assign(Vector_Crtp<IMPL_DEST>& dest,                              //// dest
 *** 2020-03-30 Monday
 
 **** vector_comparison_operators.hpp                             :Bug:Caveat:
+     :PROPERTIES:
+     :ID:       3bb0fbb6-b81f-406b-be4f-640a7f9a4089
+     :END:
 
      Back link: [[file:src/LinearAlgebra/dense/vector_comparison_operators.hpp][file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/vector_comparison_operators.hpp]]
 

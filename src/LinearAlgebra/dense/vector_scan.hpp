@@ -51,9 +51,9 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
 
   //
-  // lambda(V[i],Vopt1[i],Vopt2[i]...) everything is const
+  // bool <- lambda(V[i],Vopt1[i],Vopt2[i]...) everything is const
   //
-  // TODO: add also into matrix_scan
+  // Stop as soon as the lambda return false
   //
   template <typename LAMBDA, typename IMPL, typename... IMPL_OPTIONAL>
   bool

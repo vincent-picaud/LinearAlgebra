@@ -10,7 +10,7 @@ namespace LinearAlgebra
   namespace Detail
   {
     template <typename LAMBDA, typename SIZE>
-    constexpr void
+    inline constexpr void
     loop_over_indices(const LAMBDA& lambda, const SIZE size)
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<SIZE>);
@@ -22,7 +22,7 @@ namespace LinearAlgebra
     }
 
     template <typename LAMBDA, typename SIZE>
-    constexpr bool
+    inline constexpr bool
     loop_over_indices_while(const LAMBDA& lambda, const SIZE size)
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<SIZE>);

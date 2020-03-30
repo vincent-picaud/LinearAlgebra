@@ -18,62 +18,34 @@
 
 namespace LinearAlgebra
 {
-  // note: if sizes are different -> assert failure
-  template <typename IMPL_0, typename IMPL_1>
-  bool
-  operator==(const Dense_Vector_Crtp<IMPL_0>& vector_0, const Dense_Vector_Crtp<IMPL_1>& vector_1)
-  {
-    return scan_while(
-        [](const auto& vector_0_component, const auto& vector_1_component) {
-          return vector_0_component == vector_1_component;
-        },
-        vector_0.impl(), vector_1.impl());
-  }
-  template <typename IMPL_0, typename IMPL_1>
-  bool
-  operator!=(const Dense_Vector_Crtp<IMPL_0>& vector_0, const Dense_Vector_Crtp<IMPL_1>& vector_1)
-  {
-    return not(vector_0 == vector_1);
+#ifdef LINALG_CODE
+#error
+#endif
+
+#define LINALG_CODE(OP)                                                          \
+  template <typename IMPL_0, typename IMPL_1>                                    \
+  bool operator OP(const VMT_Crtp<IMPL_0>& vmt_0, const VMT_Crtp<IMPL_1>& vmt_1) \
+  {                                                                              \
+    return scan_while(                                                           \
+        [](const auto& vmt_0_component, const auto& vmt_1_component) {           \
+          return vmt_0_component OP vmt_1_component;                             \
+        },                                                                       \
+        vmt_0.impl(), vmt_1.impl());                                             \
   }
 
+  LINALG_CODE(==);
+  // CAVEAT: not LINALG_CODE(!=); see journal.org ID =
+  //         3bb0fbb6-b81f-406b-be4f-640a7f9a4089
   template <typename IMPL_0, typename IMPL_1>
   bool
-  operator<(const Dense_Vector_Crtp<IMPL_0>& vector_0, const Dense_Vector_Crtp<IMPL_1>& vector_1)
+  operator!=(const VMT_Crtp<IMPL_0>& vmt_0, const VMT_Crtp<IMPL_1>& vmt_1)
   {
-    return scan_while(
-        [](const auto& vector_0_component, const auto& vector_1_component) {
-          return vector_0_component < vector_1_component;
-        },
-        vector_0.impl(), vector_1.impl());
+    return not(vmt_0 == vmt_1);
   }
-  template <typename IMPL_0, typename IMPL_1>
-  bool
-  operator>(const Dense_Vector_Crtp<IMPL_0>& vector_0, const Dense_Vector_Crtp<IMPL_1>& vector_1)
-  {
-    return scan_while(
-        [](const auto& vector_0_component, const auto& vector_1_component) {
-          return vector_0_component > vector_1_component;
-        },
-        vector_0.impl(), vector_1.impl());
-  }
-  template <typename IMPL_0, typename IMPL_1>
-  bool
-  operator<=(const Dense_Vector_Crtp<IMPL_0>& vector_0, const Dense_Vector_Crtp<IMPL_1>& vector_1)
-  {
-    return scan_while(
-        [](const auto& vector_0_component, const auto& vector_1_component) {
-          return vector_0_component <= vector_1_component;
-        },
-        vector_0.impl(), vector_1.impl());
-  }
-  template <typename IMPL_0, typename IMPL_1>
-  bool
-  operator>=(const Dense_Vector_Crtp<IMPL_0>& vector_0, const Dense_Vector_Crtp<IMPL_1>& vector_1)
-  {
-    return scan_while(
-        [](const auto& vector_0_component, const auto& vector_1_component) {
-          return vector_0_component >= vector_1_component;
-        },
-        vector_0.impl(), vector_1.impl());
-  }
+  LINALG_CODE(<);
+  LINALG_CODE(>);
+  LINALG_CODE(<=);
+  LINALG_CODE(>=);
+
+#undef LINALG_CODE
 }

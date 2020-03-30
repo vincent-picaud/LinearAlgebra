@@ -7,7 +7,7 @@
 
 using namespace LinearAlgebra;
 
-TEST(X0_assign_alpha_X1, vector)
+TEST(X0_Assign_Alpha_X0, vector)
 {
   Tiny_Vector<int, 3> v;
   v[0] = 1;
@@ -37,7 +37,7 @@ TEST(X0_assign_alpha_X1, vector)
   EXPECT_EQ(v[2], 3 * 3 * 3);
 }
 
-TEST(X0_assign_alpha_X1, matrix)
+TEST(X0_Assign_Alpha_X0, matrix)
 {
   Tiny_Matrix<int, 3, 1> v;
   v(0, 0) = 1;

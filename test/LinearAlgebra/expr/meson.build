@@ -10,6 +10,7 @@ test_array = [
   ['M0_assign_M1_test','M0_assign_M1_exe','M0_assign_M1.cpp'], 
 
   ['X0_assign_alpha_X0_test','X0_assign_alpha_X0_exe','X0_assign_alpha_X0.cpp'],
+  ['X0_assign_alpha_X1_test','X0_assign_alpha_X1_exe','X0_assign_alpha_X1.cpp'],
   
   ['V_assign_V_plus_alpha_V_test','V_assign_V_plus_alpha_V_exe','V_assign_V_plus_alpha_V.cpp'], # en cours
 

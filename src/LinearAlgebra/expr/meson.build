@@ -20,6 +20,7 @@ LinearAlgebra_headers += [
   'expr/V0_assign_alpha_V0.hpp', 
   'expr/M0_assign_alpha_M0.hpp',
   
+  'expr/X0_assign_alpha_X1.hpp',
   'expr/V0_assign_alpha_V1.hpp',
   'expr/M0_assign_alpha_M1.hpp',
 

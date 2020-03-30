@@ -62,7 +62,7 @@ namespace LinearAlgebra
     //////////////////////////////////////////////////////////////////
     //
     template <typename LAMBDA, Matrix_Storage_Mask_Enum MASK, typename I_SIZE, typename J_SIZE>
-    constexpr void
+    inline constexpr void
     loop_over_indices(const LAMBDA& lambda,
                       const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
                       const I_SIZE I_size, const J_SIZE J_size)
@@ -99,6 +99,55 @@ namespace LinearAlgebra
             for (size_t i = j + 1; i < I_size; ++i) lambda(i, j);
           break;
       }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+
+    // same code but check at each iteration if one must continue
+    template <typename LAMBDA, Matrix_Storage_Mask_Enum MASK, typename I_SIZE, typename J_SIZE>
+    inline constexpr bool
+    loop_over_indices_while(const LAMBDA& lambda,
+                      const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
+                      const I_SIZE I_size, const J_SIZE J_size)
+    {
+      static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<I_SIZE>);
+      static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<J_SIZE>);
+
+      switch (MASK)
+      {
+        case Matrix_Storage_Mask_Enum::None:
+          for (size_t j = 0; j < J_size; ++j)
+            for (size_t i = 0; i < I_size; ++i)
+              if (not lambda(i, j)) return false;
+          break;
+        case Matrix_Storage_Mask_Enum::Upper:
+          for (size_t j = 0; j < J_size; ++j)
+          {
+            const auto i_end = (j + 1 < I_size) ? j + 1 : I_size;
+            for (size_t i = 0; i < i_end; ++i)
+              if (not lambda(i, j)) return false;
+          }
+          break;
+        case Matrix_Storage_Mask_Enum::Upper_Strict:
+          for (size_t j = 0; j < J_size; ++j)
+          {
+            const auto i_end = (j < I_size) ? j : I_size;
+            for (size_t i = 0; i < i_end; ++i)
+              if (not lambda(i, j)) return false;
+          }
+          break;
+        case Matrix_Storage_Mask_Enum::Lower:
+          for (size_t j = 0; j < J_size; ++j)
+            for (size_t i = j; i < I_size; ++i)
+              if (not lambda(i, j)) return false;
+          break;
+        case Matrix_Storage_Mask_Enum::Lower_Strict:
+          for (size_t j = 0; j < J_size; ++j)
+            for (size_t i = j + 1; i < I_size; ++i)
+              if (not lambda(i, j)) return false;
+          break;
+      }
+      return true;
     }
   }  // Detail
 }

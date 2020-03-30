@@ -15,4 +15,19 @@ TEST(Vector_Comparison_Operators, basic)
   V2 = 1;
 
   EXPECT_TRUE(V1 == V2);
+  EXPECT_TRUE(V1 <= V2);
+  EXPECT_TRUE(V1 >= V2);
+
+  EXPECT_FALSE(V1 != V2);
+  EXPECT_FALSE(V1 < V2);
+  EXPECT_FALSE(V1 > V2);
+
+  V1[2] = 0;
+  EXPECT_TRUE(V1 != V2);
+  EXPECT_TRUE(V1 <= V2);
+  EXPECT_FALSE(V1 >= V2);
+
+  EXPECT_FALSE(V1 == V2);
+  EXPECT_FALSE(V1 < V2);
+  EXPECT_FALSE(V1 > V2);
 }

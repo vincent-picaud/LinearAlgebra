@@ -5,8 +5,6 @@
 #include "LinearAlgebra/expr/X0_assign_X1.hpp"
 
 #include "LinearAlgebra/blas/blas.hpp"
-#include "LinearAlgebra/dense/vector_is_same.hpp"
-#include "LinearAlgebra/dense/vector_transform.hpp"
 
 namespace LinearAlgebra
 {

@@ -5,11 +5,13 @@ LinearAlgebra_headers += [
 
   'expr/scalar_functions.hpp',
 
-  'expr/V0_assign_alpha.hpp', # ok
+  'expr/X0_assign_alpha.hpp',
+  'expr/V0_assign_alpha.hpp',
   'expr/M0_assign_alpha.hpp',
 
+   # ok  
   'expr/X0_assign_X1.hpp', 
-  'expr/V0_assign_V1.hpp', # ok  
+  'expr/V0_assign_V1.hpp',
   'expr/M0_assign_M1.hpp',
   
   'expr/V0_assign_alpha_V0.hpp', 

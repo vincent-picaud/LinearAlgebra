@@ -58,30 +58,34 @@ namespace LinearAlgebra
   //
   //   We use CRTP for argument filtering. Moreover this allows use to
   //   provide generic routine for which the unknown (vector or
-  //   matrix?) argument type is replaced by _arg_0_, _arg_1_ etc...
+  //   matrix?) argument type is replaced by _vmt_0_, _vmt_1_ etc...
+  //
+  // Note:
+  //
+  //   vmt stands for Vector, Matrix, Tensor
   //
   template <typename IMPL>
-  struct _arg_0_t_ : Crtp_Find_Impl<_arg_0_t_, IMPL, Crtp>
+  struct _vmt_0_t_ : Crtp_Find_Impl<_vmt_0_t_, IMPL, Crtp>
   {
   };
   template <typename IMPL>
-  struct _arg_1_t_ : Crtp_Find_Impl<_arg_1_t_, IMPL, Crtp>
+  struct _vmt_1_t_ : Crtp_Find_Impl<_vmt_1_t_, IMPL, Crtp>
   {
   };
   template <typename IMPL>
-  struct _arg_2_t_ : Crtp_Find_Impl<_arg_2_t_, IMPL, Crtp>
+  struct _vmt_2_t_ : Crtp_Find_Impl<_vmt_2_t_, IMPL, Crtp>
   {
   };
 
   //================================================================
 
-  struct _vector_0_t_ final : _arg_0_t_<_vector_0_t_>
+  struct _vector_0_t_ final : _vmt_0_t_<_vector_0_t_>
   {
   };
-  struct _vector_1_t_ final : _arg_1_t_<_vector_1_t_>
+  struct _vector_1_t_ final : _vmt_1_t_<_vector_1_t_>
   {
   };
-  struct _vector_2_t_ final : _arg_2_t_<_vector_2_t_>
+  struct _vector_2_t_ final : _vmt_2_t_<_vector_2_t_>
   {
   };
 
@@ -91,13 +95,13 @@ namespace LinearAlgebra
 
   //----------------------------------------------------------------
 
-  struct _matrix_0_t_ final : _arg_0_t_<_matrix_0_t_>
+  struct _matrix_0_t_ final : _vmt_0_t_<_matrix_0_t_>
   {
   };
-  struct _matrix_1_t_ final : _arg_1_t_<_matrix_1_t_>
+  struct _matrix_1_t_ final : _vmt_1_t_<_matrix_1_t_>
   {
   };
-  struct _matrix_2_t_ final : _arg_2_t_<_matrix_2_t_>
+  struct _matrix_2_t_ final : _vmt_2_t_<_matrix_2_t_>
   {
   };
 

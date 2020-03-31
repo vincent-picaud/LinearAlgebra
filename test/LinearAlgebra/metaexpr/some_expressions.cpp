@@ -1,3 +1,5 @@
+#include "LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp"
+
 #include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/vector.hpp"
 
@@ -48,5 +50,6 @@ TEST(MetaExpr_Crtp, gemv)
   Matrix<double> M(n, m);
   Vector<double> x(m), y(n);
   // TODO
-  // y = M * x + y;
+  assign(y, 4, M, x, _plus_, 2, y);
+  y = 4 * M * x + 2 * y;
 }

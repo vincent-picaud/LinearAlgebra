@@ -82,7 +82,7 @@ namespace LinearAlgebra
   //
 
   //
-  // v_0 = \beta v_0 + \alpha op(M) v_1
+  // V0 = β.V0 + α.op(M).V1
   //
   template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE,
             typename V_1_TYPE>
@@ -96,8 +96,6 @@ namespace LinearAlgebra
          const Matrix_Crtp<M_TYPE>& M,                                    // M
          const Vector_Crtp<V_1_TYPE>& v_1)                                // v_1
   {
-    //assert(0);
-
     return assign(v_0, alpha, op, M, v_1, _plus_, beta, _lhs_);
   }
 

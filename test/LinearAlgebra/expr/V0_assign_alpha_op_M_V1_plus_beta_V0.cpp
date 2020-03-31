@@ -5,7 +5,7 @@
 
 using namespace LinearAlgebra;
 
-TEST(V0_assign_alpha_V0_plus_beta_op_M_V1, basic)
+TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, basic)
 {
   using T = double;
 

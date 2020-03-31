@@ -12,11 +12,9 @@ test_array = [
   ['X0_assign_alpha_X0_test','X0_assign_alpha_X0_exe','X0_assign_alpha_X0.cpp'],
   ['X0_assign_alpha_X1_test','X0_assign_alpha_X1_exe','X0_assign_alpha_X1.cpp'],
   
-  ['X0_assign_X0_plus_alpha_X1_test','X0_assign_X0_plus_alpha_X1_exe','X0_assign_X0_plus_alpha_X1.cpp'], # en cours
+  ['X0_assign_X0_plus_alpha_X1_test','X0_assign_X0_plus_alpha_X1_exe','X0_assign_X0_plus_alpha_X1.cpp'], 
 
-
-  
-  ['V0_assign_alpha_V0_plus_beta_op_M_V1_test','V0_assign_alpha_V0_plus_beta_op_M_V1_exe','V0_assign_alpha_V0_plus_beta_op_M_V1.cpp'],
+  ['V0_assign_alpha_op_M_V1_plus_beta_V0_test','V0_assign_alpha_op_M_V1_plus_beta_V0_exe','V0_assign_alpha_op_M_V1_plus_beta_V0.cpp'],
 ]
 
 foreach test : test_array

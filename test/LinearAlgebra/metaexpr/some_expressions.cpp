@@ -41,3 +41,12 @@ TEST(MetaExpr_Crtp, matrix_basic_1)
   EXPECT_EQ(X2(0, 0), X2_cpy(0, 0) + 4 * X1(0, 0));
   EXPECT_EQ(X2(2, 0), X2_cpy(2, 0) + 4 * X1(2, 0));
 }
+
+TEST(MetaExpr_Crtp, gemv)
+{
+  const size_t n = 5, m = 2;
+  Matrix<double> M(n, m);
+  Vector<double> x(m), y(n);
+  // TODO
+  // y = M * x + y;
+}

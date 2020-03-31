@@ -35,7 +35,7 @@ LinearAlgebra_headers += [
   'expr/V0_assign_V1_plus_alpha_V2.hpp',
   'expr/M0_assign_M1_plus_alpha_M2.hpp',
   
-  'expr/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp',
+  'expr/V0_assign_alpha_op_M_V1_plus_beta_V0.hpp',
   
   'expr/vector_expr.hpp', # main header: include all expr 
   'expr/matrix_expr.hpp', # main header: include all expr

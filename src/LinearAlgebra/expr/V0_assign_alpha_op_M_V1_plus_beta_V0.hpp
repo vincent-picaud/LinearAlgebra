@@ -1,9 +1,6 @@
 //
-// CAVEAT: in order to aExpr_Selector_Enum confusion between alpha, beta it is better to stick to blas conventions:
+// V0 = α op(M) V1 + β V0
 //
-// v_0 = \alpha op(M) v_1 + \beta v_0
-//
-
 #pragma once
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
@@ -36,12 +33,12 @@ namespace LinearAlgebra
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,    // Undefined implementation
          Vector_Crtp<V_0_TYPE>& v_0,                                     // v_0 =
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-         _matrix_unary_op_t_<M_OP> op,                                   // op
+         const _matrix_unary_op_t_<M_OP> op,                             // op
          const Matrix_Crtp<M_TYPE>& M,                                   // M
          const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
-         _plus_t_,                                                       // +
+         const _plus_t_,                                                 // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-         _lhs_t_)                                                        // v_0
+         const _lhs_t_)                                                  // v_0
   {
     static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
     return selected;
@@ -61,12 +58,12 @@ namespace LinearAlgebra
   assign(Vector_Crtp<V_0_TYPE>& v_0,  // v_0 =
          // const typename V_0_TYPE::element_type alpha,
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-         _matrix_unary_op_t_<M_OP> op,                                   // op
+         const _matrix_unary_op_t_<M_OP> op,                             // op
          const Matrix_Crtp<M_TYPE>& M,                                   // M
          const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
-         _plus_t_,                                                       // +
+         const _plus_t_,                                                 // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-         _lhs_t_)                                                        // v_0
+         const _lhs_t_)                                                  // v_0
   {
     // Here is the right place to check dimension once for all.
     //
@@ -129,12 +126,12 @@ namespace LinearAlgebra
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,      // Generic implementation
          Dense_Vector_Crtp<V_0_TYPE>& v_0,                               // v_0 =
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-         _matrix_unary_op_t_<M_OP> op,                                   // op
+         const _matrix_unary_op_t_<M_OP> op,                             // op
          const Dense_Matrix_Crtp<M_TYPE>& M,                             // M
          const Dense_Vector_Crtp<V_1_TYPE>& v_1,                         // v_1
-         _plus_t_,                                                       // +
+         const _plus_t_,                                                 // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-         _lhs_t_                                                         // v_0
+         const _lhs_t_                                                   // v_0
   )
   {
     assert((void*)&v_0 != (void*)&v_1);
@@ -281,12 +278,12 @@ namespace LinearAlgebra
   assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
          Dense_Vector_Crtp<V_0_TYPE>& v_0,                               // v_0 =
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> alpha,  // alpha
-         _matrix_unary_op_t_<M_OP> op,                                   // op
+         const _matrix_unary_op_t_<M_OP> op,                             // op
          const Dense_Matrix_Crtp<M_TYPE>& M,                             // M
          const Dense_Vector_Crtp<V_1_TYPE>& v_1,                         // v_1
-         _plus_t_,                                                       // +
+         const _plus_t_,                                                 // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-         _lhs_t_)                                                        // v_0
+         const _lhs_t_)                                                  // v_0
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<M_OP> &&

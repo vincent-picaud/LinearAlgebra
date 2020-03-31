@@ -23,8 +23,8 @@ TEST(V0_assign_alpha_V0_plus_beta_op_M_V1, basic)
   x[0] = 1;
   x[1] = 2;
 
-  //  Expr_Selector_Enum selected = expr(y, _assign_, 0, _vector_0_, _plus_, 2, _identity_, M, x);
-  Expr_Selector_Enum selected = assign(y, 2, _identity_, M, x, _plus_, 0, _vector_0_);
+  //  Expr_Selector_Enum selected = expr(y, _assign_, 0, _lhs_, _plus_, 2, _identity_, M, x);
+  Expr_Selector_Enum selected = assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
 
@@ -44,7 +44,7 @@ TEST(V0_assign_alpha_V0_plus_beta_op_M_V1, basic)
 //   v = 10;
 //   M = 1;
 
-//   assign(w, 0, _vector_0_, _plus_, 2, _identity_, M, v);
+//   assign(w, 0, _lhs_, _plus_, 2, _identity_, M, v);
 
 //   EXPECT_TRUE(true);
 // }
@@ -60,13 +60,13 @@ TEST(V0_assign_alpha_V0_plus_beta_op_M_V1, basic)
 //   int count = 0;
 //   fill([&count]() { return count++; }, M);
 
-//   assign(w, 0, _vector_0_, _plus_, 2, _identity_, M, v);
+//   assign(w, 0, _lhs_, _plus_, 2, _identity_, M, v);
 
 //   EXPECT_EQ(w[0], 16);
 //   EXPECT_EQ(w[1], 38);
 //   EXPECT_EQ(w[2], 50);
 
-//   assign(w, 4, _vector_0_, _plus_, 2, _identity_, M, v);
+//   assign(w, 4, _lhs_, _plus_, 2, _identity_, M, v);
 
 //   EXPECT_EQ(w[0], 80);
 //   EXPECT_EQ(w[1], 190);
@@ -93,13 +93,13 @@ TEST(V0_assign_alpha_V0_plus_beta_op_M_V1, basic)
 //   // does not compile ANYMORE
 //   // something has changed.... TO FIX
 
-//   //  expr(w, _assign_, std::complex<int>(0), _vector_0_, _plus_, std::complex<int>(2), _identity_, M, v);
+//   //  expr(w, _assign_, std::complex<int>(0), _lhs_, _plus_, std::complex<int>(2), _identity_, M, v);
 
 //   // EXPECT_EQ(w[0], std::complex<int>(16, -64));
 //   // EXPECT_EQ(w[1], std::complex<int>(38, -88));
 //   // EXPECT_EQ(w[2], std::complex<int>(50, 80));
 
-//   //  expr(w, _assign_, 4, _vector_0_, _plus_, 2, _identity_, M, v);
+//   //  expr(w, _assign_, 4, _lhs_, _plus_, 2, _identity_, M, v);
 
 //   // EXPECT_EQ(w[0], std::complex<int>(80, -320));
 //   // EXPECT_EQ(w[1], std::complex<int>(190, -440));
@@ -117,13 +117,13 @@ TEST(V0_assign_alpha_V0_plus_beta_op_M_V1, basic)
 //   int count = 1;
 //   fill([&count]() { return count++; }, M);
 
-//   assign(w, 0, _vector_0_, _plus_, 2, _transpose_, M, v);
+//   assign(w, 0, _lhs_, _plus_, 2, _transpose_, M, v);
 
 //   EXPECT_EQ(w[0], 16);
 //   EXPECT_EQ(w[1], 18);
 //   EXPECT_EQ(w[2], 0);
 
-//   assign(w, 4, _vector_0_, _plus_, 2, _identity_, M, v);
+//   assign(w, 4, _lhs_, _plus_, 2, _identity_, M, v);
 
 //   EXPECT_EQ(w[0], 64);
 //   EXPECT_EQ(w[1], 74);
@@ -141,13 +141,13 @@ TEST(V0_assign_alpha_V0_plus_beta_op_M_V1, basic)
 //   int count = 1;
 //   fill([&count]() { return count++; }, M);
 
-//   assign(w, 0, _vector_0_, _plus_, 2, _transpose_, M, v);
+//   assign(w, 0, _lhs_, _plus_, 2, _transpose_, M, v);
 
 //   EXPECT_EQ(w[0], 2);
 //   EXPECT_EQ(w[1], 6);
 //   EXPECT_EQ(w[2], 22);
 
-//   assign(w, 4, _vector_0_, _plus_, 2, _identity_, M, v);
+//   assign(w, 4, _lhs_, _plus_, 2, _identity_, M, v);
 
 //   EXPECT_EQ(w[0], 26);
 //   EXPECT_EQ(w[1], 46);

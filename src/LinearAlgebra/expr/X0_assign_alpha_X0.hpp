@@ -21,12 +21,12 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
 
-  template <typename IMPL, typename VMT_ARG_0_TYPE>
+  template <typename IMPL>
   static inline Expr_Selector_Enum
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,  // Undefined implementation
          VMT_Crtp<IMPL>& vmt_0,                                        // vmt_0
          const Element_Type_t<IMPL>& scalar,                           // scalar
-         const _vmt_0_t_<VMT_ARG_0_TYPE> vmt_arg_0                     // vmt_0
+         const _lhs_t_                                                 // vmt_0
   )
   {
     static_assert(Always_False_v<IMPL>, "Undefined implementation");
@@ -38,14 +38,14 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
 
-  template <typename IMPL, typename VMT_ARG_0_TYPE>
+  template <typename IMPL>
   static inline Expr_Selector_Enum
-  assign(VMT_Crtp<IMPL>& vmt_0,                     // vmt_0
-         const Element_Type_t<IMPL>& scalar,        // scalar
-         const _vmt_0_t_<VMT_ARG_0_TYPE> vmt_arg_0  // vmt_0
+  assign(VMT_Crtp<IMPL>& vmt_0,               // vmt_0
+         const Element_Type_t<IMPL>& scalar,  // scalar
+         const _lhs_t_                        // vmt_0
   )
   {
-    return assign(Expr_Selector<>(), vmt_0.impl(), scalar, vmt_arg_0.impl());
+    return assign(Expr_Selector<>(), vmt_0.impl(), scalar, _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -66,12 +66,12 @@ namespace LinearAlgebra
   //================================================================
   //
   //
-  template <typename IMPL, typename VMT_ARG_0_TYPE>
+  template <typename IMPL>
   static inline Expr_Selector_Enum
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,  // Generic implementation
          VMT_Crtp<IMPL>& vmt_0,                                      // vmt_0
          const Element_Type_t<IMPL>& scalar,                         // scalar
-         const _vmt_0_t_<VMT_ARG_0_TYPE> vmt_arg_0                   // vmt_0
+         const _lhs_t_                                               // vmt_0
   )
   {
     transform([scalar](const auto& vmt_0_component) { return scalar * vmt_0_component; },
@@ -84,16 +84,16 @@ namespace LinearAlgebra
   //  Implementation: Static
   //================================================================
   //
-  template <typename IMPL, typename VMT_ARG_0_TYPE>
+  template <typename IMPL>
   static inline Expr_Selector_Enum
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,  // Generic implementation
          VMT_Crtp<IMPL>& vmt_0,                                     // vmt_0
          const Element_Type_t<IMPL>& scalar,                        // scalar
-         const _vmt_0_t_<VMT_ARG_0_TYPE> vmt_arg_0                  // vmt_0
+         const _lhs_t_                                              // vmt_0
   )
   {
     // Jump over any blas like specialization
-    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vmt_0.impl(), scalar, vmt_arg_0.impl());
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vmt_0.impl(), scalar, _lhs_);
 
     return selected;
   }

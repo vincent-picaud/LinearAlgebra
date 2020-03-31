@@ -21,7 +21,7 @@ namespace LinearAlgebra
   expr(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
        Vector_Crtp<VECTOR_0_IMPL>& vector_0,                 // vector_0
        _assign_t_,                                           // =
-       _vector_0_t_,                                         // vector_0
+       _lhs_t_,                                              // vector_0
        _plus_t_,                                             // +
        const typename VECTOR_0_IMPL::element_type alpha,     // alpha
        const Vector_Crtp<VECTOR_1_IMPL>& vector_1            // vector_1
@@ -39,13 +39,13 @@ namespace LinearAlgebra
   Expr_Selector_Enum
   expr(Vector_Crtp<VECTOR_0_IMPL>& vector_0,              // vector_0
        _assign_t_,                                        // =
-       _vector_0_t_,                                      // vector_0
+       _lhs_t_,                                           // vector_0
        _plus_t_,                                          // +
        const typename VECTOR_0_IMPL::element_type alpha,  // alpha
        const Vector_Crtp<VECTOR_1_IMPL>& vector_1         // vector_1
   )
   {
-    return expr(Expr_Selector<>(), vector_0.impl(), _vector_0_, _plus_, alpha, vector_1.impl());
+    return expr(Expr_Selector<>(), vector_0.impl(), _lhs_, _plus_, alpha, vector_1.impl());
   }
 
   //////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ namespace LinearAlgebra
   expr(const Expr_Selector<Expr_Selector_Enum::Generic>&,  // Generic implementation
        Dense_Vector_Crtp<V_0>& v_0,                        // vector_0
        _assign_t_,                                         // =
-       _vector_0_t_,                                       // vector_0
+       _lhs_t_,                                            // vector_0
        _plus_t_,                                           // +
        const typename V_1::element_type alpha,             // alpha
        const Dense_Vector_Crtp<V_1>& v_1                   // vector_1
@@ -85,7 +85,7 @@ namespace LinearAlgebra
 
     if ((void*)&v_0 == (void*)&v_1)
     {
-      return expr(v_0, 1 + alpha, _vector_0_);
+      return expr(v_0, 1 + alpha, _lhs_);
     }
 
     if (alpha == 1)

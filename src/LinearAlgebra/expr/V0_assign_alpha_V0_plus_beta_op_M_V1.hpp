@@ -41,7 +41,7 @@ namespace LinearAlgebra
          const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
          _plus_t_,                                                       // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-         _vector_0_t_)                                                   // v_0
+         _lhs_t_)                                                        // v_0
   {
     static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
     return selected;
@@ -66,7 +66,7 @@ namespace LinearAlgebra
          const Vector_Crtp<V_1_TYPE>& v_1,                               // v_1
          _plus_t_,                                                       // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-         _vector_0_t_)                                                   // v_0
+         _lhs_t_)                                                        // v_0
   {
     // Here is the right place to check dimension once for all.
     //
@@ -76,7 +76,7 @@ namespace LinearAlgebra
     // Delegate computation
     //
     return assign(Expr_Selector<>(), v_0.impl(), alpha, op, M.impl(), v_1.impl(), _plus_, beta,
-                  _vector_0_);
+                  _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ namespace LinearAlgebra
   Expr_Selector_Enum
   assign(Vector_Crtp<V_0_TYPE>& v_0,                                      // v_0 =
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& beta,   // β
-         const _vector_0_t_,                                              // v_0,
+         const _lhs_t_,                                                   // v_0,
          const _plus_t_,                                                  // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE>& alpha,  // α
          const _matrix_unary_op_t_<M_OP> op,                              // op
@@ -101,7 +101,7 @@ namespace LinearAlgebra
   {
     //assert(0);
 
-    return assign(v_0, alpha, op, M, v_1, _plus_, beta, _vector_0_);
+    return assign(v_0, alpha, op, M, v_1, _plus_, beta, _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -134,14 +134,14 @@ namespace LinearAlgebra
          const Dense_Vector_Crtp<V_1_TYPE>& v_1,                         // v_1
          _plus_t_,                                                       // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-         _vector_0_t_                                                    // v_0
+         _lhs_t_                                                         // v_0
   )
   {
     assert((void*)&v_0 != (void*)&v_1);
 
     // v_0 = beta.v_0
     //
-    assign(v_0, beta, _vector_0_);
+    assign(v_0, beta, _lhs_);
 
     // alpha = 0 ? -> nothing to do
     //
@@ -161,7 +161,7 @@ namespace LinearAlgebra
       case Matrix_Special_Structure_Enum::Unit_Triangular:
         // Diagonal contribution: v_0 = v_0 + β.v_1
         //
-        assign(v_0, _vector_0_, _plus_, alpha, v_1);
+        assign(v_0, _lhs_, _plus_, alpha, v_1);
         //
         // no break here
         //
@@ -208,14 +208,14 @@ namespace LinearAlgebra
         if constexpr (M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)
         {
           assign(v_0, alpha, transpose(op), create_matrix_view_strict_upper_triangular(M), v_1,
-                 _plus_, 1, _vector_0_);
+                 _plus_, 1, _lhs_);
         }
         else
         {
           assert(M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower);
 
           assign(v_0, alpha, transpose(op), create_matrix_view_strict_lower_triangular(M), v_1,
-                 _plus_, 1, _vector_0_);
+                 _plus_, 1, _lhs_);
         }
       }
       break;
@@ -253,14 +253,14 @@ namespace LinearAlgebra
         if constexpr (M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)
         {
           assign(v_0, alpha, transconjugate(op), create_matrix_view_strict_upper_triangular(M), v_1,
-                 _plus_, 1, _vector_0_);
+                 _plus_, 1, _lhs_);
         }
         else
         {
           assert(M_TYPE::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower);
 
           assign(v_0, alpha, transconjugate(op), create_matrix_view_strict_lower_triangular(M), v_1,
-                 _plus_, 1, _vector_0_);
+                 _plus_, 1, _lhs_);
         }
       }
       break;
@@ -286,7 +286,7 @@ namespace LinearAlgebra
          const Dense_Vector_Crtp<V_1_TYPE>& v_1,                         // v_1
          _plus_t_,                                                       // +
          const Common_Element_Type_t<V_0_TYPE, V_1_TYPE, M_TYPE> beta,   // beta
-         _vector_0_t_)                                                   // v_0
+         _lhs_t_)                                                        // v_0
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<M_OP> &&

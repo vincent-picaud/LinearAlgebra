@@ -8,7 +8,7 @@
 //
 // Example:
 //
-//            assign(M, v, transpose(_vector_1_), _plus_, _matrix_0_);
+//            assign(M, v, transpose(_lhs_1_), _plus_, _rhs_);
 //
 //   is translated into
 //
@@ -54,60 +54,23 @@ namespace LinearAlgebra
   // Tags used to notify argument //
   //////////////////////////////////
   //
-  // Design note:
-  //
-  //   We use CRTP for argument filtering. Moreover this allows use to
-  //   provide generic routine for which the unknown (vector or
-  //   matrix?) argument type is replaced by _vmt_0_, _vmt_1_ etc...
-  //
-  // Note:
-  //
-  //   vmt stands for Vector, Matrix, Tensor
-  //
-  template <typename IMPL>
-  struct _vmt_0_t_ : Crtp_Find_Impl<_vmt_0_t_, IMPL, Crtp>
+  struct _lhs_t_ 
   {
   };
-  template <typename IMPL>
-  struct _vmt_1_t_ : Crtp_Find_Impl<_vmt_1_t_, IMPL, Crtp>
+  struct _rhs_1_t_
   {
   };
-  template <typename IMPL>
-  struct _vmt_2_t_ : Crtp_Find_Impl<_vmt_2_t_, IMPL, Crtp>
+  struct _rhs_2_t_ 
   {
   };
 
-  //================================================================
-
-  struct _vector_0_t_ final : _vmt_0_t_<_vector_0_t_>
-  {
-  };
-  struct _vector_1_t_ final : _vmt_1_t_<_vector_1_t_>
-  {
-  };
-  struct _vector_2_t_ final : _vmt_2_t_<_vector_2_t_>
-  {
-  };
-
-  constexpr auto _vector_0_ = _vector_0_t_();
-  constexpr auto _vector_1_ = _vector_1_t_();
-  constexpr auto _vector_2_ = _vector_2_t_();
+  constexpr auto _lhs_ = _lhs_t_();
+  constexpr auto _rhs_1_ = _rhs_1_t_();
+  constexpr auto _rhs_2_ = _rhs_2_t_();
 
   //----------------------------------------------------------------
 
-  struct _matrix_0_t_ final : _vmt_0_t_<_matrix_0_t_>
-  {
-  };
-  struct _matrix_1_t_ final : _vmt_1_t_<_matrix_1_t_>
-  {
-  };
-  struct _matrix_2_t_ final : _vmt_2_t_<_matrix_2_t_>
-  {
-  };
 
-  constexpr auto _matrix_0_ = _matrix_0_t_();
-  constexpr auto _matrix_1_ = _matrix_1_t_();
-  constexpr auto _matrix_2_ = _matrix_2_t_();
 
   //////////////////////////////////////////////
   // Matrix unary operators (like transpose) //

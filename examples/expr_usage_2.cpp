@@ -25,11 +25,11 @@ main()
 
   x[0] = 1;
   x[1] = 2;
-  //  assign(y,  1, _identity_, M, x, _plus_, 2, _vector_0_);
+  //  assign(y,  1, _identity_, M, x, _plus_, 2, _lhs_);
 
 #if (HAS_BLAS)
-  //assign(y,  0, _vector_0_, _plus_, 2, _identity_, M, x);
-  assign(y, 2, _identity_, M, x, _plus_, 0, _vector_0_);
+  //assign(y,  0, _lhs_, _plus_, 2, _identity_, M, x);
+  assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
 #else
   assert(0 && "Not implemented yet");
 #endif

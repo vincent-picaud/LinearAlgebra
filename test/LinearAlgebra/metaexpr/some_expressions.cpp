@@ -1,30 +1,43 @@
+#include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/vector.hpp"
 
 #include <gtest/gtest.h>
 
 using namespace LinearAlgebra;
 
-TEST(MetaExpr_Crtp, basic_1)
+TEST(MetaExpr_Crtp, vector_basic_1)
 {
   const size_t n = 4;
   int data[n]    = {1, 2, 3, 4};
 
-  auto V1 = create_vector_view(data, n);
+  auto X1 = create_vector_view(data, n);
 
-  Vector<double> V2(n);
-  V2 = 2;
+  Vector<double> X2(n);
+  X2 = 2;
 
-  V2 = V2 + 4 * V1;
+  auto X2_cpy = X2;
 
-  EXPECT_EQ(V2[0], 2 + 4 * V1[0]);
-  EXPECT_EQ(V2[1], 2 + 4 * V1[1]);
+  X2 = X2 + 4 * X1;
 
-  Vector<double> V3(n);
-  V3 = 2;
+  EXPECT_EQ(X2[0], X2_cpy[0] + 4 * X1[0]);
+  EXPECT_EQ(X2[2], X2_cpy[2] + 4 * X1[2]);
+}
 
-  // V3 = 4 * V1 + V3;
+TEST(MetaExpr_Crtp, matrix_basic_1)
+{
+  const size_t n = 4;
+  int data[n]    = {1, 2, 3, 4};
 
-  // EXPECT_EQ(V2,V3);
+  auto X1 = create_matrix_view(data, n, 1);
 
-  EXPECT_EQ(V2, V1);
+  Matrix<double> X2(n, 1);
+  X2 = 2;
+
+  auto X2_cpy = X2;
+
+  //  X2 = X2 + 4 * X1;
+  X2 = 4 * X1 + X2;
+
+  EXPECT_EQ(X2(0, 0), X2_cpy(0, 0) + 4 * X1(0, 0));
+  EXPECT_EQ(X2(2, 0), X2_cpy(2, 0) + 4 * X1(2, 0));
 }

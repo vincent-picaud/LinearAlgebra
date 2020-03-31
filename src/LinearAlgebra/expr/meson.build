@@ -25,13 +25,14 @@ LinearAlgebra_headers += [
   'expr/V0_assign_alpha_V1.hpp',
   'expr/M0_assign_alpha_M1.hpp',
 
+  # ok
+  'expr/X0_assign_X0_plus_alpha_X1.hpp', 
+  'expr/V0_assign_V0_plus_alpha_V1.hpp', 
+  'expr/M0_assign_M0_plus_alpha_M1.hpp',
 
-
-  'expr/X0_assign_X0_plus_alpha_X1.hpp', # <--- En cours
-  'expr/V0_assign_V0_plus_alpha_V1.hpp', # <--- TO CLEAN
+  'expr/X0_assign_X1_plus_alpha_X2.hpp',
   'expr/V0_assign_V1_plus_alpha_V2.hpp',
-    'expr/M0_assign_M0_plus_alpha_M1.hpp',
-
+  
   'expr/V0_assign_alpha_V0_plus_beta_op_M_V1.hpp',
   
   'expr/vector_expr.hpp', # main header: include all expr 

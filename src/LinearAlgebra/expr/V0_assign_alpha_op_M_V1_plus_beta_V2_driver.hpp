@@ -9,6 +9,8 @@
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/vector_is_same.hpp"
+
 #include "LinearAlgebra/expr/dimension.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
@@ -34,8 +36,7 @@ namespace LinearAlgebra
          const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,   // beta
          const Vector_Crtp<V2_TYPE>& V2)                                        // V1
   {
-    // CAVEAT: TO RESTORE! here only to check expressions
-    //    static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
+    static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
     //    assert(0);
     return selected;
   }
@@ -54,7 +55,7 @@ namespace LinearAlgebra
          const Vector_Crtp<V1_TYPE>& V1,                                        // V1
          const _plus_t_,                                                        // +
          const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,   // beta
-         const Vector_Crtp<V2_TYPE>& V2)                                        // V1
+         const Vector_Crtp<V2_TYPE>& V2)                                        // V2
   {
     // Here is the right place to check dimension once for all.
     //
@@ -63,13 +64,19 @@ namespace LinearAlgebra
 
     // Delegate computation
     //
+    if (not is_same(V0.impl(), V2.impl()))
+    {
+      V0 = V2;
+    }
     return assign(Expr_Selector<>(), V0.impl(), alpha, op, M.impl(), V1.impl(), _plus_, beta,
-                  V2.impl());
+                  _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
   // Alias
   //////////////////////////////////////////////////////////////////
+  //
+  // TO COMPLETE, BUT THE IDEA IS OK
   //
 
   //================================================================

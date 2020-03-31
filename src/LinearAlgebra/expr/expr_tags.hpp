@@ -40,10 +40,20 @@ namespace LinearAlgebra
   };
   constexpr auto _plus_ = _plus_t_();
 
+  struct _minus_t_
+  {
+  };
+  constexpr auto _minus_ = _minus_t_();
+
   struct _product_t_
   {
   };
   constexpr auto _product_ = _product_t_();
+
+  struct _inverse_t_
+  {
+  };
+  constexpr auto _inverse_ = _inverse_t_();
 
   struct _assign_t_
   {

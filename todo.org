@@ -105,4 +105,21 @@
    Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/X0_assign_X1.hpp][file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/X0_assign_X1.hpp]]
 
     - A FINIR!!!!
+*** 2020-03-31 Tuesday
+
+**** TODO V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp [0/0]    :Critical:
+     :PROPERTIES:
+     :Created:  [2020-03-31 Tue 16:59]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp:://%20CAVEAT:%20TO%20RESTORE!%20here%20only%20to%20check%20expressions%20//%20static_assert(not%20std::is_same_v<M_TYPE,%20M_TYPE>,%20"Not%20implemented");%20//%20assert(0);]]
+
+   #+BEGIN_QUOTE
+       // CAVEAT: TO RESTORE! here only to check expressions
+       //    static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
+       //    assert(0);
+
+   #+END_QUOTE
+
+    - Restore once completed
 

@@ -56,4 +56,17 @@ namespace LinearAlgebra
     return {arg_0.impl(), arg_1.impl()};
   }
 
+  //
+  //================================================================
+  // Minus
+  //================================================================
+  //
+  template <typename A0_IMPL, typename A1_IMPL>
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
+                   Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _minus_t_,
+                                             A0_IMPL, A1_IMPL>>
+  operator-(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  {
+    return {arg_0.impl(), arg_1.impl()};
+  }
 }

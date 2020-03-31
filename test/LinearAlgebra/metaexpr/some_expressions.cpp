@@ -51,5 +51,8 @@ TEST(MetaExpr_Crtp, gemv)
   Vector<double> x(m), y(n);
   // TODO
   assign(y, 4, M, x, _plus_, 2, y);
+
   y = 4 * M * x + 2 * y;
+  y = 4 * M * x - 2 * y;
+  y = 2 * y + 4 * M * x;
 }

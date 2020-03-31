@@ -27,7 +27,17 @@ namespace LinearAlgebra
       return {t};
     }
 
-    // TODO add Unary op
+    // UnaryOP
+    template <typename IMPL>
+    static inline auto
+    from_metaexpr_to_argument_tuple(
+        const Detail::MetaExpr_UnaryOp_Crtp<IMPL>& expression_tree) noexcept
+    {
+      return std::tuple_cat(std::make_tuple(typename IMPL::operator_type()),
+                            from_metaexpr_to_argument_tuple(expression_tree.arg()));
+    }
+
+    // BinaryOp
     template <typename IMPL>
     static inline auto
     from_metaexpr_to_argument_tuple(

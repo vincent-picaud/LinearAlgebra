@@ -58,7 +58,7 @@ namespace LinearAlgebra
 
   //
   //================================================================
-  // Minus
+  // Minus (binary)
   //================================================================
   //
   template <typename A0_IMPL, typename A1_IMPL>
@@ -68,5 +68,31 @@ namespace LinearAlgebra
   operator-(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0.impl(), arg_1.impl()};
+  }
+
+  //////////////////////////////////////////////////////////////////
+  // Transposition like unary operators
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename IMPL>
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<IMPL>,
+                   Detail::MetaExpr_UnaryOp<Element_Type_t<IMPL>, _transpose_t_, IMPL>>
+  transpose(const Crtp<IMPL>& arg)
+  {
+    return {arg.impl()};
+  }
+  template <typename IMPL>
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<IMPL>,
+                   Detail::MetaExpr_UnaryOp<Element_Type_t<IMPL>, _transConj_t_, IMPL>>
+  transConj(const Crtp<IMPL>& arg)
+  {
+    return {arg.impl()};
+  }
+  template <typename IMPL>
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<IMPL>,
+                   Detail::MetaExpr_UnaryOp<Element_Type_t<IMPL>, _conjugate_t_, IMPL>>
+  conjugate(const Crtp<IMPL>& arg)
+  {
+    return {arg.impl()};
   }
 }

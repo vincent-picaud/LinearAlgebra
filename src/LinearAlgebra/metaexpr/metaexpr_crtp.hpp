@@ -54,13 +54,24 @@ namespace LinearAlgebra
       ///////////
       //
      public:
-      using base_type = Crtp_Find_Impl<MetaExpr_UnaryOp_Crtp, IMPL, Vector_Crtp>;
+      using base_type = Crtp_Find_Impl<MetaExpr_UnaryOp_Crtp, IMPL, MetaExpr_Crtp>;
 
       using exact_type  = typename base_type::exact_type;
       using traits_type = typename base_type::traits_type;
 
       using element_type  = typename traits_type::element_type;
       using operator_type = typename base_type::operator_type;
+
+     public:
+      ////////////////////
+      // Crtp Interface //
+      ////////////////////
+      //
+      constexpr auto&
+      arg() const noexcept
+      {
+        return base_type::impl().impl_arg();
+      }
     };
 
     //////////////////////////////////////////////////////////////////
@@ -178,4 +189,72 @@ namespace LinearAlgebra
       }
     };
   }  // Detail
+
+  //****************************************************************
+
+  //////////////////////////////////////////////////////////////////
+  // Unary operator default implementation
+  //////////////////////////////////////////////////////////////////
+
+  namespace Detail
+  {
+    template <typename ELEMENT_TYPE, typename UNARY_OPERATOR_TYPE, typename ARG_TYPE>
+    class MetaExpr_UnaryOp;
+  }
+
+  template <typename ELEMENT_TYPE, typename UNARY_OPERATOR_TYPE, typename ARG_TYPE>
+  struct Crtp_Type_Traits<Detail::MetaExpr_UnaryOp<ELEMENT_TYPE, UNARY_OPERATOR_TYPE, ARG_TYPE>>
+  {
+    using element_type  = ELEMENT_TYPE;
+    using operator_type = UNARY_OPERATOR_TYPE;
+  };
+
+  namespace Detail
+  {
+    template <typename ELEMENT_TYPE, typename UNARY_OPERATOR_TYPE, typename ARG_TYPE>
+    class MetaExpr_UnaryOp final
+        : public MetaExpr_UnaryOp_Crtp<
+              MetaExpr_UnaryOp<ELEMENT_TYPE, UNARY_OPERATOR_TYPE, ARG_TYPE>>
+    {
+      ///////////
+      // Types //
+      ///////////
+      //
+     public:
+      using base_type =
+          MetaExpr_UnaryOp_Crtp<MetaExpr_UnaryOp<ELEMENT_TYPE, UNARY_OPERATOR_TYPE, ARG_TYPE>>;
+
+      using element_type  = typename base_type::element_type;
+      using operator_type = typename base_type::operator_type;
+
+      /////////////
+      // Members //
+      /////////////
+      //
+     protected:
+      const ARG_TYPE& _arg;
+
+      //////////////////
+      // Constructors //
+      //////////////////
+      //
+     public:
+      constexpr MetaExpr_UnaryOp(const ARG_TYPE& arg) noexcept : _arg(arg) {}
+
+      /////////////////////////
+      // Crtp Implementation //
+      /////////////////////////
+      //
+     protected:
+      friend base_type;
+      friend typename base_type::base_type;
+
+      constexpr auto&
+      impl_arg() const noexcept
+      {
+        return _arg;
+      }
+    };
+  }  // Detail
+
 }

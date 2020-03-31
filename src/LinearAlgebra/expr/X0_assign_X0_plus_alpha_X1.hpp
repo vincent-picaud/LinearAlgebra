@@ -11,12 +11,6 @@
 #include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/has_static_dimension.hpp"
 
-#include "LinearAlgebra/dense/vector_is_same.hpp"
-#include "LinearAlgebra/dense/vector_transform.hpp"
-
-#include "LinearAlgebra/dense/matrix_is_same.hpp"
-#include "LinearAlgebra/dense/matrix_transform.hpp"
-
 namespace LinearAlgebra
 {
   //////////////////////////////////////////////////////////////////

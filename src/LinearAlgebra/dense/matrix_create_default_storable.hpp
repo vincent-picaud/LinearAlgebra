@@ -45,6 +45,6 @@ namespace LinearAlgebra
   create_default_storable_matrix(const Dense_Matrix_Crtp<IMPL>& matrix,
                                  const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
-    return create_default_storable(type_v<typename IMPL::element_type>, matrix, matrix_optional...);
+    return create_default_storable(Type_v<typename IMPL::element_type>, matrix, matrix_optional...);
   }
 }

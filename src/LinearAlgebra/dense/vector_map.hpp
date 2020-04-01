@@ -16,7 +16,7 @@ namespace LinearAlgebra
   {
     using vector_dest_element_type =
         decltype(lambda(vector_src.as_const()[0], vector_src_optional.as_const()[0]...));
-    auto vector_dest = create_default_storable(type_v<vector_dest_element_type>, vector_src,
+    auto vector_dest = create_default_storable(Type_v<vector_dest_element_type>, vector_src,
                                                vector_src_optional...);
 
     //----------------

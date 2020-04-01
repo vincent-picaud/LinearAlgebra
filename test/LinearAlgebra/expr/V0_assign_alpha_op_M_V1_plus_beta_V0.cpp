@@ -5,7 +5,7 @@
 
 using namespace LinearAlgebra;
 
-TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, basic)
+TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_gemv)
 {
   using T = double;
 
@@ -32,6 +32,39 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, basic)
   EXPECT_EQ(y[1], 2 * x[1]);
   EXPECT_EQ(y[2], 2 * (x[0] + x[1]));
 }
+
+TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_symv)
+{
+  using T = double;
+
+  Tiny_Symmetric_Matrix<T, 3> M;
+  Vector<T> y(3);
+  Tiny_Vector<T, 3> x;
+
+  M(0, 0) = 1;
+  //  M(0, 1) = 0;
+  M(1, 0) = 0;
+  M(1, 1) = 1;
+
+  M(2, 0) = 1;
+  M(2, 1) = 1;
+  M(2, 2) = 1;
+
+  x[0] = 1;
+  x[1] = 2;
+
+  auto y_cpy_as_int = create_default_storable(Type_v<int>, y);
+
+  Expr_Selector_Enum selected = assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
+  EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
+
+  y_cpy_as_int = 2 * M * x + 0 * y_cpy_as_int;
+  EXPECT_EQ(selected, Expr_Selector_Enum::Generic);
+
+  EXPECT_EQ(y,y_cpy_as_int);
+}
+
+//=============
 
 TEST(Known_Pattern, Mat_Vect_Prod)
 {

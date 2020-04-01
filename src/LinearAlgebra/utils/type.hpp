@@ -30,6 +30,6 @@ namespace LinearAlgebra
   };
 
   template <typename T>
-  constexpr auto type_v = Type<T>();
+  constexpr auto Type_v = Type<T>();
 
 }

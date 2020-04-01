@@ -15,7 +15,7 @@ namespace LinearAlgebra
   {
     using matrix_dest_element_type =
         decltype(lambda(matrix_src.as_const()(0, 0), matrix_src_optional.as_const()(0, 0)...));
-    auto matrix_dest = create_default_storable(type_v<matrix_dest_element_type>, matrix_src.impl());
+    auto matrix_dest = create_default_storable(Type_v<matrix_dest_element_type>, matrix_src.impl());
 
     //----------------
 

@@ -39,7 +39,7 @@ namespace LinearAlgebra
   create_default_storable(const Dense_Vector_Crtp<IMPL>& vector,
                           const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
-    return create_default_storable(type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, vector,
+    return create_default_storable(Type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, vector,
                                    vector_optional...);
   }
 }

@@ -18,20 +18,6 @@
 //
 //----------------
 
-// #include "LinearAlgebra/expr/expr_selector.hpp"
-// #include "LinearAlgebra/expr/expr_tags.hpp"
-
-// #include "LinearAlgebra/utils/always.hpp"
-// #include "LinearAlgebra/utils/element_type.hpp"
-// #include "LinearAlgebra/utils/has_static_dimension.hpp"
-
-// specific includes
-// #include "LinearAlgebra/dense/vector_is_same.hpp"
-// #include "LinearAlgebra/dense/vector_fill.hpp"
-
-// #include "LinearAlgebra/dense/matrix_is_same.hpp"
-// #include "LinearAlgebra/dense/matrix_fill.hpp"
-
 namespace LinearAlgebra
 {
   //////////////////////////////////////////////////////////////////
@@ -63,14 +49,7 @@ namespace LinearAlgebra
          const VMT_Crtp<IMPL_X1>& X1                            // X1
   )
   {
-    if (is_same(X0.impl(), X1.impl()))
-    {
-      return assign(Expr_Selector<>(), X0.impl(), alpha, _lhs_);
-    }
-    else
-    {
       return assign(Expr_Selector<>(), X0.impl(), alpha, X1.impl());
-    }
   }
 
   //////////////////////////////////////////////////////////////////

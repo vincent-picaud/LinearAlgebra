@@ -52,8 +52,10 @@ namespace LinearAlgebra
   // Alias
   //////////////////////////////////////////////////////////////////
   //
-
-  // from: to:
+  //
+  // CAVEAT: useless as _lhs_t_ is present!  -> when using low level
+  // routine like assign(), the user is in charge of using the
+  // canonical form.)
   //
 
   //////////////////////////////////////////////////////////////////

@@ -57,11 +57,11 @@ TEST(V_assign_V, copy_blas)
   EXPECT_EQ(w[2], 3);
 }
 
-
 TEST(V_assign_V, copy_assert)
 {
   Tiny_Vector<int, 3> v;
-  EXPECT_DEBUG_DEATH(assign(v, v), "");
+  auto selected = assign(v, v);
+  EXPECT_EQ(selected, Expr_Selector_Enum::END);  // "nothing to do" detected
 }
 
 TEST(V_assign_V, copy_assert_2)
@@ -91,21 +91,6 @@ TEST(V_assign_V, overloaded_operator)
   EXPECT_EQ(w[0], 1);
   EXPECT_EQ(w[1], 2);
   EXPECT_EQ(w[2], 3);
-}
-
-TEST(V_assign_V, overloadoperator_assert)
-{
-  Tiny_Vector<int, 3> v;
-
-  // not: this will not die (because op= is not overloaded to preseve
-  // trivially_copyable)
-  v = v;
-
-  // but this one must die (because op= is not overloaded to preseve
-  // the same copy semanitc)
-  auto v_view = create_vector_view(v, 1, 2);
-
-  EXPECT_DEBUG_DEATH(v_view = v_view, "");
 }
 
 // Note: fundamental to understand to properly use this library!
@@ -145,7 +130,7 @@ TEST(V_assign_V, copy_semantic)
   v_cpy[2] = 30;
 
   view_2 = v_cpy;  // also a deep copy here
-  
+
   EXPECT_EQ(view_2.data(), data_2);
   EXPECT_EQ(view_2[0], 1);
   EXPECT_EQ(view_2[1], 2);

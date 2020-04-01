@@ -34,14 +34,15 @@ TEST(M_assign_M, copy)
 TEST(M_assign_M, copy_assert)
 {
   Tiny_Matrix<int, 3, 1> mat_1;
-  EXPECT_DEBUG_DEATH(assign(mat_1, mat_1), "");
+  auto selected = assign(mat_1, mat_1);
+  EXPECT_EQ(selected, Expr_Selector_Enum::END);  // "nothing to do" detected
 }
 
 TEST(M_assign_M, copy_assert_2)
 {
   Tiny_Matrix<int, 3, 2> mat_1;
   Tiny_Matrix<int, 2, 2> mat_2;
-  EXPECT_DEBUG_DEATH(assign(mat_1, mat_2), "");
+  EXPECT_DEBUG_DEATH(assign(mat_1, mat_2), "");  // Bad dimensions
 }
 
 TEST(M_assign_M, overloaded_operator)
@@ -64,21 +65,6 @@ TEST(M_assign_M, overloaded_operator)
   EXPECT_EQ(w(0, 0), 1);
   EXPECT_EQ(w(1, 0), 2);
   EXPECT_EQ(w(2, 0), 3);
-}
-
-TEST(M_assign_M, overloadoperator_assert)
-{
-  Tiny_Matrix<int, 3, 1> v;
-
-  // not: this will not die (because op= is not overloaded to preseve
-  // trivially_copyable)
-  v = v;
-
-  // but this one must die (because op= is not overloaded to preseve
-  // the same copy semanitc)
-  auto v_view = create_matrix_view(v, 1, 2, 0, 1);
-
-  EXPECT_DEBUG_DEATH(v_view = v_view, "");
 }
 
 // Note: fundamental to understand to properly use this library!

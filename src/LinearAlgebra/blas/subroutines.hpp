@@ -73,6 +73,29 @@ namespace LinearAlgebra::Blas
   // Level 2 //
   /////////////
 
+  // Xsymv: y=α.M.x+βy, M symmetric
+  //================
+  // CAVEAT: only float, double
+  //
+  void
+  symv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const std::size_t n,
+       const float alpha, const float *a, const std::size_t lda, const float *x,
+       const std::size_t incx, const float beta, float *y, const std::size_t incy)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_ssymv(order, uplo, n, alpha, a, lda, x, incx, beta, y, incy);
+  }
+  void
+  symv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const std::size_t n,
+       const double alpha, const double *a, const std::size_t lda, const double *x,
+       const std::size_t incx, const double beta, double *y, const std::size_t incy)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_dsymv(order, uplo, n, alpha, a, lda, x, incx, beta, y, incy);
+  }
+
   // Xgemv: y=α.M.x+βy
   //================
   //

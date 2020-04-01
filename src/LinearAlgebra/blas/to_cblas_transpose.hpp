@@ -4,13 +4,15 @@
 //
 #pragma once
 
+#include "LinearAlgebra/blas/blas_config.hpp"
+
 #if !(HAS_BLAS)
 #error
 #endif
 
 #include "LinearAlgebra/expr/expr_tags.hpp"  // for _matrix_unary_op_t_<Matrix_Unary_Op_Enum::XXX>
 #include "LinearAlgebra/utils/is_complete.hpp"
-#include "LinearAlgebra/blas/blas_config.hpp"
+
 
 namespace LinearAlgebra
 {

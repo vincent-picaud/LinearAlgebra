@@ -5,6 +5,7 @@ LinearAlgebra_headers += [
   'blas/blas.hpp',
   'blas/subroutines.hpp',
   'blas/to_cblas_transpose.hpp',
+  'blas/to_cblas_uplo.hpp',
   'blas/is_cblas_supported_scalar.hpp',
 ]
 

@@ -44,7 +44,7 @@ TEST(Known_Pattern, Mat_Vect_Prod)
   v = 10;
   M = 1;
 
-  assign(w, 0, _lhs_, _plus_, 2, _identity_, M, v);
+  assign(w, 2, _identity_, M, v, _plus_, 0, _lhs_);
 
   EXPECT_TRUE(true);
 }
@@ -60,13 +60,13 @@ TEST(Known_Pattern, Sym_Mat_Vect_Prod)
   int count = 0;
   fill([&count]() { return count++; }, M);
 
-  assign(w, 0, _lhs_, _plus_, 2, _identity_, M, v);
+  assign(w, 2, _identity_, M, v, _plus_, 0, _lhs_);
 
   EXPECT_EQ(w[0], 16);
   EXPECT_EQ(w[1], 38);
   EXPECT_EQ(w[2], 50);
 
-  assign(w, 4, _lhs_, _plus_, 2, _identity_, M, v);
+  assign(w, 2, _identity_, M, v, _plus_, 4, _lhs_);
 
   EXPECT_EQ(w[0], 80);
   EXPECT_EQ(w[1], 190);
@@ -99,7 +99,7 @@ TEST(Known_Pattern, Herm_Mat_Vect_Prod)
   // EXPECT_EQ(w[1], std::complex<int>(38, -88));
   // EXPECT_EQ(w[2], std::complex<int>(50, 80));
 
-  //  expr(w, _assign_, 4, _lhs_, _plus_, 2, _identity_, M, v);
+  //  expr(w, _assign_, 2, _identity_, M, v, _plus_, 4, _lhs_);
 
   // EXPECT_EQ(w[0], std::complex<int>(80, -320));
   // EXPECT_EQ(w[1], std::complex<int>(190, -440));
@@ -117,13 +117,13 @@ TEST(Known_Pattern, Strict_Lower_Triangular_Vect_Prod)
   int count = 1;
   fill([&count]() { return count++; }, M);
 
-  assign(w, 0, _lhs_, _plus_, 2, _transpose_, M, v);
+  assign(w, 2, _transpose_, M, v, _plus_, 0, _lhs_);
 
   EXPECT_EQ(w[0], 16);
   EXPECT_EQ(w[1], 18);
   EXPECT_EQ(w[2], 0);
 
-  assign(w, 4, _lhs_, _plus_, 2, _identity_, M, v);
+  assign(w, 2, _identity_, M, v, _plus_, 4, _lhs_);
 
   EXPECT_EQ(w[0], 64);
   EXPECT_EQ(w[1], 74);
@@ -141,13 +141,13 @@ TEST(Known_Pattern, Unit_Triangular_Upper_Vect_Prod)
   int count = 1;
   fill([&count]() { return count++; }, M);
 
-  assign(w, 0, _lhs_, _plus_, 2, _transpose_, M, v);
+  assign(w, 2, _transpose_, M, v, _plus_, 0, _lhs_);
 
   EXPECT_EQ(w[0], 2);
   EXPECT_EQ(w[1], 6);
   EXPECT_EQ(w[2], 22);
 
-  assign(w, 4, _lhs_, _plus_, 2, _identity_, M, v);
+  assign(w, 2, _identity_, M, v, _plus_, 4, _lhs_);
 
   EXPECT_EQ(w[0], 26);
   EXPECT_EQ(w[1], 46);

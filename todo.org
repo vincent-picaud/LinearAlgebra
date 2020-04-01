@@ -122,4 +122,19 @@
    #+END_QUOTE
 
     - Restore once completed
+** 2020-04 April
+*** 2020-04-01 Wednesday
+
+**** TODO check that when is_same(v0,v1) = true do nothing [0/0]     :Urgent:
+     :PROPERTIES:
+     :Created:  [2020-04-01 Wed 11:48]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_VX_generic.hpp::v_0%20=%20v_2;]]
+
+   #+BEGIN_QUOTE
+       v_0 = v_2;
+
+   #+END_QUOTE
+
 

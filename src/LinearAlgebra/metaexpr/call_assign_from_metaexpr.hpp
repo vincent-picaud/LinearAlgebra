@@ -2,8 +2,7 @@
 //
 #pragma once
 
-#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
-#include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 #include "LinearAlgebra/utils/crtp.hpp"
@@ -62,44 +61,23 @@ namespace LinearAlgebra
     // Functions to use in Vector/Matrix interface
     //////////////////////////////////////////////////////////////////
     //
-
-    // Vector
+    // -> we use VMT_Crtp to have a generic solution
     //
-    template <typename V_DEST_IMPL, typename... ARGS>
+    template <typename DEST_IMPL, typename... ARGS>
     static inline auto
-    call_assign_from_argument_tuple(Vector_Crtp<V_DEST_IMPL>& V_dest,
+    call_assign_from_argument_tuple(VMT_Crtp<DEST_IMPL>& dest,
                                     const std::tuple<ARGS...>& args_as_tuple)
     {
-      return std::apply([&](const auto&... args) { return assign(V_dest, args...); },
-                        args_as_tuple);
+      // CAVEAT: not args.impl()... as args can be integer,double etc...
+      return std::apply([&](const auto&... args) { return assign(dest.impl(), args...); }, args_as_tuple);
     }
 
-    template <typename V_DEST_IMPL, typename SRC_IMPL>
+    template <typename DEST_IMPL, typename SRC_IMPL>
     static inline auto
-    call_assign_from_metaexpr(Vector_Crtp<V_DEST_IMPL>& V_dest,
+    call_assign_from_metaexpr(VMT_Crtp<DEST_IMPL>& dest,
                               const Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
     {
-      return call_assign_from_argument_tuple(V_dest,
-                                             from_metaexpr_to_argument_tuple(metaExpr.impl()));
-    }
-
-    // Matrix
-    //
-    template <typename M_DEST_IMPL, typename... ARGS>
-    static inline auto
-    call_assign_from_argument_tuple(Matrix_Crtp<M_DEST_IMPL>& M_dest,
-                                    const std::tuple<ARGS...>& args_as_tuple)
-    {
-      return std::apply([&](const auto&... args) { return assign(M_dest, args...); },
-                        args_as_tuple);
-    }
-
-    template <typename M_DEST_IMPL, typename SRC_IMPL>
-    static inline auto
-    call_assign_from_metaexpr(Matrix_Crtp<M_DEST_IMPL>& M_dest,
-                              const Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
-    {
-      return call_assign_from_argument_tuple(M_dest,
+      return call_assign_from_argument_tuple(dest.impl(),
                                              from_metaexpr_to_argument_tuple(metaExpr.impl()));
     }
   }

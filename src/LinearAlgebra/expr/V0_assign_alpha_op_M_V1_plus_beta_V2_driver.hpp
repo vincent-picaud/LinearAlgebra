@@ -16,6 +16,7 @@
 #include "LinearAlgebra/expr/expr_tags.hpp"
 
 #include "LinearAlgebra/utils/element_type.hpp"
+#include "LinearAlgebra/utils/always.hpp"
 
 namespace LinearAlgebra
 {
@@ -36,8 +37,8 @@ namespace LinearAlgebra
          const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,   // beta
          const Vector_Crtp<V2_TYPE>& V2)                                        // V1
   {
-    static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
-    //    assert(0);
+    static_assert(Always_False_v<M_TYPE>, "Not implemented");
+
     return selected;
   }
 

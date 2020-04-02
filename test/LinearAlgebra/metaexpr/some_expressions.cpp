@@ -57,8 +57,9 @@ TEST(MetaExpr_Crtp, gemv)
   y = 2 * y + 4 * M * x;
   y = 2 * y - 4 * M * x;
 
-  // y = 2 * y + 4 * transpose(M) * x;
-  y = 1 * conjugate(M) * x + 1 * y;
+  EXPECT_DEBUG_DEATH((y = 2 * y + 4 * transpose(M) * x),""); // bad dimension
   
+  //  y = 1 * conjugate(M) * x + 1 * y;
+
   // y = transpose(M);
 }

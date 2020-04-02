@@ -5,6 +5,8 @@
 //
 #pragma once
 
+#include "LinearAlgebra/dense/memory_chunk_aliasing_p.hpp"
+
 #include "LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_V0_driver.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp"
 
@@ -44,6 +46,8 @@ namespace LinearAlgebra
               (M_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None),
           Expr_Selector_Enum>
   {
+    assert(are_not_aliased_p(v_0, v_1) and are_not_aliased_p(v_0, M));
+
     Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<M_OP>, M.I_size(), M.J_size(), alpha,
                M.data(), M.leading_dimension(), v_1.data(), v_1.increment(), beta, v_0.data(),
                v_0.increment());
@@ -111,6 +115,7 @@ namespace LinearAlgebra
   {
     // Sanity check
     assert(M.I_size() == M.J_size());
+    assert(are_not_aliased_p(v_0, v_1) and are_not_aliased_p(v_0, M));
 
     Blas::symv(CblasColMajor, Blas::To_CBlas_UpLo_v<M_TYPE::matrix_storage_mask_type::value>,
                M.I_size(), alpha, M.data(), M.leading_dimension(), v_1.data(), v_1.increment(),

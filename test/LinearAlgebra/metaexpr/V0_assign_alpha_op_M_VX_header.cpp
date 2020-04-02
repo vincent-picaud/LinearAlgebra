@@ -39,3 +39,16 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, blas_trmv)
 
   W = 2 * identity(L) * W;
 }
+
+TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trmv_check_alias)
+{
+  Vector<std::complex<double>> V(4);
+  Upper_Triangular_Matrix<std::complex<double>> U(4, 4);
+
+  V = 1;
+  U = 1;
+
+  V = U * V;
+  V = 2 * U * V;
+  V = transpose(U) * V;
+}

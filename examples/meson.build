@@ -18,3 +18,6 @@ executable('matrix_view',
 	   'matrix_view.cpp',
 	   dependencies : [LinearAlgebra_dep])
 
+executable('conjugate_gradients',
+	   'conjugate_gradients.cpp',
+	   dependencies : [LinearAlgebra_dep])

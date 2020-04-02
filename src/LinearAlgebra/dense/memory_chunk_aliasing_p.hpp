@@ -6,6 +6,8 @@
 //       if "are_not_aliased_p()" is TRUE then for sure they are NOT
 //                                             aliased.
 //
+#pragma once
+
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/memory_chunk.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"

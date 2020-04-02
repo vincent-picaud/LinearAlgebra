@@ -9,6 +9,8 @@
 //
 #pragma once
 
+#include "LinearAlgebra/dense/memory_chunk_aliasing_p.hpp"
+
 #include "LinearAlgebra/expr/V0_assign_alpha_V0.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha_V1.hpp"
 
@@ -28,7 +30,30 @@ namespace LinearAlgebra
   // V0=αop(M)V1+βVX
   //================================================================
   //
-  // TODO
+  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE>
+  auto
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,       // Undefined implementation
+         Dense_Vector_Crtp<V0_TYPE>& v0,                               // v0 =
+         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE> alpha,  // alpha
+         const _matrix_unary_op_t_<M_OP> op,                           // op
+         const Dense_Matrix_Crtp<M_TYPE>& M,                           // M
+         const Dense_Vector_Crtp<V1_TYPE>& v1                          // v1
+         )
+      -> std::enable_if_t<
+          // Supported matrix op?
+          Blas::Support_CBlas_Transpose_v<M_OP> &&
+              // Same scalar everywhere
+              All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>,
+                              Element_Type_t<V1_TYPE>> &&
+              // Scalar support
+              Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              // *NOT* Triangular Matrix
+              !Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
+          Expr_Selector_Enum>
+  {
+    // redirect
+    return assign(selected, v0, alpha, op, M, v1, _plus_, 0, _lhs_);
+  }
 
   //////////////////////////////////////////////////////////////////
 
@@ -58,6 +83,7 @@ namespace LinearAlgebra
           Expr_Selector_Enum>
   {
     assert(M.I_size() == M.J_size());  // TODO: extend to the rectangular case
+    assert(are_not_aliased_p(v0, M));
 
     assign(v0, alpha, _lhs_);
 
@@ -123,6 +149,7 @@ namespace LinearAlgebra
           Expr_Selector_Enum>
   {
     assert(M.I_size() == M.J_size());  // TODO: extend to the rectangular case
+    assert(are_not_aliased_p(v0, M));
 
     assign(v0, alpha, _lhs_);
 

@@ -8,7 +8,7 @@ main()
 {
   using T = float;
   Symmetric_Matrix<T> M(3, 3);
-  Vector<T> y(3);
+  Vector<T> y(3), y2(3);
   Tiny_Vector<T, 3> x;
 
   M(0, 0) = 1;
@@ -26,15 +26,15 @@ main()
 
   auto y_cpy_as_int = create_default_storable(Type_v<int>, y);
 
-  Expr_Selector_Enum selected = assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
+  assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
 
-  //y_cpy_as_int = 2 * transpose(M) * x + 0 * y_cpy_as_int;
+  y2 = 2 * M * x;
 
   std::cout << M << std::endl;
   std::cout << x << std::endl;
 
   std::cout << y << std::endl;
-  std::cout << y_cpy_as_int << std::endl;
+  std::cout << y2 << std::endl;
 
-  std::cout << std::boolalpha << (y == y_cpy_as_int) << std::endl;
+  std::cout << std::boolalpha << (y == y2) << std::endl;
 }

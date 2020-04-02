@@ -38,7 +38,7 @@ LinearAlgebra_headers += [
   'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_header.hpp',
   'expr/V0_assign_alpha_op_M_V1_plus_beta_V0_driver.hpp', # in progress
   'expr/V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp', # in progress
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_blas_gemv.hpp', # in progress
+  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_blas.hpp', # in progress
   'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_generic.hpp', # in progress
   
   'expr/vector_expr.hpp', # main header: include all expr 

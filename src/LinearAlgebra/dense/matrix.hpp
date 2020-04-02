@@ -490,7 +490,10 @@ namespace LinearAlgebra
                                 Matrix_Storage_Mask_Enum::None, size_t, size_t, size_t>;
 
   //================ Triangular_Strict
-
+  //
+  // CAVEAT: does not belong to Blas matrix type
+  //
+  
   // Lower
   template <typename T, size_t I_SIZE, size_t J_SIZE>
   using Tiny_Strict_Lower_Triangular_Matrix = Default_Matrix<
@@ -515,6 +518,34 @@ namespace LinearAlgebra
       Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
                      Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
 
+
+  //================ Triangular
+
+  // Lower
+  template <typename T, size_t I_SIZE, size_t J_SIZE>
+  using Tiny_Lower_Triangular_Matrix = Default_Matrix<
+      T, Matrix_Special_Structure_Enum::Triangular, Matrix_Storage_Mask_Enum::Lower,
+      std::integral_constant<std::size_t, I_SIZE>, std::integral_constant<std::size_t, J_SIZE>,
+      std::integral_constant<std::size_t, I_SIZE>>;
+
+  template <typename T>
+  using Lower_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular,
+                     Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
+
+  // Upper
+  template <typename T, size_t I_SIZE, size_t J_SIZE>
+  using Tiny_Upper_Triangular_Matrix = Default_Matrix<
+      T, Matrix_Special_Structure_Enum::Triangular, Matrix_Storage_Mask_Enum::Upper,
+      std::integral_constant<std::size_t, I_SIZE>, std::integral_constant<std::size_t, J_SIZE>,
+      std::integral_constant<std::size_t, I_SIZE>>;
+
+  template <typename T>
+  using Upper_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular,
+                     Matrix_Storage_Mask_Enum::Upper, size_t, size_t, size_t>;
+
+    
   //================ Unit_Triangular
 
   // Lower

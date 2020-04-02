@@ -4,20 +4,16 @@
 // As it is quite easy to miss some files we explicitly record them
 // here.
 //
-// We also define this file as header file model with our documentation
-//
 // Design note:
 //
-// - function that use _lhs_ or _lhs_1_, _lhs_2_ cannot be generated
+// - functions that use _lhs_ or _lhs_1_, _lhs_2_ cannot be generated
 //   by the "expression template" (sub dir metaExpr/). Thus they are
-//   called directly by the user, by example:
+//   called directly by the user and the user must use the unique
+//   canonical form, by example:
 //
 //   V0 = α op(M) V1 + β V0   <- here V0 == _lhs_
 //
 //   assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
-//
-//   BY CONSEQUENCE, THERE IS NO NEED to define all the variations
-//   like assign(y, M, x, _plus_, _lhs_); for instance.
 //
 //   Thus we only need to define ONE canonical routine
 //

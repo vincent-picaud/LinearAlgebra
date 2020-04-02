@@ -75,3 +75,18 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, blas_trsv)
 
   V = 0.5 * identity(inverse(U)) * V;
 }
+
+TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trsv_check_alias)
+{
+  Vector<std::complex<double>> V(4);
+  Upper_Triangular_Matrix<std::complex<double>> U(4, 4);
+
+  V = 1;
+  U = 1;
+
+  V = inverse(U) * V;
+  V = 2 * inverse(U) * V;
+  //  V = transpose(inverse(U)) * V;
+  V = inverse(transpose(U)) * V;
+   V = 2 * inverse(transpose(U)) * V;
+}

@@ -107,6 +107,19 @@ namespace LinearAlgebra
   {
     return assign(v0.impl(), 1, _identity_, M.impl(), v1.impl());
   }
+  //
+  // V0 = inverse(M) V1
+  //
+  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<V0_TYPE>& v0,       // v0 =
+         const _inverse_t_,              // inverse
+         const Matrix_Crtp<M_TYPE>& M,   // M
+         const Vector_Crtp<V1_TYPE>& v1  // v1
+  )
+  {
+    return assign(v0.impl(), 1, _identity_, _inverse_, M.impl(), v1.impl());
+  }
 
   //
   // V0 = α M V1
@@ -120,6 +133,20 @@ namespace LinearAlgebra
   )
   {
     return assign(v0.impl(), alpha, _identity_, M.impl(), v1.impl());
+  }
+  //
+  // V0 = α inverse(M) V1
+  //
+  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<V0_TYPE>& v0,                                     // v0 =
+         const Common_Element_Type_t<V0_TYPE, M_TYPE, V1_TYPE> alpha,  // alpha
+         const _inverse_t_,                                            // inverse
+         const Matrix_Crtp<M_TYPE>& M,                                 // M
+         const Vector_Crtp<V1_TYPE>& v1                                // v1
+  )
+  {
+    return assign(v0.impl(), alpha, _identity_, _inverse_, M.impl(), v1.impl());
   }
 
   //
@@ -135,4 +162,47 @@ namespace LinearAlgebra
   {
     return assign(Expr_Selector<>(), v0.impl(), 1, op, M.impl(), v1.impl());
   }
+  //
+  // V0 = inverse(op(M)) V1
+  //
+  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<V0_TYPE>& v0,            // v0 =
+         const _inverse_t_,                   // inverse
+         const _matrix_unary_op_t_<M_OP> op,  // op
+         const Matrix_Crtp<M_TYPE>& M,        // M
+         const Vector_Crtp<V1_TYPE>& v1       // v1
+  )
+  {
+    return assign(Expr_Selector<>(), v0.impl(), 1, op, _inverse_, M.impl(), v1.impl());
+  }
+  //
+  // V0 = op(inverse(M) V1
+  //
+  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<V0_TYPE>& v0,            // v0 =
+         const _matrix_unary_op_t_<M_OP> op,  // op
+         const _inverse_t_,                   // inverse
+         const Matrix_Crtp<M_TYPE>& M,        // M
+         const Vector_Crtp<V1_TYPE>& v1       // v1
+  )
+  {
+    return assign(Expr_Selector<>(), v0.impl(), 1, op, _inverse_, M.impl(), v1.impl());
+  }
+  //
+  // V0 = α inverse(op(M)) V1
+  //
+  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<V0_TYPE>& v0,                                     // v0 =
+         const Common_Element_Type_t<V0_TYPE, M_TYPE, V1_TYPE> alpha,  // alpha
+         const _inverse_t_,                                            // inverse
+         const _matrix_unary_op_t_<M_OP> op,                           // op
+         const Matrix_Crtp<M_TYPE>& M,                                 // M
+         const Vector_Crtp<V1_TYPE>& v1                                // v1
+  )
+  {
+    return assign(Expr_Selector<>(), v0.impl(), alpha, op, _inverse_, M.impl(), v1.impl());
+   }
 }

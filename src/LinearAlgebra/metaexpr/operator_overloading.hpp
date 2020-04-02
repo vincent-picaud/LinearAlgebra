@@ -95,4 +95,11 @@ namespace LinearAlgebra
   {
     return {arg.impl()};
   }
+  template <typename IMPL>
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<IMPL>,
+                   Detail::MetaExpr_UnaryOp<Element_Type_t<IMPL>, _identity_t_, IMPL>>
+  identity(const Crtp<IMPL>& arg)
+  {
+    return {arg.impl()};
+  }
 }

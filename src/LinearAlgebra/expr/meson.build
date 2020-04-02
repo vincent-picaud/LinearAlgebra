@@ -43,6 +43,7 @@ LinearAlgebra_headers += [
 
   'expr/V0_assign_alpha_op_M_VX_header.hpp',
   'expr/V0_assign_alpha_op_M_V0_driver.hpp',
+  'expr/V0_assign_alpha_op_M_V1_driver.hpp',
   'expr/V0_assign_alpha_op_M_VX_blas.hpp',
   
   'expr/vector_expr.hpp', # main header: include all expr 

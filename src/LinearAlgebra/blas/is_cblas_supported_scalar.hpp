@@ -1,3 +1,5 @@
+// TODO: to put into the Blas namespace
+// 
 #pragma once
 
 #if !(HAS_BLAS)

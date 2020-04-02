@@ -15,6 +15,8 @@ test_array = [
   ['X0_assign_X0_plus_alpha_X1_test','X0_assign_X0_plus_alpha_X1_exe','X0_assign_X0_plus_alpha_X1.cpp'], 
 
   ['V0_assign_alpha_op_M_V1_plus_beta_V0_test','V0_assign_alpha_op_M_V1_plus_beta_V0_exe','V0_assign_alpha_op_M_V1_plus_beta_V0.cpp'],
+
+  ['V0_assign_alpha_op_M_VX_header_test','V0_assign_alpha_op_M_VX_header_exe','V0_assign_alpha_op_M_VX_header.cpp'],
 ]
 
 foreach test : test_array

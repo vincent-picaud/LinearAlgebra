@@ -36,10 +36,14 @@ LinearAlgebra_headers += [
   'expr/M0_assign_M1_plus_alpha_M2.hpp',
 
   'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_header.hpp',
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_V0_driver.hpp', # in progress
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp', # in progress
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_blas.hpp', # in progress
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_generic.hpp', # in progress
+  'expr/V0_assign_alpha_op_M_V1_plus_beta_V0_driver.hpp', # todo: add alias
+  'expr/V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp', 
+  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_blas.hpp', # todo: add hermitian etc
+  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_generic.hpp', # todo: to debug 
+
+  'expr/V0_assign_alpha_op_M_VX_header.hpp',
+  'expr/V0_assign_alpha_op_M_V0_driver.hpp',
+  'expr/V0_assign_alpha_op_M_VX_blas.hpp',
   
   'expr/vector_expr.hpp', # main header: include all expr 
   'expr/matrix_expr.hpp', # main header: include all expr

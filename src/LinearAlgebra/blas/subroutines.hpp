@@ -112,6 +112,47 @@ namespace LinearAlgebra::Blas
 
     cblas_ztrmv(order, uplo, trans, diag, n, a, lda, x, incx);
   }
+
+  // Xtrsv: y=α.inverse(M).x, M triangular
+  //================
+  //
+  void
+  trsv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
+       const enum CBLAS_DIAG diag, const std::size_t n, const float *a, const std::size_t lda,
+       float *x, const std::size_t incx)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_strsv(order, uplo, trans, diag, n, a, lda, x, incx);
+  }
+  void
+  trsv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
+       const enum CBLAS_DIAG diag, const std::size_t n, const double *a, const std::size_t lda,
+       double *x, const std::size_t incx)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_dtrsv(order, uplo, trans, diag, n, a, lda, x, incx);
+  }
+  void
+  trsv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
+       const enum CBLAS_DIAG diag, const std::size_t n, const std::complex<float> *a,
+       const std::size_t lda, std::complex<float> *x, const std::size_t incx)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_ctrsv(order, uplo, trans, diag, n, a, lda, x, incx);
+  }
+  void
+  trsv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
+       const enum CBLAS_DIAG diag, const std::size_t n, const std::complex<double> *a,
+       const std::size_t lda, std::complex<double> *x, const std::size_t incx)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_ztrsv(order, uplo, trans, diag, n, a, lda, x, incx);
+  }
+
   // Xsymv: y=α.M.x+βy, M symmetric
   //================
   // CAVEAT: blas only provides float, double

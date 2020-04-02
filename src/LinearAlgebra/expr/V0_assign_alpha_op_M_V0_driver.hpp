@@ -1,5 +1,7 @@
 //
-// V0 = α op(M) V0 (inplace product, triangular matrices)
+// V0 = α op(M) V0
+//
+// V0 = α op(inverse(M)) V0
 //
 #pragma once
 
@@ -31,6 +33,21 @@ namespace LinearAlgebra
     static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
     return selected;
   }
+  // inverse
+  template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE>
+  Expr_Selector_Enum
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,  // Undefined implementation
+         Vector_Crtp<V_0_TYPE>& v_0,                                   // v_0 =
+         const Common_Element_Type_t<V_0_TYPE, M_TYPE> alpha,          // alpha
+         const _matrix_unary_op_t_<M_OP> op,                           // op
+         const _inverse_t_,                                            // inverse
+         const Matrix_Crtp<M_TYPE>& M,                                 // M
+         const _lhs_t_                                                 // lhs
+  )
+  {
+    static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
+    return selected;
+  }
 
   //////////////////////////////////////////////////////////////////
   // User interface
@@ -53,6 +70,26 @@ namespace LinearAlgebra
     // Delegate computation
     //
     return assign(Expr_Selector<>(), v_0.impl(), alpha, op, M.impl(), _lhs_);
+  }
+  // inverse
+  template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<V_0_TYPE>& v_0,                           // v_0 =
+         const Common_Element_Type_t<V_0_TYPE, M_TYPE> alpha,  // alpha
+         const _matrix_unary_op_t_<M_OP> op,                   // op
+         const _inverse_t_,                                    // inverse
+         const Matrix_Crtp<M_TYPE>& M,                         // M
+         const _lhs_t_                                         // lhs
+  )
+  {
+    // Here is the right place to check dimension once for all.
+    //
+    assert(dimension_predicate(v_0) ==
+           matrix_op(op, dimension_predicate(M)) * dimension_predicate(v_0));
+
+    // Delegate computation
+    //
+    return assign(Expr_Selector<>(), v_0.impl(), alpha, op, _inverse_, M.impl(), _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////

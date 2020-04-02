@@ -52,3 +52,26 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trmv_check_alias)
   V = 2 * U * V;
   V = transpose(U) * V;
 }
+
+//////////////////////////////////////////////////////////////////
+// inverse
+//////////////////////////////////////////////////////////////////
+//
+
+TEST(metaExpr_V0_assign_alpha_op_M_VX_header, blas_trsv)
+{
+  Vector<double> V(4);
+  Upper_Triangular_Matrix<double> U(4, 4);
+
+  V = 1;
+  U = 1;
+
+  V = 2 * U * V;
+
+  EXPECT_EQ(V[0], 8);
+  EXPECT_EQ(V[1], 6);
+  EXPECT_EQ(V[2], 4);
+  EXPECT_EQ(V[3], 2);
+
+  V = 0.5 * identity(inverse(U)) * V;
+}

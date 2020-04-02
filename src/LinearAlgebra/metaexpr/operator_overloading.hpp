@@ -102,4 +102,17 @@ namespace LinearAlgebra
   {
     return {arg.impl()};
   }
+
+  //////////////////////////////////////////////////////////////////
+  // Inverse unary operator
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename IMPL>
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<IMPL>,
+                   Detail::MetaExpr_UnaryOp<Element_Type_t<IMPL>, _inverse_t_, IMPL>>
+  inverse(const Crtp<IMPL>& arg)
+  {
+    return {arg.impl()};
+  }
+
 }

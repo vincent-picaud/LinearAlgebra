@@ -9,5 +9,6 @@ LinearAlgebra_headers += [
   'utils/all_same_type.hpp',
   'utils/type.hpp',
   'utils/has_static_dimension.hpp',
-
+  'utils/type_identity.hpp',
+  'utils/complex.hpp',
 ]

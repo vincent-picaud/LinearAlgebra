@@ -20,7 +20,7 @@ main()
   std::cout << V2 << std::endl;
 
   // For the moment compile time error, as we do not support block operations
-  //  expr(V2, _assign_, 2);
+  // assign(V1, 2);
 
   std::cout << V2 << std::endl;
 }

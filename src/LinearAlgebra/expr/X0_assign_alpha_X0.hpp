@@ -76,9 +76,15 @@ namespace LinearAlgebra
          const _lhs_t_                                               // vmt_0
   )
   {
-    transform([scalar](const auto& vmt_0_component) { return scalar * vmt_0_component; },
-              vmt_0.impl());
-
+    if (scalar == 0)
+    {
+      assign(vmt_0.impl(), 0);
+    }
+    if (scalar != 1)
+    {
+      transform([scalar](const auto& vmt_0_component) { return scalar * vmt_0_component; },
+                vmt_0.impl());
+    }
     return selected;
   }
 

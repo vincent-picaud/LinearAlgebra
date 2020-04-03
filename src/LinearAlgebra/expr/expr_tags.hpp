@@ -21,9 +21,8 @@
 //
 #pragma once
 
+#include "LinearAlgebra/utils/complex.hpp"
 #include "LinearAlgebra/utils/crtp.hpp"
-
-#include <ccomplex>
 
 namespace LinearAlgebra
 {
@@ -69,23 +68,21 @@ namespace LinearAlgebra
   // Tags used to notify argument //
   //////////////////////////////////
   //
-  struct _lhs_t_ 
+  struct _lhs_t_
   {
   };
   struct _rhs_1_t_
   {
   };
-  struct _rhs_2_t_ 
+  struct _rhs_2_t_
   {
   };
 
-  constexpr auto _lhs_ = _lhs_t_();
+  constexpr auto _lhs_   = _lhs_t_();
   constexpr auto _rhs_1_ = _rhs_1_t_();
   constexpr auto _rhs_2_ = _rhs_2_t_();
 
   //----------------------------------------------------------------
-
-
 
   //////////////////////////////////////////////
   // Matrix unary operators (like transpose) //

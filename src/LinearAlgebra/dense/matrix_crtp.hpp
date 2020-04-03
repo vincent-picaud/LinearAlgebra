@@ -4,8 +4,8 @@
 #include <iomanip>
 
 #include "LinearAlgebra/dense/vmt_crtp.hpp"
-#include "LinearAlgebra/expr/M0_assign_alpha.hpp"
 #include "LinearAlgebra/expr/M0_assign_M1.hpp"
+#include "LinearAlgebra/expr/M0_assign_alpha.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
 namespace LinearAlgebra
@@ -51,10 +51,11 @@ namespace LinearAlgebra
     }
 
     /////////////////////////
-    // Crpt Implementation //
+    // Prevent object slicing
     /////////////////////////
     //
    protected:
+    Matrix_Crtp& operator=(const Matrix_Crtp&) = default;
   };
 
   template <typename IMPL>
@@ -168,6 +169,13 @@ namespace LinearAlgebra
     {
       return base_type::impl().impl_memory_chunk();
     };
+
+    /////////////////////////
+    // Prevent object slicing
+    /////////////////////////
+    //
+   protected:
+    Dense_Matrix_Crtp& operator=(const Dense_Matrix_Crtp&) = default;
 
     /////////////////////////
     // Crtp Implementation //

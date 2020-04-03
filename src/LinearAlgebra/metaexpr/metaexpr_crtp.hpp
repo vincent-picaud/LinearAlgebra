@@ -40,6 +40,13 @@ namespace LinearAlgebra
       // operator type is mainly used by expand() function
       // its type value is an expr_tag
       using operator_type = typename traits_type::operator_type;
+
+      /////////////////////////
+      // Prevent object slicing
+      /////////////////////////
+      //
+     protected:
+      MetaExpr_Crtp& operator=(const MetaExpr_Crtp&) = default;
     };
 
     //////////////////////////////////////////////////////////////////
@@ -72,6 +79,13 @@ namespace LinearAlgebra
       {
         return base_type::impl().impl_arg();
       }
+
+      /////////////////////////
+      // Prevent object slicing
+      /////////////////////////
+      //
+     protected:
+      MetaExpr_UnaryOp_Crtp& operator=(const MetaExpr_UnaryOp_Crtp&) = default;
     };
 
     //////////////////////////////////////////////////////////////////
@@ -111,6 +125,12 @@ namespace LinearAlgebra
       {
         return base_type::impl().impl_arg_1();
       }
+      /////////////////////////
+      // Prevent object slicing
+      /////////////////////////
+      //
+     protected:
+      MetaExpr_BinaryOp_Crtp& operator=(const MetaExpr_BinaryOp_Crtp&) = default;
     };
   }  // Detail
 

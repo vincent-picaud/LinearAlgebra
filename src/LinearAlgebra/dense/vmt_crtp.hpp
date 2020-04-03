@@ -23,6 +23,13 @@ namespace LinearAlgebra
     using traits_type = typename base_type::traits_type;
 
     using element_type = typename traits_type::element_type;
+
+  //////////////////
+    // Prevent object slicing
+    //////////////////
+    //
+   protected:
+    VMT_Crtp& operator=(const VMT_Crtp&) = default;
   };
 
 }

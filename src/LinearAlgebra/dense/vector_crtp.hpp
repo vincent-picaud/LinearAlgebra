@@ -3,8 +3,8 @@
 #include <cstddef>
 
 #include "LinearAlgebra/dense/vmt_crtp.hpp"
-#include "LinearAlgebra/expr/V0_assign_alpha.hpp"
 #include "LinearAlgebra/expr/V0_assign_V1.hpp"
+#include "LinearAlgebra/expr/V0_assign_alpha.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
 namespace LinearAlgebra
@@ -43,11 +43,12 @@ namespace LinearAlgebra
       return base_type::impl();
     }
 
-    /////////////////////////
-    // Crpt Implementation //
-    /////////////////////////
+    //////////////////
+    // Prevent object slicing
+    //////////////////
     //
    protected:
+    Vector_Crtp& operator=(const Vector_Crtp&) = default;
   };
 
   //****************************************************************
@@ -118,6 +119,13 @@ namespace LinearAlgebra
       assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
     }
 
+    //////////////////
+    // Prevent object slicing
+    //////////////////
+    //
+   protected:
+    Dense_Vector_Crtp& operator=(const Dense_Vector_Crtp&) = default;
+
    public:
     ////////////////////
     // Crtp Interface //
@@ -163,7 +171,6 @@ namespace LinearAlgebra
       return base_type::impl().impl_memory_chunk();
     };
 
-
     /////////////////////////
     // Crtp Implementation //
     /////////////////////////
@@ -186,7 +193,7 @@ namespace LinearAlgebra
       assign(*this, scalar);
       return base_type::impl();
     }
-    
+
     template <typename OTHER_IMPL>
     IMPL&
     impl_assign(const Vector_Crtp<OTHER_IMPL>& other_vector)

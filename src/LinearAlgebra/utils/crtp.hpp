@@ -35,6 +35,9 @@ namespace LinearAlgebra
     {
       return static_cast<exact_type&>(*this);
     };
+
+   protected:
+    Crtp& operator=(const Crtp&) = default;
   };
 
   template <template <typename> class CRTP_INTERFACE, typename OBJ, typename ENABLE = void>

@@ -1,3 +1,5 @@
+#include <cstddef>
+
 #include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/vector.hpp"
 

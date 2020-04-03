@@ -15,8 +15,10 @@
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 
-#include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/always.hpp"
+#include "LinearAlgebra/utils/element_type.hpp"
+
+#include <csignal>
 
 namespace LinearAlgebra
 {
@@ -63,11 +65,14 @@ namespace LinearAlgebra
     assert(matrix_op(op, dimension_predicate(M)) * dimension_predicate(V1) +
            dimension_predicate(V0));
 
+    //    std::raise(SIGINT);
+
     // Delegate computation
     //
     if (not is_same(V0.impl(), V2.impl()))
     {
-      V0 = V2;
+      // V0 = V2; XXX
+      assign(V0, V2);
     }
     return assign(Expr_Selector<>(), V0.impl(), alpha, op, M.impl(), V1.impl(), _plus_, beta,
                   _lhs_);

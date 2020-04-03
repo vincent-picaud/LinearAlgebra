@@ -37,7 +37,7 @@ namespace LinearAlgebra
 
     auto r  = create_default_storable(X0);
     auto p  = create_default_storable(X0);
-    auto Ap = create_default_storable(X0); 
+    auto Ap = create_default_storable(X0);
 
     r = b - A * X0;
 
@@ -58,7 +58,7 @@ namespace LinearAlgebra
 
       X0.impl() = X0 + alpha * p;
 
-      r = r + (-alpha) * Ap;  // To fix, must accept  r -alpha * Ap
+      r = r - alpha * Ap;  
 
       auto squared_norm_r_new = dot(r, r);
       std::cout << "iter " << i << " residue " << squared_norm_r_new << std::endl;

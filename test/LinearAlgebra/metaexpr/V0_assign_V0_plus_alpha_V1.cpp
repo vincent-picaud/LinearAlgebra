@@ -12,10 +12,12 @@ using namespace LinearAlgebra;
 
 TEST(V0_assign_V0_plus_alpha_V1, alias)
 {
-  Vector<double> V(4), W(4);	
+  Vector<double> V(4), W(4);
 
-  V = V + W;			
+  V = V + W;
   V = V - W;
 
-
+  V = V - 2 * W;
+  // CAVEAT: X0 = α X2 - X1 impossible
+  //  V = 2 * V - W;
 }

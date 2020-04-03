@@ -40,6 +40,8 @@ namespace LinearAlgebra
   // User interface
   //////////////////////////////////////////////////////////////////
   //
+  // X0 = X1 + α X2
+  //
   template <typename X0_IMPL, typename X1_IMPL, typename X2_IMPL>
   static inline Expr_Selector_Enum
   assign(VMT_Crtp<X0_IMPL>& X0,                // X0
@@ -60,19 +62,37 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
 
-  // from: X0 = X1   + α X2
-  // to  : X0 = α X2 +   X1
+  //
+  // X0 = X1 - α X2
   //
   template <typename X0_IMPL, typename X1_IMPL, typename X2_IMPL>
   static inline Expr_Selector_Enum
-  assign(VMT_Crtp<X0_IMPL>& X0,                // X0
+  assign(VMT_Crtp<X0_IMPL>& X0,                //
+         const VMT_Crtp<X1_IMPL>& X1,          //
+         const _minus_t_,                      //
          const Common_Element_Type_t<X0_IMPL,  //
                                      X1_IMPL,  //
                                      X2_IMPL>  //
-             alpha,                            // alpha
-         const VMT_Crtp<X2_IMPL>& X2,          // X2
-         const _plus_t_,                       // +
-         const VMT_Crtp<X1_IMPL>& X1           // X1
+             alpha,                            //
+         const VMT_Crtp<X2_IMPL>& X2           //
+  )
+  {
+    return assign(Expr_Selector<>(), X0.impl(), X1.impl(), _plus_, -alpha, X2.impl());
+  }
+
+  //
+  // X0 = α X2 + X1
+  //
+  template <typename X0_IMPL, typename X1_IMPL, typename X2_IMPL>
+  static inline Expr_Selector_Enum
+  assign(VMT_Crtp<X0_IMPL>& X0,                //
+         const Common_Element_Type_t<X0_IMPL,  //
+                                     X1_IMPL,  //
+                                     X2_IMPL>  //
+             alpha,                            //
+         const VMT_Crtp<X2_IMPL>& X2,          //
+         const _plus_t_,                       //
+         const VMT_Crtp<X1_IMPL>& X1           //
   )
   {
     return assign(X0.impl(), X1.impl(), _plus_, alpha, X2.impl());
@@ -83,14 +103,29 @@ namespace LinearAlgebra
   //
   template <typename X0_IMPL, typename X1_IMPL, typename X2_IMPL>
   static inline Expr_Selector_Enum
-  assign(VMT_Crtp<X0_IMPL>& X0,        // X0
-         const VMT_Crtp<X2_IMPL>& X2,  // X2
-         const _plus_t_,               // +
-         const VMT_Crtp<X1_IMPL>& X1   // X1
+  assign(VMT_Crtp<X0_IMPL>& X0,        //
+         const VMT_Crtp<X2_IMPL>& X2,  //
+         const _plus_t_,               //
+         const VMT_Crtp<X1_IMPL>& X1   //
   )
   {
     return assign(X0.impl(), X1.impl(), _plus_, 1, X2.impl());
   }
+
+  //
+  // X0 = X1 - X2
+  //
+  template <typename X0_IMPL, typename X1_IMPL, typename X2_IMPL>
+  static inline Expr_Selector_Enum
+  assign(VMT_Crtp<X0_IMPL>& X0,        //
+         const VMT_Crtp<X2_IMPL>& X2,  //
+         const _minus_t_,              //
+         const VMT_Crtp<X1_IMPL>& X1   //
+  )
+  {
+    return assign(X0.impl(), X1.impl(), _plus_, -1, X2.impl());
+  }
+
   //////////////////////////////////////////////////////////////////
   // Implementation
   //////////////////////////////////////////////////////////////////

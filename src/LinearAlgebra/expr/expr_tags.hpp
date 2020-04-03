@@ -45,6 +45,11 @@ namespace LinearAlgebra
   };
   constexpr auto _minus_ = _minus_t_();
 
+  struct _unary_minus_t_
+  {
+  };
+  constexpr auto _unary_minus_ = _unary_minus_t_();
+
   struct _product_t_
   {
   };

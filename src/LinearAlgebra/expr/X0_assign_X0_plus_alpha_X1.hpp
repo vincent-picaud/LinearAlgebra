@@ -76,48 +76,42 @@ namespace LinearAlgebra
   //  Implementation: Generic
   //================================================================
   //
+  // X0 = X0 + α X1
   template <typename X0_IMPL, typename X1_IMPL>
   Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Generic>&,    // Generic implementation
-         VMT_Crtp<X0_IMPL>& X0,                                // X0
-         const _lhs_t_,                                        // X0
-         const _plus_t_,                                       // +
-         const Common_Element_Type_t<X0_IMPL, X1_IMPL> alpha,  // alpha
-         const VMT_Crtp<X1_IMPL>& X1                           // X1
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic>&,    //
+         VMT_Crtp<X0_IMPL>& X0,                                //
+         const _lhs_t_,                                        //
+         const _plus_t_,                                       //
+         const Common_Element_Type_t<X0_IMPL, X1_IMPL> alpha,  //
+         const VMT_Crtp<X1_IMPL>& X1                           //
   )
   {
-    transform([&alpha](const auto X0_component,
-                       const auto X1_component) { return X0_component + alpha * X1_component; },
-              X0.impl(), X1.impl());
+    assert(are_compatible_p(X0.impl(), X1.impl()));
 
-    // assert(are_compatible_p(X0.storage_scheme(), X1.storage_scheme()));
+    if (alpha == 0)
+    {
+      return Expr_Selector_Enum::END;  // nothing to do
+    }
 
-    // if (alpha == 0)
-    // {
-    //   return Expr_Selector_Enum::Generic;  // nothing to do
-    // }
-
-    // if ((void*)&X0 == (void*)&X1.impl())
-    // {
-    //   return assign(X0, 1 + alpha, _lhs_);
-    // }
-
-    // if (alpha == 1)
-    // {
-    //   transform([](const auto X0_component, const auto v1_i) { return X0_component + v1_i; }, X0.impl(),
-    //             X1.impl());
-    // }
-    // else if (alpha == -1)
-    // {
-    //   transform([](const auto X0_component, const auto v1_i) { return X0_component - v1_i; }, X0.impl(),
-    //             X1.impl());
-    // }
-    // else
-    // {
-    //   transform(
-    //       [alpha](const auto X0_component, const auto v1_i) { return X0_component + alpha * v1_i; },
-    //       X0.impl(), X1.impl());
-    // }
+    if (alpha == 1)
+    {
+      transform([](const auto X0_component,
+                   const auto X1_component) { return X0_component + X1_component; },
+                X0.impl(), X1.impl());
+    }
+    else if (alpha == -1)
+    {
+      transform([](const auto X0_component,
+                   const auto X1_component) { return X0_component - X1_component; },
+                X0.impl(), X1.impl());
+    }
+    else
+    {
+      transform([&alpha](const auto X0_component,
+                         const auto X1_component) { return X0_component + alpha * X1_component; },
+                X0.impl(), X1.impl());
+    }
 
     return Expr_Selector_Enum::Generic;
   }

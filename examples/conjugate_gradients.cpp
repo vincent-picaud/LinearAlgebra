@@ -37,9 +37,9 @@ namespace LinearAlgebra
 
     auto r  = create_default_storable(X0);
     auto p  = create_default_storable(X0);
-    auto Ap = create_default_storable(X0);
+    auto Ap = create_default_storable(X0); 
 
-    r = (-1) * identity(A) * X0 + 1 * b;  // TODO b-A.X0
+    r = b - A * X0;
 
     auto squared_norm_r_old = dot(r, r);
 

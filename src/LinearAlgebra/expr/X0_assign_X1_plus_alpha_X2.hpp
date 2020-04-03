@@ -78,6 +78,19 @@ namespace LinearAlgebra
     return assign(X0.impl(), X1.impl(), _plus_, alpha, X2.impl());
   }
 
+  //
+  // X0 = X1 + X2
+  //
+  template <typename X0_IMPL, typename X1_IMPL, typename X2_IMPL>
+  static inline Expr_Selector_Enum
+  assign(VMT_Crtp<X0_IMPL>& X0,        // X0
+         const VMT_Crtp<X2_IMPL>& X2,  // X2
+         const _plus_t_,               // +
+         const VMT_Crtp<X1_IMPL>& X1   // X1
+  )
+  {
+    return assign(X0.impl(), X1.impl(), _plus_, 1, X2.impl());
+  }
   //////////////////////////////////////////////////////////////////
   // Implementation
   //////////////////////////////////////////////////////////////////

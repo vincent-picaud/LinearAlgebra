@@ -84,9 +84,14 @@ namespace LinearAlgebra
   //
   // TO COMPLETE, BUT THE IDEA IS OK
   //
+  // - [ ] : β V2 + α M V1
+  // - [ ] : β V2 - α M V1
+  // - [ ] : V0 = α M V1 + β V2
+  // - [ ] : V0 = α M V1 - β V2
+  // etc
 
   //================================================================
-  //   V0 = α M V1 + β V2
+  // V0 = α M V1 + β V2
   //================================================================
   //
   // And its variations
@@ -106,7 +111,7 @@ namespace LinearAlgebra
   }
 
   //
-  //   V0 = α M V1 - β V2
+  // V0 = α M V1 - β V2
   //
   template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
             typename V2_TYPE>
@@ -156,6 +161,22 @@ namespace LinearAlgebra
          const Vector_Crtp<V1_TYPE>& V1)                                // V1
   {
     return assign(V0, -alpha, _identity_, M, V1, _plus_, beta, V2);
+  }
+
+  //
+  //   V0 = V2 - α M V1
+  //
+  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
+            typename V2_TYPE>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<V0_TYPE>& V0,                                      // V0 =
+         const Vector_Crtp<V2_TYPE>& V2,                                // V2,
+         const _minus_t_,                                               // -
+         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  // α
+         const Matrix_Crtp<M_TYPE>& M,                                  // M
+         const Vector_Crtp<V1_TYPE>& V1)                                // V1
+  {
+    return assign(V0, -alpha, _identity_, M, V1, _plus_, 1, V2);
   }
 
   //================================================================

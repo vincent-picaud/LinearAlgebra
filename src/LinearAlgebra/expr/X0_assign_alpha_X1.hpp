@@ -49,7 +49,7 @@ namespace LinearAlgebra
          const VMT_Crtp<IMPL_X1>& X1                            // X1
   )
   {
-      return assign(Expr_Selector<>(), X0.impl(), alpha, X1.impl());
+    return assign(Expr_Selector<>(), X0.impl(), alpha, X1.impl());
   }
 
   //////////////////////////////////////////////////////////////////
@@ -77,8 +77,19 @@ namespace LinearAlgebra
          const VMT_Crtp<IMPL_X1>& X1                            // X1
   )
   {
-    // Basic implementation for test
-    fill([&alpha](const auto& X1_component) { return alpha * X1_component; }, X0.impl(), X1.impl());
+    if (alpha == 0)
+    {
+      assign(X0, 0);
+    }
+    else if (alpha == 1)
+    {
+      assign(X0, X1);
+    }
+    else
+    {
+      fill([&alpha](const auto& X1_component) { return alpha * X1_component; }, X0.impl(),
+           X1.impl());
+    }
 
     return selected;
   }

@@ -3,6 +3,7 @@
 //
 #pragma once
 
+#include <type_traits>
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 
@@ -22,7 +23,7 @@ namespace LinearAlgebra
   //
 
   template <typename IMPL>
-  static inline Expr_Selector_Enum
+  Expr_Selector_Enum
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,  // Undefined implementation
          VMT_Crtp<IMPL>& vmt_0,                                        // vmt_0
          const Element_Type_t<IMPL>& scalar,                           // scalar
@@ -39,7 +40,7 @@ namespace LinearAlgebra
   //
 
   template <typename IMPL>
-  static inline Expr_Selector_Enum
+  Expr_Selector_Enum
   assign(VMT_Crtp<IMPL>& vmt_0,               // vmt_0
          const Element_Type_t<IMPL>& scalar,  // scalar
          const _lhs_t_                        // vmt_0
@@ -69,7 +70,7 @@ namespace LinearAlgebra
   //
   //
   template <typename IMPL>
-  static inline Expr_Selector_Enum
+  Expr_Selector_Enum
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,  // Generic implementation
          VMT_Crtp<IMPL>& vmt_0,                                      // vmt_0
          const Element_Type_t<IMPL>& scalar,                         // scalar
@@ -80,7 +81,7 @@ namespace LinearAlgebra
     {
       assign(vmt_0.impl(), 0);
     }
-    if (scalar != 1)
+    else if (scalar != 1)
     {
       transform([scalar](const auto& vmt_0_component) { return scalar * vmt_0_component; },
                 vmt_0.impl());
@@ -93,7 +94,7 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename IMPL>
-  static inline Expr_Selector_Enum
+  std::enable_if_t<Has_Static_Dimension_v<IMPL>, Expr_Selector_Enum>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,  // Generic implementation
          VMT_Crtp<IMPL>& vmt_0,                                     // vmt_0
          const Element_Type_t<IMPL>& scalar,                        // scalar

@@ -48,8 +48,10 @@ LinearAlgebra_headers += [
   'dense/vector_is_same.hpp',
   'dense/matrix_is_same.hpp',
 
-
   'dense/vmt_comparison_operators.hpp',
   'dense/vector_comparison_operators.hpp',
   'dense/matrix_comparison_operators.hpp',
+
+  'dense/matrix_header.hpp',
+  'dense/vector_header.hpp',
 ]

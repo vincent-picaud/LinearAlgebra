@@ -12,6 +12,9 @@
 #include "LinearAlgebra/utils/size_utils.hpp"
 
 #include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/matrix_is_same.hpp"
+
+#include "LinearAlgebra/expr/X0_assign_X0_plus_alpha_X1.hpp"
 
 namespace LinearAlgebra
 {
@@ -135,25 +138,33 @@ namespace LinearAlgebra
   //  Implementation: Generic
   //================================================================
   //
+  // X0 = X1 + α X2
+  //
   template <typename X0_IMPL, typename X1_IMPL, typename X2_IMPL>
   static inline Expr_Selector_Enum
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,  //
-         VMT_Crtp<X0_IMPL>& X0,                                      // X0
-         const VMT_Crtp<X1_IMPL>& X1,                                // X1
-         const _plus_t_,                                             // +
+         VMT_Crtp<X0_IMPL>& X0,                                      //
+         const VMT_Crtp<X1_IMPL>& X1,                                //
+         const _plus_t_,                                             //
          const Common_Element_Type_t<X0_IMPL,                        //
                                      X1_IMPL,                        //
                                      X2_IMPL>                        //
-             alpha,                                                  // alpha
-         const VMT_Crtp<X2_IMPL>& X2                                 // X2
+             alpha,                                                  //
+         const VMT_Crtp<X2_IMPL>& X2                                 //
   )
   {
-    // TODO check if X0==X1 etc.. and branch to the proper routine
-
-    fill([&](const auto X1_component,
-             const auto X2_component) { return X1_component + alpha * X2_component; },
-         X0.impl(), X1.impl(), X2.impl());
-
+    if (is_same(X0.impl(), X1.impl()))
+    {
+      // use the X0 = _lhs_ + α X2 specialization
+      //
+      assign(X0.impl(), alpha, X2.impl(), _plus_, _lhs_);
+    }
+    else
+    {
+      fill([&](const auto X1_component,
+               const auto X2_component) { return X1_component + alpha * X2_component; },
+           X0.impl(), X1.impl(), X2.impl());
+    }
     return selected;
   }
 

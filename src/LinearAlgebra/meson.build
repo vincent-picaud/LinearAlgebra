@@ -11,6 +11,7 @@ subdir('expr')
 subdir('metaexpr')
 subdir('dense')
 subdir('blas')
+subdir('scalar_functions')
 
 
 

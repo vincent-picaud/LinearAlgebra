@@ -17,6 +17,16 @@
 
 namespace LinearAlgebra
 {
+  // Conjugate
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename T>
+  std::complex<T>
+  conjugate(const std::complex<T>& Z) noexcept
+  {
+    return std::conj(Z);
+  }
+  
   // Is_Complex
   //////////////////////////////////////////////////////////////////
   //

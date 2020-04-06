@@ -33,4 +33,8 @@ TEST(Element_Type, common_element_type)
   EXPECT_TRUE((std::is_same_v<double, Common_Element_Type_t<A<float>, A<double>, A<int>>>));
   EXPECT_TRUE((std::is_same_v<std::complex<float>,
                               Common_Element_Type_t<A<std::complex<float>>, A<double>, A<int>>>));
+
+  EXPECT_TRUE(
+      (std::is_same_v<std::complex<int>,  // CAVEAT: unfortunately this is not std::complex<float>
+                      Common_Element_Type_t<A<std::complex<int>>, A<float>, A<int>>>));
 }

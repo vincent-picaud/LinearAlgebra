@@ -26,7 +26,7 @@ namespace LinearAlgebra
   {
     return std::conj(Z);
   }
-  
+
   // Is_Complex
   //////////////////////////////////////////////////////////////////
   //

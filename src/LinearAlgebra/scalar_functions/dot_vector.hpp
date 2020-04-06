@@ -3,47 +3,16 @@
 //
 #pragma once
 
+#include "LinearAlgebra/scalar_functions/dot.hpp"
+
 #include "LinearAlgebra/blas/blas.hpp"
 #include "LinearAlgebra/dense/vector_scan.hpp"
-#include "LinearAlgebra/expr/dimension.hpp"
-#include "LinearAlgebra/expr/expr_debug.hpp"
-#include "LinearAlgebra/expr/expr_selector.hpp"
-#include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/complex.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/has_static_dimension.hpp"
 
 namespace LinearAlgebra
 {
-  //////////////////////////////////////////////////////////////////
-  // Fallback
-  //////////////////////////////////////////////////////////////////
-  //
-  template <typename V0_IMPL, typename V1_IMPL>
-  void
-  dot(const Expr_Selector<Expr_Selector_Enum::Undefined>,  //
-      const Dense_Vector_Crtp<V0_IMPL>& V0,                //
-      const Dense_Vector_Crtp<V1_IMPL>& V1                 //
-  )
-  {
-    DEBUG_SET_SELECTED(Expr_Selector_Enum::Undefined);
-
-    static_assert(Always_False_v<V0_IMPL>, "Undefined implementation");
-  }
-
-  //////////////////////////////////////////////////////////////////
-  // User interface
-  //////////////////////////////////////////////////////////////////
-  //
-  template <typename V0_IMPL, typename V1_IMPL>
-  auto
-  dot(const Dense_Vector_Crtp<V0_IMPL>& V0,  //
-      const Dense_Vector_Crtp<V1_IMPL>& V1   //
-  )
-  {
-    return dot(Expr_Selector<>(), V0.impl(), V1.impl());
-  }
-
   //////////////////////////////////////////////////////////////////
   // Implementation
   //////////////////////////////////////////////////////////////////

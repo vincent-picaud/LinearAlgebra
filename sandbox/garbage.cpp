@@ -3,9 +3,24 @@
 
 using namespace LinearAlgebra;
 
+void
+test_dot()
+{
+  Vector<double> V1(5);
+  Vector<double> V2(5);
+
+  V1 = 2;
+  V2 = 3;
+
+  dot(V1, V2);  //  5 * 2 * 3
+}
+
 int
 main()
 {
+  test_dot();
+  return 0;
+  
   using T = float;
   Symmetric_Matrix<T> M(3, 3);
   Vector<T> y(3), y2(3);

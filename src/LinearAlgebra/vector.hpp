@@ -8,3 +8,5 @@
 #include "LinearAlgebra/expr/vector_expr.hpp"
 
 #include "LinearAlgebra/metaexpr/metaexpr.hpp"
+
+#include "LinearAlgebra/scalar_functions/dot.hpp"

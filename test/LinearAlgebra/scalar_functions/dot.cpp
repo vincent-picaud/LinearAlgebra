@@ -1,7 +1,16 @@
 
+#ifndef NDEBUG
+#define DEBUG_EXPECT_EQ(A, B) EXPECT_EQ((A), (B))
+#else
+#define DEBUG_EXPECT_EQ(A, B)
+#endif
+
+//////////////////////////////////////////////////////////////////
+
 #include "LinearAlgebra/scalar_functions/dot.hpp"
 
 #include "LinearAlgebra/dense/vector_header.hpp"
+#include "LinearAlgebra/expr/expr_selector.hpp"
 
 #include <gtest/gtest.h>
 
@@ -23,7 +32,9 @@ TEST(dot, vector_1)
   V1 = 2;
   V2 = 3;
 
+  DEBUG_RESET_SELECTED();
   EXPECT_EQ(dot(V1, V2), 5 * 2 * 3);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 }
 
 TEST(dot, vector_2)
@@ -39,4 +50,19 @@ TEST(dot, vector_2)
   //         std::common_type<std::complex<int>,double> is
   //         std::complex<int> and not std::complex<double>
   EXPECT_EQ(dot(V1, V2), std::complex<int>(0, -5 * 2 * 3));
+}
+
+TEST(dot, vector_1_blas)
+{
+  Vector<double> V1(5);
+  Vector<double> V2(5);
+
+  V1 = 2;
+  V2 = 3;
+
+  DEBUG_RESET_SELECTED();
+
+  EXPECT_EQ(dot(V1, V2), 5 * 2 * 3);
+
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 }

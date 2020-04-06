@@ -6,18 +6,18 @@
 namespace LinearAlgebra
 {
   // TODO use Expr_Selector
-  template <typename V_IMPL, typename W_IMPL>
-  auto
-  dot(const Dense_Vector_Crtp<V_IMPL>& v, const Dense_Vector_Crtp<W_IMPL>& w)
-  {
-    // here simple generic
-    // TODO: better to introduce a conjugate(scalar) functions
-    decltype(transform_scalar(_conjugate_, v[0]) * w[0]) sum{0};
-    scan([&sum](const auto& v_i,
-                const auto& w_i) { sum += transform_scalar(_conjugate_, v_i) * w_i; },
-         v, w);
-    return sum;
-  }
+  // template <typename V_IMPL, typename W_IMPL>
+  // auto
+  // dot(const Dense_Vector_Crtp<V_IMPL>& v, const Dense_Vector_Crtp<W_IMPL>& w)
+  // {
+  //   // here simple generic
+  //   // TODO: better to introduce a conjugate(scalar) functions
+  //   decltype(transform_scalar(_conjugate_, v[0]) * w[0]) sum{0};
+  //   scan([&sum](const auto& v_i,
+  //               const auto& w_i) { sum += transform_scalar(_conjugate_, v_i) * w_i; },
+  //        v, w);
+  //   return sum;
+  // }
 
   // Basic cg implementation
   // https://en.wikipedia.org/wiki/Conjugate_gradient_method

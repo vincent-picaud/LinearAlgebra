@@ -40,13 +40,51 @@ namespace LinearAlgebra::Blas
   // - [ ] : SUBROUTINE _SCAL ( N,  ALPHA, X, INCX )                                       S, D, C, Z, CS, ZD
   // - [X] : SUBROUTINE _COPY ( N,         X, INCX, Y, INCY )                              S, D, C, Z
   // - [ ] : SUBROUTINE _AXPY ( N,  ALPHA, X, INCX, Y, INCY )                              S, D, C, Z
-  // - [ ] : FUNCTION   _DOT  ( N,         X, INCX, Y, INCY )                              S, D, DS
+  // - [X] : FUNCTION   _DOT  ( N,         X, INCX, Y, INCY )                              S, D, DS
   // - [ ] : FUNCTION   _DOTU ( N,         X, INCX, Y, INCY )                              C, Z
-  // - [ ] : FUNCTION   _DOTC ( N,         X, INCX, Y, INCY )                              C, Z
+  // - [X] : FUNCTION   _DOTC ( N,         X, INCX, Y, INCY )                              C, Z
   // - [ ] : FUNCTION   __DOT ( N,  ALPHA, X, INCX, Y, INCY )                              SDS
   // - [ ] : FUNCTION   _NRM2 ( N,         X, INCX )                                       S, D, SC, DZ
   // - [ ] : FUNCTION   _ASUM ( N,         X, INCX )                                       S, D, SC, DZ
   // - [ ] : FUNCTION   I_AMAX( N,         X, INCX )                                       S, D, C, Z
+
+  // Xdot
+  //================
+  //
+  auto
+  dot(const std::size_t n, const float *x, const std::size_t incx, const float *y,
+      const std::size_t incy)
+  {
+    BLAS_DEBUG_LOG;
+
+    return cblas_sdot(n, x, incx, y, incy);
+  }
+  auto
+  dot(const std::size_t n, const double *x, const std::size_t incx, const double *y,
+      const std::size_t incy)
+  {
+    BLAS_DEBUG_LOG;
+
+    return cblas_ddot(n, x, incx, y, incy);
+  }
+  auto
+  dot(const std::size_t n, const std::complex<float> *x, const std::size_t incx,
+      const std::complex<float> *y, const std::size_t incy)
+  {
+    BLAS_DEBUG_LOG;
+
+    // dotc x^H.y <- hermitian inner prod.
+    return cblas_cdotc(n, x, incx, y, incy);
+  }
+  auto
+  dot(const std::size_t n, const std::complex<double> *x, const std::size_t incx,
+      const std::complex<double> *y, const std::size_t incy)
+  {
+    BLAS_DEBUG_LOG;
+
+    // dotc x^H.y <- hermitian inner prod.
+    return cblas_zdotc(n, x, incx, y, incy);
+  }
 
   // Xcopy
   //================
@@ -267,11 +305,11 @@ namespace LinearAlgebra::Blas
 
     cblas_zgemv(order, trans, m, n, &alpha, a, lda, x, incx, &beta, y, incy);
   }
-  
+
   /////////////
   // Level 2 //
   /////////////
-  //          
+  //
   //                 options                          dim      scalar matrix  matrix  scalar matrix  prefixes
   //
   // - [ ] : _GEMM (             TRANSA, TRANSB,      M, N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z

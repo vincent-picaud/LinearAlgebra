@@ -6,13 +6,12 @@
 #include "LinearAlgebra/blas/blas.hpp"
 #include "LinearAlgebra/dense/vector_scan.hpp"
 #include "LinearAlgebra/expr/dimension.hpp"
-#include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_debug.hpp"
+#include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/complex.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/has_static_dimension.hpp"
-
 
 namespace LinearAlgebra
 {
@@ -22,11 +21,13 @@ namespace LinearAlgebra
   //
   template <typename V0_IMPL, typename V1_IMPL>
   void
-  dot(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  //
-      const Dense_Vector_Crtp<V0_IMPL>& V0,                 //
-      const Dense_Vector_Crtp<V1_IMPL>& V1                  //
+  dot(const Expr_Selector<Expr_Selector_Enum::Undefined>,  //
+      const Dense_Vector_Crtp<V0_IMPL>& V0,                //
+      const Dense_Vector_Crtp<V1_IMPL>& V1                 //
   )
   {
+    DEBUG_SET_SELECTED(Expr_Selector_Enum::Undefined);
+
     static_assert(Always_False_v<V0_IMPL>, "Undefined implementation");
   }
 
@@ -54,9 +55,9 @@ namespace LinearAlgebra
   //
   template <typename V0_IMPL, typename V1_IMPL>
   auto
-  dot(const Expr_Selector<Expr_Selector_Enum::Generic>&,  //
-      const Dense_Vector_Crtp<V0_IMPL>& V0,               //
-      const Dense_Vector_Crtp<V1_IMPL>& V1                //
+  dot(const Expr_Selector<Expr_Selector_Enum::Generic>,  //
+      const Dense_Vector_Crtp<V0_IMPL>& V0,              //
+      const Dense_Vector_Crtp<V1_IMPL>& V1               //
   )
   {
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Generic);
@@ -85,16 +86,16 @@ namespace LinearAlgebra
 #if (HAS_BLAS)
   template <typename V0_IMPL, typename V1_IMPL>
   auto
-  dot(const Expr_Selector<Expr_Selector_Enum::Blas>&,  //
-      const Dense_Vector_Crtp<V0_IMPL>& V0,            //
-      const Dense_Vector_Crtp<V1_IMPL>& V1             //
+  dot(const Expr_Selector<Expr_Selector_Enum::Blas>,  //
+      const Dense_Vector_Crtp<V0_IMPL>& V0,           //
+      const Dense_Vector_Crtp<V1_IMPL>& V1            //
       ) -> decltype(Blas::dot(V0.size(), V0.data(), V0.increment(), V1.data(), V1.increment()))
 
   {
     assert(dimension_predicate(V0) == dimension_predicate(V1));
 
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Blas);
-    
+
     return Blas::dot(V0.size(), V0.data(), V0.increment(), V1.data(), V1.increment());
   }
 #endif
@@ -105,9 +106,9 @@ namespace LinearAlgebra
   //
   template <typename V0_IMPL, typename V1_IMPL>
   auto
-  dot(const Expr_Selector<Expr_Selector_Enum::Static>&,  //
-      const Dense_Vector_Crtp<V0_IMPL>& V0,              //
-      const Dense_Vector_Crtp<V1_IMPL>& V1               //
+  dot(const Expr_Selector<Expr_Selector_Enum::Static>,  //
+      const Dense_Vector_Crtp<V0_IMPL>& V0,             //
+      const Dense_Vector_Crtp<V1_IMPL>& V1              //
       ) -> std::enable_if_t<Any_Has_Static_Dimension_v<V0_IMPL, V1_IMPL>,
                             decltype(dot(Expr_Selector<Expr_Selector_Enum::Generic>(), V0.impl(),
                                          V1.impl()))>

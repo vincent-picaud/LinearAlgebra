@@ -9,4 +9,4 @@
 
 #include "LinearAlgebra/metaexpr/metaexpr.hpp"
 
-#include "LinearAlgebra/scalar_functions/dot.hpp"
+#include "LinearAlgebra/scalar_functions/dot_vector.hpp"

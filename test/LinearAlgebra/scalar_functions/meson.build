@@ -1,5 +1,6 @@
 test_array = [
-  ['dot_test','dot_exe','dot.cpp'],
+  ['dot_vector_test','dot_vector_exe','dot_vector.cpp'],
+  ['norm_2_vector_test','norm_2_vector_exe','norm_2_vector.cpp'],
 ]
 
 foreach test : test_array

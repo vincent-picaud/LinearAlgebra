@@ -1,4 +1,4 @@
-#include "LinearAlgebra/scalar_functions/dot.hpp"
+#include "LinearAlgebra/scalar_functions/dot_vector.hpp"
 
 #include "LinearAlgebra/dense/vector_header.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"

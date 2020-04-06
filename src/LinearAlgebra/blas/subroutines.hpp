@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cblas.h>
 #include "LinearAlgebra/blas/blas_config.hpp"
 
 #if !(HAS_BLAS)
@@ -47,6 +48,30 @@ namespace LinearAlgebra::Blas
   // - [ ] : FUNCTION   _NRM2 ( N,         X, INCX )                                       S, D, SC, DZ
   // - [ ] : FUNCTION   _ASUM ( N,         X, INCX )                                       S, D, SC, DZ
   // - [ ] : FUNCTION   I_AMAX( N,         X, INCX )                                       S, D, C, Z
+
+  // Xnrm2
+  //================
+  //
+  auto
+  nrm2(const std::size_t n, const float *x, const std::size_t incx)
+  {
+    return cblas_snrm2(n, x, incx);
+  }
+  auto
+  nrm2(const std::size_t n, const double *x, const std::size_t incx)
+  {
+    return cblas_dnrm2(n, x, incx);
+  }
+  auto
+  nrm2(const std::size_t n, const std::complex<float> *x, const std::size_t incx)
+  {
+    return cblas_scnrm2(n, x, incx);
+  }
+  auto
+  nrm2(const std::size_t n, const std::complex<double> *x, const std::size_t incx)
+  {
+    return cblas_dznrm2(n, x, incx);
+  }
 
   // Xdot
   //================

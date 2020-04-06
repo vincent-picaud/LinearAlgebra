@@ -92,7 +92,7 @@ namespace LinearAlgebra::Blas
 
     return cblas_ddot(n, x, incx, y, incy);
   }
-  auto
+  std::complex<float>
   dot(const std::size_t n, const std::complex<float> *x, const std::size_t incx,
       const std::complex<float> *y, const std::size_t incy)
   {
@@ -101,7 +101,7 @@ namespace LinearAlgebra::Blas
     // dotc x^H.y <- hermitian inner prod.
     return cblas_cdotc(n, x, incx, y, incy);
   }
-  auto
+  std::complex<double>
   dot(const std::size_t n, const std::complex<double> *x, const std::size_t incx,
       const std::complex<double> *y, const std::size_t incy)
   {

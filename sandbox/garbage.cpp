@@ -3,6 +3,13 @@
 
 using namespace LinearAlgebra;
 
+template <typename T>
+void
+print(const T&)
+{
+  std::cerr << __PRETTY_FUNCTION__ << std::endl;
+}
+
 void
 test_dot()
 {
@@ -15,12 +22,24 @@ test_dot()
   dot(V1, V2);  //  5 * 2 * 3
 }
 
+void
+test_dot_return_type()
+{
+  Vector<std::complex<float>> V1(5);
+  V1 = std::complex<float>(3, 2);
+
+  auto Z = dot(V1, V1);
+
+  print(Z);
+}
+
 int
 main()
 {
-  test_dot();
+  //  test_dot();
+  test_dot_return_type();
   return 0;
-  
+
   using T = float;
   Symmetric_Matrix<T> M(3, 3);
   Vector<T> y(3), y2(3);

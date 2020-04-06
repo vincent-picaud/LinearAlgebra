@@ -3,8 +3,6 @@ LinearAlgebra_headers += [
   'expr/expr_selector.hpp',
   'expr/dimension.hpp',
 
-  'expr/scalar_functions.hpp',
-
   # ok  
   'expr/X0_assign_alpha.hpp',
   'expr/V0_assign_alpha.hpp',

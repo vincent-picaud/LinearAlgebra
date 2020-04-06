@@ -82,19 +82,9 @@ namespace LinearAlgebra
   // Alias
   //////////////////////////////////////////////////////////////////
   //
-  // TO COMPLETE, BUT THE IDEA IS OK
-  //
-  // - [ ] : β V2 + α M V1
-  // - [ ] : β V2 - α M V1
-  // - [ ] : V0 = α M V1 + β V2
-  // - [ ] : V0 = α M V1 - β V2
-  // etc
 
-  //================================================================
-  // V0 = α M V1 + β V2
-  //================================================================
   //
-  // And its variations
+  // V0 = α M V1 + β V2
   //
   template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
             typename V2_TYPE>
@@ -127,11 +117,8 @@ namespace LinearAlgebra
     return assign(V0, alpha, _identity_, M, V1, _plus_, -beta, V2);
   }
 
-  //================================================================
-  //   V0 = β V2 + α M V1
-  //================================================================
   //
-  // And its variations
+  //   V0 = β V2 + α M V1
   //
   template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
             typename V2_TYPE>
@@ -179,11 +166,8 @@ namespace LinearAlgebra
     return assign(V0, -alpha, _identity_, M, V1, _plus_, 1, V2);
   }
 
-  //================================================================
-  // V0 = β.V2 + α.op(M).V1
-  //================================================================
   //
-  // And its variations
+  // V0 = β.V2 + α.op(M).V1
   //
   template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
             typename V2_TYPE>
@@ -218,16 +202,12 @@ namespace LinearAlgebra
     return assign(V0, -alpha, op, M, V1, _plus_, beta, V2);
   }
 
-  //================================================================
-  // V0 = α.op(M).V1 + β.V2
-  //================================================================
-  //
-  //
-  // Note: V0 = α.op(M).V1 + β.V2 is the target, already defined, see
-  // "User interface" & "Fallback"
-  //
   //
   // V0 = α.op(M).V1 + β.V2
+  //
+  //
+  // Note: V0 = α.op(M).V1 + β.V2 is the already defined "canonical"
+  // form, see "User interface" & "Fallback"
   //
 
   //
@@ -508,24 +488,6 @@ namespace LinearAlgebra
     return assign(V0, -1, _identity_, M, V1, _plus_, -1, V2);
   }
 
-  // ZOB
-  // V0 = β.V2 + α.op(M).V1
-  //
-  // template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-  //           typename V2_TYPE>
-  // Expr_Selector_Enum
-  // assign(Vector_Crtp<V0_TYPE>& V0,                                      //
-  //        const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,   //
-  //        const Vector_Crtp<V2_TYPE>& V2,                                //
-  //        const _plus_t_,                                                //
-  //        const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  //
-  //        const _matrix_unary_op_t_<M_OP> op,                            //
-  //        const Matrix_Crtp<M_TYPE>& M,                                  //
-  //        const Vector_Crtp<V1_TYPE>& V1)                                //
-  // {
-  //   return assign(V0, alpha, op, M, V1, _plus_, beta, V2);
-  // }
-
   //
   // V0 = β.V2 + op(M).V1
   //
@@ -661,7 +623,6 @@ namespace LinearAlgebra
     return assign(V0, -1, op, M, V1, _plus_, -1, V2);
   }
 
-  // ZOB no op
   //
   // V0 = β.V2 + M.V1
   //

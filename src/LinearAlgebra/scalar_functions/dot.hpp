@@ -7,27 +7,12 @@
 #include "LinearAlgebra/dense/vector_scan.hpp"
 #include "LinearAlgebra/expr/dimension.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
+#include "LinearAlgebra/expr/expr_debug.hpp"
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/complex.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/has_static_dimension.hpp"
 
-namespace LinearAlgebra::Detail
-{
-#ifndef NDEBUG
-  Expr_Selector_Enum utest_selected;
-#define DEBUG_RESET_SELECTED() LinearAlgebra::Detail::utest_selected = Expr_Selector_Enum::END
-#define DEBUG_GET_SELECTED() (LinearAlgebra::Detail::utest_selected)
-#define DEBUG_SET_SELECTED(value) LinearAlgebra::Detail::utest_selected = (value)
-
-#else
-
-#define DEBUG_RESET_SELECTED()
-#define DEBUG_GET_SELECTED()
-#define DEBUG_SET_SELECTED(value)
-
-#endif
-}
 
 namespace LinearAlgebra
 {

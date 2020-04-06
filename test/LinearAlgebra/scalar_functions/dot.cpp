@@ -1,12 +1,3 @@
-
-#ifndef NDEBUG
-#define DEBUG_EXPECT_EQ(A, B) EXPECT_EQ((A), (B))
-#else
-#define DEBUG_EXPECT_EQ(A, B)
-#endif
-
-//////////////////////////////////////////////////////////////////
-
 #include "LinearAlgebra/scalar_functions/dot.hpp"
 
 #include "LinearAlgebra/dense/vector_header.hpp"

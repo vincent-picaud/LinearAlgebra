@@ -49,5 +49,5 @@ LinearAlgebra_headers += [
   'expr/vector_expr.hpp', # main header: include all expr 
   'expr/matrix_expr.hpp', # main header: include all expr
 
-  
+  'expr/expr_debug.hpp'
 ]

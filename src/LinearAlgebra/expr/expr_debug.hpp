@@ -3,6 +3,8 @@
 //
 #pragma once
 
+#include "LinearAlgebra/expr/expr_selector.hpp"
+
 namespace LinearAlgebra::Detail
 {
 #ifndef NDEBUG

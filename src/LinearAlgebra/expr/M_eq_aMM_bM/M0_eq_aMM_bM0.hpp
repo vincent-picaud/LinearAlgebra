@@ -4,6 +4,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
+#include "LinearAlgebra/expr/expr_debug.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/utils/always.hpp"
@@ -29,6 +30,8 @@ namespace LinearAlgebra
          const Common_Element_Type_t<M0_TYPE, M1_TYPE, M2_TYPE> beta,   //
          const _lhs_t_)                                                 //
   {
+    DEBUG_SET_SELECTED(Expr_Selector_Enum::Undefined);
+
     static_assert(Always_False_v<M1_TYPE>, "Not implemented");
   }
 

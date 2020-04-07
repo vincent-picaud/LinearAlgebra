@@ -380,7 +380,7 @@ namespace LinearAlgebra::Blas
   {
     BLAS_DEBUG_LOG;
 
-    cblas_csyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
+    cblas_csyrk(Order, Uplo, Trans, N, K, &alpha, A, lda, &beta, C, ldc);
   }
   void
   syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
@@ -390,6 +390,6 @@ namespace LinearAlgebra::Blas
   {
     BLAS_DEBUG_LOG;
 
-    cblas_zsyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
+    cblas_zsyrk(Order, Uplo, Trans, N, K, &alpha, A, lda, &beta, C, ldc);
   }
 }

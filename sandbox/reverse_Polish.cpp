@@ -28,19 +28,71 @@ namespace LinearAlgebra
     PrintContext() = default;
   };
 
+  std::string
+  printContext_template(const std::string& type_name, const std::set<std::string>& types)
+  {
+    std::stringstream str;
+
+    auto iter           = types.begin();
+    const auto iter_end = types.end();
+
+    while (iter != iter_end)
+    {
+      str << type_name << " " << *iter;
+      ++iter;
+      if (iter != iter_end)
+      {
+        str << ", ";
+      }
+    }
+
+    return str.str();
+  }
+
+  std::string
+  common_element(const PrintContext& printContext)
+  {
+    assert(printContext.vector.size() + printContext.matrix.size() > 0);
+
+    std::stringstream str;
+
+    str << "Common_Element_Type_t<";
+    str << printContext_template("", printContext.vector);
+    if (printContext.vector.size()) str << ", ";
+    str << printContext_template("", printContext.matrix);
+    str << ">";
+
+    return str.str();
+  }
+
   template <PrintMode_Enum MODE>
   std::string
   print_item(PrintContext& printContext, const int s)
   {
+    assert(s == 1 or s == 2);
+
+    std::string var_name;
+    switch (s)
+    {
+      case 1:
+        var_name = "alpha";
+        break;
+      case 2:
+        var_name = "beta";
+        break;
+      default:
+        var_name = "???";
+    }
+
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return "s" + std::to_string(s);
+      return var_name;
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "SCALAR& scalar" + std::to_string(s) + " \n";
+      return common_element(printContext) + "& " + var_name + " \n";
     }
   }
 
@@ -183,27 +235,6 @@ namespace LinearAlgebra
     }
   }
 
-  std::string
-  printConstext_template(const std::string& type_name, const std::set<std::string>& types)
-  {
-    std::stringstream str;
-
-    auto iter           = types.begin();
-    const auto iter_end = types.end();
-
-    while (iter != iter_end)
-    {
-      str << type_name << " " << *iter;
-      ++iter;
-      if (iter != iter_end)
-      {
-        str << ", ";
-      }
-    }
-
-    return str.str();
-  }
-
   template <PrintMode_Enum MODE, typename D, typename... T>
   std::string
   print(D& d, const T&... t)
@@ -225,11 +256,11 @@ namespace LinearAlgebra
       printContext.count_op = 0;  // CAVEAT
 
       str << "template<";
-      str << printConstext_template("Matrix_Unary_Op_Enum", printContext.matrix_op);
+      str << printContext_template("Matrix_Unary_Op_Enum", printContext.matrix_op);
       if (printContext.matrix_op.size()) str << ", ";
-      str << printConstext_template("typename", printContext.vector);
+      str << printContext_template("typename", printContext.vector);
       if (printContext.vector.size()) str << ", ";
-      str << printConstext_template("typename", printContext.matrix);
+      str << printContext_template("typename", printContext.matrix);
 
       str << ">\n";
 
@@ -314,15 +345,33 @@ main()
   Tiny_Vector<int, 1> V1;
   Tiny_Vector<int, 2> V2;
 
+  constexpr int alpha = 1;
+  constexpr int beta  = 2;
+
+  //  constexpr int gamma = 2;
+
   std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(M0, M1 * (M2 + M1));
   std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(
-      M0, -4 * (M1 * V2 + 2 * transpose(M1)) * M2);
+      M0, alpha * (M1 * V2 + beta * transpose(M1)) * M2);
   std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(
-      V0, -4 * transpose(M1) * V1 + 2 * transpose(V0));
+      V0, alpha * transpose(M1) * V1 + beta * transpose(V0));
 
   return 0;
 }
 //
 // V0 =  + * * s-4 op1 M1 V1 * s2 op2 V0
 //
-
+//
+// V0 =  + * * alpha op1 M1 V1 * beta op2 V0
+//
+template <Matrix_Unary_Op_Enum OP1_ENUM, Matrix_Unary_Op_Enum OP2_ENUM, typename V0_IMPL,
+          typename V1_IMPL, typename M1_IMPL>
+void
+assign(Vector_Crtp<V0_IMPL>& V0, const _plus_t_, const _product_t_, const _product_t_,
+       const Common_Element_Type_t<V0_IMPL, V1_IMPL, M1_IMPL>& alpha,
+       const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<M1_IMPL>& M1,
+       const Vector_Crtp<V1_IMPL>& V1, const _product_t_,
+       const Common_Element_Type_t<V0_IMPL, V1_IMPL, M1_IMPL>& beta,
+       const _matrix_unary_op_t_<OP2_ENUM> op2, const Vector_Crtp<V0_IMPL>& _V0)
+{
+}

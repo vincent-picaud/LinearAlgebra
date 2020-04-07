@@ -13,13 +13,17 @@
 
 namespace LinearAlgebra
 {
+  struct Undefined_Assign
+  {
+  };
+
   //////////////////////////////////////////////////////////////////
   // Fallback
   //////////////////////////////////////////////////////////////////
   //
   template <typename M0_TYPE, Matrix_Unary_Op_Enum OP1_ENUM, typename M1_TYPE,
             Matrix_Unary_Op_Enum OP2_ENUM>
-  void
+  Undefined_Assign
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,  //
          Matrix_Crtp<M0_TYPE>& M0,                                     //
          const Common_Element_Type_t<M0_TYPE, M1_TYPE> alpha,          //
@@ -32,8 +36,8 @@ namespace LinearAlgebra
          const _lhs_t_)                                                //
   {
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Undefined);
-
-    static_assert(Always_False_v<M1_TYPE>, "Not implemented");
+    assert(0);
+    return {};
   }
 
   //////////////////////////////////////////////////////////////////
@@ -53,6 +57,11 @@ namespace LinearAlgebra
          const Common_Element_Type_t<M0_TYPE, M1_TYPE> beta,   //
          const _lhs_t_)                                        //
   {
+    static_assert(
+        not std::is_same_v<Undefined_Assign,
+                           decltype(assign(Expr_Selector<>(), M0.impl(), alpha, op1, M1.impl(), op2,
+                                           _rhs_1_, _plus_, beta, _lhs_))>);
+
     // Here is the right place to check dimension once for all.
     //
     assert(matrix_op(op1, dimension_predicate(M1.impl())) *

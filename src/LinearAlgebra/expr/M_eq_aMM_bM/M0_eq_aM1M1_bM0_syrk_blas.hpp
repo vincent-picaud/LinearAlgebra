@@ -7,10 +7,14 @@
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/utils/all_same_type.hpp"
 
-
 namespace LinearAlgebra
 {
 #if (HAS_BLAS)
+  //
+  // M0 := α.M1.M1^t + β.M0
+  // or
+  // M0 := α.M1^t.M1 + β.M0
+  //
   template <typename M0_TYPE, Matrix_Unary_Op_Enum OP1_ENUM, typename M1_TYPE,
             Matrix_Unary_Op_Enum OP2_ENUM>
   std::enable_if_t<
@@ -69,9 +73,9 @@ namespace LinearAlgebra
       Trans = Blas::To_CBlas_Transpose_v<Matrix_Unary_Op_Enum::Transpose>;
     }
 
-    Blas::syrk(CblasColMajor, Blas::To_CBlas_UpLo_v<M0_TYPE::matrix_storage_mask_type::value>, Trans,
-         M0.I_size(), K, alpha, M1.data(), M1.leading_dimension(), beta, M0.data(),
-         M0.leading_dimension());
+    Blas::syrk(CblasColMajor, Blas::To_CBlas_UpLo_v<M0_TYPE::matrix_storage_mask_type::value>,
+               Trans, M0.I_size(), K, alpha, M1.data(), M1.leading_dimension(), beta, M0.data(),
+               M0.leading_dimension());
   }
 
 #endif

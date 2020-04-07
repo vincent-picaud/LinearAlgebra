@@ -11,3 +11,7 @@ executable('deprecated_experimental_meta_expr',
 executable('experimental_meta_expr',
 	   'experimental_meta_expr.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('reverse_Polish',
+	   'reverse_Polish.cpp',
+	   dependencies : [LinearAlgebra_dep])

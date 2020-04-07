@@ -30,17 +30,17 @@ namespace LinearAlgebra
 
   template <PrintMode_Enum MODE>
   std::string
-  print_item(PrintContext& printContext, const double&)
+  print_item(PrintContext& printContext, const int s)
   {
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return "s";
+      return "s" + std::to_string(s);
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "SCALAR& scalar \n";
+      return "SCALAR& scalar" + std::to_string(s) + " \n";
     }
   }
 
@@ -50,10 +50,12 @@ namespace LinearAlgebra
   {
     printContext.count_op++;
     std::string var_name = "op" + std::to_string(printContext.count_op);
-    std::string var_type = "_matrix_unary_op_t_<OP" + std::to_string(printContext.count_op) + ">";
+    std::string var_enum = "OP" + std::to_string(printContext.count_op) + "_ENUM";
+    std::string var_type = "_matrix_unary_op_t_<" + var_enum + ">";
 
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
+      printContext.matrix_op.insert(var_enum);
       return var_name;
     }
     else
@@ -218,13 +220,17 @@ namespace LinearAlgebra
 
     if constexpr (MODE == PrintMode_Enum::Prototype) str << "//\n";
 
-    
     if constexpr (MODE == PrintMode_Enum::Prototype)
     {
-      printContext.count_op=0; // CAVEAT
-      
+      printContext.count_op = 0;  // CAVEAT
+
       str << "template<";
+      str << printConstext_template("Matrix_Unary_Op_Enum", printContext.matrix_op);
+      if (printContext.matrix_op.size()) str << ", ";
+      str << printConstext_template("typename", printContext.vector);
+      if (printContext.vector.size()) str << ", ";
       str << printConstext_template("typename", printContext.matrix);
+
       str << ">\n";
 
       str << "void assign(" << print_item<MODE>(printContext, d);
@@ -311,7 +317,12 @@ main()
   std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(M0, M1 * (M2 + M1));
   std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(
       M0, -4 * (M1 * V2 + 2 * transpose(M1)) * M2);
-  std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(V0, -4 * transpose(M1) * V1 + 2 * V0);
+  std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(
+      V0, -4 * transpose(M1) * V1 + 2 * transpose(V0));
 
   return 0;
 }
+//
+// V0 =  + * * s-4 op1 M1 V1 * s2 op2 V0
+//
+

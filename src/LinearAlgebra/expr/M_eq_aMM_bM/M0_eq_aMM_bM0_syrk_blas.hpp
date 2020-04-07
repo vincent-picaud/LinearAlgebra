@@ -2,6 +2,7 @@
 
 #include "LinearAlgebra/expr/M_eq_aMM_bM/M0_eq_aMM_bM0.hpp"
 
+#include "LinearAlgebra/utils/all_same_type.hpp"
 #include "LinearAlgebra/blas/blas.hpp"
 
 namespace LinearAlgebra
@@ -9,7 +10,20 @@ namespace LinearAlgebra
 #if (HAS_BLAS)
   template <typename M0_TYPE, Matrix_Unary_Op_Enum OP1_ENUM, typename M1_TYPE,
             Matrix_Unary_Op_Enum OP2_ENUM, typename M2_TYPE>
-  void
+  std::enable_if_t<
+      // Supported matrix op?
+      Blas::Support_CBlas_Transpose_v<OP1_ENUM> && Blas::Support_CBlas_Transpose_v<OP2_ENUM> &&
+
+      // Same scalar everywhere
+      All_Same_Type_v<Element_Type_t<M0_TYPE>, Element_Type_t<M1_TYPE>, Element_Type_t<M2_TYPE>> &&
+
+      // Scalar support
+      Is_CBlas_Supported_Scalar_v<Element_Type_t<M0_TYPE>> &&
+
+      // Matrix type
+      (M0_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::Symmetric) &&
+      (M1_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None) &&
+      (M2_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None)>
   assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,        //
          Matrix_Crtp<M0_TYPE>& M0,                                      //
          const Common_Element_Type_t<M0_TYPE, M1_TYPE, M2_TYPE> alpha,  //
@@ -20,6 +34,7 @@ namespace LinearAlgebra
          const _plus_t_,                                                //
          const Common_Element_Type_t<M0_TYPE, M1_TYPE, M2_TYPE> beta,   //
          const _lhs_t_)                                                 //
+
   {
     DEBUG_SET_SELECTED(selected);
 

@@ -1,51 +1,185 @@
+//
+// Important: it helps us to generate function prototypes
 
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/matrix.hpp"
 
+#include <string>
 #include <tuple>
 #include <type_traits>
 
 namespace LinearAlgebra
 {
-  template <typename IMPL>
-  std::string
-  print_item(const Matrix_Crtp<IMPL>&)
+  enum class PrintMode_Enum
   {
-    return " M";
-  }
-  template <typename IMPL>
+    Expression,
+    Prototype
+  };
+  using _Expression_t_ = std::integral_constant<PrintMode_Enum, PrintMode_Enum::Expression>;
+  using _Prototype_t_  = std::integral_constant<PrintMode_Enum, PrintMode_Enum::Prototype>;
+
+  template <PrintMode_Enum MODE>
   std::string
-  print_item(const Vector_Crtp<IMPL>&)
+  print_item(const double&)
   {
-    return " v";
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return " s";
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "SCALAR& scalar \n";
+    }
   }
+
+  template <PrintMode_Enum MODE>
+  std::string
+  print_item(const _transpose_t_)
+  {
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return " transpose";
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "const _matrix_unary_op_t_<OP> \n";
+    }
+  }
+
+  template <PrintMode_Enum MODE>
+  std::string
+  print_item(const _identity_t_)
+  {
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return "";
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "const _matrix_unary_op_t_<OP> \n";
+    }
+  }
+
+  template <PrintMode_Enum MODE, typename IMPL>
+  std::string
+  print_item(const Matrix_Crtp<IMPL>& M)
+  {
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return " M" + std::to_string(M.I_size());
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "const Matrix_Crtp<M" + std::to_string(M.I_size()) + "_IMPL>&  M" +
+             std::to_string(M.I_size()) + " \n";
+    }
+  }
+  template <PrintMode_Enum MODE, typename IMPL>
+  std::string
+  print_item(const Vector_Crtp<IMPL>& V)
+  {
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return " V" + std::to_string(V.size());
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "const Vector_Crtp<V" + std::to_string(V.size()) + "_IMPL>&  V" +
+             std::to_string(V.size()) + " \n";
+    }
+  }
+
+  template <PrintMode_Enum MODE>
   std::string
   print_item(const _product_t_&)
   {
-    return " *";
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return " *";
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "const _product_t_ \n";
+    }
   }
+  template <PrintMode_Enum MODE>
   std::string
   print_item(const _plus_t_&)
   {
-    return " +";
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return " +";
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "const _plus_t_ \n";
+    }
   }
-    std::string
+  template <PrintMode_Enum MODE>
+  std::string
+  print_item(const _minus_t_&)
+  {
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return " -";
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "const _minus_t_ \n";
+    }
+  }
+  template <PrintMode_Enum MODE>
+  std::string
   print_item(const _unary_minus_t_&)
   {
-    return " -";
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return " -";
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "const _unary_minus_t_ \n";
+    }
   }
-  // template<typename IMPL>
-  // std::string print(const Matrix_Crtp<IMPL>&) {
-  //   return "M";
-  // }
-  template <typename D, typename... T>
-  void
+
+  template <PrintMode_Enum MODE, typename D, typename... T>
+  std::string
   print(D& d, const T&... t)
   {
-    // std::cout << __PRETTY_FUNCTION__ << std::endl;
-    std::cout << print_item(d);
-    ((std::cout << print_item(t)), ...);
-    std::cout << std::endl;
+    std::stringstream str;
+
+    str << "// ";
+    str << print_item<PrintMode_Enum::Expression>(d) << " = ";
+    ((str << print_item<PrintMode_Enum::Expression>(t)), ...);
+    str << std::endl;
+
+    if constexpr (MODE == PrintMode_Enum::Prototype)
+    {
+      str << std::endl;
+      str << "void assign(" << print_item<MODE>(d);
+      ((str << ", const " << print_item<MODE>(t)), ...);
+      str << ")\n{\n\n}\n" << std::endl;
+    }
+
+    return str.str();
   }
 
   //////////////////////////////////////////////////////////////////
@@ -78,20 +212,6 @@ namespace LinearAlgebra
     from_metaexpr_to_reverse_Polish_tuple(
         const Detail::MetaExpr_BinaryOp_Crtp<IMPL>& expression_tree) noexcept
     {
-      // // Attention: our convention is to not explicitly write down "_product_"
-      // if constexpr (std::is_same_v<typename Detail::MetaExpr_BinaryOp_Crtp<IMPL>::operator_type,
-      //                              _product_t_>)
-      // {
-      //   return std::tuple_cat(from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_0()),
-      //                         from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_1()));
-      // }
-      // else
-      // {
-      //   return std::tuple_cat(from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_0()),
-      //                         std::make_tuple(typename IMPL::operator_type()),
-      //                         from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_1()));
-      // }
-
       return std::tuple_cat(std::make_tuple(typename IMPL::operator_type()),
                             from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_0()),
                             from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_1()));
@@ -103,33 +223,43 @@ namespace LinearAlgebra
     //
     // -> we use VMT_Crtp to have a generic solution
     //
-    template <typename DEST_IMPL, typename... ARGS>
+    template <PrintMode_Enum MODE, typename DEST_IMPL, typename... ARGS>
     static inline auto
     call_assign_from_reverse_Polish(VMT_Crtp<DEST_IMPL>& dest,
                                     const std::tuple<ARGS...>& args_as_tuple)
     {
       // CAVEAT: not args.impl()... as args can be integer,double etc...
-      return std::apply([&](const auto&... args) { return print(dest.impl(), args...); },
+      return std::apply([&](const auto&... args) { return print<MODE>(dest.impl(), args...); },
                         args_as_tuple);
     }
 
-    template <typename DEST_IMPL, typename SRC_IMPL>
+    template <PrintMode_Enum MODE, typename DEST_IMPL, typename SRC_IMPL>
     static inline auto
     call_assign(VMT_Crtp<DEST_IMPL>& dest, const Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
     {
-      return call_assign_from_reverse_Polish(
+      return call_assign_from_reverse_Polish<MODE>(
           dest.impl(), from_metaexpr_to_reverse_Polish_tuple(metaExpr.impl()));
     }
   }
 }
+
+
 using namespace LinearAlgebra;
 int
 main()
 {
-  Tiny_Matrix<int, 2, 2> M;
+  Tiny_Matrix<int, 0, 0> M0;
+  Tiny_Matrix<int, 1, 0> M1;
+  Tiny_Matrix<int, 2, 0> M2;
 
-  call_assign(M, M * (M + M));
-  call_assign(M, -(M + M) * M);
+  Tiny_Vector<int, 0> V0;
+  Tiny_Vector<int, 1> V1;
+  Tiny_Vector<int, 2> V2;
+
+  std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(M0, M1 * (M2 + M1));
+  std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(
+      M0, -4 * (M1 * V2 + 2 * transpose(M1)) * M2);
+  std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(V0, -4 * transpose(M1) * V1 + 2 * V0);
 
   return 0;
 }

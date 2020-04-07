@@ -312,9 +312,9 @@ namespace LinearAlgebra::Blas
   }
   void
   gemv(const enum CBLAS_ORDER order, const enum CBLAS_TRANSPOSE trans, const std::size_t m,
-       const std::size_t n, const std::complex<float> alpha, const std::complex<float> *a,
+       const std::size_t n, const std::complex<float> &alpha, const std::complex<float> *a,
        const std::size_t lda, const std::complex<float> *x, const std::size_t incx,
-       const std::complex<float> beta, std::complex<float> *y, const std::size_t incy)
+       const std::complex<float> &beta, std::complex<float> *y, const std::size_t incy)
   {
     BLAS_DEBUG_LOG;
 
@@ -322,9 +322,9 @@ namespace LinearAlgebra::Blas
   }
   void
   gemv(const enum CBLAS_ORDER order, const enum CBLAS_TRANSPOSE trans, const std::size_t m,
-       const std::size_t n, const std::complex<double> alpha, const std::complex<double> *a,
+       const std::size_t n, const std::complex<double> &alpha, const std::complex<double> *a,
        const std::size_t lda, const std::complex<double> *x, const std::size_t incx,
-       const std::complex<double> beta, std::complex<double> *y, const std::size_t incy)
+       const std::complex<double> &beta, std::complex<double> *y, const std::size_t incy)
   {
     BLAS_DEBUG_LOG;
 
@@ -340,11 +340,56 @@ namespace LinearAlgebra::Blas
   // - [ ] : _GEMM (             TRANSA, TRANSB,      M, N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
   // - [ ] : _SYMM ( SIDE, UPLO,                      M, N,    ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
   // - [ ] : _HEMM ( SIDE, UPLO,                      M, N,    ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) C, Z
-  // - [ ] : _SYRK (       UPLO, TRANS,                  N, K, ALPHA, A, LDA,         BETA,  C, LDC ) S, D, C, Z
+  // - [X] : _SYRK (       UPLO, TRANS,                  N, K, ALPHA, A, LDA,         BETA,  C, LDC ) S, D, C, Z
   // - [ ] : _HERK (       UPLO, TRANS,                  N, K, ALPHA, A, LDA,         BETA,  C, LDC ) C, Z
   // - [ ] : _SYR2K(       UPLO, TRANS,                  N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
   // - [ ] : _HER2K(       UPLO, TRANS,                  N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) C, Z
   // - [ ] : _TRMM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
   // - [ ] : _TRSM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
 
+  //
+  // Xsyrk:
+  //
+  // C := alpha*A*A' + beta*C,
+  // or
+  // C := alpha*A'*A + beta*C,
+  //
+  void
+  syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
+       const std::size_t N, const std::size_t K, const float alpha, const float *A,
+       const std::size_t lda, const float beta, float *C, const std::size_t ldc)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_ssyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
+  }
+  void
+  syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
+       const std::size_t N, const std::size_t K, const double alpha, const double *A,
+       const std::size_t lda, const double beta, double *C, const std::size_t ldc)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_dsyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
+  }
+  void
+  syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
+       const std::size_t N, const std::size_t K, const std::complex<float> &alpha,
+       const std::complex<float> *A, const std::size_t lda, const std::complex<float> &beta,
+       std::complex<float> *C, const std::size_t ldc)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_csyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
+  }
+  void
+  syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
+       const std::size_t N, const std::size_t K, const std::complex<double> &alpha,
+       const std::complex<double> *A, const std::size_t lda, const std::complex<double> &beta,
+       std::complex<double> *C, const std::size_t ldc)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_zsyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
+  }
 }

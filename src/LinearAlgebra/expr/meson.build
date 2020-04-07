@@ -50,4 +50,5 @@ LinearAlgebra_headers += [
   'expr/expr_debug.hpp',
 
   'expr/M_eq_aMM_bM.hpp',
+  'expr/M_eq_aMM_bM/M0_eq_aMM_bM0.hpp',
 ]

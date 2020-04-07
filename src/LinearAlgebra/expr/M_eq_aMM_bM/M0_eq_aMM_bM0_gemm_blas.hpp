@@ -15,8 +15,10 @@ namespace LinearAlgebra
   std::enable_if_t<
       // Supported matrix op?
       ((OP1_ENUM == Matrix_Unary_Op_Enum::Identity &&
-        OP2_ENUM == Matrix_Unary_Op_Enum::Transpose) ||
-       (OP1_ENUM == Matrix_Unary_Op_Enum::Transpose &&
+        (OP2_ENUM == Matrix_Unary_Op_Enum::Transpose ||
+         OP2_ENUM == Matrix_Unary_Op_Enum::TransConj)) ||
+       ((OP1_ENUM == Matrix_Unary_Op_Enum::Transpose ||
+         OP1_ENUM == Matrix_Unary_Op_Enum::TransConj) &&
         OP2_ENUM == Matrix_Unary_Op_Enum::Identity)) &&
 
       // Same scalar everywhere
@@ -46,6 +48,25 @@ namespace LinearAlgebra
 
     DEBUG_SET_SELECTED(selected);
 
+    // (what=1) C := alpha*A*A' + beta*C
+    // (what=2) C := alpha*A'*A + beta*C
+    constexpr int what = (OP1_ENUM == Matrix_Unary_Op_Enum::Identity &&
+                         (OP2_ENUM == Matrix_Unary_Op_Enum::Transpose ||
+                          OP2_ENUM == Matrix_Unary_Op_Enum::TransConj))
+                            ? 1
+                            : 2;
+
+    // std::size_t K;
+    // CBLAS_TRANSPOSE Trans;
+
+    // if constexpr (what==1) {
+    // 	K=
+
+    //   }
+    //  syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
+    //    const std::size_t N, const std::size_t K, const std::complex<double> &alpha,
+    //    const std::complex<double> *A, const std::size_t lda, const std::complex<double> &beta,
+    //    std::complex<double> *C, const std::size_t ldc)
     assert(0);
   }
 

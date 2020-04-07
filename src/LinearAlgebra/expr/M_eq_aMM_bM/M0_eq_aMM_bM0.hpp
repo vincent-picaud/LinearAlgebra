@@ -1,5 +1,5 @@
 //
-// M0=αop(M1)op(M2)+βM0
+// M0=αop(M1)op(M2)+βM0   M0=lhs
 //
 #pragma once
 

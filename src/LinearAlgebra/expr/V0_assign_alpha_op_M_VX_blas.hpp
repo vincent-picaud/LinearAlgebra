@@ -46,7 +46,7 @@ namespace LinearAlgebra
               All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>,
                               Element_Type_t<V1_TYPE>> &&
               // Scalar support
-              Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
               // *NOT* Triangular Matrix
               !Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
@@ -77,7 +77,7 @@ namespace LinearAlgebra
               // Same scalar everywhere
               All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>> &&
               // Scalar support
-              Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
               // Triangular Matrix
               Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
@@ -111,7 +111,7 @@ namespace LinearAlgebra
               All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>,
                               Element_Type_t<V1_TYPE>> &&
               // Scalar support
-              Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
               // Triangular Matrix
               Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
@@ -143,7 +143,7 @@ namespace LinearAlgebra
               // Same scalar everywhere
               All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>> &&
               // Scalar support
-              Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
               // Triangular Matrix
               Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
@@ -178,7 +178,7 @@ namespace LinearAlgebra
               All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>,
                               Element_Type_t<V1_TYPE>> &&
               // Scalar support
-              Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
               // Triangular Matrix
               Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
           Expr_Selector_Enum>

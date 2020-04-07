@@ -41,7 +41,7 @@ namespace LinearAlgebra
               All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V_0_TYPE>,
                               Element_Type_t<V_1_TYPE>> &&
               // Scalar support
-              Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
               // Generic matrix
               (M_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None),
           Expr_Selector_Enum>
@@ -73,7 +73,7 @@ namespace LinearAlgebra
               All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V_0_TYPE>,
                               Element_Type_t<V_1_TYPE>, Element_Type_t<V_2_TYPE>> &&
               // Scalar support
-              Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
               // Generic matrix
               (M_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None),
           Expr_Selector_Enum>
@@ -107,7 +107,7 @@ namespace LinearAlgebra
               All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V_0_TYPE>,
                               Element_Type_t<V_1_TYPE>> &&
               // Scalar support
-              Is_CBlas_Supported_Real_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Real_Scalar_v<Element_Type_t<M_TYPE>> &&
               // Matrix structure
               (M_TYPE::matrix_special_structure_type::value ==
                Matrix_Special_Structure_Enum::Symmetric),

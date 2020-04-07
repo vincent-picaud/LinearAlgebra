@@ -9,7 +9,7 @@
 #include <ccomplex>
 #include <type_traits>
 
-namespace LinearAlgebra
+namespace LinearAlgebra::Blas
 {
   // Split Real & Complex cases
   //================================================================

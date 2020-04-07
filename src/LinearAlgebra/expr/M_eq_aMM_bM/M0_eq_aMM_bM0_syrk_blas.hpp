@@ -2,8 +2,8 @@
 
 #include "LinearAlgebra/expr/M_eq_aMM_bM/M0_eq_aMM_bM0.hpp"
 
-#include "LinearAlgebra/utils/all_same_type.hpp"
 #include "LinearAlgebra/blas/blas.hpp"
+#include "LinearAlgebra/utils/all_same_type.hpp"
 
 namespace LinearAlgebra
 {
@@ -18,7 +18,7 @@ namespace LinearAlgebra
       All_Same_Type_v<Element_Type_t<M0_TYPE>, Element_Type_t<M1_TYPE>, Element_Type_t<M2_TYPE>> &&
 
       // Scalar support
-      Is_CBlas_Supported_Scalar_v<Element_Type_t<M0_TYPE>> &&
+      Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M0_TYPE>> &&
 
       // Matrix type
       (M0_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::Symmetric) &&

@@ -4,6 +4,7 @@
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/matrix.hpp"
 
+#include <set>
 #include <string>
 #include <tuple>
 #include <type_traits>
@@ -18,13 +19,22 @@ namespace LinearAlgebra
   using _Expression_t_ = std::integral_constant<PrintMode_Enum, PrintMode_Enum::Expression>;
   using _Prototype_t_  = std::integral_constant<PrintMode_Enum, PrintMode_Enum::Prototype>;
 
+  struct PrintContext
+  {
+    size_t count_op{};
+    std::set<std::string> matrix_op;
+    std::set<std::string> matrix;
+    std::set<std::string> vector;
+    PrintContext() = default;
+  };
+
   template <PrintMode_Enum MODE>
   std::string
-  print_item(const double&)
+  print_item(PrintContext& printContext, const double&)
   {
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return " s";
+      return "s";
     }
     else
     {
@@ -36,146 +46,189 @@ namespace LinearAlgebra
 
   template <PrintMode_Enum MODE>
   std::string
-  print_item(const _transpose_t_)
+  print_item(PrintContext& printContext, const _transpose_t_)
   {
+    printContext.count_op++;
+    std::string var_name = "op" + std::to_string(printContext.count_op);
+    std::string var_type = "_matrix_unary_op_t_<OP" + std::to_string(printContext.count_op) + ">";
+
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return " transpose";
+      return var_name;
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "const _matrix_unary_op_t_<OP> \n";
+      return var_type + " " + var_name + " \n";
     }
   }
 
-  template <PrintMode_Enum MODE>
-  std::string
-  print_item(const _identity_t_)
-  {
-    if constexpr (MODE == PrintMode_Enum::Expression)
-    {
-      return "";
-    }
-    else
-    {
-      static_assert(MODE == PrintMode_Enum::Prototype);
+  // template <PrintMode_Enum MODE>
+  // std::string
+  // print_item(PrintContext& printContext, const _identity_t_)
+  // {
 
-      return "const _matrix_unary_op_t_<OP> \n";
-    }
-  }
+  //   if constexpr (MODE == PrintMode_Enum::Expression)
+  //   {
+  //     return "";
+  //   }
+  //   else
+  //   {
+  //     static_assert(MODE == PrintMode_Enum::Prototype);
+
+  //     return "_matrix_unary_op_t_<OP> \n";
+  //   }
+  // }
 
   template <PrintMode_Enum MODE, typename IMPL>
   std::string
-  print_item(const Matrix_Crtp<IMPL>& M)
+  print_item(PrintContext& printContext, const Matrix_Crtp<IMPL>& M)
   {
+    std::string var_name = "M" + std::to_string(M.I_size());
+    std::string var_type = var_name + "_IMPL";
+
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return " M" + std::to_string(M.I_size());
+      printContext.matrix.insert(var_type);
+      return var_name;
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "const Matrix_Crtp<M" + std::to_string(M.I_size()) + "_IMPL>&  M" +
-             std::to_string(M.I_size()) + " \n";
+      return "Matrix_Crtp<" + var_type + ">& " + var_name + " \n";
     }
   }
   template <PrintMode_Enum MODE, typename IMPL>
   std::string
-  print_item(const Vector_Crtp<IMPL>& V)
+  print_item(PrintContext& printContext, const Vector_Crtp<IMPL>& V)
   {
+    std::string var_name = "V" + std::to_string(V.size());
+    std::string var_type = var_name + "_IMPL";
+
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return " V" + std::to_string(V.size());
+      printContext.vector.insert(var_type);
+      return var_name;
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "const Vector_Crtp<V" + std::to_string(V.size()) + "_IMPL>&  V" +
-             std::to_string(V.size()) + " \n";
+      return "Vector_Crtp<" + var_type + ">& " + var_name + " \n";
     }
   }
 
   template <PrintMode_Enum MODE>
   std::string
-  print_item(const _product_t_&)
+  print_item(PrintContext& printContext, const _product_t_&)
   {
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return " *";
+      return "*";
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "const _product_t_ \n";
+      return "_product_t_ \n";
     }
   }
   template <PrintMode_Enum MODE>
   std::string
-  print_item(const _plus_t_&)
+  print_item(PrintContext& printContext, const _plus_t_&)
   {
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return " +";
+      return "+";
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "const _plus_t_ \n";
+      return "_plus_t_ \n";
     }
   }
   template <PrintMode_Enum MODE>
   std::string
-  print_item(const _minus_t_&)
+  print_item(PrintContext& printContext, const _minus_t_&)
   {
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return " -";
+      return "-";
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "const _minus_t_ \n";
+      return "_minus_t_ \n";
     }
   }
   template <PrintMode_Enum MODE>
   std::string
-  print_item(const _unary_minus_t_&)
+  print_item(PrintContext& printContext, const _unary_minus_t_&)
   {
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
-      return " -";
+      return "-";
     }
     else
     {
       static_assert(MODE == PrintMode_Enum::Prototype);
 
-      return "const _unary_minus_t_ \n";
+      return "_unary_minus_t_ \n";
     }
+  }
+
+  std::string
+  printConstext_template(const std::string& type_name, const std::set<std::string>& types)
+  {
+    std::stringstream str;
+
+    auto iter           = types.begin();
+    const auto iter_end = types.end();
+
+    while (iter != iter_end)
+    {
+      str << type_name << " " << *iter;
+      ++iter;
+      if (iter != iter_end)
+      {
+        str << ", ";
+      }
+    }
+
+    return str.str();
   }
 
   template <PrintMode_Enum MODE, typename D, typename... T>
   std::string
   print(D& d, const T&... t)
   {
+    PrintContext printContext;
     std::stringstream str;
 
+    if constexpr (MODE == PrintMode_Enum::Prototype) str << "//\n";
+
     str << "// ";
-    str << print_item<PrintMode_Enum::Expression>(d) << " = ";
-    ((str << print_item<PrintMode_Enum::Expression>(t)), ...);
+    str << print_item<PrintMode_Enum::Expression>(printContext, d) << " = ";
+    ((str << " " << print_item<PrintMode_Enum::Expression>(printContext, t)), ...);
     str << std::endl;
 
+    if constexpr (MODE == PrintMode_Enum::Prototype) str << "//\n";
+
+    
     if constexpr (MODE == PrintMode_Enum::Prototype)
     {
-      str << std::endl;
-      str << "void assign(" << print_item<MODE>(d);
-      ((str << ", const " << print_item<MODE>(t)), ...);
+      printContext.count_op=0; // CAVEAT
+      
+      str << "template<";
+      str << printConstext_template("typename", printContext.matrix);
+      str << ">\n";
+
+      str << "void assign(" << print_item<MODE>(printContext, d);
+      ((str << ", const " << print_item<MODE>(printContext, t)), ...);
       str << ")\n{\n\n}\n" << std::endl;
     }
 
@@ -242,7 +295,6 @@ namespace LinearAlgebra
     }
   }
 }
-
 
 using namespace LinearAlgebra;
 int

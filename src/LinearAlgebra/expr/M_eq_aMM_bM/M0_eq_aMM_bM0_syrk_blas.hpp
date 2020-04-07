@@ -3,6 +3,8 @@
 #include "LinearAlgebra/expr/M_eq_aMM_bM/M0_eq_aMM_bM0.hpp"
 
 #include "LinearAlgebra/blas/blas.hpp"
+#include "LinearAlgebra/dense/memory_chunk_aliasing_p.hpp"
+#include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/utils/all_same_type.hpp"
 
 namespace LinearAlgebra
@@ -12,7 +14,10 @@ namespace LinearAlgebra
             Matrix_Unary_Op_Enum OP2_ENUM, typename M2_TYPE>
   std::enable_if_t<
       // Supported matrix op?
-      Blas::Support_CBlas_Transpose_v<OP1_ENUM> && Blas::Support_CBlas_Transpose_v<OP2_ENUM> &&
+      ((OP1_ENUM == Matrix_Unary_Op_Enum::Identity &&
+        OP2_ENUM == Matrix_Unary_Op_Enum::Transpose) ||
+       (OP1_ENUM == Matrix_Unary_Op_Enum::Transpose &&
+        OP2_ENUM == Matrix_Unary_Op_Enum::Identity)) &&
 
       // Same scalar everywhere
       All_Same_Type_v<Element_Type_t<M0_TYPE>, Element_Type_t<M1_TYPE>, Element_Type_t<M2_TYPE>> &&
@@ -36,6 +41,9 @@ namespace LinearAlgebra
          const _lhs_t_)                                                 //
 
   {
+    assert(are_not_aliased_p(M0.impl(), M1.impl()));
+    assert(are_not_aliased_p(M0.impl(), M2.impl()));
+
     DEBUG_SET_SELECTED(selected);
 
     assert(0);

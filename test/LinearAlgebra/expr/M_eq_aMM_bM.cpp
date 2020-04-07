@@ -14,5 +14,5 @@ TEST(M_aMM_bM, alias)
   Symmetric_Matrix<double> symM(5, 5);
   Matrix<double> M(5, 5);
 
-  assign(symM, 1, _identity_, M, _identity_, M, _plus_, 2, _lhs_);
+  assign(symM, 1, _identity_, M, _transpose_, M, _plus_, 2, _lhs_);
 }

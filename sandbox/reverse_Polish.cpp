@@ -58,7 +58,7 @@ namespace LinearAlgebra
 
     str << "Common_Element_Type_t<";
     str << printContext_template("", printContext.vector);
-    if (printContext.vector.size()) str << ", ";
+    if (printContext.vector.size() and printContext.matrix.size()) str << ", ";
     str << printContext_template("", printContext.matrix);
     str << ">";
 
@@ -139,8 +139,8 @@ namespace LinearAlgebra
   std::string
   print_item(PrintContext& printContext, const Matrix_Crtp<IMPL>& M)
   {
-    std::string var_name = "M" + std::to_string(M.I_size());
-    std::string var_type = var_name + "_IMPL";
+    std::string var_name = "matrix_" + std::to_string(M.I_size());
+    std::string var_type = "MATRIX_" + std::to_string(M.I_size()) + "_IMPL";
 
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
@@ -158,8 +158,8 @@ namespace LinearAlgebra
   std::string
   print_item(PrintContext& printContext, const Vector_Crtp<IMPL>& V)
   {
-    std::string var_name = "V" + std::to_string(V.size());
-    std::string var_type = var_name + "_IMPL";
+    std::string var_name = "vector_" + std::to_string(V.size());
+    std::string var_type = "VECTOR_" + std::to_string(V.size()) + "_IMPL";
 
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
@@ -257,9 +257,9 @@ namespace LinearAlgebra
 
       str << "template<";
       str << printContext_template("Matrix_Unary_Op_Enum", printContext.matrix_op);
-      if (printContext.matrix_op.size()) str << ", ";
+      if (printContext.matrix_op.size() and printContext.vector.size() ) str << ", ";
       str << printContext_template("typename", printContext.vector);
-      if (printContext.vector.size()) str << ", ";
+      if (printContext.vector.size() and printContext.matrix.size() ) str << ", ";
       str << printContext_template("typename", printContext.matrix);
 
       str << ">\n";
@@ -353,9 +353,15 @@ main()
   constexpr int alpha = 1;
   constexpr int beta  = 2;
 
-  PRINT_EXPR(V0, alpha * V1 + V0);
-  PRINT_EXPR(V0, V0 + alpha * V1);
-  PRINT_EXPR(V0, V1 + V0);
+
+  std::cout << "*** X = αX" << std::endl;
+  
+  PRINT_EXPR(V0, alpha * V1);
+  PRINT_EXPR(V0, alpha * V0);
+
+
+  // PRINT_EXPR(V0, V0 + alpha * V1);
+  // PRINT_EXPR(V0, V1 + V0);
 
   return 0;
 }

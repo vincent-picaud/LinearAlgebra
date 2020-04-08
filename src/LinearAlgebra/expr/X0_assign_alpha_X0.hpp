@@ -1,5 +1,6 @@
 //
-// X0 = α X0
+// X0 = alpha * X0
+// X0 = * alpha X0
 //
 #pragma once
 
@@ -21,16 +22,16 @@ namespace LinearAlgebra
   // Fallback
   //////////////////////////////////////////////////////////////////
   //
-
-  template <typename IMPL>
+  //
+  // X0 = alpha * X0
+  // X0 = * alpha X0
+  //
+  template <typename X0_IMPL>
   Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,  // Undefined implementation
-         VMT_Crtp<IMPL>& vmt_0,                                        // vmt_0
-         const Element_Type_t<IMPL>& scalar,                           // scalar
-         const _lhs_t_                                                 // vmt_0
-  )
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
+         const _product_t_, const Common_Element_Type_t<X0_IMPL>& alpha, const _lhs_t_)
   {
-    static_assert(Always_False_v<IMPL>, "Undefined implementation");
+    static_assert(Always_False_v<X0_IMPL>, "Undefined implementation");
     return selected;
   }
 
@@ -38,15 +39,16 @@ namespace LinearAlgebra
   // User interface
   //////////////////////////////////////////////////////////////////
   //
-
-  template <typename IMPL>
-  Expr_Selector_Enum
-  assign(VMT_Crtp<IMPL>& vmt_0,               // vmt_0
-         const Element_Type_t<IMPL>& scalar,  // scalar
-         const _lhs_t_                        // vmt_0
-  )
+  //
+  // X0 = alpha * X0
+  // X0 = * alpha X0
+  //
+  template <typename X0_IMPL>
+  auto
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
+         const _product_t_, const Common_Element_Type_t<X0_IMPL>& alpha, const _lhs_t_)
   {
-    return assign(Expr_Selector<>(), vmt_0.impl(), scalar, _lhs_);
+    return assign(Expr_Selector<>(), X0.impl(), _product_, alpha, _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -69,22 +71,18 @@ namespace LinearAlgebra
   //================================================================
   //
   //
-  template <typename IMPL>
+  template <typename X0_IMPL>
   Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,  // Generic implementation
-         VMT_Crtp<IMPL>& vmt_0,                                      // vmt_0
-         const Element_Type_t<IMPL>& scalar,                         // scalar
-         const _lhs_t_                                               // vmt_0
-  )
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, VMT_Crtp<X0_IMPL>& X0,
+         const _product_t_, const Common_Element_Type_t<X0_IMPL>& alpha, const _lhs_t_)
   {
-    if (scalar == 0)
+    if (alpha == 0)
     {
-      assign(vmt_0.impl(), 0);
+      assign(X0.impl(), 0);
     }
-    else if (scalar != 1)
+    else if (alpha != 1)
     {
-      transform([scalar](const auto& vmt_0_component) { return scalar * vmt_0_component; },
-                vmt_0.impl());
+      transform([alpha](const auto& X0_component) { return alpha * X0_component; }, X0.impl());
     }
     return selected;
   }
@@ -93,16 +91,13 @@ namespace LinearAlgebra
   //  Implementation: Static
   //================================================================
   //
-  template <typename IMPL>
-  std::enable_if_t<Has_Static_Dimension_v<IMPL>, Expr_Selector_Enum>
-  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,  // Generic implementation
-         VMT_Crtp<IMPL>& vmt_0,                                     // vmt_0
-         const Element_Type_t<IMPL>& scalar,                        // scalar
-         const _lhs_t_                                              // vmt_0
-  )
+  template <typename X0_IMPL>
+  std::enable_if_t<Has_Static_Dimension_v<X0_IMPL>, Expr_Selector_Enum>
+  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, VMT_Crtp<X0_IMPL>& X0,
+         const _product_t_, const Common_Element_Type_t<X0_IMPL>& alpha, const _lhs_t_)
   {
     // Jump over any blas like specialization
-    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vmt_0.impl(), scalar, _lhs_);
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _product_, alpha, _lhs_);
 
     return selected;
   }

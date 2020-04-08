@@ -1,5 +1,5 @@
-//#include "LinearAlgebra/expr/X0_assign_X1_plus_alpha_X2.hpp"
-#include "LinearAlgebra/expr/V0_assign_V1_plus_alpha_V2.hpp"
+//#include "LinearAlgebra/expr/X0_assign_alpha_X1_plus_X2.hpp"
+#include "LinearAlgebra/expr/V0_assign_alpha_V1_plus_V2.hpp"
 
 #include "LinearAlgebra/metaexpr/metaexpr.hpp"
 
@@ -11,14 +11,14 @@
 
 using namespace LinearAlgebra;
 
-TEST(V0_assign_V0_plus_alpha_V1, alias)
+TEST(V0_assign_alpha_V1_plus_V0, alias)
 {
   Vector<double> V(4), W(4);
 
-  V = V + W;
-  V = V - W;
+  // V = V + W;
+  // V = V - W;
 
-  V = V - 2 * W;
+  // V = V - 2 * W;
   // CAVEAT: X0 = α X2 - X1 impossible
   //  V = 2 * V - W;
 }

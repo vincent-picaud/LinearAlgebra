@@ -7,4 +7,4 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix_header.hpp"
-#include "LinearAlgebra/expr/X0_assign_X0_plus_alpha_X1.hpp"
+#include "LinearAlgebra/expr/X0_assign_alpha_X1_plus_X0.hpp"

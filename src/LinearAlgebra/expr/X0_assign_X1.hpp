@@ -22,16 +22,16 @@ namespace LinearAlgebra
   // Fallback
   //////////////////////////////////////////////////////////////////
   //
-  template <typename X0_TYPE, typename X1_TYPE>
-  Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
-         VMT_Crtp<X0_TYPE>& X0,       // X0
-         const VMT_Crtp<X1_TYPE>& X1  // X1
-  )
-  {
-    static_assert(Always_False_v<X0_TYPE>, "Undefined implementation");
-    return selected;
-  }
+  // template <typename X0_TYPE, typename X1_TYPE>
+  // Expr_Selector_Enum
+  // assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
+  //        VMT_Crtp<X0_TYPE>& X0,       // X0
+  //        const VMT_Crtp<X1_TYPE>& X1  // X1
+  // )
+  // {
+  //   static_assert(Always_False_v<X0_TYPE>, "Undefined implementation");
+  //   return selected;
+  // }
 
   //////////////////////////////////////////////////////////////////
   // User interface

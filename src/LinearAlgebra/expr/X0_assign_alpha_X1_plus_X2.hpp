@@ -15,7 +15,7 @@
 // #include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
 // #include "LinearAlgebra/dense/matrix_is_same.hpp"
 
-// #include "LinearAlgebra/expr/X0_assign_X0_plus_alpha_X1.hpp"
+// #include "LinearAlgebra/expr/X0_assign_alpha_X1_plus_X0.hpp"
 
 // namespace LinearAlgebra
 // {

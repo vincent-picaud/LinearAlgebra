@@ -7,7 +7,7 @@ test_array = [
   
   # ['V0_assign_alpha_op_M_V1_plus_beta_VX_header_test','V0_assign_alpha_op_M_V1_plus_beta_VX_header_metaexe','V0_assign_alpha_op_M_V1_plus_beta_VX_header.cpp'],
 
-  # ['V0_assign_V0_plus_alpha_V1_test','V0_assign_V0_plus_alpha_V1_metaexe','V0_assign_V0_plus_alpha_V1.cpp'],
+   ['V0_assign_alpha_V1_plus_V0_test','V0_assign_alpha_V1_plus_V0_metaexe','V0_assign_alpha_V1_plus_V0.cpp'],
 
   
 ]

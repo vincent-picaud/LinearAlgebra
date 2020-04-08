@@ -1,8 +1,8 @@
 #include "LinearAlgebra/dense/vector.hpp"
-#include "LinearAlgebra/expr/V0_assign_V0_plus_alpha_V1.hpp"
+#include "LinearAlgebra/expr/V0_assign_alpha_V1_plus_V0.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
-#include "LinearAlgebra/expr/M0_assign_M0_plus_alpha_M1.hpp"
+#include "LinearAlgebra/expr/M0_assign_alpha_M1_plus_M0.hpp"
 
 #include <gtest/gtest.h>
 
@@ -11,7 +11,7 @@ using namespace LinearAlgebra;
 //
 // Vector
 //
-TEST(X0_assign_X0_plus_alpha_X1, vector_generic)
+TEST(X0_assign_alpha_X1_plus_X0, vector_generic)
 {
   Tiny_Vector<int, 3> v;
   Vector<int> w(3);
@@ -27,7 +27,7 @@ TEST(X0_assign_X0_plus_alpha_X1, vector_generic)
   EXPECT_EQ(v[2], 3 + 2 * w[2]);
 }
 
-TEST(X0_assign_X0_plus_alpha_X1, vector_generic_alias)
+TEST(X0_assign_alpha_X1_plus_X0, vector_generic_alias)
 {
   Tiny_Vector<int, 3> v;
   Vector<int> w(3);
@@ -46,7 +46,7 @@ TEST(X0_assign_X0_plus_alpha_X1, vector_generic_alias)
 //
 // Matrix
 //
-TEST(X0_assign_X0_plus_alpha_X1, matrix_generic_alias)
+TEST(X0_assign_alpha_X1_plus_X0, matrix_generic_alias)
 {
   Tiny_Matrix<int, 3, 1> v;
   Matrix<int> w(3, 1);

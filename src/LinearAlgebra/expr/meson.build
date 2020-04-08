@@ -24,14 +24,14 @@ LinearAlgebra_headers += [
   'expr/M0_assign_alpha_M1.hpp',
 
   # ok
-  'expr/X0_assign_X0_plus_alpha_X1.hpp', 
-  'expr/V0_assign_V0_plus_alpha_V1.hpp', 
-  'expr/M0_assign_M0_plus_alpha_M1.hpp',
+  'expr/X0_assign_alpha_X1_plus_X0.hpp', 
+  'expr/V0_assign_alpha_V1_plus_V0.hpp', 
+  'expr/M0_assign_alpha_M1_plus_M0.hpp',
 
   # ok
-  'expr/X0_assign_X1_plus_alpha_X2.hpp',
-  'expr/V0_assign_V1_plus_alpha_V2.hpp',
-  'expr/M0_assign_M1_plus_alpha_M2.hpp',
+  'expr/X0_assign_alpha_X1_plus_X2.hpp',
+  'expr/V0_assign_alpha_V1_plus_V2.hpp',
+  'expr/M0_assign_alpha_M1_plus_M2.hpp',
 
   'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_header.hpp',
   'expr/V0_assign_alpha_op_M_V1_plus_beta_V0_driver.hpp', # todo: add alias

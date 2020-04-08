@@ -242,10 +242,10 @@ namespace LinearAlgebra
     PrintContext printContext;
     std::stringstream str;
 
-    if constexpr (MODE == PrintMode_Enum::Prototype) str << "//\n";
+    //    if constexpr (MODE == PrintMode_Enum::Prototype) str << "//\n";
 
     str << "// ";
-    str << print_item<PrintMode_Enum::Expression>(printContext, d) << " = ";
+    str << print_item<PrintMode_Enum::Expression>(printContext, d) << " =";
     ((str << " " << print_item<PrintMode_Enum::Expression>(printContext, t)), ...);
     str << std::endl;
 
@@ -334,6 +334,11 @@ namespace LinearAlgebra
 }
 
 using namespace LinearAlgebra;
+
+#define PRINT_EXPR(DEST, EXPR)                           \
+  std::cout << "//\n// " #DEST << " = " << #EXPR << "\n" \
+            << Detail::call_assign<PrintMode_Enum::Prototype>(DEST, EXPR);
+
 int
 main()
 {
@@ -348,30 +353,9 @@ main()
   constexpr int alpha = 1;
   constexpr int beta  = 2;
 
-  //  constexpr int gamma = 2;
-
-  std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(M0, M1 * (M2 + M1));
-  std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(
-      M0, alpha * (M1 * V2 + beta * transpose(M1)) * M2);
-  std::cout << Detail::call_assign<PrintMode_Enum::Prototype>(
-      V0, alpha * transpose(M1) * V1 + beta * transpose(V0));
+  PRINT_EXPR(V0, alpha * V1 + V0);
+  PRINT_EXPR(V0, V0 + alpha * V1);
+  PRINT_EXPR(V0, V1 + V0);
 
   return 0;
-}
-//
-// V0 =  + * * s-4 op1 M1 V1 * s2 op2 V0
-//
-//
-// V0 =  + * * alpha op1 M1 V1 * beta op2 V0
-//
-template <Matrix_Unary_Op_Enum OP1_ENUM, Matrix_Unary_Op_Enum OP2_ENUM, typename V0_IMPL,
-          typename V1_IMPL, typename M1_IMPL>
-void
-assign(Vector_Crtp<V0_IMPL>& V0, const _plus_t_, const _product_t_, const _product_t_,
-       const Common_Element_Type_t<V0_IMPL, V1_IMPL, M1_IMPL>& alpha,
-       const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<M1_IMPL>& M1,
-       const Vector_Crtp<V1_IMPL>& V1, const _product_t_,
-       const Common_Element_Type_t<V0_IMPL, V1_IMPL, M1_IMPL>& beta,
-       const _matrix_unary_op_t_<OP2_ENUM> op2, const Vector_Crtp<V0_IMPL>& _V0)
-{
 }

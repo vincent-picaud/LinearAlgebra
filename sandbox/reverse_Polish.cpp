@@ -1,6 +1,6 @@
 //
-// Important: it helps us to generate function prototypes
-
+// CAVEAT: super important as it helps us to generate function prototypes
+//
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/matrix.hpp"
 

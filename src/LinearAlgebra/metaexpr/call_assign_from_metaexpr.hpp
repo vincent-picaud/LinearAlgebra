@@ -42,19 +42,9 @@ namespace LinearAlgebra
     from_metaexpr_to_argument_tuple(
         const Detail::MetaExpr_BinaryOp_Crtp<IMPL>& expression_tree) noexcept
     {
-      // Attention: our convention is to not explicitly write down "_product_"
-      if constexpr (std::is_same_v<typename Detail::MetaExpr_BinaryOp_Crtp<IMPL>::operator_type,
-                                   _product_t_>)
-      {
-        return std::tuple_cat(from_metaexpr_to_argument_tuple(expression_tree.arg_0()),
-                              from_metaexpr_to_argument_tuple(expression_tree.arg_1()));
-      }
-      else
-      {
-        return std::tuple_cat(from_metaexpr_to_argument_tuple(expression_tree.arg_0()),
-                              std::make_tuple(typename IMPL::operator_type()),
-                              from_metaexpr_to_argument_tuple(expression_tree.arg_1()));
-      }
+      return std::tuple_cat(std::make_tuple(typename IMPL::operator_type()),
+                            from_metaexpr_to_argument_tuple(expression_tree.arg_0()),
+                            from_metaexpr_to_argument_tuple(expression_tree.arg_1()));
     }
 
     //////////////////////////////////////////////////////////////////
@@ -69,7 +59,8 @@ namespace LinearAlgebra
                                     const std::tuple<ARGS...>& args_as_tuple)
     {
       // CAVEAT: not args.impl()... as args can be integer,double etc...
-      return std::apply([&](const auto&... args) { return assign(dest.impl(), args...); }, args_as_tuple);
+      return std::apply([&](const auto&... args) { return assign(dest.impl(), args...); },
+                        args_as_tuple);
     }
 
     template <typename DEST_IMPL, typename SRC_IMPL>

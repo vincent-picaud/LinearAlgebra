@@ -18,7 +18,7 @@ test_array = [
 
   ['V0_assign_alpha_op_M_VX_header_test','V0_assign_alpha_op_M_VX_header_exe','V0_assign_alpha_op_M_VX_header.cpp'],
   
-  # ['M_eq_aMM_bM_test','M_eq_aMM_bM_exe','M_eq_aMM_bM.cpp'],
+  ['M_eq_aMM_bM_test','M_eq_aMM_bM_exe','M_eq_aMM_bM.cpp'],
 ]
 
 foreach test : test_array

@@ -98,6 +98,22 @@ namespace LinearAlgebra
 
   template <PrintMode_Enum MODE>
   std::string
+  print_item(PrintContext& printContext, const _inverse_t_)
+  {
+    if constexpr (MODE == PrintMode_Enum::Expression)
+    {
+      return "inverse";
+    }
+    else
+    {
+      static_assert(MODE == PrintMode_Enum::Prototype);
+
+      return "_inverse_t_  \n";
+    }
+  }
+  
+  template <PrintMode_Enum MODE>
+  std::string
   print_item(PrintContext& printContext, const _transpose_t_)
   {
     printContext.count_op++;
@@ -372,6 +388,8 @@ main()
   PRINT_EXPR(V0, V2 - alpha * V1);
   PRINT_EXPR(V0, V2 - V1);
 
+  //================================================================
+
   std::cout << "*** V0 = α op(M) V1 + β V0" << std::endl;
 
   PRINT_EXPR(V0, alpha * transpose(M1) * V1 + beta * V0);
@@ -420,6 +438,13 @@ main()
   PRINT_EXPR(V0, -transpose(M1) * V1 + V2);
   PRINT_EXPR(V0, -transpose(M1) * V1 + beta * V2);
   PRINT_EXPR(V0, -transpose(M1) * V1 - V2);
+
+  //================================================================
+
+  std::cout << "*** V0 = α op(M) V0" << std::endl;
+
+  PRINT_EXPR(V0, alpha * transpose(M1) * V0);
+  PRINT_EXPR(V0, alpha * transpose(inverse(M1)) * V0);
 
   return 0;
 }

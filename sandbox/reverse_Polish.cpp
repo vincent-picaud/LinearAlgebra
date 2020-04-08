@@ -139,8 +139,8 @@ namespace LinearAlgebra
   std::string
   print_item(PrintContext& printContext, const Matrix_Crtp<IMPL>& M)
   {
-    std::string var_name = "matrix_" + std::to_string(M.I_size());
-    std::string var_type = "MATRIX_" + std::to_string(M.I_size()) + "_IMPL";
+    std::string var_name = "matrix" + std::to_string(M.I_size());
+    std::string var_type = "MATRIX" + std::to_string(M.I_size()) + "_IMPL";
 
     if constexpr (MODE == PrintMode_Enum::Expression)
     {
@@ -158,8 +158,8 @@ namespace LinearAlgebra
   std::string
   print_item(PrintContext& printContext, const Vector_Crtp<IMPL>& V)
   {
-    std::string var_name = "vector_" + std::to_string(V.size());
-    std::string var_type = "VECTOR_" + std::to_string(V.size()) + "_IMPL";
+    std::string var_name = "vector" + std::to_string(V.size());
+    std::string var_type = "VECTOR" + std::to_string(V.size()) + "_IMPL";
 
     if constexpr (MODE == PrintMode_Enum::Expression)
     {

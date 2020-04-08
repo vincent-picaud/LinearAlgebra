@@ -45,8 +45,8 @@ namespace LinearAlgebra
   //
   template <typename X0_IMPL>
   auto
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _product_t_, const Common_Element_Type_t<X0_IMPL>& alpha, const _lhs_t_)
+  assign(VMT_Crtp<X0_IMPL>& X0, const _product_t_, const Common_Element_Type_t<X0_IMPL>& alpha,
+         const _lhs_t_)
   {
     return assign(Expr_Selector<>(), X0.impl(), _product_, alpha, _lhs_);
   }

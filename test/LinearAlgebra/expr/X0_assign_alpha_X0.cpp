@@ -18,7 +18,7 @@ TEST(X0_Assign_Alpha_X0, vector)
   EXPECT_EQ(v[1], 2);
   EXPECT_EQ(v[2], 3);
 
-  Expr_Selector_Enum selected = assign(v, 3, _lhs_);
+  Expr_Selector_Enum selected = assign(v, _product_, 3, _lhs_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Static);
 
@@ -38,7 +38,7 @@ TEST(X0_Assign_Alpha_X0, matrix)
   EXPECT_EQ(v(1, 0), 2);
   EXPECT_EQ(v(2, 0), 3);
 
-  Expr_Selector_Enum selected = assign(v, 3, _lhs_);
+  Expr_Selector_Enum selected = assign(v, _product_, 3, _lhs_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Static);
 

@@ -273,7 +273,9 @@ namespace LinearAlgebra
 
       str << "template<";
       str << printContext_template("Matrix_Unary_Op_Enum", printContext.matrix_op);
-      if (printContext.matrix_op.size() and printContext.vector.size()) str << ", ";
+      if (printContext.matrix_op.size() and
+          (printContext.vector.size() or printContext.matrix.size()))
+        str << ", ";
       str << printContext_template("typename", printContext.vector);
       if (printContext.vector.size() and printContext.matrix.size()) str << ", ";
       str << printContext_template("typename", printContext.matrix);
@@ -466,6 +468,18 @@ main()
   PRINT_EXPR(V0, -inverse(M1) * V1);
   PRINT_EXPR(V0, -inverse(transpose(M1)) * V1);
   PRINT_EXPR(V0, -transpose(inverse(M1) * V1));
+
+  std::cout << "*** M0 = α op1(M1) op2(M2) + β M0" << std::endl;
+
+  PRINT_EXPR(M0, alpha * transpose(M1) * transpose(M2) + beta * M0);
+
+  //
+  // TODO:  M0 = α op1(M1) op2(M2) + β M1 + Alias
+  //
+
+  std::cout << "*** M0 = α op1(M1) op2(M1) + β M0" << std::endl;
+
+  PRINT_EXPR(M0, alpha * transpose(M1) * transpose(M1) + beta * M0);
 
   return 0;
 }

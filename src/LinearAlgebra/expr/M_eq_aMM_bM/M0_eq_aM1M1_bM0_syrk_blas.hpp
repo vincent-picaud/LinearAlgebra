@@ -15,8 +15,9 @@ namespace LinearAlgebra
   // or
   // M0 := α.M1^t.M1 + β.M0
   //
-  template <typename M0_TYPE, Matrix_Unary_Op_Enum OP1_ENUM, typename M1_TYPE,
-            Matrix_Unary_Op_Enum OP2_ENUM>
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, Matrix_Unary_Op_Enum OP2_ENUM, typename MATRIX0_IMPL,
+            typename MATRIX1_IMPL>
   std::enable_if_t<
       // Supported matrix op?
       ((OP1_ENUM == Matrix_Unary_Op_Enum::Identity &&
@@ -27,27 +28,24 @@ namespace LinearAlgebra
         OP2_ENUM == Matrix_Unary_Op_Enum::Identity)) &&
 
       // Same scalar everywhere
-      All_Same_Type_v<Element_Type_t<M0_TYPE>, Element_Type_t<M1_TYPE>> &&
+      All_Same_Type_v<Element_Type_t<MATRIX0_IMPL>, Element_Type_t<MATRIX1_IMPL>> &&
 
       // Scalar support
-      Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M0_TYPE>> &&
+      Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX0_IMPL>> &&
 
       // Matrix type
-      (M0_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::Symmetric) &&
-      (M1_TYPE::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None)>
-  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,  //
-         Dense_Matrix_Crtp<M0_TYPE> &M0,                          //
-         const Common_Element_Type_t<M0_TYPE, M1_TYPE> alpha,     //
-         const _matrix_unary_op_t_<OP1_ENUM> op1,                 //
-         const Dense_Matrix_Crtp<M1_TYPE> &M1,                    //
-         const _matrix_unary_op_t_<OP2_ENUM> op2,                 //
-         const _rhs_1_t_,                                         //
-         const _plus_t_,                                          //
-         const Common_Element_Type_t<M0_TYPE, M1_TYPE> beta,      //
-         const _lhs_t_)                                           //
+      (MATRIX0_IMPL::matrix_special_structure_type::value ==
+       Matrix_Special_Structure_Enum::Symmetric) &&
+      (MATRIX1_IMPL::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None)>
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+         Dense_Matrix_Crtp<MATRIX0_IMPL>& matrix0, const _plus_t_, const _product_t_,
+         const _product_t_, const Common_Element_Type_t<MATRIX0_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const _matrix_unary_op_t_<OP2_ENUM> op2, const _rhs_1_t_, const _product_t_,
+         const Common_Element_Type_t<MATRIX0_IMPL, MATRIX1_IMPL>& beta, const _lhs_t_)
 
   {
-    assert(are_not_aliased_p(M0.impl(), M1.impl()));
+    assert(are_not_aliased_p(matrix0.impl(), matrix1.impl()));
 
     DEBUG_SET_SELECTED(selected);
 
@@ -64,18 +62,18 @@ namespace LinearAlgebra
 
     if constexpr (what == 1)
     {
-      K     = M1.J_size();
+      K     = matrix1.J_size();
       Trans = Blas::To_CBlas_Transpose_v<Matrix_Unary_Op_Enum::Identity>;
     }
     else
     {
-      K     = M1.I_size();
+      K     = matrix1.I_size();
       Trans = Blas::To_CBlas_Transpose_v<Matrix_Unary_Op_Enum::Transpose>;
     }
 
-    Blas::syrk(CblasColMajor, Blas::To_CBlas_UpLo_v<M0_TYPE::matrix_storage_mask_type::value>,
-               Trans, M0.I_size(), K, alpha, M1.data(), M1.leading_dimension(), beta, M0.data(),
-               M0.leading_dimension());
+    Blas::syrk(CblasColMajor, Blas::To_CBlas_UpLo_v<MATRIX0_IMPL::matrix_storage_mask_type::value>,
+               Trans, matrix0.I_size(), K, alpha, matrix1.data(), matrix1.leading_dimension(), beta,
+               matrix0.data(), matrix0.leading_dimension());
   }
 
 #endif

@@ -372,7 +372,54 @@ main()
   PRINT_EXPR(V0, V2 - alpha * V1);
   PRINT_EXPR(V0, V2 - V1);
 
-  // PRINT_EXPR(V0, V1 + V0);
+  std::cout << "*** V0 = α op(M) V1 + β V0" << std::endl;
+
+  PRINT_EXPR(V0, alpha * transpose(M1) * V1 + beta * V0);
+
+  std::cout << "*** V0 = α op(M) V1 + β V2" << std::endl;
+
+  PRINT_EXPR(V0, alpha * transpose(M1) * V1 + beta * V2);
+  std::cout << "--- alias " << std::endl;
+  PRINT_EXPR(V0, M1 * V1 + V2);
+  PRINT_EXPR(V0, M1 * V1 + beta * V2);
+  PRINT_EXPR(V0, M1 * V1 - V2);
+  PRINT_EXPR(V0, V2 + M1 * V1);
+  PRINT_EXPR(V0, V2 + transpose(M1) * V1);
+  PRINT_EXPR(V0, V2 + alpha * M1 * V1);
+  PRINT_EXPR(V0, V2 + alpha * transpose(M1) * V1);
+  PRINT_EXPR(V0, V2 - M1 * V1);
+  PRINT_EXPR(V0, V2 - transpose(M1) * V1);
+  PRINT_EXPR(V0, V2 - alpha * M1 * V1);
+  PRINT_EXPR(V0, transpose(M1) * V1 + V2);
+  PRINT_EXPR(V0, transpose(M1) * V1 + beta * V2);
+  PRINT_EXPR(V0, transpose(M1) * V1 - V2);
+  PRINT_EXPR(V0, alpha * M1 * V1 + beta * V2);
+  PRINT_EXPR(V0, alpha * M1 * V1 - beta * V2);
+  PRINT_EXPR(V0, alpha * M1 * V1 + V2);
+  PRINT_EXPR(V0, alpha * M1 * V1 - V2);
+  PRINT_EXPR(V0, alpha * transpose(M1) * V1 + V2);
+  PRINT_EXPR(V0, alpha * transpose(M1) * V1 - V2);
+  PRINT_EXPR(V0, alpha * transpose(M1) * V1 + beta * V2);
+  PRINT_EXPR(V0, beta * V2 + alpha * M1 * V1);
+  PRINT_EXPR(V0, beta * V2 - alpha * M1 * V1);
+  PRINT_EXPR(V0, beta * V2 + M1 * V1);
+  PRINT_EXPR(V0, beta * V2 + transpose(M1) * V1);
+  PRINT_EXPR(V0, beta * V2 + alpha * transpose(M1) * V1);
+  PRINT_EXPR(V0, beta * V2 - M1 * V1);
+  PRINT_EXPR(V0, beta * V2 - transpose(M1) * V1);
+  PRINT_EXPR(V0, beta * V2 - alpha * transpose(M1) * V1);
+  PRINT_EXPR(V0, -M1 * V1 + V2);
+  PRINT_EXPR(V0, -M1 * V1 + beta * V2);
+  PRINT_EXPR(V0, -M1 * V1 - V2);
+  PRINT_EXPR(V0, -V2 + M1 * V1);
+  PRINT_EXPR(V0, -V2 + transpose(M1) * V1);
+  PRINT_EXPR(V0, -V2 + alpha * M1 * V1);
+  PRINT_EXPR(V0, -V2 + alpha * transpose(M1) * V1);
+  PRINT_EXPR(V0, -V2 - M1 * V1);
+  PRINT_EXPR(V0, -V2 - transpose(M1) * V1);
+  PRINT_EXPR(V0, -transpose(M1) * V1 + V2);
+  PRINT_EXPR(V0, -transpose(M1) * V1 + beta * V2);
+  PRINT_EXPR(V0, -transpose(M1) * V1 - V2);
 
   return 0;
 }

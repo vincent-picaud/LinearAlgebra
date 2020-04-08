@@ -1,6 +1,9 @@
 //
 // Generic for: V0 = α op(M) V1 + β VX
 //
+// CAVEAT: a lot TODO
+// - put in reverse polish
+// - debug routines (symmetric for sure is bugged)
 #pragma once
 
 #include "LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_V0_driver.hpp"

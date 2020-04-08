@@ -23,8 +23,8 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_gemv)
   x[0] = 1;
   x[1] = 2;
 
-  //  Expr_Selector_Enum selected = expr(y, _assign_, 0, _lhs_, _plus_, 2, _identity_, M, x);
-  Expr_Selector_Enum selected = assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
+  Expr_Selector_Enum selected =
+      assign(y, _plus_, _product_, _product_, 2, _identity_, M, x, _product_, 0, _lhs_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
 
@@ -41,7 +41,6 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_symv)
   Vector<T> y(3);
   Tiny_Vector<T, 3> x;
 
-
   M(0, 0) = 1;
   //  M(0, 1) = 0;
   M(1, 0) = 0;
@@ -56,7 +55,7 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_symv)
 
   auto y_cpy_as_int = create_default_storable(Type_v<int>, y);
 
-  Expr_Selector_Enum selected = assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
+  Expr_Selector_Enum selected = assign(y, _plus_, _product_, _product_, 2, _identity_, M, x, _product_, 0, _lhs_);
   EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
 
   // y_cpy_as_int = 2 * transpose(M) * x + 0 * y_cpy_as_int;

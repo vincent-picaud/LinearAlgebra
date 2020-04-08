@@ -14,9 +14,9 @@ test_array = [
   
   ['X0_assign_alpha_X1_plus_X0_test','X0_assign_alpha_X1_plus_X0_exe','X0_assign_alpha_X1_plus_X0.cpp'], 
 
-   ['V0_assign_alpha_op_M_V1_plus_beta_V0_test','V0_assign_alpha_op_M_V1_plus_beta_V0_exe','V0_assign_alpha_op_M_V1_plus_beta_V0.cpp'],
+  ['V0_assign_alpha_op_M_V1_plus_beta_V0_test','V0_assign_alpha_op_M_V1_plus_beta_V0_exe','V0_assign_alpha_op_M_V1_plus_beta_V0.cpp'],
 
-  # ['V0_assign_alpha_op_M_VX_header_test','V0_assign_alpha_op_M_VX_header_exe','V0_assign_alpha_op_M_VX_header.cpp'],
+#  ['V0_assign_alpha_op_M_VX_header_test','V0_assign_alpha_op_M_VX_header_exe','V0_assign_alpha_op_M_VX_header.cpp'],
   
   # ['M_eq_aMM_bM_test','M_eq_aMM_bM_exe','M_eq_aMM_bM.cpp'],
 ]

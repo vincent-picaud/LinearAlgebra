@@ -26,20 +26,22 @@ namespace LinearAlgebra
   // Fallback
   //////////////////////////////////////////////////////////////////
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  //
+  // V0 = alpha * transpose(M1) * V1 + beta * V2
+  // vector0 = + * * alpha op1 matrix1 vector1 * beta vector2
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
-         Vector_Crtp<V0_TYPE>& V0,                                              // V0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> alpha,  // alpha
-         const _matrix_unary_op_t_<M_OP> op,                                    // op
-         const Matrix_Crtp<M_TYPE>& M,                                          // M
-         const Vector_Crtp<V1_TYPE>& V1,                                        // V1
-         const _plus_t_,                                                        // +
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,   // beta
-         const Vector_Crtp<V2_TYPE>& V2)                                        // V1
+         Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    static_assert(Always_False_v<M_TYPE>, "Not implemented");
+    static_assert(Always_False_v<MATRIX1_IMPL>, "Not implemented");
 
     return selected;
   }
@@ -48,707 +50,710 @@ namespace LinearAlgebra
   // User interface
   //////////////////////////////////////////////////////////////////
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                              // V0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> alpha,  // alpha
-         const _matrix_unary_op_t_<M_OP> op,                                    // op
-         const Matrix_Crtp<M_TYPE>& M,                                          // M
-         const Vector_Crtp<V1_TYPE>& V1,                                        // V1
-         const _plus_t_,                                                        // +
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,   // beta
-         const Vector_Crtp<V2_TYPE>& V2)                                        // V2
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     // Here is the right place to check dimension once for all.
     //
-    assert(matrix_op(op, dimension_predicate(M)) * dimension_predicate(V1) +
-           dimension_predicate(V0));
+    assert(matrix_op(op1, dimension_predicate(matrix1)) * dimension_predicate(vector1) +
+           dimension_predicate(vector0));
 
     //    std::raise(SIGINT);
 
     // Delegate computation
     //
-    if (not is_same(V0.impl(), V2.impl()))
+    if (not is_same(vector0.impl(), vector2.impl()))
     {
-      // V0 = V2; XXX
-      assign(V0, V2);
+      // vector0 = vector2;
+      assign(vector0, vector2);
     }
-    return assign(Expr_Selector<>(), V0.impl(), alpha, op, M.impl(), V1.impl(), _plus_, beta,
-                  _lhs_);
+    return assign(Expr_Selector<>(), vector0.impl(), _plus_, _product_, _product_, alpha, op1,
+                  matrix1.impl(), vector1.impl(), _product_, beta, _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
   // Alias
   //////////////////////////////////////////////////////////////////
   //
+  //   PRINT_EXPR(V0, M1 * V1 + V2);
+  //   PRINT_EXPR(V0, M1 * V1 + beta * V2);
+  //   PRINT_EXPR(V0, M1 * V1 - V2);
+  //   PRINT_EXPR(V0, V2 + M1 * V1);
+  //   PRINT_EXPR(V0, V2 + transpose(M1) * V1);
+  //   PRINT_EXPR(V0, V2 + alpha * M1 * V1);
+  //   PRINT_EXPR(V0, V2 + alpha * transpose(M1) * V1);
+  //   PRINT_EXPR(V0, V2 - M1 * V1);
+  //   PRINT_EXPR(V0, V2 - transpose(M1) * V1);
+  //   PRINT_EXPR(V0, V2 - alpha * M1 * V1);
+  //   PRINT_EXPR(V0, transpose(M1) * V1 + V2);
+  //   PRINT_EXPR(V0, transpose(M1) * V1 + beta * V2);
+  //   PRINT_EXPR(V0, transpose(M1) * V1 - V2);
+  //   PRINT_EXPR(V0, alpha * M1 * V1 + beta * V2);
+  //   PRINT_EXPR(V0, alpha * M1 * V1 - beta * V2);
+  //   PRINT_EXPR(V0, alpha * M1 * V1 + V2);
+  //   PRINT_EXPR(V0, alpha * M1 * V1 - V2);
+  //   PRINT_EXPR(V0, alpha * transpose(M1) * V1 + V2);
+  //   PRINT_EXPR(V0, alpha * transpose(M1) * V1 - V2);
+  //   PRINT_EXPR(V0, alpha * transpose(M1) * V1 + beta * V2);
+  //   PRINT_EXPR(V0, beta * V2 + alpha * M1 * V1);
+  //   PRINT_EXPR(V0, beta * V2 - alpha * M1 * V1);
+  //   PRINT_EXPR(V0, beta * V2 + M1 * V1);
+  //   PRINT_EXPR(V0, beta * V2 + transpose(M1) * V1);
+  //   PRINT_EXPR(V0, beta * V2 + alpha * transpose(M1) * V1);
+  //   PRINT_EXPR(V0, beta * V2 - M1 * V1);
+  //   PRINT_EXPR(V0, beta * V2 - transpose(M1) * V1);
+  //   PRINT_EXPR(V0, beta * V2 - alpha * transpose(M1) * V1);
+  //   PRINT_EXPR(V0, -M1 * V1 + V2);
+  //   PRINT_EXPR(V0, -M1 * V1 + beta * V2);
+  //   PRINT_EXPR(V0, -M1 * V1 - V2);
+  //   PRINT_EXPR(V0, -V2 + M1 * V1);
+  //   PRINT_EXPR(V0, -V2 + transpose(M1) * V1);
+  //   PRINT_EXPR(V0, -V2 + alpha * M1 * V1);
+  //   PRINT_EXPR(V0, -V2 + alpha * transpose(M1) * V1);
+  //   PRINT_EXPR(V0, -V2 - M1 * V1);
+  //   PRINT_EXPR(V0, -V2 - transpose(M1) * V1);
+  //   PRINT_EXPR(V0, -transpose(M1) * V1 + V2);
+  //   PRINT_EXPR(V0, -transpose(M1) * V1 + beta * V2);
+  //   PRINT_EXPR(V0, -transpose(M1) * V1 - V2);
 
   //
-  // V0 = α M V1 + β V2
+  // V0 = M1 * V1 + V2
+  // vector0 = + * matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                              // V0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> alpha,  // alpha
-         const Matrix_Crtp<M_TYPE>& M,                                          // M
-         const Vector_Crtp<V1_TYPE>& V1,                                        // V1
-         const _plus_t_,                                                        // +
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,   // beta
-         const Vector_Crtp<V2_TYPE>& V2)                                        // V1
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, alpha, _identity_, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = α M V1 - β V2
+  // V0 = M1 * V1 + beta * V2
+  // vector0 = + * matrix1 vector1 * beta vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                              // V0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> alpha,  // alpha
-         const Matrix_Crtp<M_TYPE>& M,                                          // M
-         const Vector_Crtp<V1_TYPE>& V1,                                        // V1
-         const _minus_t_,                                                       // -
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,   // beta
-         const Vector_Crtp<V2_TYPE>& V2)                                        // V1
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, alpha, _identity_, M, V1, _plus_, -beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  //   V0 = β V2 + α M V1
+  // V0 = M1 * V1 - V2
+  // vector0 = - * matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      // V0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,   // β
-         const Vector_Crtp<V2_TYPE>& V2,                                // V2,
-         const _plus_t_,                                                // +
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  // α
-         const Matrix_Crtp<M_TYPE>& M,                                  // M
-         const Vector_Crtp<V1_TYPE>& V1)                                // V1
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, alpha, _identity_, M, V1, _plus_, beta, V2);
-  }
-  //
-  //   V0 = β V2 - α M V1
-  //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
-  Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      // V0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,   // β
-         const Vector_Crtp<V2_TYPE>& V2,                                // V2,
-         const _minus_t_,                                               // -
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  // α
-         const Matrix_Crtp<M_TYPE>& M,                                  // M
-         const Vector_Crtp<V1_TYPE>& V1)                                // V1
-  {
-    return assign(V0, -alpha, _identity_, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  //   V0 = V2 - α M V1
+  // V0 = V2 + M1 * V1
+  // vector0 = + vector2 * matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      // V0 =
-         const Vector_Crtp<V2_TYPE>& V2,                                // V2,
-         const _minus_t_,                                               // -
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  // α
-         const Matrix_Crtp<M_TYPE>& M,                                  // M
-         const Vector_Crtp<V1_TYPE>& V1)                                // V1
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, -alpha, _identity_, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = β.V2 + α.op(M).V1
+  // V0 = V2 + transpose(M1) * V1
+  // vector0 = + vector2 * op1 matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      // V0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,   // β
-         const Vector_Crtp<V2_TYPE>& V2,                                // V2,
-         const _plus_t_,                                                // +
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  // α
-         const _matrix_unary_op_t_<M_OP> op,                            // op
-         const Matrix_Crtp<M_TYPE>& M,                                  // M
-         const Vector_Crtp<V1_TYPE>& V1)                                // V1
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, alpha, op, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = β.V2 - α.op(M).V1
+  // V0 = V2 + alpha * M1 * V1
+  // vector0 = + vector2 * * alpha matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      // V0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,   // β
-         const Vector_Crtp<V2_TYPE>& V2,                                // V2,
-         const _minus_t_,                                               // -
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  // α
-         const _matrix_unary_op_t_<M_OP> op,                            // op
-         const Matrix_Crtp<M_TYPE>& M,                                  // M
-         const Vector_Crtp<V1_TYPE>& V1)                                // V1
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, -alpha, op, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = α.op(M).V1 + β.V2
+  // V0 = V2 + alpha * transpose(M1) * V1
+  // vector0 = + vector2 * * alpha op1 matrix1 vector1
   //
-  //
-  // Note: V0 = α.op(M).V1 + β.V2 is the already defined "canonical"
-  // form, see "User interface" & "Fallback"
-  //
-
-  //
-  // V0 = op(M).V1 + β.V2
-  //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                             // V0 =
-         const _matrix_unary_op_t_<M_OP> op,                                   // op
-         const Matrix_Crtp<M_TYPE>& M,                                         // M
-         const Vector_Crtp<V1_TYPE>& V1,                                       // V1
-         const _plus_t_,                                                       // +
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,  // beta
-         const Vector_Crtp<V2_TYPE>& V2)                                       // V2
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, 1, op, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, op1, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = -op(M).V1 + β.V2
+  // V0 = V2 - M1 * V1
+  // vector0 = - vector2 * matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                             // V0 =
-         const _unary_minus_t_,                                                //-
-         const _matrix_unary_op_t_<M_OP> op,                                   // op
-         const Matrix_Crtp<M_TYPE>& M,                                         // M
-         const Vector_Crtp<V1_TYPE>& V1,                                       // V1
-         const _plus_t_,                                                       // +
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,  // beta
-         const Vector_Crtp<V2_TYPE>& V2)                                       // V2
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, -1, op, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = α op(M).V1 + V2
+  // V0 = V2 - transpose(M1) * V1
+  // vector0 = - vector2 * op1 matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                              //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> alpha,  //
-         const _matrix_unary_op_t_<M_OP> op,                                    //
-         const Matrix_Crtp<M_TYPE>& M,                                          //
-         const Vector_Crtp<V1_TYPE>& V1,                                        //
-         const _plus_t_,                                                        //
-         const Vector_Crtp<V2_TYPE>& V2)                                        //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, alpha, op, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = α op(M).V1 - V2
+  // V0 = V2 - alpha * M1 * V1
+  // vector0 = - vector2 * * alpha matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                              //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> alpha,  //
-         const _matrix_unary_op_t_<M_OP> op,                                    //
-         const Matrix_Crtp<M_TYPE>& M,                                          //
-         const Vector_Crtp<V1_TYPE>& V1,                                        //
-         const _minus_t_, const Vector_Crtp<V2_TYPE>& V2                        //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, alpha, op, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 =  op(M).V1 + V2
+  // V0 = transpose(M1) * V1 + V2
+  // vector0 = + * op1 matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,            //
-         const _matrix_unary_op_t_<M_OP> op,  //
-         const Matrix_Crtp<M_TYPE>& M,        //
-         const Vector_Crtp<V1_TYPE>& V1,      //
-         const _plus_t_,                      //
-         const Vector_Crtp<V2_TYPE>& V2       //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, 1, op, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 =  op(M).V1 - V2
+  // V0 = transpose(M1) * V1 + beta * V2
+  // vector0 = + * op1 matrix1 vector1 * beta vector2
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,            //
-         const _matrix_unary_op_t_<M_OP> op,  //
-         const Matrix_Crtp<M_TYPE>& M,        //
-         const Vector_Crtp<V1_TYPE>& V1,      //
-         const _minus_t_,                     //
-         const Vector_Crtp<V2_TYPE>& V2       //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, 1, op, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 =  -op(M).V1 + V2
+  // V0 = transpose(M1) * V1 - V2
+  // vector0 = - * op1 matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,            //
-         const _unary_minus_t_,               //
-         const _matrix_unary_op_t_<M_OP> op,  //
-         const Matrix_Crtp<M_TYPE>& M,        //
-         const Vector_Crtp<V1_TYPE>& V1,      //
-         const _plus_t_,                      //
-         const Vector_Crtp<V2_TYPE>& V2       //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, -1, op, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = -op(M).V1 - V2
+  // V0 = alpha * M1 * V1 + beta * V2
+  // vector0 = + * * alpha matrix1 vector1 * beta vector2
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,            //
-         const _unary_minus_t_,               //
-         const _matrix_unary_op_t_<M_OP> op,  //
-         const Matrix_Crtp<M_TYPE>& M,        //
-         const Vector_Crtp<V1_TYPE>& V1,      //
-         const _minus_t_,                     //
-         const Vector_Crtp<V2_TYPE>& V2       //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, -1, op, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = M.V1 + β.V2
+  // V0 = alpha * M1 * V1 - beta * V2
+  // vector0 = - * * alpha matrix1 vector1 * beta vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                             //
-                                                                               //
-         const Matrix_Crtp<M_TYPE>& M,                                         //
-         const Vector_Crtp<V1_TYPE>& V1,                                       //
-         const _plus_t_,                                                       //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,  //
-         const Vector_Crtp<V2_TYPE>& V2)                                       //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, 1, _identity_, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, -beta, vector2.impl());
   }
 
   //
-  // V0 = -M.V1 + β.V2
+  // V0 = alpha * M1 * V1 + V2
+  // vector0 = + * * alpha matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                             //
-         const _unary_minus_t_,                                                //
-                                                                               //
-         const Matrix_Crtp<M_TYPE>& M,                                         //
-         const Vector_Crtp<V1_TYPE>& V1,                                       //
-         const _plus_t_,                                                       //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> beta,  //
-         const Vector_Crtp<V2_TYPE>& V2)                                       //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, -1, _identity_, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = α M.V1 + V2
+  // V0 = alpha * M1 * V1 - V2
+  // vector0 = - * * alpha matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                              //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> alpha,  //
-                                                                                //
-         const Matrix_Crtp<M_TYPE>& M,                                          //
-         const Vector_Crtp<V1_TYPE>& V1,                                        //
-         const _plus_t_,                                                        //
-         const Vector_Crtp<V2_TYPE>& V2)                                        //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, alpha, _identity_, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = α M.V1 - V2
+  // V0 = alpha * transpose(M1) * V1 + V2
+  // vector0 = + * * alpha op1 matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                              //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, V2_TYPE, M_TYPE> alpha,  //
-                                                                                //
-         const Matrix_Crtp<M_TYPE>& M,                                          //
-         const Vector_Crtp<V1_TYPE>& V1,                                        //
-         const _minus_t_, const Vector_Crtp<V2_TYPE>& V2                        //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, alpha, _identity_, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, op1, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 =  M.V1 + V2
+  // V0 = alpha * transpose(M1) * V1 - V2
+  // vector0 = - * * alpha op1 matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,        //
-                                          //
-         const Matrix_Crtp<M_TYPE>& M,    //
-         const Vector_Crtp<V1_TYPE>& V1,  //
-         const _plus_t_,                  //
-         const Vector_Crtp<V2_TYPE>& V2   //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, 1, _identity_, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, op1, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 =  M.V1 - V2
+  // V0 = beta * V2 + alpha * M1 * V1
+  // vector0 = + * beta vector2 * * alpha matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,        //
-                                          //
-         const Matrix_Crtp<M_TYPE>& M,    //
-         const Vector_Crtp<V1_TYPE>& V1,  //
-         const _minus_t_,                 //
-         const Vector_Crtp<V2_TYPE>& V2   //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, 1, _identity_, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 =  -M.V1 + V2
+  // V0 = beta * V2 - alpha * M1 * V1
+  // vector0 = - * beta vector2 * * alpha matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,        //
-         const _unary_minus_t_,           //
-                                          //
-         const Matrix_Crtp<M_TYPE>& M,    //
-         const Vector_Crtp<V1_TYPE>& V1,  //
-         const _plus_t_,                  //
-         const Vector_Crtp<V2_TYPE>& V2   //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, -1, _identity_, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = -M.V1 - V2
+  // V0 = beta * V2 + M1 * V1
+  // vector0 = + * beta vector2 * matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,        //
-         const _unary_minus_t_,           //
-                                          //
-         const Matrix_Crtp<M_TYPE>& M,    //
-         const Vector_Crtp<V1_TYPE>& V1,  //
-         const _minus_t_,                 //
-         const Vector_Crtp<V2_TYPE>& V2   //
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, -1, _identity_, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = β.V2 + op(M).V1
+  // V0 = beta * V2 + transpose(M1) * V1
+  // vector0 = + * beta vector2 * op1 matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                     //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,  //
-         const Vector_Crtp<V2_TYPE>& V2,                               //
-         const _plus_t_,                                               //
-         const _matrix_unary_op_t_<M_OP> op,                           //
-         const Matrix_Crtp<M_TYPE>& M,                                 //
-         const Vector_Crtp<V1_TYPE>& V1)                               //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, 1, op, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = β.V2 - op(M).V1
+  // V0 = beta * V2 + alpha * transpose(M1) * V1
+  // vector0 = + * beta vector2 * * alpha op1 matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                     //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,  //
-         const Vector_Crtp<V2_TYPE>& V2,                               //
-         const _minus_t_,                                              //
-         const _matrix_unary_op_t_<M_OP> op,                           //
-         const Matrix_Crtp<M_TYPE>& M,                                 //
-         const Vector_Crtp<V1_TYPE>& V1)                               //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, -1, op, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, op1, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = V2 + α.op(M).V1
+  // V0 = beta * V2 - M1 * V1
+  // vector0 = - * beta vector2 * matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      //
-         const Vector_Crtp<V2_TYPE>& V2,                                //
-         const _plus_t_,                                                //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  //
-         const _matrix_unary_op_t_<M_OP> op,                            //
-         const Matrix_Crtp<M_TYPE>& M,                                  //
-         const Vector_Crtp<V1_TYPE>& V1)                                //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, alpha, op, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = -V2 + α.op(M).V1
+  // V0 = beta * V2 - transpose(M1) * V1
+  // vector0 = - * beta vector2 * op1 matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      //
-         const _unary_minus_t_,                                         //
-         const Vector_Crtp<V2_TYPE>& V2,                                //
-         const _plus_t_,                                                //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  //
-         const _matrix_unary_op_t_<M_OP> op,                            //
-         const Matrix_Crtp<M_TYPE>& M,                                  //
-         const Vector_Crtp<V1_TYPE>& V1)                                //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, alpha, op, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = V2 + op(M).V1
+  // V0 = beta * V2 - alpha * transpose(M1) * V1
+  // vector0 = - * beta vector2 * * alpha op1 matrix1 vector1
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,            //
-         const Vector_Crtp<V2_TYPE>& V2,      //
-         const _plus_t_,                      //
-         const _matrix_unary_op_t_<M_OP> op,  //
-         const Matrix_Crtp<M_TYPE>& M,        //
-         const Vector_Crtp<V1_TYPE>& V1)      //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, 1, op, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -alpha, op1, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = -V2 + op(M).V1
+  // V0 = -M1 * V1 + V2
+  // vector0 = + * - matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,            //
-         const _unary_minus_t_,               //
-         const Vector_Crtp<V2_TYPE>& V2,      //
-         const _plus_t_,                      //
-         const _matrix_unary_op_t_<M_OP> op,  //
-         const Matrix_Crtp<M_TYPE>& M,        //
-         const Vector_Crtp<V1_TYPE>& V1)      //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const _unary_minus_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, 1, op, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = V2 - op(M).V1
+  // V0 = -M1 * V1 + beta * V2
+  // vector0 = + * - matrix1 vector1 * beta vector2
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,            //
-         const Vector_Crtp<V2_TYPE>& V2,      //
-         const _minus_t_,                     //
-         const _matrix_unary_op_t_<M_OP> op,  //
-         const Matrix_Crtp<M_TYPE>& M,        //
-         const Vector_Crtp<V1_TYPE>& V1)      //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const _unary_minus_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, -1, op, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
   }
 
   //
-  // V0 = -V2 - op(M).V1
+  // V0 = -M1 * V1 - V2
+  // vector0 = - * - matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,            //
-         const _unary_minus_t_,               //
-         const Vector_Crtp<V2_TYPE>& V2,      //
-         const _minus_t_,                     //
-         const _matrix_unary_op_t_<M_OP> op,  //
-         const Matrix_Crtp<M_TYPE>& M,        //
-         const Vector_Crtp<V1_TYPE>& V1)      //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
+         const _unary_minus_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, -1, op, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = β.V2 + M.V1
+  // V0 = -V2 + M1 * V1
+  // vector0 = + - vector2 * matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                     //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,  //
-         const Vector_Crtp<V2_TYPE>& V2,                               //
-         const _plus_t_,                                               //
-         const Matrix_Crtp<M_TYPE>& M,                                 //
-         const Vector_Crtp<V1_TYPE>& V1)                               //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, 1, _identity_, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = β.V2 - M.V1
+  // V0 = -V2 + transpose(M1) * V1
+  // vector0 = + - vector2 * op1 matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                     //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& beta,  //
-         const Vector_Crtp<V2_TYPE>& V2,                               //
-         const _minus_t_,                                              //
-         const Matrix_Crtp<M_TYPE>& M,                                 //
-         const Vector_Crtp<V1_TYPE>& V1)                               //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, -1, _identity_, M, V1, _plus_, beta, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, 1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = V2 + α.M.V1
+  // V0 = -V2 + alpha * M1 * V1
+  // vector0 = + - vector2 * * alpha matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      //
-         const Vector_Crtp<V2_TYPE>& V2,                                //
-         const _plus_t_,                                                //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  //
-                                                                        //
-         const Matrix_Crtp<M_TYPE>& M,                                  //
-         const Vector_Crtp<V1_TYPE>& V1)                                //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, alpha, _identity_, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = -V2 + α.M.V1
+  // V0 = -V2 + alpha * transpose(M1) * V1
+  // vector0 = + - vector2 * * alpha op1 matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,                                      //
-         const _unary_minus_t_,                                         //
-         const Vector_Crtp<V2_TYPE>& V2,                                //
-         const _plus_t_,                                                //
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE>& alpha,  //
-         const Matrix_Crtp<M_TYPE>& M,                                  //
-         const Vector_Crtp<V1_TYPE>& V1)                                //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, alpha, _identity_, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, alpha, op1, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = V2 + M.V1
+  // V0 = -V2 - M1 * V1
+  // vector0 = - - vector2 * matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,        //
-         const Vector_Crtp<V2_TYPE>& V2,  //
-         const _plus_t_,                  //
-         const Matrix_Crtp<M_TYPE>& M,    //
-         const Vector_Crtp<V1_TYPE>& V1)  //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, 1, _identity_, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, _identity_, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = -V2 + M.V1
+  // V0 = -V2 - transpose(M1) * V1
+  // vector0 = - - vector2 * op1 matrix1 vector1
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,        //
-         const _unary_minus_t_,           //
-         const Vector_Crtp<V2_TYPE>& V2,  //
-         const _plus_t_,                  //
-         const Matrix_Crtp<M_TYPE>& M,    //
-         const Vector_Crtp<V1_TYPE>& V1)  //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    return assign(V0, 1, _identity_, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
   //
-  // V0 = V2 - M.V1
+  // V0 = -transpose(M1) * V1 + V2
+  // vector0 = + * - op1 matrix1 vector1 vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,        //
-         const Vector_Crtp<V2_TYPE>& V2,  //
-         const _minus_t_,                 //
-         const Matrix_Crtp<M_TYPE>& M,    //
-         const Vector_Crtp<V1_TYPE>& V1)  //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const _unary_minus_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, -1, _identity_, M, V1, _plus_, 1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, +1, vector2.impl());
   }
 
   //
-  // V0 = -V2 - M.V1
+  // V0 = -transpose(M1) * V1 + beta * V2
+  // vector0 = + * - op1 matrix1 vector1 * beta vector2
   //
-  template <typename V0_TYPE, typename M_TYPE, typename V1_TYPE,
-            typename V2_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V0_TYPE>& V0,        //
-         const _unary_minus_t_,           //
-         const Vector_Crtp<V2_TYPE>& V2,  //
-         const _minus_t_,                 //
-         const Matrix_Crtp<M_TYPE>& M,    //
-         const Vector_Crtp<V1_TYPE>& V1)  //
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
+         const _unary_minus_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    return assign(V0, -1, _identity_, M, V1, _plus_, -1, V2);
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, beta, vector2.impl());
+  }
+
+  //
+  // V0 = -transpose(M1) * V1 - V2
+  // vector0 = - * - op1 matrix1 vector1 vector2
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
+         const _unary_minus_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  {
+    return assign(vector0.impl(), _plus_, _product_, _product_, -1, op1, matrix1.impl(),
+                  vector1.impl(), _product_, -1, vector2.impl());
   }
 
 }

@@ -50,15 +50,15 @@ TEST(MetaExpr_Crtp, gemv)
   Matrix<double> M(n, m);
   Vector<double> x(m), y(n);
   // TODO
-  assign(y, 4, M, x, _plus_, 2, y);
+  assign(y, _plus_, _product_, _product_, 4, M, x, _product_, 2, y);
 
   y = 4 * M * x + 2 * y;
   y = 4 * M * x - 2 * y;
   y = 2 * y + 4 * M * x;
   y = 2 * y - 4 * M * x;
 
-  EXPECT_DEBUG_DEATH((y = 2 * y + 4 * transpose(M) * x),""); // bad dimension
-  
+  EXPECT_DEBUG_DEATH((y = 2 * y + 4 * transpose(M) * x), "");  // bad dimension
+
   //  y = 1 * conjugate(M) * x + 1 * y;
 
   // y = transpose(M);

@@ -29,7 +29,7 @@ main()
 
 #if (HAS_BLAS)
   //assign(y,  0, _lhs_, _plus_, 2, _identity_, M, x);
-  assign(y, 2, _identity_, M, x, _plus_, 0, _lhs_);
+  assign(y, _plus_, _product_, _product_, 2, _identity_, M, x, _product_, 0, _lhs_);
 #else
   assert(0 && "Not implemented yet");
 #endif

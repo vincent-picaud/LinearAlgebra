@@ -111,7 +111,7 @@ namespace LinearAlgebra
       return "_inverse_t_  \n";
     }
   }
-  
+
   template <PrintMode_Enum MODE>
   std::string
   print_item(PrintContext& printContext, const _transpose_t_)
@@ -445,6 +445,23 @@ main()
 
   PRINT_EXPR(V0, alpha * transpose(M1) * V0);
   PRINT_EXPR(V0, alpha * transpose(inverse(M1)) * V0);
+
+  std::cout << "*** V0 = α op(M) V1" << std::endl;
+
+  PRINT_EXPR(V0, alpha * transpose(M1) * V1);
+  PRINT_EXPR(V0, alpha * transpose(inverse(M1)) * V1);
+
+  std::cout << "--- alias" << std::endl;
+  PRINT_EXPR(V0, M1 * V1);
+  PRINT_EXPR(V0, inverse(M1) * V1);
+  PRINT_EXPR(V0, alpha * M1 * V1);
+  PRINT_EXPR(V0, alpha * inverse(M1) * V1);
+  PRINT_EXPR(V0, transpose(M1) * V1);
+  PRINT_EXPR(V0, inverse(transpose(M1)) * V1);
+  PRINT_EXPR(V0, transpose(inverse(M1) * V1));
+  PRINT_EXPR(V0, alpha * inverse(transpose(M1)) * V1);
+
+  // PRINT_EXPR(V0, V0 - M1 * V1 + M2 * V2);
 
   return 0;
 }

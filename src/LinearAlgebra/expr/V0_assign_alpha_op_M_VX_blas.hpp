@@ -26,33 +26,38 @@
 namespace LinearAlgebra
 {
   //================================================================
-  // redirect matrices that are NOT TRIANGULAR to the more general
-  // V0=αop(M)V1+βVX
-  //================================================================
+  // CAVEAT: redirect matrices that are NOT TRIANGULAR to the more
+  //         general V0=αop(M)V1+βVX
+  // Note: note sure that really a good idea....
+  // ================================================================
   //
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE>
+  //
+  // vector0 = alpha * transpose(M1) * vector1
+  // vector0 = * * alpha op1 matrix1 vector1
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename MATRIX1_IMPL>
   auto
-  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,       // Undefined implementation
-         Dense_Vector_Crtp<V0_TYPE>& v0,                               // v0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE> alpha,  // alpha
-         const _matrix_unary_op_t_<M_OP> op,                           // op
-         const Dense_Matrix_Crtp<M_TYPE>& M,                           // M
-         const Dense_Vector_Crtp<V1_TYPE>& v1                          // v1
-         )
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+         Dense_Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
       -> std::enable_if_t<
           // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<M_OP> &&
+          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
               // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>,
-                              Element_Type_t<V1_TYPE>> &&
+              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                              Element_Type_t<VECTOR1_IMPL>> &&
               // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
               // *NOT* Triangular Matrix
-              !Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
+              !Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
   {
     // redirect
-    return assign(selected, v0, alpha, op, M, v1, _plus_, 0, _lhs_);
+    return assign(selected, vector0, _plus_, _product_, _product_, alpha, op1, matrix1, vector1,
+                  _product_, 0, _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -61,132 +66,139 @@ namespace LinearAlgebra
   // trmv
   //================================================================
   //
-  // V1 = lhs
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE>
+  //
+  // VECTOR0 = alpha * transpose(M1) * VECTOR0
+  // vector0 = * * alpha op1 matrix1 vector0
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename MATRIX1_IMPL>
   auto
   assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,  // Undefined implementation
-         Dense_Vector_Crtp<V0_TYPE>& v0,                          // v0 =
-         const Common_Element_Type_t<V0_TYPE, M_TYPE> alpha,      // alpha
-         const _matrix_unary_op_t_<M_OP> op,                      // op
-         const Dense_Matrix_Crtp<M_TYPE>& M,                      // M
-         const _lhs_t_                                            // lhs
-         )
+         Dense_Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const _lhs_t_)
       -> std::enable_if_t<
           // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<M_OP> &&
+          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
               // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>> &&
+              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>> &&
               // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
               // Triangular Matrix
-              Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
+              Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
   {
-    assert(M.I_size() == M.J_size());  // TODO: extend to the rectangular case
-    assert(are_not_aliased_p(v0, M));
+    assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
+    assert(are_not_aliased_p(vector0, matrix1));
 
-    assign(v0, alpha, _lhs_);
+    assign(vector0, _product_, alpha, _lhs_);
 
-    Blas::trmv(CblasColMajor, Blas::To_CBlas_UpLo_v<M_TYPE::matrix_storage_mask_type::value>,
-               Blas::To_CBlas_Transpose_v<M_OP>,
-               Blas::To_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>, M.I_size(),
-               M.data(), M.leading_dimension(), v0.data(), v0.increment());
+    Blas::trmv(CblasColMajor, Blas::To_CBlas_UpLo_v<MATRIX1_IMPL::matrix_storage_mask_type::value>,
+               Blas::To_CBlas_Transpose_v<OP1_ENUM>,
+               Blas::To_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
+               matrix1.I_size(), matrix1.data(), matrix1.leading_dimension(), vector0.data(),
+               vector0.increment());
 
     return selected;
   }
-  // V1 != lhs
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE>
+  //
+  // vector0 = alpha * transpose(M1) * vector1
+  // vector0 = * * alpha op1 matrix1 vector1
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename MATRIX1_IMPL>
   auto
-  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,       // Undefined implementation
-         Dense_Vector_Crtp<V0_TYPE>& v0,                               // v0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE> alpha,  // alpha
-         const _matrix_unary_op_t_<M_OP> op,                           // op
-         const Dense_Matrix_Crtp<M_TYPE>& M,                           // M
-         const Dense_Vector_Crtp<V1_TYPE>& v1                          // v1
-         )
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+         Dense_Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
       -> std::enable_if_t<
           // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<M_OP> &&
+          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
               // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>,
-                              Element_Type_t<V1_TYPE>> &&
+              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                              Element_Type_t<VECTOR1_IMPL>> &&
               // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
               // Triangular Matrix
-              Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
+              Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
   {
-    assert(M.I_size() == M.J_size());  // TODO: extend to the rectangular case
+    assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 
-    assign(v0, alpha, v1);
-    return assign(selected, v0, 1, op, M, _lhs_);
+    assign(vector0, _product_, alpha, vector1);
+    return assign(selected, vector0, _product_, _product_, 1, op1, matrix1, _lhs_);
   }
 
   //================================================================
   // trsv
   //================================================================
   //
-  // V1 = lhs
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE>
+  //
+  // VECTOR0 = alpha * transpose(inverse(M1)) * VECTOR0
+  // vector0 = * * alpha op1 inverse matrix1 vector0
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename MATRIX1_IMPL>
   auto
-  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,  // Undefined implementation
-         Dense_Vector_Crtp<V0_TYPE>& v0,                          // v0 =
-         const Common_Element_Type_t<V0_TYPE, M_TYPE> alpha,      // alpha
-         const _matrix_unary_op_t_<M_OP> op,                      // op
-         const _inverse_t_,                                       // inverse
-         const Dense_Matrix_Crtp<M_TYPE>& M,                      // M
-         const _lhs_t_                                            // lhs
-         )
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+         Dense_Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const _inverse_t_,
+         const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1, const _lhs_t_)
       -> std::enable_if_t<
           // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<M_OP> &&
+          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
               // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>> &&
+              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>> &&
               // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
               // Triangular Matrix
-              Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
+              Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
   {
-    assert(M.I_size() == M.J_size());  // TODO: extend to the rectangular case
-    assert(are_not_aliased_p(v0, M));
+    assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
+    assert(are_not_aliased_p(vector0, matrix1));
 
-    assign(v0, alpha, _lhs_);
+    assign(vector0, _product_, alpha, _lhs_);
 
-    Blas::trsv(CblasColMajor, Blas::To_CBlas_UpLo_v<M_TYPE::matrix_storage_mask_type::value>,
-               Blas::To_CBlas_Transpose_v<M_OP>,
-               Blas::To_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>, M.I_size(),
-               M.data(), M.leading_dimension(), v0.data(), v0.increment());
+    Blas::trsv(CblasColMajor, Blas::To_CBlas_UpLo_v<MATRIX1_IMPL::matrix_storage_mask_type::value>,
+               Blas::To_CBlas_Transpose_v<OP1_ENUM>,
+               Blas::To_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
+               matrix1.I_size(), matrix1.data(), matrix1.leading_dimension(), vector0.data(),
+               vector0.increment());
 
     return selected;
   }
-  // V1 != lhs
-  template <typename V0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE, typename V1_TYPE>
+  //
+  // vector0 = alpha * transpose(inverse(M1)) * vector1
+  // vector0 = * * alpha op1 inverse matrix1 vector1
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename MATRIX1_IMPL>
   auto
-  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,       // Undefined implementation
-         Dense_Vector_Crtp<V0_TYPE>& v0,                               // v0 =
-         const Common_Element_Type_t<V0_TYPE, V1_TYPE, M_TYPE> alpha,  // alpha
-         const _matrix_unary_op_t_<M_OP> op,                           // op
-         const _inverse_t_,                                            // inverse
-         const Dense_Matrix_Crtp<M_TYPE>& M,                           // M
-         const Dense_Vector_Crtp<V1_TYPE>& v1                          // v1
-         )
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,  // Undefined implementation
+         Dense_Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const _inverse_t_,
+         const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
       -> std::enable_if_t<
           // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<M_OP> &&
+          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
               // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<M_TYPE>, Element_Type_t<V0_TYPE>,
-                              Element_Type_t<V1_TYPE>> &&
+              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                              Element_Type_t<VECTOR1_IMPL>> &&
               // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<M_TYPE>> &&
+              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
               // Triangular Matrix
-              Blas::Support_CBlas_Diag_v<M_TYPE::matrix_special_structure_type::value>,
+              Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
           Expr_Selector_Enum>
   {
-    assert(M.I_size() == M.J_size());  // TODO: extend to the rectangular case
+    assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 
-    assign(v0, alpha, v1);
-    return assign(selected, v0, 1, op, _inverse_, M, _lhs_);
+    assign(vector0, _product_, alpha, vector1);
+    return assign(selected, vector0, _product_, _product_, 1, op1, _inverse_, matrix1, _lhs_);
   }
 
 }

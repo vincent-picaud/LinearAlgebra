@@ -18,7 +18,7 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   V = 1;
   U = 1;
 
-  auto selected = assign(V, 2, _identity_, U, _lhs_);
+  auto selected = assign(V, _product_, _product_, 2, _identity_, U, _lhs_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
 
@@ -47,6 +47,8 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trmv_check_alias)
 
   V = 1;
   U = 1;
+
+  // foo(U, V);
 
   V = U * V;
   V = 2 * U * V;
@@ -88,5 +90,5 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trsv_check_alias)
   V = 2 * inverse(U) * V;
   //  V = transpose(inverse(U)) * V;
   V = inverse(transpose(U)) * V;
-   V = 2 * inverse(transpose(U)) * V;
+  V = 2 * inverse(transpose(U)) * V;
 }

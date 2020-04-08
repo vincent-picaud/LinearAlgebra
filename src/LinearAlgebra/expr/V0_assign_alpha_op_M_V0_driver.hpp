@@ -20,32 +20,35 @@ namespace LinearAlgebra
   // Fallback
   //////////////////////////////////////////////////////////////////
   //
-  template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE>
+  //
+  // V0 = alpha * transpose(M1) * V0
+  // vector0 = * * alpha op1 matrix1 vector0
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,  // Undefined implementation
-         Vector_Crtp<V_0_TYPE>& v_0,                                   // v_0 =
-         const Common_Element_Type_t<V_0_TYPE, M_TYPE> alpha,          // alpha
-         const _matrix_unary_op_t_<M_OP> op,                           // op
-         const Matrix_Crtp<M_TYPE>& M,                                 // M
-         const _lhs_t_                                                 // lhs
-  )
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
+         Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const _lhs_t_)
   {
-    static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
+    static_assert(Always_False_v<MATRIX1_IMPL>, "Not implemented");
     return selected;
   }
-  // inverse
-  template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE>
+
+  //
+  // V0 = alpha * transpose(inverse(M1)) * V0
+  // vector0 = * * alpha op1 inverse matrix1 vector0
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,  // Undefined implementation
-         Vector_Crtp<V_0_TYPE>& v_0,                                   // v_0 =
-         const Common_Element_Type_t<V_0_TYPE, M_TYPE> alpha,          // alpha
-         const _matrix_unary_op_t_<M_OP> op,                           // op
-         const _inverse_t_,                                            // inverse
-         const Matrix_Crtp<M_TYPE>& M,                                 // M
-         const _lhs_t_                                                 // lhs
-  )
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
+         Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const _inverse_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const _lhs_t_)
   {
-    static_assert(not std::is_same_v<M_TYPE, M_TYPE>, "Not implemented");
+    static_assert(not std::is_same_v<MATRIX1_IMPL, MATRIX1_IMPL>, "Not implemented");
     return selected;
   }
 
@@ -53,43 +56,40 @@ namespace LinearAlgebra
   // User interface
   //////////////////////////////////////////////////////////////////
   //
-  template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V_0_TYPE>& v_0,                           // v_0 =
-         const Common_Element_Type_t<V_0_TYPE, M_TYPE> alpha,  // alpha
-         const _matrix_unary_op_t_<M_OP> op,                   // op
-         const Matrix_Crtp<M_TYPE>& M,                         // M
-         const _lhs_t_                                         // lhs
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const _lhs_t_)
   {
     // Here is the right place to check dimension once for all.
     //
-    assert(dimension_predicate(v_0) ==
-           matrix_op(op, dimension_predicate(M)) * dimension_predicate(v_0));
+    assert(dimension_predicate(vector0) ==
+           matrix_op(op1, dimension_predicate(matrix1)) * dimension_predicate(vector0));
 
     // Delegate computation
     //
-    return assign(Expr_Selector<>(), v_0.impl(), alpha, op, M.impl(), _lhs_);
+    return assign(Expr_Selector<>(), vector0.impl(), _product_, _product_, alpha, op1,
+                  matrix1.impl(), _lhs_);
   }
   // inverse
-  template <typename V_0_TYPE, Matrix_Unary_Op_Enum M_OP, typename M_TYPE>
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename MATRIX1_IMPL>
   Expr_Selector_Enum
-  assign(Vector_Crtp<V_0_TYPE>& v_0,                           // v_0 =
-         const Common_Element_Type_t<V_0_TYPE, M_TYPE> alpha,  // alpha
-         const _matrix_unary_op_t_<M_OP> op,                   // op
-         const _inverse_t_,                                    // inverse
-         const Matrix_Crtp<M_TYPE>& M,                         // M
-         const _lhs_t_                                         // lhs
-  )
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
+         const Common_Element_Type_t<VECTOR0_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const _inverse_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const _lhs_t_)
   {
     // Here is the right place to check dimension once for all.
     //
-    assert(dimension_predicate(v_0) ==
-           matrix_op(op, dimension_predicate(M)) * dimension_predicate(v_0));
+    assert(dimension_predicate(vector0) ==
+           matrix_op(op1, dimension_predicate(matrix1)) * dimension_predicate(vector0));
 
     // Delegate computation
     //
-    return assign(Expr_Selector<>(), v_0.impl(), alpha, op, _inverse_, M.impl(), _lhs_);
+    return assign(Expr_Selector<>(), vector0.impl(), _product_, _product_, alpha, op1, _inverse_,
+                  matrix1.impl(), _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////

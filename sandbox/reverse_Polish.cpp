@@ -257,9 +257,9 @@ namespace LinearAlgebra
 
       str << "template<";
       str << printContext_template("Matrix_Unary_Op_Enum", printContext.matrix_op);
-      if (printContext.matrix_op.size() and printContext.vector.size() ) str << ", ";
+      if (printContext.matrix_op.size() and printContext.vector.size()) str << ", ";
       str << printContext_template("typename", printContext.vector);
-      if (printContext.vector.size() and printContext.matrix.size() ) str << ", ";
+      if (printContext.vector.size() and printContext.matrix.size()) str << ", ";
       str << printContext_template("typename", printContext.matrix);
 
       str << ">\n";
@@ -353,18 +353,25 @@ main()
   constexpr int alpha = 1;
   constexpr int beta  = 2;
 
-
   std::cout << "*** X = αX" << std::endl;
-  
+
   PRINT_EXPR(V0, alpha * V1);
   PRINT_EXPR(V0, alpha * V0);
 
- std::cout << "*** X = αX + X" << std::endl;
-  
-  PRINT_EXPR(V0, alpha * V1 + V2);
+  std::cout << "*** X = αX + X" << std::endl;
+
   PRINT_EXPR(V0, alpha * V1 + V0);
 
-  // PRINT_EXPR(V0, V0 + alpha * V1);
+  // attention: V2 is always with coef = 1
+  //            V1 coef is alpha
+  PRINT_EXPR(V0, alpha * V1 + V2);
+  PRINT_EXPR(V0, V1 + V2);
+  PRINT_EXPR(V0, -V1 + V2);
+
+  PRINT_EXPR(V0, V2 + alpha * V1);
+  PRINT_EXPR(V0, V2 - alpha * V1);
+  PRINT_EXPR(V0, V2 - V1);
+
   // PRINT_EXPR(V0, V1 + V0);
 
   return 0;

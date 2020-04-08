@@ -461,7 +461,11 @@ main()
   PRINT_EXPR(V0, transpose(inverse(M1) * V1));
   PRINT_EXPR(V0, alpha * inverse(transpose(M1)) * V1);
 
-  // PRINT_EXPR(V0, V0 - M1 * V1 + M2 * V2);
+  std::cout << "--- alias forgotten" << std::endl;
+  PRINT_EXPR(V0, -M1 * V1);
+  PRINT_EXPR(V0, -inverse(M1) * V1);
+  PRINT_EXPR(V0, -inverse(transpose(M1)) * V1);
+  PRINT_EXPR(V0, -transpose(inverse(M1) * V1));
 
   return 0;
 }

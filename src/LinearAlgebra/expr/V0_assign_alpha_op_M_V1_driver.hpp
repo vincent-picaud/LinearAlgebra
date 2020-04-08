@@ -109,17 +109,24 @@ namespace LinearAlgebra
   // PRINT_EXPR(V0, inverse(transpose(M1)) * V1);
   // PRINT_EXPR(V0, transpose(inverse(M1)* V1));
   // PRINT_EXPR(V0, alpha * inverse(transpose(M1))* V1);
+  //
+  // Extra Alias (initially forgotten)
+  // PRINT_EXPR(V0, -M1 * V1);
+  // PRINT_EXPR(V0, -inverse(M1) * V1);
+  // PRINT_EXPR(V0, -inverse(transpose(M1)) * V1);
+  // PRINT_EXPR(V0, -transpose(inverse(M1)* V1));
 
   //
   // V0 = M1 * V1
   // vector0 = * matrix1 vector1
   //
   template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename MATRIX1_IMPL>
-  void
+  Expr_Selector_Enum
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_,
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assert(0);
+    return assign(vector0.impl(), _product_, _product_, 1, _identity_, matrix1.impl(),
+                  vector1.impl());
   }
 
   //
@@ -127,11 +134,12 @@ namespace LinearAlgebra
   // vector0 = * inverse matrix1 vector1
   //
   template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename MATRIX1_IMPL>
-  void
+  Expr_Selector_Enum
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _inverse_t_,
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assert(0);
+    return assign(vector0.impl(), _product_, _product_, 1, _identity_, _inverse_, matrix1.impl(),
+                  vector1.impl());
   }
 
   //
@@ -139,12 +147,13 @@ namespace LinearAlgebra
   // vector0 = * * alpha matrix1 vector1
   //
   template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename MATRIX1_IMPL>
-  void
+  Expr_Selector_Enum
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
          const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assert(0);
+    return assign(vector0.impl(), _product_, _product_, alpha, _identity_, matrix1.impl(),
+                  vector1.impl());
   }
 
   //
@@ -152,13 +161,14 @@ namespace LinearAlgebra
   // vector0 = * * alpha inverse matrix1 vector1
   //
   template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename MATRIX1_IMPL>
-  void
+  Expr_Selector_Enum
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
          const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
          const _inverse_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assert(0);
+    return assign(vector0.impl(), _product_, _product_, alpha, _identity_, _inverse_,
+                  matrix1.impl(), vector1.impl());
   }
 
   //
@@ -167,12 +177,12 @@ namespace LinearAlgebra
   //
   template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
             typename MATRIX1_IMPL>
-  void
+  Expr_Selector_Enum
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_,
          const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assert(0);
+    return assign(vector0.impl(), _product_, _product_, 1, op1, matrix1.impl(), vector1.impl());
   }
 
   //
@@ -181,26 +191,28 @@ namespace LinearAlgebra
   //
   template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
             typename MATRIX1_IMPL>
-  void
+  Expr_Selector_Enum
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _inverse_t_,
          const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assert(0);
+    return assign(vector0.impl(), _product_, _product_, 1, op1, _inverse_, matrix1.impl(),
+                  vector1.impl());
   }
 
   //
-  // V0 = transpose(inverse(M1)* V1)
+  // V0 = transpose(inverse(M1))* V1)
   // vector0 = op1 * inverse matrix1 vector1
   //
   template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
             typename MATRIX1_IMPL>
-  void
+  Expr_Selector_Enum
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _matrix_unary_op_t_<OP1_ENUM> op1,
          const _product_t_, const _inverse_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assert(0);
+    return assign(vector0.impl(), _product_, _product_, 1, op1, _inverse_, matrix1.impl(),
+                  vector1.impl());
   }
 
   //
@@ -209,13 +221,72 @@ namespace LinearAlgebra
   //
   template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
             typename MATRIX1_IMPL>
-  void
+  Expr_Selector_Enum
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _product_t_,
          const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
          const _inverse_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assert(0);
+    return assign(vector0.impl(), _product_, _product_, alpha, op1, _inverse_, matrix1.impl(),
+                  vector1.impl());
+  }
+
+  // Extra Alias
+  //
+  // V0 = -M1 * V1
+  // vector0 = * - matrix1 vector1
+  //
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename MATRIX1_IMPL>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _unary_minus_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  {
+    return assign(vector0.impl(), _product_, _product_, -1, _identity_, matrix1.impl(),
+                  vector1.impl());
+  }
+
+  //
+  // V0 = -inverse(M1) * V1
+  // vector0 = * - inverse matrix1 vector1
+  //
+  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename MATRIX1_IMPL>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _unary_minus_t_,
+         const _inverse_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  {
+    return assign(vector0.impl(), _product_, _product_, -1, _identity_, _inverse_, matrix1.impl(),
+                  vector1.impl());
+  }
+
+  //
+  // V0 = -inverse(transpose(M1)) * V1
+  // vector0 = * - inverse op1 matrix1 vector1
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename MATRIX1_IMPL>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _product_t_, const _unary_minus_t_,
+         const _inverse_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  {
+    return assign(vector0.impl(), _product_, _product_, -1, op1, _inverse_, matrix1.impl(),
+                  vector1.impl());
+  }
+
+  //
+  // V0 = -transpose(inverse(M1) * V1)
+  // vector0 = - op1 * inverse matrix1 vector1
+  //
+  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
+            typename MATRIX1_IMPL>
+  Expr_Selector_Enum
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _unary_minus_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1, const _product_t_, const _inverse_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  {
+    return assign(vector0.impl(), _product_, _product_, -1, op1, _inverse_, matrix1.impl(),
+                  vector1.impl());
   }
 
 }

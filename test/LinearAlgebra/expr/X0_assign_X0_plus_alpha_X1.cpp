@@ -1,8 +1,8 @@
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/expr/V0_assign_V0_plus_alpha_V1.hpp"
 
-#include "LinearAlgebra/expr/M0_assign_M0_plus_alpha_M1.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/expr/M0_assign_M0_plus_alpha_M1.hpp"
 
 #include <gtest/gtest.h>
 
@@ -19,7 +19,7 @@ TEST(X0_assign_X0_plus_alpha_X1, vector_generic)
   iota(v, 1);
   iota(w, 5);
 
-  Expr_Selector_Enum selected = assign(v, _lhs_, _plus_, 2, w);
+  Expr_Selector_Enum selected = assign(v, _plus_, _product_, 2, w, _lhs_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Static);
   EXPECT_EQ(v[0], 1 + 2 * w[0]);
@@ -35,7 +35,7 @@ TEST(X0_assign_X0_plus_alpha_X1, vector_generic_alias)
   iota(v, 1);
   iota(w, 5);
 
-  Expr_Selector_Enum selected = assign(v, 2, w, _plus_, _lhs_);
+  Expr_Selector_Enum selected = assign(v, _plus_, _product_, 2, w, _lhs_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Static);
   EXPECT_EQ(v[0], 1 + 2 * w[0]);
@@ -54,7 +54,7 @@ TEST(X0_assign_X0_plus_alpha_X1, matrix_generic_alias)
   v = 1;
   w = 5;
 
-  Expr_Selector_Enum selected = assign(v, 2, w, _plus_, _lhs_);
+  Expr_Selector_Enum selected = assign(v, _plus_, _product_, 2, w, _lhs_);
 
   EXPECT_EQ(selected, Expr_Selector_Enum::Static);
 

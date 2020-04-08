@@ -359,6 +359,10 @@ main()
   PRINT_EXPR(V0, alpha * V1);
   PRINT_EXPR(V0, alpha * V0);
 
+ std::cout << "*** X = αX + X" << std::endl;
+  
+  PRINT_EXPR(V0, alpha * V1 + V2);
+  PRINT_EXPR(V0, alpha * V1 + V0);
 
   // PRINT_EXPR(V0, V0 + alpha * V1);
   // PRINT_EXPR(V0, V1 + V0);

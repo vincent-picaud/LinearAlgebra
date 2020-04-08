@@ -1,7 +1,7 @@
 //
-// X0 = X0 + α X1 (Blas axpy)
+// V0 = alpha * V1 + V0
+// X0 = + * alpha X1 X0
 //
-
 #pragma once
 
 #include "LinearAlgebra/expr/expr_selector.hpp"
@@ -19,13 +19,9 @@ namespace LinearAlgebra
   //
   template <typename X0_IMPL, typename X1_IMPL>
   Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined>&,  // Undefined implementation
-         VMT_Crtp<X0_IMPL>& X0,                                // X0
-         const _lhs_t_,                                        // X0
-         const _plus_t_,                                       // +
-         const Common_Element_Type_t<X0_IMPL, X1_IMPL> alpha,  // alpha
-         const VMT_Crtp<X1_IMPL>& X1                           // X1
-  )
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined>, VMT_Crtp<X0_IMPL>& X0, const _plus_t_,
+         const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
+         const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
   {
     static_assert(Always_False_v<X0_IMPL>, "Undefined implementation");
     return Expr_Selector_Enum::Undefined;
@@ -35,37 +31,24 @@ namespace LinearAlgebra
   // User interface
   //////////////////////////////////////////////////////////////////
   //
+  //
+  // V0 = alpha * V1 + V0
+  // X0 = + * alpha X1 X0
+  //
   template <typename X0_IMPL, typename X1_IMPL>
   Expr_Selector_Enum
-  assign(VMT_Crtp<X0_IMPL>& X0,                                // X0
-         const _lhs_t_,                                        // X0
-         const _plus_t_,                                       // +
-         const Common_Element_Type_t<X0_IMPL, X1_IMPL> alpha,  // alpha
-         const VMT_Crtp<X1_IMPL>& X1                           // X1
-  )
+  assign(VMT_Crtp<X0_IMPL>& X0, const _plus_t_, const _product_t_,
+         const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1,
+         const _lhs_t_)
+
   {
-    return assign(Expr_Selector<>(), X0.impl(), _lhs_, _plus_, alpha, X1.impl());
+    return assign(Expr_Selector<>(), X0.impl(), _plus_, _product_, alpha, X1.impl(), _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
   // Alias
   //////////////////////////////////////////////////////////////////
   //
-
-  // from: X0 = X0 + α X1
-  // to  : X0 = α X1 + X0
-  //
-  template <typename X0_IMPL, typename X1_IMPL>
-  Expr_Selector_Enum
-  assign(VMT_Crtp<X0_IMPL>& X0,                                // X0
-         const Common_Element_Type_t<X0_IMPL, X1_IMPL> alpha,  // alpha
-         const VMT_Crtp<X1_IMPL>& X1,                          // X1
-         const _plus_t_,                                       // +
-         const _lhs_t_                                         // X0
-  )
-  {
-    return assign(X0.impl(), _lhs_, _plus_, alpha, X1.impl());
-  }
 
   //////////////////////////////////////////////////////////////////
   // Implementation
@@ -76,16 +59,11 @@ namespace LinearAlgebra
   //  Implementation: Generic
   //================================================================
   //
-  // X0 = X0 + α X1
   template <typename X0_IMPL, typename X1_IMPL>
   Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Generic>&,    //
-         VMT_Crtp<X0_IMPL>& X0,                                //
-         const _lhs_t_,                                        //
-         const _plus_t_,                                       //
-         const Common_Element_Type_t<X0_IMPL, X1_IMPL> alpha,  //
-         const VMT_Crtp<X1_IMPL>& X1                           //
-  )
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, VMT_Crtp<X0_IMPL>& X0, const _plus_t_,
+         const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
+         const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
   {
     assert(are_compatible_p(X0.impl(), X1.impl()));
 
@@ -122,16 +100,12 @@ namespace LinearAlgebra
   //
   template <typename X0_IMPL, typename X1_IMPL>
   std::enable_if_t<Any_Has_Static_Dimension_v<X0_IMPL, X1_IMPL>, Expr_Selector_Enum>
-  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,
-         VMT_Crtp<X0_IMPL>& X0,                                // X0
-         const _lhs_t_,                                        // X0
-         const _plus_t_,                                       // +
-         const Common_Element_Type_t<X0_IMPL, X1_IMPL> alpha,  // alpha
-         const VMT_Crtp<X1_IMPL>& X1                           // X1
-  )
+  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, VMT_Crtp<X0_IMPL>& X0,
+         const _plus_t_, const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
+         const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
   {
-    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _lhs_, _plus_, alpha,
-           X1.impl());
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _plus_, _product_, alpha,
+           X1.impl(), _lhs_);
 
     return selected;
   }

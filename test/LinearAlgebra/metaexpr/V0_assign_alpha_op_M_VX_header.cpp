@@ -1,5 +1,6 @@
 #include "LinearAlgebra/expr/V0_assign_alpha_op_M_VX_header.hpp"
 
+#include "LinearAlgebra/expr/expr_debug.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
@@ -18,9 +19,9 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   V = 1;
   U = 1;
 
-  auto selected = assign(V, _product_, _product_, 2, _identity_, U, _lhs_);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
+  DEBUG_RESET_SELECTED();
+  assign(V, _product_, _product_, 2, _identity_, U, _lhs_);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 8);
   EXPECT_EQ(V[1], 6);

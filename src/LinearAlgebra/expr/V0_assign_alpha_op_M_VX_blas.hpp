@@ -28,7 +28,7 @@ namespace LinearAlgebra
   //================================================================
   // CAVEAT: redirect matrices that are NOT TRIANGULAR to the more
   //         general V0=αop(M)V1+βVX
-  // Note: note sure that really a good idea....
+  // Note: note sure that really a good idea.... <- this is BAD idea: to remove
   // ================================================================
   //
   //
@@ -46,18 +46,20 @@ namespace LinearAlgebra
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-              // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
-                              Element_Type_t<VECTOR1_IMPL>> &&
-              // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-              // *NOT* Triangular Matrix
-              !Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
-          Expr_Selector_Enum>
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                          Element_Type_t<VECTOR1_IMPL>> &&
+          // Scalar support
+          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
+          // *NOT* Triangular Matrix
+          !Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
+
   {
     // redirect
-    return assign(selected, vector0, _plus_, _product_, _product_, alpha, op1, matrix1, vector1,
-                  _product_, 0, _lhs_);
+    assign(selected, vector0, _plus_, _product_, _product_, alpha, op1, matrix1, vector1, _product_,
+           0, _lhs_);
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -80,13 +82,12 @@ namespace LinearAlgebra
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-              // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>> &&
-              // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-              // Triangular Matrix
-              Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
-          Expr_Selector_Enum>
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>> &&
+          // Scalar support
+          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
+          // Triangular Matrix
+          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
     assert(are_not_aliased_p(vector0, matrix1));
@@ -99,7 +100,7 @@ namespace LinearAlgebra
                matrix1.I_size(), matrix1.data(), matrix1.leading_dimension(), vector0.data(),
                vector0.increment());
 
-    return selected;
+    DEBUG_SET_SELECTED(selected);
   }
   //
   // vector0 = alpha * transpose(M1) * vector1
@@ -116,19 +117,20 @@ namespace LinearAlgebra
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-              // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
-                              Element_Type_t<VECTOR1_IMPL>> &&
-              // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-              // Triangular Matrix
-              Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
-          Expr_Selector_Enum>
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                          Element_Type_t<VECTOR1_IMPL>> &&
+          // Scalar support
+          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
+          // Triangular Matrix
+          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 
     assign(vector0, _product_, alpha, vector1);
-    return assign(selected, vector0, _product_, _product_, 1, op1, matrix1, _lhs_);
+    assign(selected, vector0, _product_, _product_, 1, op1, matrix1, _lhs_);
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   //================================================================
@@ -149,13 +151,12 @@ namespace LinearAlgebra
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-              // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>> &&
-              // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-              // Triangular Matrix
-              Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
-          Expr_Selector_Enum>
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>> &&
+          // Scalar support
+          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
+          // Triangular Matrix
+          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
     assert(are_not_aliased_p(vector0, matrix1));
@@ -168,7 +169,7 @@ namespace LinearAlgebra
                matrix1.I_size(), matrix1.data(), matrix1.leading_dimension(), vector0.data(),
                vector0.increment());
 
-    return selected;
+    DEBUG_SET_SELECTED(selected);
   }
   //
   // vector0 = alpha * transpose(inverse(M1)) * vector1
@@ -186,19 +187,20 @@ namespace LinearAlgebra
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-              // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
-                              Element_Type_t<VECTOR1_IMPL>> &&
-              // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-              // Triangular Matrix
-              Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
-          Expr_Selector_Enum>
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                          Element_Type_t<VECTOR1_IMPL>> &&
+          // Scalar support
+          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
+          // Triangular Matrix
+          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 
     assign(vector0, _product_, alpha, vector1);
-    return assign(selected, vector0, _product_, _product_, 1, op1, _inverse_, matrix1, _lhs_);
+    assign(selected, vector0, _product_, _product_, 1, op1, _inverse_, matrix1, _lhs_);
+
+    DEBUG_SET_SELECTED(selected);
   }
 
 }

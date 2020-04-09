@@ -6,6 +6,8 @@
 //
 #pragma once
 
+#include "LinearAlgebra/expr/scalar_crtp.hpp"
+
 //----------------
 //
 // CAVEAT: in order to be sure of not missing any specialization, one
@@ -26,11 +28,10 @@ namespace LinearAlgebra
   // Fallback
   //////////////////////////////////////////////////////////////////
   //
-  template <typename X0_IMPL, typename X1_IMPL>
+  template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   void
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
-         const VMT_Crtp<X1_IMPL>& X1)
+         const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1)
   {
     static_assert(Always_False_v<X0_IMPL>, "Undefined");
 
@@ -45,12 +46,12 @@ namespace LinearAlgebra
   // V0 = alpha * V1
   // X0 = * alpha X1
   //
-  template <typename X0_IMPL, typename X1_IMPL>
+  template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   void
-  assign(VMT_Crtp<X0_IMPL>& X0, const _product_t_,
-         const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1)
+  assign(VMT_Crtp<X0_IMPL>& X0, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const VMT_Crtp<X1_IMPL>& X1)
   {
-    assign(Expr_Selector<>(), X0.impl(), _product_, alpha, X1.impl());
+    assign(Expr_Selector<>(), X0.impl(), _product_, alpha.impl(), X1.impl());
   }
 
   //////////////////////////////////////////////////////////////////
@@ -70,26 +71,25 @@ namespace LinearAlgebra
   //================================================================
   //
   //
-  template <typename X0_IMPL, typename X1_IMPL>
+  template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   void
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
-         const VMT_Crtp<X1_IMPL>& X1)
+         const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1)
 
   {
-    if (alpha == 0)
+    if (alpha.value() == 0)
     {
       assign(X0, 0);
       return;
     }
 
-    if (alpha == 1)
+    if (alpha.value() == 1)
     {
       assign(X0, X1);
       return;
     }
 
-    fill([&alpha](const auto& X1_component) { return alpha * X1_component; }, X0.impl(), X1.impl());
+    fill([&alpha](const auto& X1_component) { return alpha.value() * X1_component; }, X0.impl(), X1.impl());
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -103,13 +103,13 @@ namespace LinearAlgebra
   //  Implementation: Static
   //================================================================
   //
-  template <typename X0_IMPL, typename X1_IMPL>
+  template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   std::enable_if_t<Any_Has_Static_Dimension_v<X0_IMPL>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
-         const VMT_Crtp<X1_IMPL>& X1)
+         const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1)
   {
     // Skip dynamic BLAS like specialization
-    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _product_, alpha, X1.impl());
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _product_, alpha.impl(),
+           X1.impl());
   }
 }

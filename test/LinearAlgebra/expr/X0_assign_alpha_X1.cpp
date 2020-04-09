@@ -19,7 +19,7 @@ TEST(X0_Assign_Alpha_X1, vector)
   EXPECT_EQ(v[2], 3);
 
   DEBUG_RESET_SELECTED();
-  assign(w, _product_, 3, v);
+  assign(w, _product_, Scalar_CRef(3), v);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 
   EXPECT_EQ(v[0], 1);
@@ -31,7 +31,7 @@ TEST(X0_Assign_Alpha_X1, vector)
   EXPECT_EQ(w[2], 3 * 3);
 
   DEBUG_RESET_SELECTED();
-  assign(w, _product_, 3, w);
+  assign(w, _product_, Scalar_CRef(3), w);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 
   EXPECT_EQ(v[0], 1);
@@ -55,7 +55,7 @@ TEST(X0_Assign_Alpha_X1, matrix)
   EXPECT_EQ(v(2, 0), 3);
 
   DEBUG_RESET_SELECTED();
-  assign(w, _product_, 3, v);
+  assign(w, _product_, Scalar_CRef(3), v);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 
   EXPECT_EQ(v(0, 0), 1);
@@ -67,7 +67,7 @@ TEST(X0_Assign_Alpha_X1, matrix)
   EXPECT_EQ(w(2, 0), 3 * 3);
 
   DEBUG_RESET_SELECTED();
-  assign(w, _product_, 3, w);
+  assign(w, _product_, Scalar_CRef(3), w);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 
   EXPECT_EQ(v(0, 0), 1);

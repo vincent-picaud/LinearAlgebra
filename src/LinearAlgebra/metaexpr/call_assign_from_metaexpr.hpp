@@ -4,6 +4,7 @@
 
 #include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/expr/assign_fallback.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 #include "LinearAlgebra/utils/crtp.hpp"
 
@@ -58,8 +59,10 @@ namespace LinearAlgebra
     call_assign_from_argument_tuple(VMT_Crtp<DEST_IMPL>& dest,
                                     const std::tuple<ARGS...>& args_as_tuple)
     {
-      // CAVEAT: not args.impl()... as args can be integer,double etc...
-      return std::apply([&](const auto&... args) { return assign(dest.impl(), args...); },
+      // Important: because everything inherit Crtp (including expr
+      // tags and scalar), one can now use args.impl() (and not simplu
+      // args...) -> this allows to define a common assign fallback
+      return std::apply([&](const auto&... args) { return assign(dest.impl(), args.impl()...); },
                         args_as_tuple);
     }
 

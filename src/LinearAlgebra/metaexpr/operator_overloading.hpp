@@ -4,6 +4,7 @@
 #pragma once
 
 #include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/expr/scalar_crtp.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
 
@@ -23,6 +24,10 @@ namespace LinearAlgebra
   // Product
   //================================================================
   //
+
+  //
+  // Expr * Expr
+  //
   template <typename A0_IMPL, typename A1_IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
                    Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _product_t_,
@@ -33,15 +38,48 @@ namespace LinearAlgebra
   }
 
   // scalar * Crpt<> product
+  // template <typename A1_IMPL>
+  // std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+  //                  Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
+  //                                            Element_Type_t<A1_IMPL>, A1_IMPL>>
+  // operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  // {
+  //   return {arg_0, arg_1.impl()};
+  // }
+  //
+  // Scalar*Expr
+  //
   template <typename A1_IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
                    Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
-                                             Element_Type_t<A1_IMPL>, A1_IMPL>>
-  operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
+                                             Scalar_CRef<Element_Type_t<A1_IMPL>>, A1_IMPL>>
+  operator*(const Scalar_CRef<Element_Type_t<A1_IMPL>>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  {
+    return {arg_0, arg_1.impl()};
+  }
+  template <typename A1_IMPL>
+  std::enable_if_t<
+      Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+      Detail::MetaExpr_BinaryOp<
+          Common_Element_Type_t<Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>,
+          _product_t_, Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>>
+  operator*(const Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>& arg_0,
+            const Crtp<A1_IMPL>& arg_1)
+  {
+    return {arg_0, arg_1.impl()};
+  }
+  template <typename USER_SCALAR, typename A1_IMPL>
+  std::enable_if_t<
+      Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+      Detail::MetaExpr_BinaryOp<Common_Element_Type_t<Scalar_CRef<USER_SCALAR>, A1_IMPL>,
+                                _product_t_, Scalar_CRef<USER_SCALAR>, A1_IMPL>>
+  operator*(const Scalar_CRef<USER_SCALAR>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0, arg_1.impl()};
   }
 
+  // TODO: utiliser fallback + modify assign
+  
   //
   //================================================================
   // Plus
@@ -94,7 +132,7 @@ namespace LinearAlgebra
   {
     return {arg.impl()};
   }
-  
+
   //////////////////////////////////////////////////////////////////
   // Transposition like unary operators
   //////////////////////////////////////////////////////////////////

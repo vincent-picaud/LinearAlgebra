@@ -2,6 +2,8 @@
 //
 #pragma once 
 
+#include "LinearAlgebra/expr/expr.hpp"
+
 #include "LinearAlgebra/expr/M0_assign_alpha.hpp"
 #include "LinearAlgebra/expr/M0_assign_M1.hpp"
 

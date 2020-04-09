@@ -87,5 +87,28 @@
        v_0 = v_2;
 
    #+END_QUOTE
+*** 2020-04-09 Thursday
 
+**** TODO To Fix [0/0]                                             :Critical:
+     :PROPERTIES:
+     :Created:  [2020-04-09 Thu 18:10]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/sandbox/garbage.cpp::void%20test_TODO()%20{%20Matrix<int>%20M1,%20M0;%20Vector<int>%20V1;%20//%20M0%20=%20M1%20+%20V1;%20//%20<-%20Generate%20an%20error%20}]]
+
+   #+BEGIN_QUOTE
+   void
+   test_TODO()
+   {
+     Matrix<int> M1, M0;
+     Vector<int> V1;
+
+     //  M0 = M1 + V1; // <- Generate an error
+   }
+   #+END_QUOTE
+
+    - in expression like X0_assign_X1 one must check that both X0 and X1 are matrix or vector, but NOT a mix of two
+      For that one must and a template that check if "All_Are_Matrix" "All_Are_Vector" 
+
+      That's easy but it must be done
 

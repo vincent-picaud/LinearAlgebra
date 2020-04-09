@@ -51,6 +51,11 @@ LinearAlgebra_headers += [
 
   'expr/M_eq_aMM_bM.hpp', # see subdir('M_eq_aMM_bM')
   'expr/M_eq_aMM_bM_matrix.hpp', # specialization for dense default matrix
+
+  # scalar_ref introduction
+  'expr/scalar_crtp.hpp',     # required to make assign_fallback possible
+  'expr/assign_fallback.hpp', # fallback to shorten error messages
+  'expr/expr.hpp',            # convenience header file
 ]
 
 subdir('M_eq_aMM_bM')

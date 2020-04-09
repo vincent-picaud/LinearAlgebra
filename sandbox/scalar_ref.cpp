@@ -1,37 +1,9 @@
-#include "LinearAlgebra/matrix.hpp"
-#include "LinearAlgebra/vector.hpp"
+#include "LinearAlgebra/utils/crtp.hpp"
+#include "LinearAlgebra/utils/always.hpp"
 
-using namespace LinearAlgebra;
-
-template <typename T>
-void
-print(const T&)
-{
-  std::cerr << __PRETTY_FUNCTION__ << std::endl;
-}
-
-void
-test_dot()
-{
-  Vector<double> V1(5);
-  Vector<double> V2(5);
-
-  V1 = 2;
-  V2 = 3;
-
-  dot(V1, V2);  //  5 * 2 * 3
-}
-
-void
-test_dot_return_type()
-{
-  Vector<std::complex<float>> V1(5);
-  V1 = std::complex<float>(3, 2);
-
-  auto Z = dot(V1, V1);
-
-  print(Z);
-}
+#include <iostream>
+#include <vector>
+#include <ccomplex>
 
 namespace LinearAlgebra
 {
@@ -111,6 +83,10 @@ namespace LinearAlgebra
   static_assert(std::is_trivially_copyable_v<Scalar_CRef<double>>);
 
 }
+//////////////////////////////////////////////////////////////////
+
+using namespace LinearAlgebra;
+
 
 void
 test_scalar()
@@ -160,9 +136,6 @@ auto operator*(const Scalar_CRef<std::complex<typename std::vector<T>::value_typ
 void
 test_error()
 {
-  Matrix<int> M1, M0;
-  Vector<int> V1;
-
   //  V1 = M1 * M1 * V1;
 
   std::vector<int> v;
@@ -174,27 +147,13 @@ test_error()
   std::cout << "\n hello : " << t2._o.value();
 
   auto t3 = Scalar_CRef(std::complex<double>(3, 4)) * v;
-  std::cout << "\n hello : " << t2._o.value();
+  std::cout << "\n hello : " << t3._o.value();
 }
 
-void
-test_TODO()
-{
-  Matrix<int> M1, M0;
-  Vector<int> V1;
-
-  //  M0 = M1 + V1; // <- Generate an error
-}
+using namespace LinearAlgebra;
 
 int
 main()
 {
   test_error();
-  return 0;
-
-  test_dot();
-  return 0;
-
-  test_dot_return_type();
-  return 0;
 }

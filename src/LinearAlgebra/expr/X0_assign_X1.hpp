@@ -3,6 +3,7 @@
 //
 #pragma once
 
+#include "LinearAlgebra/expr/expr_debug.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 
@@ -22,34 +23,36 @@ namespace LinearAlgebra
   // Fallback
   //////////////////////////////////////////////////////////////////
   //
-  // template <typename X0_TYPE, typename X1_TYPE>
-  // Expr_Selector_Enum
-  // assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
-  //        VMT_Crtp<X0_TYPE>& X0,       // X0
-  //        const VMT_Crtp<X1_TYPE>& X1  // X1
-  // )
-  // {
-  //   static_assert(Always_False_v<X0_TYPE>, "Undefined implementation");
-  //   return selected;
-  // }
+  template <typename X0_TYPE, typename X1_TYPE>
+  void
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
+         VMT_Crtp<X0_TYPE>& X0,       // X0
+         const VMT_Crtp<X1_TYPE>& X1  // X1
+  )
+  {
+    DEBUG_SET_SELECTED(selected);
+    static_assert(Always_False_v<X0_TYPE>, "Undefined implementation");
+  }
 
   //////////////////////////////////////////////////////////////////
   // User interface
   //////////////////////////////////////////////////////////////////
   //
   template <typename X0_TYPE, typename X1_TYPE>
-  Expr_Selector_Enum
+  void
   assign(VMT_Crtp<X0_TYPE>& X0,       // X0
          const VMT_Crtp<X1_TYPE>& X1  // X1
   )
   {
     // Something to do?
-    if (is_same(X0.impl(), X1.impl()))
+    if (not is_same(X0.impl(), X1.impl()))
     {
-      return Expr_Selector_Enum::END;
+      assign(Expr_Selector<>(), X0.impl(), X1.impl());
     }
-
-    return assign(Expr_Selector<>(), X0.impl(), X1.impl());
+    else
+    {
+      DEBUG_SET_SELECTED(Expr_Selector_Enum::END);
+    }
   }
 
   //////////////////////////////////////////////////////////////////
@@ -63,17 +66,17 @@ namespace LinearAlgebra
   //
 
   template <typename X0_TYPE, typename X1_TYPE>
-  Expr_Selector_Enum
+  void
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
          VMT_Crtp<X0_TYPE>& X0,       // X0
          const VMT_Crtp<X1_TYPE>& X1  // X1
   )
   {
+    DEBUG_SET_SELECTED(selected);
+
     // Note: "fill()" checks for possible static size in both X0 &
     // X1
     fill([](const auto X1_component) { return X1_component; }, X0.impl(), X1.impl());
-
-    return selected;
   }
 
   //================================================================
@@ -81,7 +84,7 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename X0_TYPE, typename X1_TYPE>
-  std::enable_if_t<Any_Has_Static_Dimension_v<X0_TYPE, X1_TYPE>, Expr_Selector_Enum>
+  std::enable_if_t<Any_Has_Static_Dimension_v<X0_TYPE, X1_TYPE>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,
          VMT_Crtp<X0_TYPE>& X0,       // X0
          const VMT_Crtp<X1_TYPE>& X1  // X1
@@ -90,6 +93,6 @@ namespace LinearAlgebra
     // skip blas when X0 or X1 has a static size
     assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), X1.impl());
 
-    return selected;
+    DEBUG_SET_SELECTED(selected);
   }
 }

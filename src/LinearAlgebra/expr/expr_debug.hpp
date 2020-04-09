@@ -17,11 +17,11 @@ namespace LinearAlgebra::Detail
 
 #define DEBUG_RESET_SELECTED()
 #define DEBUG_GET_SELECTED()
-#define DEBUG_SET_SELECTED(value)
+#define DEBUG_SET_SELECTED(value) (void)value
 
 #endif
 
-  // TODO (not urgent): move into test/ directory
+  // TODO (not urgent): maybe move into test/ directory 
 #ifndef NDEBUG
 #define DEBUG_EXPECT_EQ(A, B) EXPECT_EQ((A), (B))
 #else

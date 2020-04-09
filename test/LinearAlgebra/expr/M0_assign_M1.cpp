@@ -18,9 +18,9 @@ TEST(M_assign_M, copy)
   mat_2(1, 1) = 0;
   mat_2(2, 1) = 0;
 
-  Expr_Selector_Enum selected = assign(mat_2, mat_1);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
+  DEBUG_RESET_SELECTED();
+  assign(mat_2, mat_1);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(mat_1(0, 1), 1);
   EXPECT_EQ(mat_1(1, 1), 2);
@@ -34,8 +34,9 @@ TEST(M_assign_M, copy)
 TEST(M_assign_M, copy_assert)
 {
   Tiny_Matrix<int, 3, 1> mat_1;
-  auto selected = assign(mat_1, mat_1);
-  EXPECT_EQ(selected, Expr_Selector_Enum::END);  // "nothing to do" detected
+  DEBUG_RESET_SELECTED();
+  assign(mat_1, mat_1);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::END);  // "nothing to do" detected
 }
 
 TEST(M_assign_M, copy_assert_2)

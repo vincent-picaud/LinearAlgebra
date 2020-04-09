@@ -44,7 +44,7 @@ namespace LinearAlgebra
 
       X0.impl() = X0 + alpha * p;
 
-      r = r - alpha * Ap;  
+      r = r - alpha * Ap;
 
       auto squared_norm_r_new = dot(r, r);
       std::cout << "iter " << i << " residue " << squared_norm_r_new << std::endl;

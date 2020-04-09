@@ -1,4 +1,4 @@
-// Provide the BLAS vector specialization 
+// Provide the BLAS vector specialization
 //
 #pragma once
 
@@ -36,17 +36,16 @@ namespace LinearAlgebra
          Dense_Vector_Crtp<VECTOR_0_TYPE>& vector_0,       // vector_0
          const Dense_Vector_Crtp<VECTOR_1_TYPE>& vector_1  // vector_1
          )
-      -> std::enable_if_t<
+      ->std::enable_if_t<
           Always_True_v<decltype(Blas::copy(vector_0.size(), vector_1.data(), vector_1.increment(),
-                                            vector_0.data(), vector_0.increment()))>,
-          Expr_Selector_Enum>
+                                            vector_0.data(), vector_0.increment()))>>
   {
     assert(are_compatible_p(vector_0, vector_1));
 
     Blas::copy(vector_0.size(), vector_1.data(), vector_1.increment(), vector_0.data(),
                vector_0.increment());
 
-    return selected;
+    DEBUG_SET_SELECTED(selected);
   }
 #endif
 }

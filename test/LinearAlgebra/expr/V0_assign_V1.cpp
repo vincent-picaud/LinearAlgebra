@@ -20,9 +20,9 @@ TEST(V_assign_V, copy)
   w[1] = 0;
   w[2] = 0;
 
-  Expr_Selector_Enum selected = assign(w, v);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
+  DEBUG_RESET_SELECTED();
+  assign(w, v);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(v[1], 2);
@@ -44,9 +44,9 @@ TEST(V_assign_V, copy_blas)
   w[1] = 0;
   w[2] = 0;
 
-  Expr_Selector_Enum selected = assign(w, v);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Blas);
+  DEBUG_RESET_SELECTED();
+  assign(w, v);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(v[1], 2);
@@ -60,8 +60,10 @@ TEST(V_assign_V, copy_blas)
 TEST(V_assign_V, copy_assert)
 {
   Tiny_Vector<int, 3> v;
-  auto selected = assign(v, v);
-  EXPECT_EQ(selected, Expr_Selector_Enum::END);  // "nothing to do" detected
+
+  DEBUG_RESET_SELECTED();
+  assign(v, v);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::END);  // "nothing to do" detected
 }
 
 TEST(V_assign_V, copy_assert_2)

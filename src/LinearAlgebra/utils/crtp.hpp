@@ -25,19 +25,19 @@ namespace LinearAlgebra
     using traits_type = Crtp_Type_Traits<exact_type>;
 
    public:
-    const exact_type&
+    constexpr const exact_type&
     impl() const noexcept  //!< use exact_type instance
     {
       return static_cast<const exact_type&>(*this);
     };
-    exact_type&
+    constexpr exact_type&
     impl() noexcept  //!< use exact_type instance
     {
       return static_cast<exact_type&>(*this);
     };
 
    protected:
-    Crtp& operator=(const Crtp&) = default;
+    constexpr Crtp& operator=(const Crtp&) = default;
   };
 
   template <template <typename> class CRTP_INTERFACE, typename OBJ, typename ENABLE = void>

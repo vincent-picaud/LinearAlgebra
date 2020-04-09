@@ -36,11 +36,15 @@ test_dot_return_type()
 namespace LinearAlgebra
 {
   // Fallback
+  //
+  // Greatly reduce the length of error message. This was one of the
+  // main reason to introduce Scalar_CRef
+  //
   template <typename DEST_IMPL, typename... ARG_IMPL>
   void
   assign(Crtp<DEST_IMPL>&, const Crtp<ARG_IMPL>&...)
   {
-    static_assert(Always_False_v<DEST_IMPL>, "OKKKKKK");
+    static_assert(Always_False_v<DEST_IMPL>, "Unknown expression");
   }
 
   // Scalar
@@ -87,7 +91,12 @@ namespace LinearAlgebra
     const element_type& _value;
 
    public:
-    constexpr Scalar_CRef(const element_type& value) noexcept : _value(value) {}
+    // CAVEAT: really use ELEMENT_TYPE and not element_type which
+    // prevent C++ to use automatic template deduction:
+    //
+    // Scalar_CRef(std::complex<double>(3, 4)) <- would NOT work anymore
+    //
+    constexpr Scalar_CRef(const ELEMENT_TYPE& value) noexcept : _value(value) {}
 
    protected:
     friend base_type;
@@ -127,6 +136,13 @@ struct A
   A(const O& o) noexcept : _o(o){};
 };
 
+// This one let the user explicitly define scalar type
+template <typename U, typename T>
+auto operator*(const Scalar_CRef<U>& s, const std::vector<T>& v)
+{
+  std::cerr << __PRETTY_FUNCTION__ << std::endl;
+  return A{s};
+}
 template <typename T>
 auto operator*(const Scalar_CRef<typename std::vector<T>::value_type>& s, const std::vector<T>& v)
 {
@@ -147,7 +163,7 @@ test_error()
   Matrix<int> M1, M0;
   Vector<int> V1;
 
-  //  V1 = M1 * V1;
+  //  V1 = M1 * M1 * V1;
 
   std::vector<int> v;
   auto t = 4. * v;
@@ -155,6 +171,9 @@ test_error()
   std::cout << "\n hello : " << t._o.value();
 
   auto t2 = std::complex<int>(3, 4) * v;
+  std::cout << "\n hello : " << t2._o.value();
+
+  auto t3 = Scalar_CRef(std::complex<double>(3, 4)) * v;
   std::cout << "\n hello : " << t2._o.value();
 }
 

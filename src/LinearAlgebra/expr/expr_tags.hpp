@@ -27,6 +27,15 @@
 namespace LinearAlgebra
 {
   ///////////////////////////////////////////////////////
+  // Tags as CRTP for generic filtering
+  ///////////////////////////////////////////////////////
+  //
+  template <typename IMPL>
+  class Expr_Tags_Crtp : public Crtp_Find_Impl<Expr_Tags_Crtp, IMPL, Crtp>
+  {
+  };
+
+  ///////////////////////////////////////////////////////
   // Tags used to notify operations (plus, product...) //
   ///////////////////////////////////////////////////////
   //
@@ -34,32 +43,32 @@ namespace LinearAlgebra
   //       C++ identifiers, see
   //       https://en.cppreference.com/w/cpp/language/identifiers
   //
-  struct _plus_t_
+  struct _plus_t_ final : Expr_Tags_Crtp<_plus_t_>
   {
   };
   constexpr auto _plus_ = _plus_t_();
 
-  struct _minus_t_
+  struct _minus_t_ final : Expr_Tags_Crtp<_minus_t_>
   {
   };
   constexpr auto _minus_ = _minus_t_();
 
-  struct _unary_minus_t_
+  struct _unary_minus_t_ final : Expr_Tags_Crtp<_unary_minus_t_>
   {
   };
   constexpr auto _unary_minus_ = _unary_minus_t_();
 
-  struct _product_t_
+  struct _product_t_ final : Expr_Tags_Crtp<_product_t_>
   {
   };
   constexpr auto _product_ = _product_t_();
 
-  struct _inverse_t_
+  struct _inverse_t_ final : Expr_Tags_Crtp<_inverse_t_>
   {
   };
   constexpr auto _inverse_ = _inverse_t_();
 
-  struct _assign_t_
+  struct _assign_t_ final : Expr_Tags_Crtp<_assign_t_>
   {
   };
   constexpr auto _assign_ = _assign_t_();
@@ -68,13 +77,13 @@ namespace LinearAlgebra
   // Tags used to notify argument //
   //////////////////////////////////
   //
-  struct _lhs_t_
+  struct _lhs_t_ final : Expr_Tags_Crtp<_lhs_t_>
   {
   };
-  struct _rhs_1_t_
+  struct _rhs_1_t_ final : Expr_Tags_Crtp<_rhs_1_t_>
   {
   };
-  struct _rhs_2_t_
+  struct _rhs_2_t_ final : Expr_Tags_Crtp<_rhs_2_t_>
   {
   };
 
@@ -97,7 +106,7 @@ namespace LinearAlgebra
   };
 
   template <Matrix_Unary_Op_Enum OP>
-  struct _matrix_unary_op_t_
+  struct _matrix_unary_op_t_ final : Expr_Tags_Crtp<_matrix_unary_op_t_<OP>>
   {
   };
 

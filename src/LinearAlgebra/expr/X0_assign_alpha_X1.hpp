@@ -20,7 +20,6 @@
 //
 //----------------
 
-
 namespace LinearAlgebra
 {
   //////////////////////////////////////////////////////////////////
@@ -28,13 +27,14 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename X0_IMPL, typename X1_IMPL>
-  Expr_Selector_Enum
+  void
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
          const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1)
   {
     static_assert(Always_False_v<X0_IMPL>, "Undefined");
-    return selected;
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -46,11 +46,11 @@ namespace LinearAlgebra
   // X0 = * alpha X1
   //
   template <typename X0_IMPL, typename X1_IMPL>
-  Expr_Selector_Enum
+  void
   assign(VMT_Crtp<X0_IMPL>& X0, const _product_t_,
          const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1)
   {
-    return assign(Expr_Selector<>(), X0.impl(), _product_, alpha, X1.impl());
+    assign(Expr_Selector<>(), X0.impl(), _product_, alpha, X1.impl());
   }
 
   //////////////////////////////////////////////////////////////////
@@ -71,7 +71,7 @@ namespace LinearAlgebra
   //
   //
   template <typename X0_IMPL, typename X1_IMPL>
-  Expr_Selector_Enum
+  void
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, VMT_Crtp<X0_IMPL>& X0,
          const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1)
@@ -80,18 +80,18 @@ namespace LinearAlgebra
     if (alpha == 0)
     {
       assign(X0, 0);
-    }
-    else if (alpha == 1)
-    {
-      assign(X0, X1);
-    }
-    else
-    {
-      fill([&alpha](const auto& X1_component) { return alpha * X1_component; }, X0.impl(),
-           X1.impl());
+      return;
     }
 
-    return selected;
+    if (alpha == 1)
+    {
+      assign(X0, X1);
+      return;
+    }
+
+    fill([&alpha](const auto& X1_component) { return alpha * X1_component; }, X0.impl(), X1.impl());
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   //================================================================
@@ -104,14 +104,12 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename X0_IMPL, typename X1_IMPL>
-  std::enable_if_t<Any_Has_Static_Dimension_v<X0_IMPL>, Expr_Selector_Enum>
+  std::enable_if_t<Any_Has_Static_Dimension_v<X0_IMPL>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, VMT_Crtp<X0_IMPL>& X0,
          const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1)
   {
     // Skip dynamic BLAS like specialization
     assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _product_, alpha, X1.impl());
-
-    return selected;
   }
 }

@@ -18,9 +18,9 @@ TEST(X0_Assign_Alpha_X1, vector)
   EXPECT_EQ(v[1], 2);
   EXPECT_EQ(v[2], 3);
 
-  Expr_Selector_Enum selected = assign(w, _product_, 3, v);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
+  DEBUG_RESET_SELECTED();
+  assign(w, _product_, 3, v);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(v[1], 2);
@@ -30,9 +30,9 @@ TEST(X0_Assign_Alpha_X1, vector)
   EXPECT_EQ(w[1], 3 * 2);
   EXPECT_EQ(w[2], 3 * 3);
 
-  selected = assign(w, _product_, 3, w);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
+  DEBUG_RESET_SELECTED();
+  assign(w, _product_, 3, w);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(v[1], 2);
@@ -54,9 +54,9 @@ TEST(X0_Assign_Alpha_X1, matrix)
   EXPECT_EQ(v(1, 0), 2);
   EXPECT_EQ(v(2, 0), 3);
 
-  Expr_Selector_Enum selected = assign(w, _product_, 3, v);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
+  DEBUG_RESET_SELECTED();
+  assign(w, _product_, 3, v);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 
   EXPECT_EQ(v(0, 0), 1);
   EXPECT_EQ(v(1, 0), 2);
@@ -66,9 +66,9 @@ TEST(X0_Assign_Alpha_X1, matrix)
   EXPECT_EQ(w(1, 0), 3 * 2);
   EXPECT_EQ(w(2, 0), 3 * 3);
 
-  selected = assign(w, _product_, 3, w);
-
-  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
+  DEBUG_RESET_SELECTED();
+  assign(w, _product_, 3, w);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
 
   EXPECT_EQ(v(0, 0), 1);
   EXPECT_EQ(v(1, 0), 2);

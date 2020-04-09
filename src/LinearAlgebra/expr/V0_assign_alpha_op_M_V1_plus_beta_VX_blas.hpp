@@ -40,22 +40,22 @@ namespace LinearAlgebra
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-              // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
-                              Element_Type_t<VECTOR1_IMPL>> &&
-              // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-              // Generic matrix
-              (MATRIX1_IMPL::matrix_special_structure_type::value ==
-               Matrix_Special_Structure_Enum::None),
-          Expr_Selector_Enum>
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                          Element_Type_t<VECTOR1_IMPL>> &&
+          // Scalar support
+          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
+          // Generic matrix
+          (MATRIX1_IMPL::matrix_special_structure_type::value ==
+           Matrix_Special_Structure_Enum::None)>
   {
     assert(are_not_aliased_p(vector0, vector1) and are_not_aliased_p(vector0, matrix1));
 
     Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<OP1_ENUM>, matrix1.I_size(),
                matrix1.J_size(), alpha, matrix1.data(), matrix1.leading_dimension(), vector1.data(),
                vector1.increment(), beta, vector0.data(), vector0.increment());
-    return selected;
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
@@ -72,18 +72,17 @@ namespace LinearAlgebra
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-              // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
-                              Element_Type_t<VECTOR1_IMPL>, Element_Type_t<VECTOR2_IMPL>> &&
-              // Scalar support
-              Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-              // Generic matrix
-              (MATRIX1_IMPL::matrix_special_structure_type::value ==
-               Matrix_Special_Structure_Enum::None),
-          Expr_Selector_Enum>
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                          Element_Type_t<VECTOR1_IMPL>, Element_Type_t<VECTOR2_IMPL>> &&
+          // Scalar support
+          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
+          // Generic matrix
+          (MATRIX1_IMPL::matrix_special_structure_type::value ==
+           Matrix_Special_Structure_Enum::None)>
   {
-    vector0 = vector2;
-    return assign(selected, vector0, alpha, op1, matrix1, vector1, _plus_, beta, _lhs_);
+    assign(vector0, vector2);
+    assign(selected, vector0, alpha, op1, matrix1, vector1, _plus_, beta, _lhs_);
   }
 
   //================================================================
@@ -111,15 +110,14 @@ namespace LinearAlgebra
           // Supported matrix op?
           (OP1_ENUM == Matrix_Unary_Op_Enum::Identity or
            OP1_ENUM == Matrix_Unary_Op_Enum::Transpose) and
-              // Same scalar everywhere
-              All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
-                              Element_Type_t<VECTOR1_IMPL>> &&
-              // Scalar support
-              Blas::Is_CBlas_Supported_Real_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-              // Matrix structure
-              (MATRIX1_IMPL::matrix_special_structure_type::value ==
-               Matrix_Special_Structure_Enum::Symmetric),
-          Expr_Selector_Enum>
+          // Same scalar everywhere
+          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+                          Element_Type_t<VECTOR1_IMPL>> &&
+          // Scalar support
+          Blas::Is_CBlas_Supported_Real_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
+          // Matrix structure
+          (MATRIX1_IMPL::matrix_special_structure_type::value ==
+           Matrix_Special_Structure_Enum::Symmetric)>
   {
     // Sanity check
     assert(matrix1.I_size() == matrix1.J_size());
@@ -128,7 +126,8 @@ namespace LinearAlgebra
     Blas::symv(CblasColMajor, Blas::To_CBlas_UpLo_v<MATRIX1_IMPL::matrix_storage_mask_type::value>,
                matrix1.I_size(), alpha, matrix1.data(), matrix1.leading_dimension(), vector1.data(),
                vector1.increment(), beta, vector0.data(), vector0.increment());
-    return selected;
+
+    DEBUG_SET_SELECTED(selected);
   }
 
 }

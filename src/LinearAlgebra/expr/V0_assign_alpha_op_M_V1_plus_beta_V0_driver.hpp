@@ -6,6 +6,7 @@
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 #include "LinearAlgebra/expr/dimension.hpp"
+#include "LinearAlgebra/expr/expr_debug.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 
@@ -20,7 +21,7 @@ namespace LinearAlgebra
   //
   template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
             typename MATRIX1_IMPL>
-  Expr_Selector_Enum
+  void
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
          Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
          const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
@@ -29,7 +30,8 @@ namespace LinearAlgebra
          const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& beta, const _lhs_t_)
   {
     static_assert(Always_False_v<MATRIX1_IMPL>, "Not implemented");
-    return selected;
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -42,7 +44,7 @@ namespace LinearAlgebra
   //
   template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
             typename MATRIX1_IMPL>
-  Expr_Selector_Enum
+  void
   assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
          const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
          const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
@@ -56,8 +58,8 @@ namespace LinearAlgebra
 
     // Delegate computation
     //
-    return assign(Expr_Selector<>(), vector0.impl(), _plus_, _product_, _product_, alpha, op1,
-                  matrix1.impl(), vector1.impl(), _product_, beta, _lhs_);
+    assign(Expr_Selector<>(), vector0.impl(), _plus_, _product_, _product_, alpha, op1,
+           matrix1.impl(), vector1.impl(), _product_, beta, _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////

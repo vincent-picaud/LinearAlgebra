@@ -30,8 +30,9 @@ namespace LinearAlgebra
          const VMT_Crtp<X1_TYPE>& X1  // X1
   )
   {
-    DEBUG_SET_SELECTED(selected);
     static_assert(Always_False_v<X0_TYPE>, "Undefined implementation");
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -72,11 +73,11 @@ namespace LinearAlgebra
          const VMT_Crtp<X1_TYPE>& X1  // X1
   )
   {
-    DEBUG_SET_SELECTED(selected);
-
     // Note: "fill()" checks for possible static size in both X0 &
     // X1
     fill([](const auto X1_component) { return X1_component; }, X0.impl(), X1.impl());
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   //================================================================

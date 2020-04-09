@@ -13,8 +13,9 @@ TEST(V_assign_alpha, assign)
   v[1] = 2;
   v[2] = 3;
 
-  Expr_Selector_Enum selected = assign(v, -1);
-  EXPECT_EQ(selected, Expr_Selector_Enum::Static);
+  DEBUG_RESET_SELECTED();
+  assign(v, -1);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v[0], -1);
   EXPECT_EQ(v[1], -1);

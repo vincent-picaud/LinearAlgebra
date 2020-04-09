@@ -3,7 +3,6 @@
 //
 // TODO: Blas axpy
 //
-
 #pragma once
 
 #include "LinearAlgebra/dense/vector_header.hpp"

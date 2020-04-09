@@ -4,6 +4,7 @@
 //
 #pragma once
 
+#include "LinearAlgebra/expr/expr_debug.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 
@@ -18,13 +19,14 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
   template <typename X0_IMPL, typename X1_IMPL>
-  Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined>, VMT_Crtp<X0_IMPL>& X0, const _plus_t_,
-         const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
+  void
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
+         const _plus_t_, const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
   {
     static_assert(Always_False_v<X0_IMPL>, "Undefined implementation");
-    return Expr_Selector_Enum::Undefined;
+
+    DEBUG_SET_SELECTED(selected);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -36,13 +38,13 @@ namespace LinearAlgebra
   // X0 = + * alpha X1 X0
   //
   template <typename X0_IMPL, typename X1_IMPL>
-  Expr_Selector_Enum
+  void
   assign(VMT_Crtp<X0_IMPL>& X0, const _plus_t_, const _product_t_,
          const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1,
          const _lhs_t_)
 
   {
-    return assign(Expr_Selector<>(), X0.impl(), _plus_, _product_, alpha, X1.impl(), _lhs_);
+    assign(Expr_Selector<>(), X0.impl(), _plus_, _product_, alpha, X1.impl(), _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -60,16 +62,17 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename X0_IMPL, typename X1_IMPL>
-  Expr_Selector_Enum
-  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, VMT_Crtp<X0_IMPL>& X0, const _plus_t_,
-         const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
+  void
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, VMT_Crtp<X0_IMPL>& X0,
+         const _plus_t_, const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
   {
     assert(are_compatible_p(X0.impl(), X1.impl()));
 
     if (alpha == 0)
     {
-      return Expr_Selector_Enum::END;  // nothing to do
+      DEBUG_SET_SELECTED(Expr_Selector_Enum::END);  // nothing to do
+      return;
     }
 
     if (alpha == 1)
@@ -91,7 +94,7 @@ namespace LinearAlgebra
                 X0.impl(), X1.impl());
     }
 
-    return Expr_Selector_Enum::Generic;
+    DEBUG_SET_SELECTED(selected);
   }
 
   //================================================================
@@ -99,7 +102,7 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename X0_IMPL, typename X1_IMPL>
-  std::enable_if_t<Any_Has_Static_Dimension_v<X0_IMPL, X1_IMPL>, Expr_Selector_Enum>
+  std::enable_if_t<Any_Has_Static_Dimension_v<X0_IMPL, X1_IMPL>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, VMT_Crtp<X0_IMPL>& X0,
          const _plus_t_, const _product_t_, const Common_Element_Type_t<X0_IMPL, X1_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
@@ -107,6 +110,6 @@ namespace LinearAlgebra
     assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _plus_, _product_, alpha,
            X1.impl(), _lhs_);
 
-    return selected;
+    DEBUG_SET_SELECTED(selected);
   }
 }

@@ -44,11 +44,11 @@ namespace LinearAlgebra
     {
       // Branch to V0 = alpha * V1 + _lhs_ =  + * alpha X1 _lhs_
       //
-      assign(X0.impl(), _plus_, _product_, alpha, X1.impl(), _lhs_);
+      assign(X0.impl(), _plus_, _product_, alpha.impl(), X1.impl(), _lhs_);
     }
     else
     {
-      assign(Expr_Selector<>(), X0.impl(), _plus_, _product_, alpha, X1.impl(), X2.impl());
+      assign(Expr_Selector<>(), X0.impl(), _plus_, _product_, alpha.impl(), X1.impl(), X2.impl());
     }
   }
 
@@ -66,8 +66,9 @@ namespace LinearAlgebra
   assign(VMT_Crtp<X0_IMPL>& X0, const _plus_t_, const VMT_Crtp<X1_IMPL>& X1,
          const VMT_Crtp<X2_IMPL>& X2)
   {
-    assign(X0.impl(), _plus_, _product_,
-           Scalar_CRef<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>(1), X1.impl(), X2.impl());
+    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
+
+    assign(X0.impl(), _plus_, _product_, Scalar_CRef_Type(1), X1.impl(), X2.impl());
   }
 
   //
@@ -79,8 +80,9 @@ namespace LinearAlgebra
   assign(VMT_Crtp<X0_IMPL>& X0, const _plus_t_, const _unary_minus_t_, const VMT_Crtp<X1_IMPL>& X1,
          const VMT_Crtp<X2_IMPL>& X2)
   {
-    assign(X0.impl(), _plus_, _product_,
-           Scalar_CRef<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>(-1), X1.impl(), X2.impl());
+    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
+
+    assign(X0.impl(), _plus_, _product_, Scalar_CRef_Type(-1), X1.impl(), X2.impl());
   }
 
   //
@@ -92,7 +94,7 @@ namespace LinearAlgebra
   assign(VMT_Crtp<X0_IMPL>& X0, const _plus_t_, const VMT_Crtp<X2_IMPL>& X2, const _product_t_,
          const Scalar_Crtp<ALPHA_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1)
   {
-    assign(X0.impl(), _plus_, _product_, alpha, X1.impl(), X2.impl());
+    assign(X0.impl(), _plus_, _product_, alpha.impl(), X1.impl(), X2.impl());
   }
 
   //
@@ -165,7 +167,7 @@ namespace LinearAlgebra
          const VMT_Crtp<X1_IMPL>& X1, const VMT_Crtp<X2_IMPL>& X2)
 
   {
-    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _plus_, _product_, alpha,
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _plus_, _product_, alpha.impl(),
            X1.impl(), X2.impl());
 
     DEBUG_SET_SELECTED(selected);

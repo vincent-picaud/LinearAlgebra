@@ -88,8 +88,8 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trsv_check_alias)
   U = 1;
 
   V = inverse(U) * V;
-  V = 2 * inverse(U) * V;
+  V = Scalar_CRef(2) * inverse(U) * V;
   //  V = transpose(inverse(U)) * V;
   V = inverse(transpose(U)) * V;
-  V = 2 * inverse(transpose(U)) * V;
+  V = Scalar_CRef<std::complex<double>>(2) * inverse(transpose(U)) * V;
 }

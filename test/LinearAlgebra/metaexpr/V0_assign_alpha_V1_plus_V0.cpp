@@ -15,6 +15,8 @@ TEST(V0_assign_alpha_V1_plus_V0, alias)
 {
   Vector<double> V(4), W(4);
 
+  assign(V, _plus_, V, W);
+
   V = V + W;
   V = V - W;
 

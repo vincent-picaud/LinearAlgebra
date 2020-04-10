@@ -27,21 +27,21 @@ namespace LinearAlgebra
   // V0 = alpha * transpose(M1) * V1 + beta * V0
   // vector0 = + * * alpha op1 matrix1 vector1 * beta vector0
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL, typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename MATRIX1_IMPL>
   auto
   assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
          Dense_Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const _product_t_,
-         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
+         const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const _matrix_unary_op_t_<OP1_ENUM> op1, const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
-         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& beta, const _lhs_t_)
+         const Scalar_Crtp<BETA_IMPL>& beta, const _lhs_t_)
       -> std::enable_if_t<
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
           // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+          All_Same_Type_v<Element_Type_t<ALPHA_IMPL>, Element_Type_t<BETA_IMPL>,
+                          Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
                           Element_Type_t<VECTOR1_IMPL>> &&
           // Scalar support
           Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
@@ -52,14 +52,16 @@ namespace LinearAlgebra
     assert(are_not_aliased_p(vector0, vector1) and are_not_aliased_p(vector0, matrix1));
 
     Blas::gemv(CblasColMajor, Blas::To_CBlas_Transpose_v<OP1_ENUM>, matrix1.I_size(),
-               matrix1.J_size(), alpha, matrix1.data(), matrix1.leading_dimension(), vector1.data(),
-               vector1.increment(), beta, vector0.data(), vector0.increment());
+               matrix1.J_size(), alpha.value(), matrix1.data(), matrix1.leading_dimension(),
+               vector1.data(), vector1.increment(), beta.value(), vector0.data(),
+               vector0.increment());
 
     DEBUG_SET_SELECTED(selected);
   }
 
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL, typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   auto
   assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
          Dense_Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
@@ -73,7 +75,8 @@ namespace LinearAlgebra
           // Supported matrix op?
           Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
           // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+          All_Same_Type_v<Element_Type_t<ALPHA_IMPL>, Element_Type_t<BETA_IMPL>,
+                          Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
                           Element_Type_t<VECTOR1_IMPL>, Element_Type_t<VECTOR2_IMPL>> &&
           // Scalar support
           Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
@@ -96,22 +99,22 @@ namespace LinearAlgebra
   // V0 = alpha * transpose(M1) * V1 + beta * V0
   // vector0 = + * * alpha op1 matrix1 vector1 * beta vector0
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL, typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename MATRIX1_IMPL>
   auto
   assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
          Dense_Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const _product_t_,
-         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& alpha,
+         const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const _matrix_unary_op_t_<OP1_ENUM> op1, const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
-         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>& beta, const _lhs_t_)
+         const Scalar_Crtp<BETA_IMPL>& beta, const _lhs_t_)
       -> std::enable_if_t<
           // Supported matrix op?
           (OP1_ENUM == Matrix_Unary_Op_Enum::Identity or
            OP1_ENUM == Matrix_Unary_Op_Enum::Transpose) and
           // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
+          All_Same_Type_v<Element_Type_t<ALPHA_IMPL>, Element_Type_t<BETA_IMPL>,
+                          Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>,
                           Element_Type_t<VECTOR1_IMPL>> &&
           // Scalar support
           Blas::Is_CBlas_Supported_Real_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
@@ -124,8 +127,9 @@ namespace LinearAlgebra
     assert(are_not_aliased_p(vector0, vector1) and are_not_aliased_p(vector0, matrix1));
 
     Blas::symv(CblasColMajor, Blas::To_CBlas_UpLo_v<MATRIX1_IMPL::matrix_storage_mask_type::value>,
-               matrix1.I_size(), alpha, matrix1.data(), matrix1.leading_dimension(), vector1.data(),
-               vector1.increment(), beta, vector0.data(), vector0.increment());
+               matrix1.I_size(), alpha.value(), matrix1.data(), matrix1.leading_dimension(),
+               vector1.data(), vector1.increment(), beta.value(), vector0.data(),
+               vector0.increment());
 
     DEBUG_SET_SELECTED(selected);
   }

@@ -4,9 +4,7 @@
 //
 #pragma once
 
-#include "LinearAlgebra/expr/expr_debug.hpp"
-#include "LinearAlgebra/expr/expr_selector.hpp"
-#include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/expr/expr.hpp"
 
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
@@ -21,7 +19,7 @@ namespace LinearAlgebra
   template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   void
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _plus_t_, const _product_t_, const Scalar_CRef<ALPHA_IMPL>& alpha,
+         const _plus_t_, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
   {
     static_assert(Always_False_v<X0_IMPL>, "Undefined implementation");
@@ -40,7 +38,7 @@ namespace LinearAlgebra
   template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   void
   assign(VMT_Crtp<X0_IMPL>& X0, const _plus_t_, const _product_t_,
-         const Scalar_CRef<ALPHA_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
+         const Scalar_Crtp<ALPHA_IMPL>& alpha, const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
 
   {
     assign(Expr_Selector<>(), X0.impl(), _plus_, _product_, alpha.impl(), X1.impl(), _lhs_);
@@ -63,7 +61,7 @@ namespace LinearAlgebra
   template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   void
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _plus_t_, const _product_t_, const Scalar_CRef<ALPHA_IMPL>& alpha,
+         const _plus_t_, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
   {
     assert(are_compatible_p(X0.impl(), X1.impl()));
@@ -105,7 +103,7 @@ namespace LinearAlgebra
   template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   std::enable_if_t<Any_Has_Static_Dimension_v<X0_IMPL, X1_IMPL>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _plus_t_, const _product_t_, const Scalar_CRef<ALPHA_IMPL>& alpha,
+         const _plus_t_, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
   {
     assign(Expr_Selector<Expr_Selector_Enum::Generic>(), X0.impl(), _plus_, _product_, alpha.impl(),

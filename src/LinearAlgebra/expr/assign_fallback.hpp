@@ -9,10 +9,10 @@ namespace LinearAlgebra
   // Greatly reduce the length of error message. This was one of the
   // main reason to introduce Scalar_CRef
   //
-  template <typename DEST_IMPL, typename... ARG_IMPL>
-  void
-  assign(Crtp<DEST_IMPL>&, const Crtp<ARG_IMPL>&...)
-  {
-    static_assert(Always_False_v<DEST_IMPL>, "Unknown expression");
-  }
+  // template <typename DEST_IMPL, typename... ARG_IMPL>
+  // void
+  // assign(Crtp<DEST_IMPL>&, const Crtp<ARG_IMPL>&...)
+  // {
+  //   static_assert(Always_False_v<DEST_IMPL>, "Unknown expression");
+  // }
 }

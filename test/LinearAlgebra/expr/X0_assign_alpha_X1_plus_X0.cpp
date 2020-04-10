@@ -20,7 +20,7 @@ TEST(X0_assign_alpha_X1_plus_X0, vector_generic)
   iota(w, 5);
 
   DEBUG_RESET_SELECTED();
-  assign(v, _plus_, _product_, 2, w, _lhs_);
+  assign(v, _plus_, _product_, Scalar_CRef(2), w, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v[0], 1 + 2 * w[0]);
@@ -37,7 +37,7 @@ TEST(X0_assign_alpha_X1_plus_X0, vector_generic_alias)
   iota(w, 5);
 
   DEBUG_RESET_SELECTED();
-  assign(v, _plus_, _product_, 2, w, _lhs_);
+  assign(v, _plus_, _product_, Scalar_CRef(2), w, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v[0], 1 + 2 * w[0]);
@@ -57,7 +57,7 @@ TEST(X0_assign_alpha_X1_plus_X0, matrix_generic_alias)
   w = 5;
 
   DEBUG_RESET_SELECTED();
-  assign(v, _plus_, _product_, 2, w, _lhs_);
+  assign(v, _plus_, _product_, Scalar_CRef(2), w, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v(1, 0), 1 + 2 * 5);

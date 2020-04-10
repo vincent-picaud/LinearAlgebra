@@ -33,14 +33,13 @@ test_dot_return_type()
   print(Z);
 }
 
-
 void
 test_TODO()
 {
   Matrix<int> M1, M0;
   Vector<int> V1;
 
-  //  M0 = M1 + V1; // <- Generate an error
+  V1 = M1 * V1 ;  // <- Generate an error
 }
 
 int

@@ -16,23 +16,6 @@
 
 namespace LinearAlgebra
 {
-  //////////////////////////////////////////////////////////////////
-  // Fallback
-  //////////////////////////////////////////////////////////////////
-  //
-  //
-  // X0 = alpha * X0
-  // X0 = * alpha X0
-  //
-  template <typename ALPHA_IMPL, typename X0_IMPL>
-  void
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha, const _lhs_t_)
-  {
-    static_assert(Always_False_v<X0_IMPL>, "Undefined implementation");
-
-    DEBUG_SET_SELECTED(selected);
-  }
 
   //////////////////////////////////////////////////////////////////
   // User interface

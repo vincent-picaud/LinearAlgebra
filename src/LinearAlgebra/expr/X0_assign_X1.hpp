@@ -3,9 +3,7 @@
 //
 #pragma once
 
-#include "LinearAlgebra/expr/expr_debug.hpp"
-#include "LinearAlgebra/expr/expr_selector.hpp"
-#include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/expr/expr.hpp"
 
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
@@ -19,21 +17,6 @@
 
 namespace LinearAlgebra
 {
-  //////////////////////////////////////////////////////////////////
-  // Fallback
-  //////////////////////////////////////////////////////////////////
-  //
-  template <typename X0_TYPE, typename X1_TYPE>
-  void
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
-         VMT_Crtp<X0_TYPE>& X0,       // X0
-         const VMT_Crtp<X1_TYPE>& X1  // X1
-  )
-  {
-    static_assert(Always_False_v<X0_TYPE>, "Undefined implementation");
-
-    DEBUG_SET_SELECTED(selected);
-  }
 
   //////////////////////////////////////////////////////////////////
   // User interface

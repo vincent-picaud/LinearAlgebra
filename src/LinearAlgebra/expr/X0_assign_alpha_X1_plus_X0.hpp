@@ -13,21 +13,6 @@
 namespace LinearAlgebra
 {
   //////////////////////////////////////////////////////////////////
-  // Fallback
-  //////////////////////////////////////////////////////////////////
-  //
-  template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
-  void
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<X0_IMPL>& X0,
-         const _plus_t_, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
-         const VMT_Crtp<X1_IMPL>& X1, const _lhs_t_)
-  {
-    static_assert(Always_False_v<X0_IMPL>, "Undefined implementation");
-
-    DEBUG_SET_SELECTED(selected);
-  }
-
-  //////////////////////////////////////////////////////////////////
   // User interface
   //////////////////////////////////////////////////////////////////
   //

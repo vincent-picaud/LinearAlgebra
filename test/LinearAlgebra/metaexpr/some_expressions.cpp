@@ -50,7 +50,7 @@ TEST(MetaExpr_Crtp, gemv)
   Matrix<double> M(n, m);
   Vector<double> x(m), y(n);
   // TODO
-  assign(y, _plus_, _product_, _product_, 4, M, x, _product_, 2, y);
+  assign(y, _plus_, _product_, _product_, Scalar_CRef<double>(4), M, x, _product_, Scalar_CRef<double>(2), y);
 
   y = 4 * M * x + 2 * y;
   y = 4 * M * x - 2 * y;

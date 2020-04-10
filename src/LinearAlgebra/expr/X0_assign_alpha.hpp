@@ -83,13 +83,13 @@ namespace LinearAlgebra
   template <typename ALPHA_IMPL, typename IMPL>
   static inline std::enable_if_t<Has_Static_Dimension_v<IMPL>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, VMT_Crtp<IMPL>& vmt,
-         const typename IMPL::element_type alpha)
+         const Scalar_Crtp<ALPHA_IMPL>& alpha)
 
   {
     // Directly jump to generic implementation that takes into account
     // static size without taking the risk of being catch by the BLAS
     // like specializations
-    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vmt, alpha);
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vmt, alpha.impl());
 
     DEBUG_SET_SELECTED(selected);
   }

@@ -2,6 +2,8 @@
 
 #include "LinearAlgebra/utils/crtp.hpp"
 
+#include <ccomplex>
+
 namespace LinearAlgebra
 {
   //////////////////////////////////////////////////////////////////
@@ -26,6 +28,12 @@ namespace LinearAlgebra
     {
       return this->impl().impl_value();
     }
+
+   protected:
+    // Prevent object slicing
+    constexpr Scalar_Crtp() noexcept                   = default;
+    constexpr Scalar_Crtp(const Scalar_Crtp&) noexcept = default;
+    constexpr Scalar_Crtp& operator=(const Scalar_Crtp&) noexcept = default;
   };
 
   //////////////////////////////////////////////////////////////////
@@ -69,36 +77,38 @@ namespace LinearAlgebra
     }
   };
 
+  // TODO: not sure it is really usefull... comment me and check
   // complex specialization
   // -> define contruction from real part only
-  template <typename ELEMENT_TYPE>
-  class Scalar_CRef<std::complex<ELEMENT_TYPE>> final : public Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>
-  {
-   public:
-    using base_type    = Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>;
-    using element_type = typename base_type::element_type;
+  // template <typename ELEMENT_TYPE>
+  // class Scalar_CRef<std::complex<ELEMENT_TYPE>> final
+  //     : public Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>
+  // {
+  //  public:
+  //   using base_type    = Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>;
+  //   using element_type = typename base_type::element_type;
 
-   private:
-    const element_type& _value;
+  //  private:
+  //   const element_type& _value;
 
-   public:
-    // CAVEAT: really use ELEMENT_TYPE and not element_type which
-    // prevent C++ to use automatic template deduction:
-    //
-    // Scalar_CRef(std::complex<double>(3, 4)) <- would NOT work anymore
-    //
-    constexpr Scalar_CRef(const ELEMENT_TYPE& value) noexcept : _value(value) {}
-    constexpr Scalar_CRef(const std::complex<ELEMENT_TYPE>& value) noexcept : _value(value) {}
+  //  public:
+  //   // CAVEAT: really use ELEMENT_TYPE and not element_type which
+  //   // prevent C++ to use automatic template deduction:
+  //   //
+  //   // Scalar_CRef(std::complex<double>(3, 4)) <- would NOT work anymore
+  //   //
+  //   constexpr Scalar_CRef(const ELEMENT_TYPE& value) noexcept : _value(value) {}
+  //   constexpr Scalar_CRef(const std::complex<ELEMENT_TYPE>& value) noexcept : _value(value) {}
 
-   protected:
-    friend base_type;
+  //  protected:
+  //   friend base_type;
 
-    constexpr const element_type&
-    impl_value() const noexcept
-    {
-      return _value;
-    }
-  };
+  //   constexpr const element_type&
+  //   impl_value() const noexcept
+  //   {
+  //     return _value;
+  //   }
+  // };
   static_assert(std::is_trivially_copyable_v<Scalar_CRef<double>>);
 
 }

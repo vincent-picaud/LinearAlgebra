@@ -83,7 +83,7 @@ namespace LinearAlgebra
 
     if (alpha.value() != 1)
     {
-      transform([alpha](const auto& X0_component) { return alpha.value() * X0_component; },
+      transform([&alpha](const auto& X0_component) { return alpha.value() * X0_component; },
                 X0.impl());
     }
     DEBUG_SET_SELECTED(selected);

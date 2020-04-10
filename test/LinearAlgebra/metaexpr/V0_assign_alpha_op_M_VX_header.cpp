@@ -52,7 +52,7 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trmv_check_alias)
   // foo(U, V);
 
   V = U * V;
-  V = 2 * U * V;
+  V = std::complex<double>(2) * U * V;
   V = transpose(U) * V;
 }
 
@@ -88,8 +88,8 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trsv_check_alias)
   U = 1;
 
   V = inverse(U) * V;
-  V = 2 * inverse(U) * V;
+  V = std::complex<double>(2) * inverse(U) * V;
   //  V = transpose(inverse(U)) * V;
   V = inverse(transpose(U)) * V;
-  V = 2 * inverse(transpose(U)) * V;
+  V = std::complex<double>(2) * inverse(transpose(U)) * V;
 }

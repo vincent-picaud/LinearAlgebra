@@ -43,35 +43,35 @@ namespace LinearAlgebra
 
   // Default use Element_t
   //
-  template <typename A1_IMPL>
-  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
-                   Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
-                                             Scalar_CRef<Element_Type_t<A1_IMPL>>, A1_IMPL>>
-  operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
-  {
-    return {Scalar_CRef<Element_Type_t<A1_IMPL>>(arg_0), arg_1.impl()};
-  }
-
   // template <typename A1_IMPL>
   // std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
   //                  Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
   //                                            Scalar_CRef<Element_Type_t<A1_IMPL>>, A1_IMPL>>
-  // operator*(const Scalar_CRef<Element_Type_t<A1_IMPL>>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  // operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   // {
-  //   return {arg_0, arg_1.impl()};
+  //   return {Scalar_CRef<Element_Type_t<A1_IMPL>>(arg_0), arg_1.impl()};
   // }
 
-  // template <typename A1_IMPL>
-  // std::enable_if_t<
-  //     Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
-  //     Detail::MetaExpr_BinaryOp<
-  //         Common_Element_Type_t<Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>,
-  //         _product_t_, Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>>
-  // operator*(const Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>& arg_0,
-  //           const Crtp<A1_IMPL>& arg_1)
-  // {
-  //   return {arg_0, arg_1.impl()};
-  // }
+  template <typename A1_IMPL>
+  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+                   Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
+                                             Scalar_CRef<Element_Type_t<A1_IMPL>>, A1_IMPL>>
+  operator*(const Scalar_CRef<Element_Type_t<A1_IMPL>>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  {
+    return {arg_0, arg_1.impl()};
+  }
+
+  template <typename A1_IMPL>
+  std::enable_if_t<
+      Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+      Detail::MetaExpr_BinaryOp<
+          Common_Element_Type_t<Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>,
+          _product_t_, Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>>
+  operator*(const Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>& arg_0,
+            const Crtp<A1_IMPL>& arg_1)
+  {
+    return {arg_0, arg_1.impl()};
+  }
 
   // User overload
   template <typename USER_SCALAR, typename A1_IMPL>

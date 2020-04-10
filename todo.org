@@ -111,4 +111,23 @@
       For that one must and a template that check if "All_Are_Matrix" "All_Are_Vector" 
 
       That's easy but it must be done
+*** 2020-04-10 Friday
+
+**** TODO Urgent [0/0]                                                :Urgen:
+     :PROPERTIES:
+     :Created:  [2020-04-10 Fri 15:12]
+     :END:
+
+   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/scalar_crtp.hpp:://%20TODO:%20not%20sure%20it%20is%20really%20usefull...%20comment%20me%20and%20check%20//%20complex%20specialization%20//%20->%20define%20contruction%20from%20real%20part%20only%20template%20<typename%20ELEMENT_TYPE>%20class%20Scalar_CRef<std::complex<ELEMENT_TYPE>>%20final%20:%20public%20Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>]]
+
+   #+BEGIN_QUOTE
+     // TODO: not sure it is really usefull... comment me and check
+     // complex specialization
+     // -> define contruction from real part only
+     template <typename ELEMENT_TYPE>
+     class Scalar_CRef<std::complex<ELEMENT_TYPE>> final : public Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>
+
+   #+END_QUOTE
+
+    - Easy to check/todo
 

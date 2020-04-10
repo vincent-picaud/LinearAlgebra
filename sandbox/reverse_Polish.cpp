@@ -65,6 +65,13 @@ namespace LinearAlgebra
     return str.str();
   }
 
+  template <PrintMode_Enum MODE, typename IMPL>
+  std::string
+  print_item(PrintContext& printContext, const Scalar_Crtp<IMPL>& scalar)
+  {
+    assert(0);  // todo replace with scalar:
+  }
+
   template <PrintMode_Enum MODE>
   std::string
   print_item(PrintContext& printContext, const int s)

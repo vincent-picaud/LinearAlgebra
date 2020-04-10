@@ -9,6 +9,7 @@ TEST(Matrix_Map, basic)
 {
   Tiny_Matrix<int, 3, 2> mat;
 
+  mat       = 0;
   mat(0, 0) = 1;
   mat(2, 1) = 2;
 

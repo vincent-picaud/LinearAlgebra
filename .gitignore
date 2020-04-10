@@ -9,3 +9,6 @@ subprojects/packagecache/
 *.html
 /.clangd/
 /compile_commands.json
+/buildclang/
+/buildgcc/
+/relbuild/

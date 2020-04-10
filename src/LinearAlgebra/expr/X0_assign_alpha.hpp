@@ -3,9 +3,7 @@
 //
 #pragma once
 
-#include "LinearAlgebra/expr/expr_debug.hpp"
-#include "LinearAlgebra/expr/expr_selector.hpp"
-#include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/expr/expr.hpp"
 
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
@@ -21,10 +19,10 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
 
-  template <typename IMPL>
+  template <typename ALPHA_IMPL, typename IMPL>
   void
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, VMT_Crtp<IMPL>& vmt,
-         const Element_Type_t<IMPL>& scalar)
+         const Scalar_Crtp<ALPHA_IMPL>& alpha)
   {
     static_assert(Always_False_v<IMPL>, "Undefined implementation");
 
@@ -36,11 +34,21 @@ namespace LinearAlgebra
   //////////////////////////////////////////////////////////////////
   //
 
+  template <typename ALPHA_IMPL, typename IMPL>
+  void
+  assign(VMT_Crtp<IMPL>& vmt, const Scalar_Crtp<ALPHA_IMPL>& alpha)
+  {
+    assign(Expr_Selector<>(), vmt.impl(), alpha.impl());
+  }
+
+  // For convenience also support raw scalar type (not do no do that
+  // elsewhere as you would also have to define special alias... one
+  // for Scalar_Crtp<ALPHA_IMPL> on for Element_t<IMPL>)
   template <typename IMPL>
   void
-  assign(VMT_Crtp<IMPL>& vmt, const Element_Type_t<IMPL>& scalar)
+  assign(VMT_Crtp<IMPL>& vmt, const Element_Type_t<IMPL>& alpha)
   {
-    assign(Expr_Selector<>(), vmt.impl(), scalar);
+    assign(Expr_Selector<>(), vmt.impl(), Scalar_CRef<Element_Type_t<IMPL>>(alpha));
   }
 
   //////////////////////////////////////////////////////////////////
@@ -57,13 +65,13 @@ namespace LinearAlgebra
   //  Implementation: Generic
   //================================================================
   //
-  template <typename IMPL>
+  template <typename ALPHA_IMPL, typename IMPL>
   void
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, VMT_Crtp<IMPL>& vmt,
-         const Element_Type_t<IMPL>& scalar)
+         const Scalar_Crtp<ALPHA_IMPL>& alpha)
 
   {
-    fill([scalar]() { return scalar; }, vmt.impl());
+    fill([&alpha]() { return alpha.value(); }, vmt.impl());
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -72,16 +80,16 @@ namespace LinearAlgebra
   //  Implementation: Static
   //================================================================
   //
-  template <typename IMPL>
+  template <typename ALPHA_IMPL, typename IMPL>
   static inline std::enable_if_t<Has_Static_Dimension_v<IMPL>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, VMT_Crtp<IMPL>& vmt,
-         const typename IMPL::element_type scalar)
+         const typename IMPL::element_type alpha)
 
   {
     // Directly jump to generic implementation that takes into account
     // static size without taking the risk of being catch by the BLAS
     // like specializations
-    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vmt, scalar);
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>(), vmt, alpha);
 
     DEBUG_SET_SELECTED(selected);
   }

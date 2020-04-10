@@ -20,7 +20,7 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   U = 1;
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, 2, _identity_, U, _lhs_);
+  assign(V, _product_, _product_, Scalar_CRef<double>(2), _identity_, U, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 8);
@@ -52,7 +52,7 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trmv_check_alias)
   // foo(U, V);
 
   V = U * V;
-  V = Scalar_CRef(2) * U * V;
+  V = 2 * U * V;
   V = transpose(U) * V;
 }
 
@@ -88,8 +88,8 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, trsv_check_alias)
   U = 1;
 
   V = inverse(U) * V;
-  V = Scalar_CRef(2) * inverse(U) * V;
+  V = 2 * inverse(U) * V;
   //  V = transpose(inverse(U)) * V;
   V = inverse(transpose(U)) * V;
-  V = Scalar_CRef<std::complex<double>>(2) * inverse(transpose(U)) * V;
+  V = 2 * inverse(transpose(U)) * V;
 }

@@ -69,6 +69,36 @@ namespace LinearAlgebra
     }
   };
 
+  // complex specialization
+  // -> define contruction from real part only
+  template <typename ELEMENT_TYPE>
+  class Scalar_CRef<std::complex<ELEMENT_TYPE>> final : public Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>
+  {
+   public:
+    using base_type    = Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>;
+    using element_type = typename base_type::element_type;
+
+   private:
+    const element_type& _value;
+
+   public:
+    // CAVEAT: really use ELEMENT_TYPE and not element_type which
+    // prevent C++ to use automatic template deduction:
+    //
+    // Scalar_CRef(std::complex<double>(3, 4)) <- would NOT work anymore
+    //
+    constexpr Scalar_CRef(const ELEMENT_TYPE& value) noexcept : _value(value) {}
+    constexpr Scalar_CRef(const std::complex<ELEMENT_TYPE>& value) noexcept : _value(value) {}
+
+   protected:
+    friend base_type;
+
+    constexpr const element_type&
+    impl_value() const noexcept
+    {
+      return _value;
+    }
+  };
   static_assert(std::is_trivially_copyable_v<Scalar_CRef<double>>);
 
 }

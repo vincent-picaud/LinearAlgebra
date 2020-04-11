@@ -16,17 +16,33 @@ namespace LinearAlgebra
   //
   // Allowed arguments (beside scalar)
   //
+  // Design note: this will let you create meaningless expression like "Matrix + Vector"
+  //
+  //              if we wanted enforce/restrict expressions like
+  //              "Matrix+Matrix" or "Vector+Vector" we would have had
+  //              to embed the "is a vector" or "is a matrix"
+  //              information into the MetaExpr_BinaryOp class. This
+  //              would have leaded to more complex and less reusable
+  //              Operator classes. This is the reason why (and I
+  //              think that's a good decision) we do not perform such
+  //              filtering here.
+  //
+  // Here: filter arbitrary Expression involving arbitrary
+  // VMT=Vector/Matrix/Tensor
+  //
   template <typename... IMPL>
   constexpr auto Is_Supported_MetaExpr_Argument_v =
       ((Is_Crtp_Interface_Of_v<Detail::MetaExpr_Crtp, IMPL> or
         Is_Crtp_Interface_Of_v<VMT_Crtp, IMPL>)and...);
 
+  //================================================================
   // Product
   //================================================================
   //
 
-  //
+  //----------------------------------------------------------------
   // Expr * Expr
+  //----------------------------------------------------------------
   //
   template <typename A0_IMPL, typename A1_IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
@@ -37,11 +53,14 @@ namespace LinearAlgebra
     return {arg_0.impl(), arg_1.impl()};
   }
 
-  //
+  //----------------------------------------------------------------
   // Scalar*Expr
+  //----------------------------------------------------------------
   //
 
-  // Default use Element_t
+  // CAVEAT: dangling references
+  //
+  // You must NOT write:
   //
   // template <typename A1_IMPL>
   // std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
@@ -51,7 +70,14 @@ namespace LinearAlgebra
   // {
   //   return {Scalar_CRef<Element_Type_t<A1_IMPL>>(arg_0), arg_1.impl()};
   // }
+  //
+  // as this creates a:
+  //
+  // DANGLING REFERENCE: return {Scalar_CRef<Element_Type_t<A1_IMPL>>(arg_0) <-- here, arg_1.impl()};
+  //
+  //
 
+  // Handle expression like: T * Vector<T>
   template <typename A1_IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
                    Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
@@ -61,6 +87,7 @@ namespace LinearAlgebra
     return {arg_0, arg_1.impl()};
   }
 
+  // Handle expression like: complex<T> * Vector<T>
   template <typename A1_IMPL>
   std::enable_if_t<
       Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
@@ -73,7 +100,8 @@ namespace LinearAlgebra
     return {arg_0, arg_1.impl()};
   }
 
-  // User overload
+  // Handle expression like: U * Vector<T>, where U = Scalar_CRef<USER_SCALAR>
+  // (in that case the user must _explicitly_ define the scalar type)
   template <typename USER_SCALAR, typename A1_IMPL>
   std::enable_if_t<
       Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
@@ -84,9 +112,6 @@ namespace LinearAlgebra
     return {arg_0, arg_1.impl()};
   }
 
-  // TODO: utiliser fallback + modify assign
-
-  //
   //================================================================
   // Plus
   //================================================================
@@ -100,7 +125,6 @@ namespace LinearAlgebra
     return {arg_0.impl(), arg_1.impl()};
   }
 
-  //
   //================================================================
   // Unary Plus
   //================================================================
@@ -112,7 +136,6 @@ namespace LinearAlgebra
     return {arg.impl()};
   }
 
-  //
   //================================================================
   // Minus (binary)
   //================================================================

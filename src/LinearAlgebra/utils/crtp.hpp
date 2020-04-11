@@ -54,7 +54,7 @@ namespace LinearAlgebra
   {
   };
 
-  template <template <typename> class CRTP_INTERFACE, typename OBJ>
-  constexpr auto Is_Crtp_Interface_Of_v = Is_Crtp_Interface_Of<CRTP_INTERFACE, OBJ>::value;
+  template <template <typename> class CRTP_INTERFACE, typename... OBJ>
+  constexpr auto Is_Crtp_Interface_Of_v = (Is_Crtp_Interface_Of<CRTP_INTERFACE, OBJ>::value and ...);
 
 }  // namespace LinearAlgebra

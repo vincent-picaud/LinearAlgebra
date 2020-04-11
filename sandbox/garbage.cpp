@@ -39,7 +39,8 @@ test_TODO()
   Matrix<int> M1, M0;
   Vector<int> V1;
 
-  V1 = M1 * V1 ;  // <- Generate an error
+  //  V1 = M1 * V1;  // <- Generate an error (generic routines are not implemented)
+  //  V1 = M1 + V1;
 }
 
 int

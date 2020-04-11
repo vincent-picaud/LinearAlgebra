@@ -45,9 +45,6 @@ LinearAlgebra_headers += [
 
   'dense/memory_chunk_aliasing_p.hpp',
 
-  'dense/vector_is_same.hpp',
-  'dense/matrix_is_same.hpp',
-
   'dense/vmt_comparison_operators.hpp',
   'dense/vector_comparison_operators.hpp',
   'dense/matrix_comparison_operators.hpp',

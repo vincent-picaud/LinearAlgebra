@@ -6,5 +6,5 @@
 #include "LinearAlgebra/expr/X0_assign_X1.hpp"
 
 // specific includes
-#include "LinearAlgebra/dense/matrix_is_same.hpp"
+#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 #include "LinearAlgebra/dense/matrix_transform.hpp"

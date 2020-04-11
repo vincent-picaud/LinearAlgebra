@@ -9,7 +9,7 @@
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
-#include "LinearAlgebra/dense/vector_is_same.hpp"
+#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 
 #include "LinearAlgebra/expr/dimension.hpp"
 #include "LinearAlgebra/expr/expr.hpp"
@@ -68,7 +68,7 @@ namespace LinearAlgebra
 
     // Delegate computation
     //
-    if (not is_same(vector0.impl(), vector2.impl()))
+    if (not same_mathematical_object_p(vector0.impl(), vector2.impl()))
     {
       // vector0 = vector2;
       assign(vector0, vector2);

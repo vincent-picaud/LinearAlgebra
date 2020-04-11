@@ -11,4 +11,5 @@ LinearAlgebra_headers += [
   'utils/has_static_dimension.hpp',
   'utils/type_identity.hpp',
   'utils/complex.hpp',
+  'utils/same_mathematical_object_p.hpp',
 ]

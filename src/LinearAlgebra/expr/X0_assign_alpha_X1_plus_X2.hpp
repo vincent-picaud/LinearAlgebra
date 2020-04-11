@@ -11,7 +11,7 @@
 #include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/size_utils.hpp"
 
-#include "LinearAlgebra/dense/matrix_is_same.hpp"
+#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 #include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
 
 #include "LinearAlgebra/expr/X0_assign_alpha_X1_plus_X0.hpp"
@@ -40,7 +40,7 @@ namespace LinearAlgebra
     assert(dimension_predicate(X0.impl()) == dimension_predicate(X1.impl()));
     assert(dimension_predicate(X0.impl()) == dimension_predicate(X2.impl()));
 
-    if (is_same(X0.impl(), X2.impl()))
+    if (same_mathematical_object_p(X0.impl(), X2.impl()))
     {
       // Branch to V0 = alpha * V1 + _lhs_ =  + * alpha X1 _lhs_
       //
@@ -147,7 +147,7 @@ namespace LinearAlgebra
 
   {
     // This test has already been done:
-    assert(not is_same(X0.impl(), X2.impl()));  // -> axpy
+    assert(not same_mathematical_object_p(X0.impl(), X2.impl()));  // -> axpy
 
     fill([&](const auto X1_component,
              const auto X2_component) { return alpha.value() * X1_component + X2_component; },

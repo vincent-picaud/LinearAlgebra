@@ -10,10 +10,10 @@
 #include "LinearAlgebra/utils/has_static_dimension.hpp"
 
 #include "LinearAlgebra/dense/vector_fill.hpp"
-#include "LinearAlgebra/dense/vector_is_same.hpp"
+#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 
 #include "LinearAlgebra/dense/matrix_fill.hpp"
-#include "LinearAlgebra/dense/matrix_is_same.hpp"
+#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 
 namespace LinearAlgebra
 {
@@ -29,7 +29,7 @@ namespace LinearAlgebra
   )
   {
     // Something to do?
-    if (not is_same(X0.impl(), X1.impl()))
+    if (not same_mathematical_object_p(X0.impl(), X1.impl()))
     {
       assign(Expr_Selector<>(), X0.impl(), X1.impl());
     }

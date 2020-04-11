@@ -6,6 +6,7 @@ test_array = [
   ['all_same_type_test','all_same_type_exe','all_same_type.cpp'],
   ['element_type_test','element_type_exe','element_type.cpp'],
   ['has_static_dimension_test','has_static_dimension_exe','has_static_dimension.cpp'],
+  ['same_mathematical_object_p_test','same_mathematical_object_p_exe','same_mathematical_object_p.cpp'],
 ]
 
 foreach test : test_array

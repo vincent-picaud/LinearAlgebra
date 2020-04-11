@@ -55,7 +55,10 @@ namespace LinearAlgebra
     /////////////////////////
     //
    protected:
+    Matrix_Crtp() = default;
+    Matrix_Crtp(const Matrix_Crtp&) = default;
     Matrix_Crtp& operator=(const Matrix_Crtp&) = default;
+
   };
 
   template <typename IMPL>

@@ -175,4 +175,27 @@ but !(1) is
    #+END_SRC
 
    Archived, for the moment we do not systematically use this kind of stuff
+** 2020-04 April
+*** 2020-04-11 Saturday
+
+**** CRTP Object Slicing                                   :Important:Design:
+
+   Back link: [[file:src/LinearAlgebra/dense/vector_crtp.hpp][vector_crtp.hpp]]
+
+   To prevent object slicing it is important to define this kind of stuff
+
+   #+BEGIN_SRC cpp :eval never
+template <typename IMPL>
+class Dense_Vector_Crtp
+
+    protected :
+
+    Dense_Vector_Crtp()                     = default;
+Dense_Vector_Crtp(const Dense_Vector_Crtp&) = default;
+Dense_Vector_Crtp& operator=(const Dense_Vector_Crtp&) = default;
+}
+;
+   #+END_SRC 
+
+   in the last CRTP object (where last means: just before a concrete instance), here "Vector <- Dense_Vector_Crtp"
 

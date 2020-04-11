@@ -124,6 +124,8 @@ namespace LinearAlgebra
     //////////////////
     //
    protected:
+    Dense_Vector_Crtp() = default;
+    Dense_Vector_Crtp(const Dense_Vector_Crtp&) = default;
     Dense_Vector_Crtp& operator=(const Dense_Vector_Crtp&) = default;
 
    public:

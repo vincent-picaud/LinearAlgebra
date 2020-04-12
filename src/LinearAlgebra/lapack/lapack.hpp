@@ -5,6 +5,6 @@
 #include "LinearAlgebra/lapack/lapack_config.hpp"
 
 #if (HAS_LAPACK)
-// #include "LinearAlgebra/lapack/subroutines.hpp"
+#include "LinearAlgebra/lapack/subroutines.hpp"
 #endif
 

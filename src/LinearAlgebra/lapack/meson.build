@@ -7,7 +7,7 @@
 #
 LinearAlgebra_headers += [
   'lapack/lapack.hpp',
-  # 'lapack/subroutines.hpp',
+  'lapack/subroutines.hpp',
   # 'lapack/to_clapack_transpose.hpp',
   # 'lapack/to_clapack_uplo.hpp',
   # 'lapack/to_clapack_diag.hpp',
@@ -20,7 +20,8 @@ LinearAlgebra_headers += [
 #
 lapack_config = configuration_data({
 				  'HAS_LAPACK' : 'false',
-				  'LAPACK_INCLUDE' : '""'
+				  'LAPACK_INCLUDE' : '""',
+				  'LAPACK_COMPLEX' : '""'
 				})
 
 
@@ -51,8 +52,14 @@ if cpp.links(lapack_include+'''
 
   lapack_config.set('HAS_LAPACK','true')
   lapack_config.set('LAPACK_INCLUDE',lapack_include)
-endif
+  lapack_config.set('LAPACK_COMPLEX','''
+#define LAPACK_COMPLEX_CUSTOM
+#include <ccomplex>
+#define lapack_complex_float std::complex<float>
+#define lapack_complex_double std::complex<double>
+   	''')
 
+endif
 
 if not lapack_lib.found()
   message('try to find another lapack lib')

@@ -20,6 +20,10 @@ namespace LinearAlgebra
 
 #if (HAS_LAPACK)
 
+
+// Use std::complex<>
+@LAPACK_COMPLEX@
+
 @LAPACK_INCLUDE@
 
 #endif

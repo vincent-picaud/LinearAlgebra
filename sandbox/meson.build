@@ -19,3 +19,7 @@ executable('reverse_Polish',
 executable('scalar_ref',
 	   'scalar_ref.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('lapack_example',
+	   'lapack_example.cpp',
+	   dependencies : [LinearAlgebra_dep])

@@ -5,14 +5,14 @@
 # Note: whatever happen always include files
 #================================================================
 #
-# LinearAlgebra_headers += [
-#   'blas/blas.hpp',
-#   'blas/subroutines.hpp',
-#   'blas/to_cblas_transpose.hpp',
-#   'blas/to_cblas_uplo.hpp',
-#   'blas/to_cblas_diag.hpp',
-#   'blas/is_cblas_supported_scalar.hpp',
-# ]
+LinearAlgebra_headers += [
+  'lapack/lapack.hpp',
+  # 'lapack/subroutines.hpp',
+  # 'lapack/to_clapack_transpose.hpp',
+  # 'lapack/to_clapack_uplo.hpp',
+  # 'lapack/to_clapack_diag.hpp',
+  # 'lapack/is_clapack_supported_scalar.hpp',
+]
 
 # Prepare lapack_config.hpp.in
 #================================================================
@@ -27,9 +27,6 @@ lapack_config = configuration_data({
 # Try to find system lapack library
 #================================================================
 #
-# TODO: for the moment only one attempt (=OpenBlas), would be nice to
-#       have a list of candidate BLAS lib (MKL...)
-
 cpp = meson.get_compiler('cpp')
 
 #
@@ -73,5 +70,12 @@ configure_file(input : 'lapack_config.hpp.in',
                output : 'lapack_config.hpp',
                configuration : lapack_config)
 
-
-
+# Note: to include lapack_lib dependency do not forget to modify 
+#
+# src/LinearAlgebra/meson.build
+#
+# as follows:
+#
+# LinearAlgebra_dep = declare_dependency(include_directories : inc,
+#      				       link_with : [LinearAlgebra_lib,],
+# 				       dependencies : [lapack_lib,blas_lib,])

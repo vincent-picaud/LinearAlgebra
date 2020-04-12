@@ -6,11 +6,13 @@ LinearAlgebra_headers = [
 ]
 LinearAlgebra_sources = ['hello.cpp']
 
+subdir('blas')
+subdir('lapack')
+
 subdir('utils')
 subdir('expr')
 subdir('metaexpr')
 subdir('dense')
-subdir('blas')
 subdir('scalar_functions')
 
 

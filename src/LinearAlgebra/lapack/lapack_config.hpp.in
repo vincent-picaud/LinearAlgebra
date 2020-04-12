@@ -1,0 +1,25 @@
+///////////////////////////////////////////////////////////////////////////////////////
+// CAVEAT: DO NOT MODIFY ME, BUT MODIFY LinearAlgebra/wraps/lapack/lapack_config.hpp.in  //
+///////////////////////////////////////////////////////////////////////////////////////
+
+// Be sure that namespace is declared at least once
+//
+namespace LinearAlgebra
+{
+  namespace Lapack
+  {
+  }
+}
+
+// Ignore clang formatting
+// (otherwise formatting turns things like @HAS_LAPACK@ into: @HAS_LAPACK @)
+//
+// clang-format off
+//
+#define HAS_LAPACK @HAS_LAPACK@
+
+#if (HAS_LAPACK)
+
+@LAPACK_INCLUDE@
+
+#endif

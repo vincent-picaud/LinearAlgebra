@@ -23,3 +23,7 @@ executable('scalar_ref',
 executable('lapack_example',
 	   'lapack_example.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('lapack_Cholesky',
+	   'lapack_Cholesky.cpp',
+	   dependencies : [LinearAlgebra_dep])

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cblas.h>
 #include "LinearAlgebra/blas/blas_config.hpp"
 
 #if !(HAS_BLAS)

@@ -8,6 +8,8 @@
 #include "LinearAlgebra/expr/M0_assign_alpha.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
+#include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
+
 namespace LinearAlgebra
 {
   template <typename IMPL>
@@ -27,6 +29,17 @@ namespace LinearAlgebra
     using element_type = typename traits_type::element_type;
     using I_size_type  = typename traits_type::I_size_type;
     using J_size_type  = typename traits_type::J_size_type;
+
+    /////////////////////////
+    // Protected constructors to prevent object slicing
+    /////////////////////////
+    //
+   protected:
+    Matrix_Crtp()                   = default;
+    Matrix_Crtp(const Matrix_Crtp&) = default;
+    Matrix_Crtp(Matrix_Crtp&&)      = default;
+    Matrix_Crtp& operator=(const Matrix_Crtp&) = default;
+    Matrix_Crtp& operator=(Matrix_Crtp&&) = default;
 
     ////////////////////
     // Crtp Interface //
@@ -49,16 +62,6 @@ namespace LinearAlgebra
     {
       return base_type::impl();
     }
-
-    /////////////////////////
-    // Prevent object slicing
-    /////////////////////////
-    //
-   protected:
-    Matrix_Crtp() = default;
-    Matrix_Crtp(const Matrix_Crtp&) = default;
-    Matrix_Crtp& operator=(const Matrix_Crtp&) = default;
-
   };
 
   template <typename IMPL>
@@ -103,9 +106,37 @@ namespace LinearAlgebra
     memory_chunk_type _memory_chunk;
 
     //////////////////
-    // Constructors //
+    // Protected Constructors
     //////////////////
     //
+    // "Protected" avoid object slicing
+   protected:
+    // Copy
+    Dense_Matrix_Crtp(const Dense_Matrix_Crtp& src) = default;
+    // Move
+    Dense_Matrix_Crtp(Dense_Matrix_Crtp&& src)
+    {
+      if constexpr (Is_Std_Integral_Constant_v<I_size_type> and
+                    Is_Std_Integral_Constant_v<J_size_type>)
+      {
+        // we cannot set src size=0 after move! this would left it in
+        // a BROKEN state (data=nullptr but size!=0)
+	//
+	// To preserve invariant we perform a deep copy instead
+        _storage_scheme = src._storage_scheme;
+        _memory_chunk   = src._memory_chunk;
+      }
+      else
+      {
+        _storage_scheme     = src._storage_scheme;
+        _memory_chunk       = std::move(src._memory_chunk);
+        src._storage_scheme = storage_scheme_type();  // <- set size = 0, invariant OK
+      }
+    }
+
+    //////////////////
+    // Public constructors
+    //////////////////
    public:
     // This constructor assumes than memory_chunk allocates its memory
     Dense_Matrix_Crtp(const storage_scheme_type& storage_scheme)
@@ -174,11 +205,10 @@ namespace LinearAlgebra
     };
 
     /////////////////////////
-    // Prevent object slicing
+    // Assignment operators
     /////////////////////////
     //
-   protected:
-    Dense_Matrix_Crtp& operator=(const Dense_Matrix_Crtp&) = default;
+    VMT_ASSIGNMENT_OPERATOR(Dense_Matrix_Crtp);
 
     /////////////////////////
     // Crtp Implementation //

@@ -7,6 +7,8 @@
 #include "LinearAlgebra/expr/V0_assign_alpha.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
+#include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
+
 namespace LinearAlgebra
 {
   template <typename IMPL>
@@ -43,12 +45,16 @@ namespace LinearAlgebra
       return base_type::impl();
     }
 
-    //////////////////
-    // Prevent object slicing
-    //////////////////
+    /////////////////////////
+    // Protected constructors to prevent object slicing
+    /////////////////////////
     //
    protected:
+    Vector_Crtp()                   = default;
+    Vector_Crtp(const Vector_Crtp&) = default;
+    Vector_Crtp(Vector_Crtp&&)      = default;
     Vector_Crtp& operator=(const Vector_Crtp&) = default;
+    Vector_Crtp& operator=(Vector_Crtp&&) = default;
   };
 
   //****************************************************************
@@ -89,10 +95,41 @@ namespace LinearAlgebra
     memory_chunk_type _memory_chunk;
 
     //////////////////
-    // Constructors //
+    // Protected Constructors
     //////////////////
     //
+    // "Protected" avoid object slicing
+   protected:
+    // Copy
+    Dense_Vector_Crtp(const Dense_Vector_Crtp& src) = default;
+    // Move
+    Dense_Vector_Crtp(Dense_Vector_Crtp&& src)
+    {
+      if constexpr (Is_Std_Integral_Constant_v<size_type>)
+      {
+        // we cannot set src size=0 after move! this would left it in
+        // a BROKEN state (data=nullptr but size!=0)
+        //
+        // To preserve invariant we perform a deep copy instead
+        _storage_scheme = src._storage_scheme;
+        _memory_chunk   = src._memory_chunk;
+      }
+      else
+      {
+        _storage_scheme     = src._storage_scheme;
+        _memory_chunk       = std::move(src._memory_chunk);
+        src._storage_scheme = storage_scheme_type();  // <- set size = 0, invariant OK
+      }
+    }
+
+    //////////////////
+    // Public constructors
+    //////////////////
    public:
+    // Note: this would be a possible solution to perform "move"
+    //       operations. For the moment we did not have to use
+    //       it... hence we keep it commented.
+    //
     // Default_Vector_Crtp(storage_scheme_type&& storage_scheme,
     //                             memory_chunk_type&&   memory_chunk)
     //     : _storage_scheme(std::move(storage_scheme)), _memory_chunk(std::move(memory_chunk))
@@ -119,16 +156,6 @@ namespace LinearAlgebra
       assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
     }
 
-    //////////////////
-    // Prevent object slicing
-    //////////////////
-    //
-   protected:
-    Dense_Vector_Crtp() = default;
-    Dense_Vector_Crtp(const Dense_Vector_Crtp&) = default;
-    Dense_Vector_Crtp& operator=(const Dense_Vector_Crtp&) = default;
-
-   public:
     ////////////////////
     // Crtp Interface //
     ////////////////////
@@ -172,6 +199,12 @@ namespace LinearAlgebra
     {
       return base_type::impl().impl_memory_chunk();
     };
+
+    /////////////////////////
+    // Assignment operators
+    /////////////////////////
+    //
+    VMT_ASSIGNMENT_OPERATOR(Dense_Vector_Crtp);
 
     /////////////////////////
     // Crtp Implementation //

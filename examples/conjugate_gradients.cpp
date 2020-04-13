@@ -42,7 +42,7 @@ namespace LinearAlgebra
 
       auto alpha = squared_norm_r_old / dot(p, Ap);
 
-      X0.impl() = X0 + alpha * p;
+      X0 = X0 + alpha * p;
 
       r = r - alpha * Ap;
 

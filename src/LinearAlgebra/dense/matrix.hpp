@@ -7,6 +7,9 @@
 #include "LinearAlgebra/dense/memory_chunk.hpp"
 #include "LinearAlgebra/utils/is_std_integral_constant.hpp"
 
+// Detail
+#include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
+
 // Allowed combination Structure + Mask
 //
 namespace LinearAlgebra
@@ -174,7 +177,7 @@ namespace LinearAlgebra
     //
 
     /////////////
-    // Members //
+    // Members: nothing!
     /////////////
     //
    protected:
@@ -184,6 +187,12 @@ namespace LinearAlgebra
     //
    public:
     Default_Matrix() : base_type(storage_scheme_type()) {}
+
+    // Note: this tells to reuse the constructors define in
+    //       Default_Matrix_Crtp
+    Default_Matrix(const Default_Matrix&) = default;
+    Default_Matrix(Default_Matrix&&)      = default;
+
     Default_Matrix(const I_SIZE_TYPE n, const J_SIZE_TYPE m, const LEADING_DIMENSION_TYPE ld)
         : base_type(storage_scheme_type(n, m, ld))
     {
@@ -201,45 +210,9 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
-    // Meta expression
-    template <typename METAEXPR_IMPL>
-    Default_Matrix&
-    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
-    {
-      return this->impl_assign(metaExpr);
-    }
-
-    // = scalar
-    Default_Matrix&
-    operator=(const element_type& scalar)
-    {
-      return this->impl_assign(scalar);
-    }
-
-    // CAVEAT: do not define:
-    //
-    // = other_matrix
-    // Default_Matrix&
-    // operator=(const Default_Matrix& other_matrix)
-    // {
-    //   return this->impl().impl_assign(other_matrix);
-    // }
-    //
-    // This is useless here (would be a useless duplicate for
-    // std::array por std::matrix copy) and, most importantly, it
-    // would cause Tiny_Matrix not being trivially_copyable anymore
-    //
-    // CAVEAT: however it is fundamental to define this operator for
-    // view to keep the same copy semantic
-
-    // = other_matrix
-    template <typename OTHER_IMPL>
-    Default_Matrix&
-    operator=(const Matrix_Crtp<OTHER_IMPL>& other_matrix)
-    {
-      return this->impl().impl_assign(other_matrix);
-    }
+    VMT_ASSIGNMENT_OPERATOR(Default_Matrix);
   };
+
   //****************************************************************
 
   template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
@@ -307,19 +280,6 @@ namespace LinearAlgebra
     // Constructors //
     //////////////////
     //
-    // Design:
-    //   Do *not* start to define constructors like
-    // #+begin_src cpp
-    // template <size_t N_OTHER>
-    // Default_Matrix_View(const Default_Matrix<T, SPECIAL_STRUCTURE, N_OTHER> &v)
-    //     : base_type(storage_scheme_type(),
-    //                 memory_chunk_type(v._memory_chunk.data())) {
-    //   static_assert(base_type::required_capacity() <= v.required_capacity());
-    // }
-    // #+end_src
-    //
-    // Reason: this would add artificial and useless strong couplings/dependencies
-    //
    public:
     Default_Matrix_View(T* data) : base_type(storage_scheme_type(), data)
     {
@@ -344,34 +304,7 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
-    // Meta expression
-    template <typename METAEXPR_IMPL>
-    Default_Matrix_View&
-    operator=(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
-    {
-      return this->impl_assign(metaExpr);
-    }
-
-    Default_Matrix_View&
-    operator=(const element_type& scalar)
-    {
-      return this->impl_assign(scalar);
-    }
-
-    // = other_matrix
-    template <typename OTHER_IMPL>
-    Default_Matrix_View&
-    operator=(const Matrix_Crtp<OTHER_IMPL>& other_matrix)
-    {
-      return this->impl().impl_assign(other_matrix);
-    }
-
-    // CAVEAT: fundamental to preserve deep copy semantic of views
-    Default_Matrix_View&
-    operator=(const Default_Matrix_View& other_matrix)
-    {
-      return this->impl().impl_assign(other_matrix);
-    }
+    VMT_ASSIGNMENT_OPERATOR(Default_Matrix_View);
   };
 
   //================================================================
@@ -467,8 +400,7 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
-    // CONST view!
-    Default_Matrix_Const_View& operator=(const Default_Matrix_Const_View& other_matrix) = delete;
+    DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Matrix_Const_View);
   };
 
   ////////////////
@@ -493,7 +425,7 @@ namespace LinearAlgebra
   //
   // CAVEAT: does not belong to Blas matrix type
   //
-  
+
   // Lower
   template <typename T, size_t I_SIZE, size_t J_SIZE>
   using Tiny_Strict_Lower_Triangular_Matrix = Default_Matrix<
@@ -518,34 +450,34 @@ namespace LinearAlgebra
       Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular_Strict,
                      Matrix_Storage_Mask_Enum::Upper_Strict, size_t, size_t, size_t>;
 
-
   //================ Triangular
 
   // Lower
   template <typename T, size_t I_SIZE, size_t J_SIZE>
-  using Tiny_Lower_Triangular_Matrix = Default_Matrix<
-      T, Matrix_Special_Structure_Enum::Triangular, Matrix_Storage_Mask_Enum::Lower,
-      std::integral_constant<std::size_t, I_SIZE>, std::integral_constant<std::size_t, J_SIZE>,
-      std::integral_constant<std::size_t, I_SIZE>>;
+  using Tiny_Lower_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular, Matrix_Storage_Mask_Enum::Lower,
+                     std::integral_constant<std::size_t, I_SIZE>,
+                     std::integral_constant<std::size_t, J_SIZE>,
+                     std::integral_constant<std::size_t, I_SIZE>>;
 
   template <typename T>
   using Lower_Triangular_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular,
-                     Matrix_Storage_Mask_Enum::Lower, size_t, size_t, size_t>;
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular, Matrix_Storage_Mask_Enum::Lower,
+                     size_t, size_t, size_t>;
 
   // Upper
   template <typename T, size_t I_SIZE, size_t J_SIZE>
-  using Tiny_Upper_Triangular_Matrix = Default_Matrix<
-      T, Matrix_Special_Structure_Enum::Triangular, Matrix_Storage_Mask_Enum::Upper,
-      std::integral_constant<std::size_t, I_SIZE>, std::integral_constant<std::size_t, J_SIZE>,
-      std::integral_constant<std::size_t, I_SIZE>>;
+  using Tiny_Upper_Triangular_Matrix =
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular, Matrix_Storage_Mask_Enum::Upper,
+                     std::integral_constant<std::size_t, I_SIZE>,
+                     std::integral_constant<std::size_t, J_SIZE>,
+                     std::integral_constant<std::size_t, I_SIZE>>;
 
   template <typename T>
   using Upper_Triangular_Matrix =
-      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular,
-                     Matrix_Storage_Mask_Enum::Upper, size_t, size_t, size_t>;
+      Default_Matrix<T, Matrix_Special_Structure_Enum::Triangular, Matrix_Storage_Mask_Enum::Upper,
+                     size_t, size_t, size_t>;
 
-    
   //================ Unit_Triangular
 
   // Lower

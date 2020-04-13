@@ -8,7 +8,8 @@ TEST(Vector, is_trivially_copyable)
 {
   using tiny_vector_type = Tiny_Vector<int, 3>;
 
-  EXPECT_TRUE((std::is_trivially_copyable_v<tiny_vector_type>));
+  // FALSE as we have redefine custom move operator...
+  EXPECT_FALSE((std::is_trivially_copyable_v<tiny_vector_type>));
 
   using vector_type = Vector<int>;
 

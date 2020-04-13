@@ -51,4 +51,6 @@ LinearAlgebra_headers += [
 
   'dense/matrix_header.hpp',
   'dense/vector_header.hpp',
+
+  'dense/vmt_assignment_operator_define.hpp',
 ]

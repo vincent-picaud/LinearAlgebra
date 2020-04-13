@@ -1,6 +1,7 @@
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/matrix_special_structure_enum.hpp"
 #include "LinearAlgebra/dense/matrix_view.hpp"
+#include "LinearAlgebra/dense/vector_view.hpp"
 #include "LinearAlgebra/lapack/lapack.hpp"
 #include "LinearAlgebra/lapack/subroutines.hpp"
 #include "LinearAlgebra/matrix.hpp"
@@ -29,10 +30,12 @@ namespace LinearAlgebra
     Factorization_LLt(Crtp<IMPL>&& matrix) : _matrix(std::move(matrix.impl()))
     {
       std::cout << "MATRIX:" << std::endl << _matrix << std::endl;
+      _matrix=0;
     }
     Factorization_LLt(const Crtp<IMPL>& matrix) : _matrix(matrix.impl())
     {
       std::cout << "MATRIX:" << std::endl << _matrix << std::endl;
+      _matrix=0;
     }
   };
 
@@ -57,7 +60,31 @@ test()
   create_vector_view_matrix_diagonal(M) = 10;
   M(4, 0)                               = 5;
   // auto LLt                              = create_LLt(std::move(M));
+
   Factorization_LLt<Symmetric_Matrix<double>> LLt(std::move(M));
+
+  std::cout << "MATRIX:" << std::endl << M << std::endl;
+
+  return 0;
+}
+
+int
+test_view()
+{
+  const size_t n = 5;
+
+  Symmetric_Matrix<double> M(n, n);
+
+  M                                     = 0;
+  create_vector_view_matrix_diagonal(M) = 10;
+  M(4, 0)                               = 5;
+
+  auto M_view = create_matrix_view(M, 0, n, 0, n);
+
+  std::cout << "MATRIX:" << std::endl << M << std::endl;
+
+  Factorization_LLt<decltype(M_view)> LLt(M_view);
+
   std::cout << "MATRIX:" << std::endl << M << std::endl;
 
   return 0;

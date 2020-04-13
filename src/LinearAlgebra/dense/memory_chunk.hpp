@@ -40,7 +40,8 @@ namespace LinearAlgebra
     std::array<T, N> _data;
 
    public:
-    Default_Memory_Chunk(const capacity_type capacity) noexcept {}
+    constexpr Default_Memory_Chunk() noexcept = default;
+    constexpr Default_Memory_Chunk(const capacity_type capacity) noexcept {}
     constexpr capacity_type
     capacity() const noexcept
     {
@@ -72,6 +73,7 @@ namespace LinearAlgebra
     std::vector<T> _data;
 
    public:
+    Default_Memory_Chunk() noexcept = default;
     Default_Memory_Chunk(const capacity_type capacity) : _data(capacity) {}
     capacity_type
     capacity() const noexcept
@@ -94,7 +96,7 @@ namespace LinearAlgebra
   //================================================================
 
   // Note: for views as we store the same raw pointer type for dynamic
-  // & static cases, not need for specialization
+  //       & static cases, not need for specialization
   //
   template <typename T, typename CAPACITY_TYPE>
   class View_Default_Memory_Chunk : public Detail::Memory_Chunk_Tag
@@ -111,6 +113,10 @@ namespace LinearAlgebra
     capacity_type _capacity;
 
    public:
+    // Note: can be removed if required, for the moment this is only a
+    //       safeguard to be sure that dangling views are not created
+    //
+    View_Default_Memory_Chunk() = delete;
     constexpr View_Default_Memory_Chunk(T* data, capacity_type capacity) noexcept
         : _data(data), _capacity(capacity)
     {
@@ -137,7 +143,7 @@ namespace LinearAlgebra
   //----------------------------------------------------------------
 
   // Note: for views as we store the same raw pointer type for dynamic
-  // & static cases, not need for specialization
+  //       & static cases, not need for specialization
   //
   template <typename T, typename CAPACITY_TYPE>
   class Const_View_Default_Memory_Chunk : public Detail::Memory_Chunk_Tag
@@ -154,6 +160,11 @@ namespace LinearAlgebra
     capacity_type _capacity;
 
    public:
+    // Note: can be removed if required, for the moment this is only a
+    //       safeguard to be sure that dangling views are not created
+    //
+    Const_View_Default_Memory_Chunk() = delete;
+
     constexpr Const_View_Default_Memory_Chunk(const T* data, capacity_type capacity) noexcept
         : _data(data), _capacity(capacity)
     {

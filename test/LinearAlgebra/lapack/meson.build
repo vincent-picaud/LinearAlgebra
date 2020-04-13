@@ -1,4 +1,4 @@
-test_array = [['blas_test','blas_exe','blas.cpp']]
+test_array = [['cholesky_test','cholesky_exe','cholesky.cpp']]
 
 foreach test : test_array
   test(test.get(0),

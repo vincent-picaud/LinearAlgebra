@@ -51,10 +51,9 @@ TEST(Memory_Chunck, move_dynamic)
   auto mem2(std::move(mem));
 
   EXPECT_EQ(mem2.capacity(), 10);
-  EXPECT_TRUE(mem2.data() == p_mem);
-
-  EXPECT_EQ(mem.capacity(), 0);
-  EXPECT_TRUE(mem.data() == nullptr);
+  EXPECT_TRUE(mem2.data() == p_mem);   // <- sign a light copy
+  EXPECT_EQ(mem.capacity(), 0);        // <- src is a consistent state
+  EXPECT_TRUE(mem.data() == nullptr);  // <- src is a consistent state
 }
 
 TEST(Memory_Chunck, move_static)
@@ -76,7 +75,7 @@ TEST(Memory_Chunck, move_static)
   auto mem2(std::move(mem));
 
   EXPECT_EQ(mem2.capacity(), 10);
-  EXPECT_FALSE(mem2.data() == p_mem);  // <- ! dynamic
-  EXPECT_EQ(mem.capacity(), 10);       // <- ! dynamic
-  EXPECT_TRUE(mem.data() == p_mem);    // <- ! dynamic
+  EXPECT_TRUE(mem2.data() != p_mem);  // <- sign a deep copy
+  EXPECT_EQ(mem.capacity(), 10);      // <- src is a consistent state
+  EXPECT_TRUE(mem.data() == p_mem);   // <- src is a consistent state
 }

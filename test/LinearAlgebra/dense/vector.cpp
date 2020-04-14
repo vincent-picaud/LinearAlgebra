@@ -1,6 +1,7 @@
 #include "LinearAlgebra/dense/vector.hpp"
 
 #include <gtest/gtest.h>
+#include <type_traits>
 
 using namespace LinearAlgebra;
 
@@ -52,22 +53,33 @@ TEST(Vector_View, constructor_raw_pointer)
   EXPECT_EQ(data[2], 10);
 }
 
-// TEST(Vector_Const_View, Constructor)
-// {
-//   int data[] = {1, 2, 3, 4, 5};
+TEST(Vector_View, view_constness)
+{
+  int data[] = {1, 2, 3, 4, 5};
 
-//   // Construction from the raw type
-//   Default_Vector_View<int, size_t, size_t> v(data, 3, 2);
+  Default_Vector_View<int, std::integral_constant<size_t, 3>, std::integral_constant<size_t, 2>> v(
+      data);
 
-//   EXPECT_EQ(v.size(), 3);
-//   EXPECT_EQ(v[0], 1);
-//   EXPECT_EQ(v[1], 3);
-//   EXPECT_EQ(v[2], 5);
+  EXPECT_FALSE(std::is_const_v<std::remove_const_t<decltype(v[0])>>);
 
-//   // A more user friendly alias
-//   Tiny_Vector_View<int, 5> v_user(data);
+  // Note: even if not a "Const_view", you cannot modify const view:
+  //
+  // Note: you cannot declare const Default_Vector_View<const int,...> to mimic "const double *const"
+  //
+  //       this would have been ideal, however this leads to tricky
+  //       implementation problems (we have chosen a simpler design
+  //       with only one "const" which is less versatile but simpler
+  //       to implement)
+  //
+  const Default_Vector_View<int, std::integral_constant<size_t, 3>,
+                            std::integral_constant<size_t, 2>>
+      c_v(data);
 
-//   EXPECT_EQ(v_user[2], 3);
-//   v[1] = 10;
-//   EXPECT_EQ(v_user[2], 10);
-// }
+  EXPECT_TRUE(std::is_const_v<std::remove_reference_t<decltype(c_v[0])>>);
+
+  Default_Vector_Const_View<int, std::integral_constant<size_t, 3>,
+                            std::integral_constant<size_t, 2>>
+      c_cv(data);
+
+  EXPECT_TRUE(std::is_const_v<std::remove_reference_t<decltype(c_cv[0])>>);
+}

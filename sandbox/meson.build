@@ -27,3 +27,7 @@ executable('lapack_example',
 executable('lapack_Cholesky',
 	   'lapack_Cholesky.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('function',
+	   'function.cpp',
+	   dependencies : [LinearAlgebra_dep])

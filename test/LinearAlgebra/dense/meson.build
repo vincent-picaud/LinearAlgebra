@@ -23,6 +23,9 @@ test_array = [
   # ---------
   ['vector_comparison_operators_test','vector_comparison_operators_exe','vector_comparison_operators.cpp'],
   ['matrix_comparison_operators_test','matrix_comparison_operators_exe','matrix_comparison_operators.cpp'],
+  # ------
+  ['vector_create_generic_view_test','vector_create_generic_view_exe','vector_create_generic_view.cpp'],
+  ['matrix_create_generic_view_test','matrix_create_generic_view_exe','matrix_create_generic_view.cpp'],
 ]
 
 foreach test : test_array

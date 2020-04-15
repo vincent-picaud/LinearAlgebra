@@ -6,9 +6,9 @@
 
 * What is it?
 
-I am currently developing my own linalg library for my own stuff.  This library is a light weight Linear Algebra C++17 library. 
+This is a light weight Linear Algebra C++17 library  I am currently developing for my own stuff.
 
-CAVEAT: early development stage. *Do not use it right now!* 
+CAVEAT: early development stage *-> Do not use it right now!* 
 
 The goals are:
 - a good compromise between performance and library complexity

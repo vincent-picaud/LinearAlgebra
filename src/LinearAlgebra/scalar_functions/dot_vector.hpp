@@ -31,7 +31,8 @@ namespace LinearAlgebra
   {
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Generic);
 
-    Common_Element_Type_t<V0_IMPL, V1_IMPL> sum{};
+    Common_Element_Type_t<V0_IMPL, V1_IMPL> sum;
+    sum = 0;
 
     if constexpr (Is_Complex_v<Element_Type_t<V0_IMPL>>)
     {

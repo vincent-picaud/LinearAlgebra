@@ -7,6 +7,43 @@
 
 * Some Reminders
 
+  - Note taken on [2020-04-15 Wed 22:04] \\
+    I just fixed a *bug* by replacing:
+    
+    #+BEGIN_SRC cpp
+    Common_Element_Type_t<V0_IMPL, V1_IMPL> sum{};  // <--
+    
+    if constexpr (Is_Complex_v<Element_Type_t<V0_IMPL>>)
+    {
+      scan([&sum](const auto& v0_component,
+                  const auto& v1_component) { sum += conjugate(v0_component) * v1_component; },
+           V0, V1);
+    }
+    #+END_SRC
+    
+    by
+    
+    #+BEGIN_SRC cpp
+    Common_Element_Type_t<V0_IMPL, V1_IMPL> sum;  // <--
+    sum = 0;                                      // <--
+    
+    if constexpr (Is_Complex_v<Element_Type_t<V0_IMPL>>)
+    {
+      scan([&sum](const auto& v0_component,
+                  const auto& v1_component) { sum += conjugate(v0_component) * v1_component; },
+           V0, V1);
+    }
+    #+END_SRC
+    
+    *This is the right way to do.*
+
+    Explanation
+    
+    When the type is =double=, =int=, =sum{}= is okay. However when the =sum= type
+    is =AD<T>= (autodiff) or another vector/matrix the one must proceed in
+    two step: =sum;= which is the default constructor that does a minimal
+    work, *then* fill it with zero by =sum=0=.
+
   - Note taken on [2020-04-15 Wed 16:33] \\
     Begin,End versus Begin,Size convention:
     

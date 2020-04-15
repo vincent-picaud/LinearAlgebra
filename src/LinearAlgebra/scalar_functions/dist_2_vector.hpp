@@ -29,7 +29,8 @@ namespace LinearAlgebra
   {
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Generic);
 
-    decltype(squared_norm_2(V0[0] - V1[0])) sum{};
+    decltype(squared_norm_2(V0[0] - V1[0])) sum;
+    sum = 0;
 
     scan([&sum](const auto& v0_component,
                 const auto& v1_component) { sum += squared_norm_2(v0_component - v1_component); },

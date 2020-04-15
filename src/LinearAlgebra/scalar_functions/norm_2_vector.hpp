@@ -4,8 +4,8 @@
 
 #include "LinearAlgebra/blas/blas.hpp"
 #include "LinearAlgebra/dense/vector_scan.hpp"
-#include "LinearAlgebra/expr/expr_debug.hpp"
 #include "LinearAlgebra/expr/dimension.hpp"
+#include "LinearAlgebra/expr/expr_debug.hpp"
 
 namespace LinearAlgebra
 {
@@ -26,7 +26,8 @@ namespace LinearAlgebra
   {
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Generic);
 
-    decltype(squared_norm_2(VMT[0])) sum{};  // {} = Zero init
+    decltype(squared_norm_2(VMT[0])) sum;
+    sum = 0;
 
     scan([&sum](const auto& v0_component) { sum += squared_norm_2(v0_component); }, VMT);
 

@@ -262,12 +262,12 @@ Also note that beside Expression Template you can call available
 expressions using reverse polish notation, by example
 
 #+begin_src cpp :eval never
-V=2*transpose(M)*U+2*V
+V = 2 * transpose(M) * U + 3 * V
 #+end_src
 
 can be computed by calling:
 #+begin_src cpp :eval never
-assign(V, _plus_, _product_, _product_, _transpose_, M, U, _product_, _lhs_);
+assign(V, _plus_, _product_, _product_, 2, _transpose_, M, U, _product_, 3, _lhs_);
 #+end_src
 
 

@@ -15,85 +15,11 @@ The goals are:
 The library is at its early... development stage. *Do not use it right
 now!*
 
-** Expression template 
-   :PROPERTIES:
-   :ID:       3046d589-3294-40e0-9bff-63895bddfa5c
-   :END:
-
-Only a reduced number of expression are supported. By exemple you can write
-#+begin_src cpp :eval never
-V=2*transpose(M)*U+2*V
- #+end_src
-as this expression can be directly mapped to Blas.
-
-However, you cannot write things like:
-#+begin_src cpp :eval never
-V=2*transpose(M)*M**M*U+2*V
-#+end_src
-as these kind of expression generally need temporary creation. 
-
-Please note that, all in all, this constraint as some positive side effects as it
-reduces the "chance" of hidden temporary creation.
-
-** Resizable vectors, matrices
-
-** Component like operator
-
-#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
-cat $(pwd)/examples/cwise_operation.cpp
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_src cpp :eval never
-#include "LinearAlgebra/vector.hpp"
-
-using namespace LinearAlgebra;
-
-int
-main()
-{
-  Tiny_Vector<int, 3> V, W;
-
-  V[0] = 1;
-  V[1] = 2;
-  V[2] = 3;
-
-  W = 2;
-
-  // Compared to some other C++ linear algebra libraries you cannot
-  // write "exotic" expressions like: W=W+1+3*V
-  //
-  // The price to pay is to write something like:
-  //
-  transform([](const auto Wi, const auto Vi) { return Wi + 1 + 3 * Vi; }, W, V);
-
-  // Beside "transform", some other specialized functions are
-  // avalaible, see:
-  //
-  // - fill(), fill_indexed()
-  //
-  // - transform(), transform_indexed()
-  //
-  // - scan(), scan_indexed()
-  //
-  std::cout << W;
-}
-#+END_src
-
-** Static size matrices
-
-For the moment I have not introduced all the 
-- I did not introduce =aligned= or =packed= template parameters (by
-  consequence I did not introduce simd intrinsics). This can be a
-  performance limitation for small vector/matrix objects. However,
-  this has no effect for big vector/matrix as we use BLAS whenever
-  this is possible.
-
-* Examples
+* Some doc
 
 ** Matrix types 
 
-For the moment I only have define =dense= matrices (BLAS compatible with column major order):
+For the moment I only have defined =dense= matrices (BLAS compatible with column major order):
 
 #+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
 cat $(pwd)/examples/some_matrix_types.cpp
@@ -162,8 +88,7 @@ template <typename T,                     // is the component type
 class Default_Matrix;                     // or {Default_Matrix_View, Default_Matrix_Const_View}
 #+end_src
 
-There are some alias covering the usual cases. Those with the =Tiny=
-prefix denote *static size* (no memory allocation).
+There are some alias covering the usual cases:
 
 #+begin_src cpp :eval never
 Matrix<T> M(I_size, J_size);
@@ -182,10 +107,10 @@ Upper_Unit_Triangular_Matrix<T> MI_size_, J_size);
 Tiny_Upper_Unit_Triangular_Matrix<T, I_SIZE, J_SIZE> M;
 
 Symmetric_Matrix<T> M(I_size_, J_size);  // I_size = J_size
-Tiny_Symmetric_Matrix<T, I_SIZE, J_SIZE> M;
+Tiny_Symmetric_Matrix<T, SIZE> M;
 
 Hermitian_Matrix<T> M;  // I_size = J_size
-Tiny_Hermitian_Matrix<T, I_SIZE, J_SIZE> M;
+Tiny_Hermitian_Matrix<T, SIZE> M;
 #+end_src
 
 Please note that by default Symmetric/Hermitian matrices are stored in their *Lower* part.
@@ -200,7 +125,108 @@ auto view = view_as_lower_triangular_strict(M.as_const());
 #+end_src
 
 will return a constant view (a lightweight matrix where only pointers
-are stored and not owned) of type.
+are stored and not owned).
+
+* Examples
+
+** Conjugate gradients
+
+This is only for demo purpose as a real implementation makes more sense with sparse matrices + a preconditioner.
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/conjugate_gradients.cpp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/matrix.hpp"
+#include "LinearAlgebra/vector.hpp"
+
+namespace LinearAlgebra
+{
+  // Basic cg implementation
+  // https://en.wikipedia.org/wiki/Conjugate_gradient_method
+  //
+  template <typename A_IMPL, typename X0_IMPL, typename B_IMPL>
+  bool
+  cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0,
+     const Dense_Vector_Crtp<B_IMPL>& b)
+  {
+    assert(A.I_size() == A.J_size());  
+    assert(A.J_size() == X0.size());
+    assert(A.J_size() == b.size());
+
+    const double eps         = 1e-6;
+    const double squared_eps = eps * eps;
+    const size_t max_iter    = 100;
+
+    auto r  = create_default_storable(X0);
+    auto p  = create_default_storable(X0);
+    auto Ap = create_default_storable(X0);
+
+    r = b - A * X0;
+
+    auto squared_norm_r_old = dot(r, r);
+
+    if (squared_norm_r_old < squared_eps)
+    {
+      return true;
+    }
+
+    p = r;
+
+    for (size_t i = 0; i < max_iter; i++)
+    {
+      Ap = A * p;
+
+      auto alpha = squared_norm_r_old / dot(p, Ap);
+
+      X0 = X0 + alpha * p;
+
+      r = r - alpha * Ap;
+
+      auto squared_norm_r_new = dot(r, r);
+
+      std::cout << "iter " << i << " residue " << squared_norm_r_new << std::endl;
+
+      if (squared_norm_r_new < squared_eps)
+      {
+        return true;
+      }
+
+      p = r + squared_norm_r_new / squared_norm_r_old * p;
+
+      squared_norm_r_old = squared_norm_r_new;
+    }
+    return false;
+  }
+}
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  Matrix<double> M(10, 10);
+  Vector<double> X0(10);
+  Vector<double> b(10), r(10);
+
+  M = 1;
+
+  create_vector_view_matrix_diagonal(M) = 20;
+  M(5, 6)                               = 2;
+  M(6, 5)                               = 2;
+
+  b  = 1;
+  X0 = 0;
+
+  bool status = cg(M, X0, b);
+
+  std::cout << X0 << std::endl;
+  std::cout << std::boolalpha << status << std::endl;
+}
+#+END_src
+
 
 * FAQ
 
@@ -208,7 +234,47 @@ are stored and not owned) of type.
 
 In general vectors or matrices *cannot be resized*. 
 
-Reason: this avoid introducing an asymmetry in the code between
-dynamic & static size objects. This asymmetry would have come with
-some extra complications both for the developer and the user who want
-to implement some generic routines.
+This avoids introducing an asymmetry in the code between dynamic &
+static size objects. This asymmetry would have come with some extra
+complications both for the developer and the user who want to
+implement some generic routines.
+
+** Expression Template 
+
+Only a reduced number of expressions are supported (TODO: list
+them!). 
+
+By example you can write
+#+begin_src cpp :eval never
+V=2*transpose(M)*U+2*V
+ #+end_src
+as this expression can be directly mapped to a Blas subroutine.
+
+However, you cannot write, in full generality, things like:
+#+begin_src cpp :eval never
+V=2*transpose(M)*M**M*U+2*V
+#+end_src
+
+Please note that, all in all, this constraint has some positive side
+effects as it reduces the "chance" of introducing hidden temporary
+creations.
+
+Also note that beside Expression Template you can call available
+expressions using reverse polish notation, by example
+
+#+begin_src cpp :eval never
+V=2*transpose(M)*U+2*V
+#+end_src
+
+can be computed by calling:
+#+begin_src cpp :eval never
+assign(V, _plus_, _product_, _product_, _transpose_, M, U, _product_, _lhs_);
+#+end_src
+
+
+** Tiny objects & intrinsics
+
+For the moment I have not introduced all the machinery that "manually"
+generates simd code.  This would have required a lot to be introduced,
+like CPU dependent simd definitions, =aligned= or =packed= template
+parameters etc... Maybe in the future...

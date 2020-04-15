@@ -1,5 +1,3 @@
-#include <cstddef>
-
 #include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/vector.hpp"
 
@@ -13,7 +11,7 @@ namespace LinearAlgebra
   cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0,
      const Dense_Vector_Crtp<B_IMPL>& b)
   {
-    assert(A.I_size() == A.J_size());  // A must be symmetric or hermitian
+    assert(A.I_size() == A.J_size());  
     assert(A.J_size() == X0.size());
     assert(A.J_size() == b.size());
 
@@ -47,7 +45,9 @@ namespace LinearAlgebra
       r = r - alpha * Ap;
 
       auto squared_norm_r_new = dot(r, r);
+
       std::cout << "iter " << i << " residue " << squared_norm_r_new << std::endl;
+
       if (squared_norm_r_new < squared_eps)
       {
         return true;
@@ -78,13 +78,6 @@ main()
 
   b  = 1;
   X0 = 0;
-
-  // r = (-1) * identity(M) * X0 + 1 * b;
-  // std::cout << r << std::endl;
-  // std::cout << b << std::endl;
-  // std::cout << X0 << std::endl;
-  // std::cout << M << std::endl;
-  // return 0;
 
   bool status = cg(M, X0, b);
 

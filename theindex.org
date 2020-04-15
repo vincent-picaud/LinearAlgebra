@@ -1,5 +1,0 @@
-#+SETUPFILE: ./Setup/setupFile.org
-#+TITLE: LinearAlgebra Index
-
-* Index 
-#+INCLUDE: "theindex.inc"

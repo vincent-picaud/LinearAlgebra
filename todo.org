@@ -1,133 +1,91 @@
-#+SETUPFILE: Setup/setupFile.org
-#+TITLE: TODO list
-* 2020
-** 2020-03 March
-*** 2020-03-11 Wednesday
-*** 2020-03-15 Sunday
+#+TITLE: Reminder & TODO list
 
-*** 2020-03-17 Tuesday
+* TODO list
 
-*** 2020-03-18 Wednesday
+* Some Reminders
 
-*** 2020-03-19 Thursday
+  - Note taken on [2020-04-15 Wed 16:33] \\
+    Begin,End versus Begin,Size convention:
+    
+    #+BEGIN_EXAMPLE
+         CAVEAT: for views our convention is *always* to use [begin,end[ and NOT (begin,size)
+                 by example view(2,4) mean {v_2,v_3}, begin=2, end=4 (and NOT {v_2,v_3,v_4,v_5}, begin=2, size=4)) 
+    #+END_EXAMPLE
 
-**** DONE Remove inplace_map [1/1]                                 :Critical:
-     :PROPERTIES:
-     :Created:  [2020-03-19 Thu 12:56]
-     :END:
+  - Note taken on [2020-04-15 Wed 16:31] \\
+    Comparison operators, one bug to clarify:
+    
+    #+BEGIN_EXAMPLE
+    
+    CAVEAT: DO NOT DEFINE >= AS !< (FOR ARRAY).                               
+                                                                         
+    Reason: if you do so you will have:                                          
+       (1)  (1,1) <  (1,1)  FALSE                                             
+            but, if >= is !<                                                  
+       (2)  (1,0) >= (1,1) TRUE <- which is NOT what we expect                
+                                                                              
+       (1)  (a0 < b0) and (a1 < b1)                                           
+    but !(1) is                                                               
+       (2)  (a0 >= b0) or (a1 >= b1) (but we want (a0 >= b0) _AND_ (a1 >= b1))
+                                                                              
+    #+END_EXAMPLE
 
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/dense/vector_map.hpp::inplace_map]]
+  - Note taken on [2020-04-15 Wed 16:29] \\
+    ADL example
+    
+    #+BEGIN_SRC cpp :eval never
+    namespace LinearAlgebra
+    {
+      namespace Detail
+      {
+        struct Detail_ADL
+        {
+        };
+    
+        template <typename IMPL_0, typename IMPL_1>
+        bool
+        impl_comparison(const Detail_ADL detail_ADL, const Vector_Crtp<IMPL_0>& vector_0,
+    		    const Vector_Crtp<IMPL_1>& vector_1)
+        {
+          return impl_comparison(detail_ADL, vector_0.impl(), vector_1.impl());
+        }
+      }
+    
+      template <typename IMPL_0, typename IMPL_1>
+      bool
+      operator==(const Vector_Crtp<IMPL_0>& vector_0, const Vector_Crtp<IMPL_1>& vector_1)
+      {
+        return impl_comparison(Detail::Detail_ADL(), vector_0, vector_1);
+      }
+    
+      namespace Detail
+      {
+        template <typename IMPL_0, typename IMPL_1>
+        bool
+        impl_comparison(const Detail_ADL detail_ADL, const Dense_Vector_Crtp<IMPL_0>& vector_0,
+    		    const Dense_Vector_Crtp<IMPL_1>& vector_1)
+        {
+          return true;
+        }
+      }
+    }
+    #+END_SRC
+    
+    Archived, for the moment we do not systematically use this kind of stuff
 
-   #+BEGIN_QUOTE
-    inplace_map
-   #+END_QUOTE
-
-    - [X] as ambiguous with transform. Use transform_indexed to do the job
-
-*** 2020-03-21 Saturday
-
-
-*** 2020-03-22 Sunday
-
-*** 2020-03-23 Monday
-
-**** TODO M=m to fix [0/0]                                         :Critical:
-     :PROPERTIES:
-     :Created:  [2020-03-23 Mon 12:17]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/test/LinearAlgebra/dense/matrix_view.cpp::expr(M,%20_assign_,%20m);]]
-
-   #+BEGIN_QUOTE
-     expr(M, _assign_, m);
-
-   #+END_QUOTE
-*** 2020-03-27 Friday
-
-*** 2020-03-28 Saturday
-
-**** TODO Document deep copy semantic of views [0/0]                    :Doc:
-     :PROPERTIES:
-     :Created:  [2020-03-28 Sat 11:49]
-     :END:
-
-   Back link: [[file:test/LinearAlgebra/expr/V_assign_V.cpp::Note:%20fundamental%20to%20understand%20to%20properly%20use%20this%20library!][operator= overloading meaning]]
-
-   #+BEGIN_QUOTE
-   Note: fundamental to understand to properly use this library!
-   #+END_QUOTE
-
-    - This part is *fundamental*.
-
-**** TODO refactoring M_assign_alpha_M [0/0]                       :Critical:
-     :PROPERTIES:
-     :Created:  [2020-03-28 Sat 12:43]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V_assign_alpha_V.hpp:://%20Define:%20V%20=%20%CE%B1%20V]]
-
-   #+BEGIN_QUOTE
-
-   #+END_QUOTE
-*** 2020-03-30 Monday
-
-*** 2020-03-31 Tuesday
-
-** 2020-04 April
-*** 2020-04-01 Wednesday
-
-**** TODO check that when is_same(v0,v1) = true do nothing [0/0]     :Urgent:
-     :PROPERTIES:
-     :Created:  [2020-04-01 Wed 11:48]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_VX_generic.hpp::v_0%20=%20v_2;]]
-
-   #+BEGIN_QUOTE
-       v_0 = v_2;
-
-   #+END_QUOTE
-*** 2020-04-09 Thursday
-
-**** TODO To Fix [0/0]                                             :Critical:
-     :PROPERTIES:
-     :Created:  [2020-04-09 Thu 18:10]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/sandbox/garbage.cpp::void%20test_TODO()%20{%20Matrix<int>%20M1,%20M0;%20Vector<int>%20V1;%20//%20M0%20=%20M1%20+%20V1;%20//%20<-%20Generate%20an%20error%20}]]
-
-   #+BEGIN_QUOTE
-   void
-   test_TODO()
-   {
-     Matrix<int> M1, M0;
-     Vector<int> V1;
-
-     //  M0 = M1 + V1; // <- Generate an error
-   }
-   #+END_QUOTE
-
-    - in expression like X0_assign_X1 one must check that both X0 and X1 are matrix or vector, but NOT a mix of two
-      For that one must and a template that check if "All_Are_Matrix" "All_Are_Vector" 
-
-      That's easy but it must be done
-*** 2020-04-10 Friday
-
-**** TODO Urgent [0/0]                                                :Urgen:
-     :PROPERTIES:
-     :Created:  [2020-04-10 Fri 15:12]
-     :END:
-
-   Back link: [[file:~/GitHub/LinearAlgebra/src/LinearAlgebra/expr/scalar_crtp.hpp:://%20TODO:%20not%20sure%20it%20is%20really%20usefull...%20comment%20me%20and%20check%20//%20complex%20specialization%20//%20->%20define%20contruction%20from%20real%20part%20only%20template%20<typename%20ELEMENT_TYPE>%20class%20Scalar_CRef<std::complex<ELEMENT_TYPE>>%20final%20:%20public%20Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>]]
-
-   #+BEGIN_QUOTE
-     // TODO: not sure it is really usefull... comment me and check
-     // complex specialization
-     // -> define contruction from real part only
-     template <typename ELEMENT_TYPE>
-     class Scalar_CRef<std::complex<ELEMENT_TYPE>> final : public Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>
-
-   #+END_QUOTE
-
-    - Easy to check/todo
+  - Note taken on [2020-04-15 Wed 16:29] \\
+    To prevent object slicing it is important to define this kind of stuff
+    
+    #+BEGIN_SRC cpp :eval never
+    template <typename IMPL>
+    class Dense_Vector_Crtp
+    {
+    protected: // <- CAVEAT
+      Dense_Vector_Crtp()                         = default;
+      Dense_Vector_Crtp(const Dense_Vector_Crtp&) = default;
+      Dense_Vector_Crtp(Dense_Vector_Crtp&) = default;
+      Dense_Vector_Crtp& operator=(const Dense_Vector_Crtp&) = default;
+      Dense_Vector_Crtp& operator=(Dense_Vector_Crtp&) = default;
+    };
+    #+END_SRC
 

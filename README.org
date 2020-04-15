@@ -6,16 +6,15 @@
 
 * What is it?
 
-This library is a light weight Linear Algebra C++17 library. 
+I am currently developing my own linalg library for my own stuff.  This library is a light weight Linear Algebra C++17 library. 
+
+CAVEAT: early development stage. *Do not use it right now!* 
 
 The goals are:
 - a good compromise between performance and library complexity
-- a concise wrapping of libraries like Blas, Lapacke, etc.
+- a concise wrapping of libraries like Blas, Blis, Lapacke, etc.
 
-The library is at its early... development stage. *Do not use it right
-now!*
-
-* Some doc
+* Some doc (TODO)
 
 ** Matrix types 
 
@@ -276,5 +275,6 @@ assign(V, _plus_, _product_, _product_, _transpose_, M, U, _product_, _lhs_);
 
 For the moment I have not introduced all the machinery that "manually"
 generates simd code.  This would have required a lot to be introduced,
-like CPU dependent simd definitions, =aligned= or =packed= template
-parameters etc... Maybe in the future...
+like cpu dependent simd definitions, =aligned= or =packed= template
+parameters etc... Really not my priority for the moment... Some other
+libs do a great job here.

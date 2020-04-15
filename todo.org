@@ -1,6 +1,9 @@
 #+TITLE: Reminder & TODO list
 
-* TODO list
+* Things todo [1/1]
+
+  - [X] Note taken on [2020-04-15 Wed 17:06] \\
+    Check the todo list works!
 
 * Some Reminders
 

@@ -10,7 +10,10 @@
 //     - create_vector_view(element_type*,size,increment)
 //
 //   - create_vector_view(vector, begin, end)
+///
+//         -  create_vector_view(vector) a helper that simply creates a view
 //
+
 #pragma once
 
 #include "LinearAlgebra/dense/vector.hpp"
@@ -183,6 +186,23 @@ namespace LinearAlgebra
         &vector[begin],  // CAVEAT: and not data()+begin
                          //                          which does not take into account increment
         size, vector.increment());
+  }
+
+  //
+  // A helper that transforms a vector into its view
+  //
+  template <typename IMPL>
+  auto
+  create_vector_view(Dense_Vector_Crtp<IMPL>& vector) noexcept
+  {
+    return create_vector_view(vector, std::integral_constant<size_t, 0>(), vector.size());
+  }
+  // const version
+  template <typename IMPL>
+  auto
+  create_vector_view(const Dense_Vector_Crtp<IMPL>& vector) noexcept
+  {
+    return create_vector_view(vector, std::integral_constant<size_t, 0>(), vector.size());
   }
 
 }

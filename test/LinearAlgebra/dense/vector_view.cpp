@@ -89,3 +89,14 @@ TEST(Vector_View, constness_check)
   EXPECT_EQ(view_v[0], 2);
   EXPECT_EQ(view_v[1], 1);
 }
+
+TEST(Vector_View, from_vector_to_view)
+{
+  Tiny_Vector<int, 3> v;
+  v[2] = 10;
+
+  auto view = create_vector_view(v);
+  view[2]   = 1;
+  EXPECT_EQ(v[2], 1);
+  EXPECT_TRUE((std::is_same_v<std::integral_constant<size_t, 3>, decltype(view.size())>));
+}

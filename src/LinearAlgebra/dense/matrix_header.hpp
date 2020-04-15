@@ -4,6 +4,7 @@
 #include "LinearAlgebra/dense/matrix_are_compatible.hpp"
 #include "LinearAlgebra/dense/matrix_comparison_operators.hpp"
 #include "LinearAlgebra/dense/matrix_create_default_storable.hpp"
+#include "LinearAlgebra/dense/matrix_create_generic_view.hpp"
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/matrix_fill.hpp"

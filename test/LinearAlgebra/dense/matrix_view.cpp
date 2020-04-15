@@ -311,3 +311,16 @@ TEST(Matrix_View, static_diagonal_view_wide)
   EXPECT_EQ(diag_wide[0], 1);
   EXPECT_EQ(diag_wide[1], 4);
 }
+
+TEST(Matrix_View, from_matrix_to_view)
+{
+  Tiny_Matrix<int, 2, 3> M;
+
+  M(1, 2) = 10;
+
+  auto view  = create_matrix_view(M);
+  view(1, 2) = 1;
+  EXPECT_EQ(M(1, 2), 1);
+  EXPECT_TRUE((std::is_same_v<std::integral_constant<size_t, 2>, decltype(view.I_size())>));
+  EXPECT_TRUE((std::is_same_v<std::integral_constant<size_t, 3>, decltype(view.J_size())>));
+}

@@ -9,6 +9,8 @@
 //
 //    - create_matrix_view(M, I_begin, I_end, J_begin, J_end)
 //
+//         -  create_matrix_view(M) a helper that simply creates a view
+//
 //    - create_matrix_view(M, structure, mask) which is declined into
 //
 //       - create_matrix_view_full(M)
@@ -192,6 +194,25 @@ namespace LinearAlgebra
         &matrix(I_begin, J_begin), typename IMPL::matrix_special_structure_type(),
         typename IMPL::storage_scheme_type::matrix_storage_mask_type(), I_size, J_size,
         matrix.leading_dimension());
+  }
+
+  //
+  // Helper that create view (same dimension etc...)
+  //
+  template <typename IMPL>
+  auto
+  create_matrix_view(Dense_Matrix_Crtp<IMPL>& matrix) noexcept
+  {
+    return create_matrix_view(matrix, std::integral_constant<size_t, 0>(), matrix.I_size(),
+                              std::integral_constant<size_t, 0>(), matrix.J_size());
+  }
+  // const
+  template <typename IMPL>
+  auto
+  create_matrix_view(const Dense_Matrix_Crtp<IMPL>& matrix) noexcept
+  {
+    return create_matrix_view(matrix, std::integral_constant<size_t, 0>(), matrix.I_size(),
+                              std::integral_constant<size_t, 0>(), matrix.J_size());
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////

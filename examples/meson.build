@@ -21,3 +21,7 @@ executable('matrix_view',
 executable('conjugate_gradients',
 	   'conjugate_gradients.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('cwise_operation',
+	   'cwise_operation.cpp',
+	   dependencies : [LinearAlgebra_dep])

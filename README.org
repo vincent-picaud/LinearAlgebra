@@ -6,53 +6,94 @@
 
 * What is it?
 
-This library is an *crazy* attempt to create another C++ Linear Algebra library. 
+This library is a light weight Linear Algebra C++17 library. 
 
-Compared to already existing libs like: [[http://eigen.tuxfamily.org/index.php?title=Main_Page][Eigen]], [[https://bitbucket.org/blaze-lib/blaze/src/master/][Blaze]], ...
+The goals are:
+- a good compromise between performance and library complexity
+- a concise wrapping of libraries like Blas, Lapacke, etc.
 
-The expected goal is a reasonable compilation time and with a concise
-implementation wrapping libraries like Blas, Lapacke, etc. I want a
-minimal number of lines of code!
+The library is at its early... development stage. *Do not use it right
+now!*
 
-In peculiar, for the moment I will not immediately implement
- Expression Templates, but simply provide call sites like:
+** Expression template 
+   :PROPERTIES:
+   :ID:       3046d589-3294-40e0-9bff-63895bddfa5c
+   :END:
 
+Only a reduced number of expression are supported. By exemple you can write
 #+begin_src cpp :eval never
-expr(M, _assign_,  3, _matrix_0_, _plus_, _identity_, A, _transpose_, B);
+V=2*transpose(M)*U+2*V
+ #+end_src
+as this expression can be directly mapped to Blas.
+
+However, you cannot write things like:
+#+begin_src cpp :eval never
+V=2*transpose(M)*M**M*U+2*V
 #+end_src
+as these kind of expression generally need temporary creation. 
 
-which means: M = 3.M + A.B^t, where M, A and B are matrices.
+Please note that, all in all, this constraint as some positive side effects as it
+reduces the "chance" of hidden temporary creation.
 
-The =_matrix_0_= tag means reuse the first (=0) already seen matrix
-argument.
+** Resizable vectors, matrices
 
-*Reasons:* expression templates
-- increase compilation time
-- can always "hide" some temporary creation
+** Component like operator
 
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/cwise_operation.cpp
+#+END_SRC
 
-** Compromises
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/vector.hpp"
 
-To make the code simpler I have done some compromises
+using namespace LinearAlgebra;
 
-- Vector/Matrix cannot be resized (reason: static vector/matrix
-  cannot be resized whereas dynamic one can. This introduce an
-  asymmetry in the code that comes with some extra complications),
+int
+main()
+{
+  Tiny_Vector<int, 3> V, W;
+
+  V[0] = 1;
+  V[1] = 2;
+  V[2] = 3;
+
+  W = 2;
+
+  // Compared to some other C++ linear algebra libraries you cannot
+  // write "exotic" expressions like: W=W+1+3*V
+  //
+  // The price to pay is to write something like:
+  //
+  transform([](const auto Wi, const auto Vi) { return Wi + 1 + 3 * Vi; }, W, V);
+
+  // Beside "transform", some other specialized functions are
+  // avalaible, see:
+  //
+  // - fill(), fill_indexed()
+  //
+  // - transform(), transform_indexed()
+  //
+  // - scan(), scan_indexed()
+  //
+  std::cout << W;
+}
+#+END_src
+
+** Static size matrices
+
+For the moment I have not introduced all the 
 - I did not introduce =aligned= or =packed= template parameters (by
   consequence I did not introduce simd intrinsics). This can be a
   performance limitation for small vector/matrix objects. However,
   this has no effect for big vector/matrix as we use BLAS whenever
   this is possible.
 
-** Disclaimer
-
- The library is at its early, early, early... development stage. I
- have made it public only for the curious...
-
-
 * Examples
 
 ** Matrix types 
+
+For the moment I only have define =dense= matrices (BLAS compatible with column major order):
 
 #+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
 cat $(pwd)/examples/some_matrix_types.cpp
@@ -107,113 +148,47 @@ prints
                0               0               0               X               X               X               X
 #+end_example
 
-** Expression usage example
-
-Again this is not expression template, but IMHO this is still readable
-and you do not have hidden temporary (plsu shorter compilation time).
-
-#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
-cat $(pwd)/examples/expr_usage.cpp
-#+END_SRC
-
-#+RESULTS:
-#+begin_src cpp :eval never
-#include "LinearAlgebra/vector.hpp"
-
-#include <ccomplex>
-#include <iostream>
-
-using namespace LinearAlgebra;
-
-int
-main()
-{
-  using T = std::complex<double>;
-
-  Vector<T> V_1(5), V_2(5);
-
-  std::cout << V_1 << std::endl;
-
-  expr(V_2, _assign_, V_1);
-
-  std::cout << V_2 << std::endl;
-}
-#+end_src
-
-prints
-
-#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
-./build/examples/expr_usage
-#+END_SRC
-
-#+RESULTS:
-#+begin_example :eval never
-
-(0,0)
-(0,0)
-(0,0)
-(0,0)
-(0,0)
-
-(0,0)
-(0,0)
-(0,0)
-(0,0)
-(0,0)
-#+end_example
-
-* API Documentation
-
-** Available matrix types
-
-For the moment only dense BLAS compatibles (column major) matrices are
-defined (I expect to add sparse & triangular matrices too).
-
 The generic definition for these matrix types is:
 #+begin_src cpp :eval never
-template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-          Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
-          typename LEADING_DIMENSION>
-class Default_Matrix { /* ... */ };
+template <typename T,                     // is the component type
+          Matrix_Special_Structure_Enum   //
+              SPECIAL_STRUCTURE,          // is in {None, Symmetric, Hermitian, Triangular,
+                                          //        Unit_Triangular, Triangular_Strict}
+          Matrix_Storage_Mask_Enum MASK,  // is in {None, Upper, Upper_Strict, Lower, Lower_Strict }
+          typename N_TYPE,                // std::size_t or a std::integral_constant<std::size_t,N>
+          typename M_TYPE,                // std::size_t or a std::integral_constant<std::size_t,M>
+          typename LEADING_DIMENSION      // std::size_t or a std::integral_constant<std::size_t,LD>
+          >                               //
+class Default_Matrix;                     // or {Default_Matrix_View, Default_Matrix_Const_View}
 #+end_src
-
-where 
-
-| T                 | is the element_type, can be a float, int or any user type                          |
-| SPECIAL_STRUCTURE | is in {None, Symmetric, Hermitian, Triangular, Unit_Triangular, Triangular_Strict} |
-| MASK              | is in {None, Upper, Upper_Strict, Lower, Lower_Strict }                            |
-| N_TYPE            | is either std::size_t or a std::integral_constant<std::size_t,N>                   |
-| M_TYPE            | is either std::size_t or a std::integral_constant<std::size_t,M>                   |
-| LEADING_DIMENSION | is either std::size_t or a std::integral_constant<std::size_t,LD>                  |
 
 There are some alias covering the usual cases. Those with the =Tiny=
 prefix denote *static size* (no memory allocation).
 
+#+begin_src cpp :eval never
+Matrix<T> M(I_size, J_size);
+Tiny_Matrix<T, I_SIZE, J_SIZE> M;
 
-|--------------------------------------------+-----------------------------------------|
-| Matrix<T>                                  | Regular matrix                          |
-| Tiny_Matrix<T,N,M>                         | (+ with static size)                    |
-|--------------------------------------------+-----------------------------------------|
-| Lower_Triangular_Strict_Matrix<T>          | Lower Triangular Strict (no diagonal)   |
-| Tiny_Lower_Triangular_Strict_Matrix<T,N,M> | (+ with static size)                    |
-|--------------------------------------------+-----------------------------------------|
-| Upper_Triangular_Strict_Matrix<T>          | Upper Triangular Strict (no diagonal)   |
-| Tiny_Upper_Triangular_Strict_Matrix<T,N,M> | (+ with static size)                    |
-|--------------------------------------------+-----------------------------------------|
-| Lower_Unit_Triangular_Matrix<T>            | Lower Unit Triangular (diagonal=1)      |
-| Tiny_Lower_Unit_Triangular_Matrix<T,N,M>   | (+ with static size)                    |
-|--------------------------------------------+-----------------------------------------|
-| Upper_Unit_Triangular_Matrix<T>            | Upper Unit Triangular (no diagonal=1)   |
-| Tiny_Upper_Unit_Triangular_Matrix<T,N,M>   | (+ with static size)                    |
-|--------------------------------------------+-----------------------------------------|
-| Symmetric_Matrix<T>                        | Symmetric Matrix (lower part is stored) |
-| Tiny_Symmetric_Matrix<T,N,M>               | (+ with static size)                    |
-|--------------------------------------------+-----------------------------------------|
-| Hermitian_Matrix<T>                        | Hermitian Matrix (lower part is stored) |
-| Tiny_Hermitian_Matrix<T,N,M>               | (+ with static size)                    |
-|--------------------------------------------+-----------------------------------------|
+Lower_Triangular_Strict_Matrix<T> M(I_size_, J_size);
+Tiny_Lower_Triangular_Strict_Matrix<T, I_SIZE, J_SIZE> M;
 
-CAVEAT: add Triangular matrices! (missing)
+Upper_Triangular_Strict_Matrix<T> M(I_size_, J_size);
+Tiny_Upper_Triangular_Strict_Matrix<T, I_SIZE, J_SIZE> M;
+
+Lower_Unit_Triangular_Matrix<T> M(I_size_, J_size);
+Tiny_Lower_Unit_Triangular_Matrix<T, I_SIZE, J_SIZE> M;
+
+Upper_Unit_Triangular_Matrix<T> MI_size_, J_size);
+Tiny_Upper_Unit_Triangular_Matrix<T, I_SIZE, J_SIZE> M;
+
+Symmetric_Matrix<T> M(I_size_, J_size);  // I_size = J_size
+Tiny_Symmetric_Matrix<T, I_SIZE, J_SIZE> M;
+
+Hermitian_Matrix<T> M;  // I_size = J_size
+Tiny_Hermitian_Matrix<T, I_SIZE, J_SIZE> M;
+#+end_src
+
+Please note that by default Symmetric/Hermitian matrices are stored in their *Lower* part.
 
 For each case you can also use *views*, there are two types of view:
 mutable one and constant one. For instance:
@@ -225,20 +200,15 @@ auto view = view_as_lower_triangular_strict(M.as_const());
 #+end_src
 
 will return a constant view (a lightweight matrix where only pointers
-are stored and not owned) of type:
+are stored and not owned) of type.
 
-#+begin_src cpp :eval never
-Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, N_TYPE, M_TYPE, LEADING_DIMENSION>
-#+end_src
+* FAQ
 
-* Developper documentation
+** Resizable vector/matrix ?
 
-** =meta=
+In general vectors or matrices *cannot be resized*. 
 
-| =Has_Static_Size_v<>=        | [[file:src/LinearAlgebra/meta/size_utils.hpp][code]], [[file:test/meta/size_utils.cpp][test]] |
-| =Any_Has_Static_Size_v<...>= |            |
-
-** =dense/=
-
-| get_size(...) | [[file:src/LinearAlgebra/dense/vector_crtp_size_utils.hpp][code]], [[file:test/dense/vector_crtp_size_utils.cpp][test]] |
-|               |            |
+Reason: this avoid introducing an asymmetry in the code between
+dynamic & static size objects. This asymmetry would have come with
+some extra complications both for the developer and the user who want
+to implement some generic routines.

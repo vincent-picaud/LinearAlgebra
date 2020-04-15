@@ -14,7 +14,7 @@
   - LinearAlgebra
     - [[file:src/LinearAlgebra/README.org][Library main headers]]
     - dense
-      - [[file:src/LinearAlgebra/dense/README.org][The =LinearAlgebra/dense/= directory]]
-    - expr_of_the_poor
-      - [[file:src/LinearAlgebra/expr_of_the_poor/README.org][=LinearAlgebra/expr_of_the_poor/=]]
+      - [[file:src/LinearAlgebra/dense/README.org][=LinearAlgebra/dense/=]]
+    - expr
+      - [[file:src/LinearAlgebra/expr/README.org][=LinearAlgebra/expr_of_the_poor/=]]
 

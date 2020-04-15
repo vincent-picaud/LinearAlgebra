@@ -34,41 +34,41 @@
     ADL example
     
     #+BEGIN_SRC cpp :eval never
-    namespace LinearAlgebra
+namespace LinearAlgebra
+{
+  namespace Detail
+  {
+    struct Detail_ADL
     {
-      namespace Detail
-      {
-        struct Detail_ADL
-        {
-        };
+    };
     
-        template <typename IMPL_0, typename IMPL_1>
-        bool
-        impl_comparison(const Detail_ADL detail_ADL, const Vector_Crtp<IMPL_0>& vector_0,
+    template <typename IMPL_0, typename IMPL_1>
+    bool
+    impl_comparison(const Detail_ADL detail_ADL, const Vector_Crtp<IMPL_0>& vector_0,
     		    const Vector_Crtp<IMPL_1>& vector_1)
-        {
-          return impl_comparison(detail_ADL, vector_0.impl(), vector_1.impl());
-        }
-      }
-    
-      template <typename IMPL_0, typename IMPL_1>
-      bool
-      operator==(const Vector_Crtp<IMPL_0>& vector_0, const Vector_Crtp<IMPL_1>& vector_1)
-      {
-        return impl_comparison(Detail::Detail_ADL(), vector_0, vector_1);
-      }
-    
-      namespace Detail
-      {
-        template <typename IMPL_0, typename IMPL_1>
-        bool
-        impl_comparison(const Detail_ADL detail_ADL, const Dense_Vector_Crtp<IMPL_0>& vector_0,
-    		    const Dense_Vector_Crtp<IMPL_1>& vector_1)
-        {
-          return true;
-        }
-      }
+    {
+      return impl_comparison(detail_ADL, vector_0.impl(), vector_1.impl());
     }
+  }
+    
+  template <typename IMPL_0, typename IMPL_1>
+  bool
+  operator==(const Vector_Crtp<IMPL_0>& vector_0, const Vector_Crtp<IMPL_1>& vector_1)
+  {
+    return impl_comparison(Detail::Detail_ADL(), vector_0, vector_1);
+  }
+    
+  namespace Detail
+  {
+    template <typename IMPL_0, typename IMPL_1>
+    bool
+    impl_comparison(const Detail_ADL detail_ADL, const Dense_Vector_Crtp<IMPL_0>& vector_0,
+    		    const Dense_Vector_Crtp<IMPL_1>& vector_1)
+    {
+      return true;
+    }
+  }
+}
     #+END_SRC
     
     Archived, for the moment we do not systematically use this kind of stuff
@@ -77,15 +77,210 @@
     To prevent object slicing it is important to define this kind of stuff
     
     #+BEGIN_SRC cpp :eval never
-    template <typename IMPL>
-    class Dense_Vector_Crtp
-    {
-    protected: // <- CAVEAT
-      Dense_Vector_Crtp()                         = default;
-      Dense_Vector_Crtp(const Dense_Vector_Crtp&) = default;
-      Dense_Vector_Crtp(Dense_Vector_Crtp&) = default;
-      Dense_Vector_Crtp& operator=(const Dense_Vector_Crtp&) = default;
-      Dense_Vector_Crtp& operator=(Dense_Vector_Crtp&) = default;
-    };
+template <typename IMPL>
+class Dense_Vector_Crtp
+{
+protected: // <- CAVEAT
+  Dense_Vector_Crtp()                         = default;
+  Dense_Vector_Crtp(const Dense_Vector_Crtp&) = default;
+  Dense_Vector_Crtp(Dense_Vector_Crtp&) = default;
+  Dense_Vector_Crtp& operator=(const Dense_Vector_Crtp&) = default;
+  Dense_Vector_Crtp& operator=(Dense_Vector_Crtp&) = default;
+};
     #+END_SRC
 
+* Meson & external dependency (here slate/blaspp)
+
+  Two solutions:
+  - suproject
+  - external dependency
+
+** subproject 
+
+   This worked, but certainly need some cleaning
+
+*** =/meson.build=
+    #+BEGIN_EXAMPLE
+project('LinearAlgebra', 'cpp',
+	version : '0.0.1',
+	default_options : ['cpp_std=c++17'])
+
+gtest_proj = subproject('gtest')
+gtest_dep = gtest_proj.get_variable('gtest_main_dep')
+
+################
+# Slate Blaspp #
+################
+#
+cmake = import('cmake')
+
+# note: you can add cmake options here:
+#       cmake.subproject('blaspp', cmake_options: '-DSOME_CMAKE_VAR=something')
+# todo: add NDEBUG etc for release 
+blaspp_proj = cmake.subproject('blaspp')
+# Note: you have to search CMakeList.txt add_library(...)
+#       to find the right library name 'blaspp' in .dependency('blaspp')
+#
+# Meson doc:
+# https://github.com/mesonbuild/meson/tree/36749a1625534386c1adefcd8ced5b45144501d1/test%20cases/cmake
+blaspp_dep = blaspp_proj.dependency('blaspp')
+install_headers(blaspp_proj.include_directories('blaspp')) # 'subprojects/blaspp/include')
+
+subdir('src')
+subdir('test')
+subdir('bin')
+subdir('sandbox')
+subdir('examples')
+    #+END_EXAMPLE
+
+*** =/src/LinerarAlgebra/meson.build=
+    #+BEGIN_EXAMPLE
+LinearAlgebra_headers = [ ... ]
+LinearAlgebra_sources = [ ... ]
+
+subdir('...')
+
+LinearAlgebra_lib = library('LinearAlgebra',
+			    include_directories : inc,
+			    install : true,
+			    sources: [LinearAlgebra_headers,LinearAlgebra_sources])
+
+LinearAlgebra_dep = declare_dependency(include_directories : inc,
+				       link_with : [LinearAlgebra_lib,],
+				       dependencies : [blas_lib,])         # <-- HERE
+
+install_headers(LinearAlgebra_headers, subdir : 'LinearAlgebra')
+    #+END_EXAMPLE
+
+*** =/subproject/blaspp.wrap=
+
+    #+BEGIN_EXAMPLE
+# See: https://github.com/mesonbuild/meson/tree/master/manual%20tests/6%20hg%20wrap
+
+[wrap-hg]
+directory=blaspp
+url=https://bitbucket.org/icl/blaspp
+revision=tip
+    #+END_EXAMPLE
+
+*** =/examples/meson.build=
+
+    #+BEGIN_EXAMPLE
+#include "blas.hh"
+
+#include <iostream>
+
+// The 3x2 matrix, column major
+// { 1, 2 }
+// { 3, 4 }
+// { 5, 6 }
+double M_32[6] = {1, 3, 5, 2, 4, 6};
+
+int main()
+{
+  std::cout << "\n\n norm " << blas::nrm2(6,M_32,1);
+}
+    #+END_EXAMPLE
+
+    #+BEGIN_EXAMPLE
+executable('blaspp_example',
+	   'blaspp_example.cpp',
+	   dependencies : [LinearAlgebra_dep, blaspp_dep])
+    #+END_EXAMPLE
+
+** External dependency
+
+   This worked, but certainly need some cleaning.
+
+   This library depends on 
+   - [[https://bitbucket.org/icl/blaspp/src/default/][slate/blaspp]] 
+   - [[https://bitbucket.org/icl/lapackpp/src/default/][slate/lapackpp]]
+
+   To install =lapackpp= (without the tests)
+   #+BEGIN_SRC sh :eval never
+hg clone https://bitbucket.org/icl/lapackpp
+mkdir build
+cd build/
+cmake -DBUILD_LAPACKPP_TESTS=false ..
+make
+make install 
+   #+END_SRC
+
+   TODO: how to install optimized version. To check: one has to define:
+   - for =blaspp= =-DBLAS_ERROR_NDEBUG= (used in =blas_util.hh=)
+   - for =lapackpp= =-DLAPACK_ERROR_NDEBUG= (used in =lapack_util.hh=)
+
+   The default install directory of =blaspp= and =lapackpp= is
+   =/opt/slate/=. This is the directory used by the meson script.  You can
+   always modify these paths in the root meson.build file (in
+   =LinearAlgebra/meson.build=). By example:
+   #+BEGIN_SRC meson :eval never
+#
+# blaspp
+#
+blaspp_lib = 'blaspp'
+blaspp_lib_dir = '/opt/slate/lib'         # <- modify me
+blaspp_header_dir = '/opt/slate/include'  # <- modify me
+   #+END_SRC
+
+
+*** =/meson.build/=
+
+    #+BEGIN_EXAMPLE
+project('LinearAlgebra', 'cpp',
+	version : '0.0.1',
+	default_options : ['cpp_std=c++17'])
+
+gtest_proj = subproject('gtest')
+gtest_dep = gtest_proj.get_variable('gtest_main_dep')
+
+#
+# blaspp
+#
+blaspp_lib = 'blaspp'
+blaspp_lib_dir = '/opt/slate/lib'
+blaspp_header_dir = '/opt/slate/include'
+
+blaspp_dep = declare_dependency(link_args : ['-L' + blaspp_lib_dir, '-l' + blaspp_lib],
+ 				include_directories : include_directories(blaspp_header_dir))
+
+subdir('src')
+subdir('test')
+subdir('bin')
+subdir('sandbox')
+subdir('examples')
+    #+END_EXAMPLE
+
+*** =/src/LinearAlgebra/meson.build=
+
+    #+BEGIN_EXAMPLE
+LinearAlgebra_headers = [...]
+LinearAlgebra_sources = [...]
+
+subdir(...)
+
+LinearAlgebra_lib = library('LinearAlgebra',
+			    include_directories : inc,
+			    install : true,
+			    sources: [LinearAlgebra_headers,LinearAlgebra_sources])
+
+LinearAlgebra_dep = declare_dependency(include_directories : inc,
+				       link_with : [LinearAlgebra_lib,],
+				       dependencies : [blas_lib,blaspp_dep])  # <--- HERE
+
+install_headers(LinearAlgebra_headers, subdir : 'LinearAlgebra')
+    #+END_EXAMPLE
+
+*** =/example/meson.build=
+
+    #+BEGIN_EXAMPLE
+executable('test_blaspp',
+	   'test_blaspp.cpp',
+	   build_rpath : '/opt/slate/lib',         # <-- CAVEAT
+	   install_rpath : '/opt/slate/lib',       # <-- CAVEAT
+	   dependencies : [LinearAlgebra_dep, blaspp_dep])
+    #+END_EXAMPLE
+
+*** =/subproject/=
+
+    There is nothing related to blas (appart gtest)

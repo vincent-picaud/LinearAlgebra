@@ -1,7 +1,9 @@
 #+TITLE: Reminder & TODO list
 
-* Things todo [1/1]
+* Things todo [1/2]
 
+  - [ ] Note taken on [2020-04-16 Thu 16:09] \\
+    Fix $X=Y-Z$ which is currently not available
   - [X] Note taken on [2020-04-15 Wed 17:06] \\
     Check the todo list works!
 

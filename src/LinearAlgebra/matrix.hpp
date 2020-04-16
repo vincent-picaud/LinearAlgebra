@@ -9,3 +9,4 @@
 
 #include "LinearAlgebra/metaexpr/metaexpr.hpp"
 
+#include "LinearAlgebra/scalar_functions/scalar_functions_matrix.hpp"

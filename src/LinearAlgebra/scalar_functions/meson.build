@@ -1,4 +1,7 @@
 LinearAlgebra_headers += [
+  'scalar_functions/scalar_functions_vector.hpp', # main header file
+  'scalar_functions/scalar_functions_matrix.hpp', # main header file
+
   'scalar_functions/dot.hpp',
   'scalar_functions/dot_vector.hpp',
 

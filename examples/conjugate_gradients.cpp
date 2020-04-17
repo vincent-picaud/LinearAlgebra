@@ -1,10 +1,4 @@
-#include <type_traits>
-#include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/matrix.hpp"
-#include "LinearAlgebra/utils/element_type.hpp"
-#include "LinearAlgebra/utils/has_static_dimension.hpp"
-#include "LinearAlgebra/utils/is_std_integral_constant.hpp"
-#include "LinearAlgebra/utils/size_utils.hpp"
 #include "LinearAlgebra/vector.hpp"
 
 using namespace LinearAlgebra;
@@ -94,13 +88,17 @@ cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0, const Dense_Vec
 int
 main()
 {
-  // Matrix<double> M(10, 10);
-  // Vector<double> X0(10);
-  // Vector<double> b(10);
+  // Dynamic vectors/matrices
 
-  Tiny_Matrix<double, 10, 10> M;
-  Tiny_Vector<double, 10> X0;
-  Tiny_Vector<double, 10> b;
+  Matrix<double> M(10, 10);
+  Vector<double> X0(10);
+  Vector<double> b(10);
+
+  // Here static one, no more dynamic memory allocations.
+
+  // Tiny_Matrix<double, 10, 10> M;
+  // Tiny_Vector<double, 10> X0;
+  // Tiny_Vector<double, 10> b;
 
   M = 1;
 

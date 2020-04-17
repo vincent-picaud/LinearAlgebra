@@ -1,6 +1,4 @@
-#include "LinearAlgebra/expr/X0_assign_X1.hpp"
-
-//#include "LinearAlgebra/expr/V0_assign_V1.hpp"
+#include "LinearAlgebra/expr/copy_vector.hpp"
 
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/dense/vector_view.hpp"

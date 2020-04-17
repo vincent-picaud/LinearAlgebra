@@ -5,7 +5,7 @@
 #include "LinearAlgebra/expr/expr.hpp"
 
 #include "LinearAlgebra/expr/M0_assign_alpha.hpp"
-#include "LinearAlgebra/expr/M0_assign_M1.hpp"
+#include "LinearAlgebra/expr/copy_matrix.hpp"
 
 #include "LinearAlgebra/expr/M0_assign_alpha_M0.hpp"
 

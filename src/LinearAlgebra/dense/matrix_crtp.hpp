@@ -4,7 +4,7 @@
 #include <iomanip>
 
 #include "LinearAlgebra/dense/vmt_crtp.hpp"
-#include "LinearAlgebra/expr/M0_assign_M1.hpp"
+#include "LinearAlgebra/expr/copy_matrix.hpp"
 #include "LinearAlgebra/expr/M0_assign_alpha.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 

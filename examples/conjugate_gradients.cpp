@@ -1,74 +1,106 @@
+#include <type_traits>
+#include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/matrix.hpp"
+#include "LinearAlgebra/utils/element_type.hpp"
+#include "LinearAlgebra/utils/has_static_dimension.hpp"
+#include "LinearAlgebra/utils/is_std_integral_constant.hpp"
+#include "LinearAlgebra/utils/size_utils.hpp"
 #include "LinearAlgebra/vector.hpp"
 
-namespace LinearAlgebra
+using namespace LinearAlgebra;
+
+// Illustrates dynamic vs static size vectors
+//
+template <typename T>
+auto
+create_vector(const std::size_t n)
 {
-  // Basic cg implementation
-  // https://en.wikipedia.org/wiki/Conjugate_gradient_method
+  return Vector<T>{n};
+}
+template <typename T, std::size_t N>
+auto
+create_vector(const std::integral_constant<std::size_t, N>)
+{
+  return Tiny_Vector<T, N>{};
+}
+
+// Basic CG implementation
+// https://en.wikipedia.org/wiki/Conjugate_gradient_method
+//
+template <typename A_IMPL, typename X0_IMPL, typename B_IMPL>
+bool
+cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0, const Dense_Vector_Crtp<B_IMPL>& b)
+{
+  // Parameters
   //
-  template <typename A_IMPL, typename X0_IMPL, typename B_IMPL>
-  bool
-  cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0,
-     const Dense_Vector_Crtp<B_IMPL>& b)
+  const double eps         = 1e-6;
+  const double squared_eps = eps * eps;
+  const size_t max_iter    = 100;
+
+  // Sanity check
+  //
+  assert(all_sizes_are_equal_p(A.I_size(), A.J_size(), X0.size(), b.size()));
+
+  // Working vector type, use a static size one if possible
+  //
+  using element_type = Common_Element_Type_t<A_IMPL, X0_IMPL, B_IMPL>;
+  const auto n       = get_static_size_if_any(A.I_size(), A.J_size(), X0.size(), b.size());
+
+  auto r  = create_vector<element_type>(n);
+  auto p  = create_vector<element_type>(n);
+  auto Ap = create_vector<element_type>(n);
+
+  // Initialization
+  //
+  r = b - A * X0;
+
+  auto squared_norm_r_old = dot(r, r);
+
+  if (squared_norm_r_old < squared_eps)
   {
-    assert(A.I_size() == A.J_size());  
-    assert(A.J_size() == X0.size());
-    assert(A.J_size() == b.size());
+    return true;
+  }
 
-    const double eps         = 1e-6;
-    const double squared_eps = eps * eps;
-    const size_t max_iter    = 100;
+  p = r;
 
-    auto r  = create_default_storable(X0);
-    auto p  = create_default_storable(X0);
-    auto Ap = create_default_storable(X0);
+  // Main loop
+  //
+  for (size_t i = 0; i < max_iter; i++)
+  {
+    Ap = A * p;
 
-    r = b - A * X0;
+    auto alpha = squared_norm_r_old / dot(p, Ap);
 
-    auto squared_norm_r_old = dot(r, r);
+    X0 = X0 + alpha * p;
 
-    if (squared_norm_r_old < squared_eps)
+    r = r - alpha * Ap;
+
+    auto squared_norm_r_new = dot(r, r);
+
+    std::cout << "iter " << i << " residue " << squared_norm_r_new << std::endl;
+
+    if (squared_norm_r_new < squared_eps)
     {
       return true;
     }
 
-    p = r;
+    p = r + squared_norm_r_new / squared_norm_r_old * p;
 
-    for (size_t i = 0; i < max_iter; i++)
-    {
-      Ap = A * p;
-
-      auto alpha = squared_norm_r_old / dot(p, Ap);
-
-      X0 = X0 + alpha * p;
-
-      r = r - alpha * Ap;
-
-      auto squared_norm_r_new = dot(r, r);
-
-      std::cout << "iter " << i << " residue " << squared_norm_r_new << std::endl;
-
-      if (squared_norm_r_new < squared_eps)
-      {
-        return true;
-      }
-
-      p = r + squared_norm_r_new / squared_norm_r_old * p;
-
-      squared_norm_r_old = squared_norm_r_new;
-    }
-    return false;
+    squared_norm_r_old = squared_norm_r_new;
   }
+  return false;
 }
-
-using namespace LinearAlgebra;
 
 int
 main()
 {
-  Matrix<double> M(10, 10);
-  Vector<double> X0(10);
-  Vector<double> b(10), r(10);
+  // Matrix<double> M(10, 10);
+  // Vector<double> X0(10);
+  // Vector<double> b(10);
+
+  Tiny_Matrix<double, 10, 10> M;
+  Tiny_Vector<double, 10> X0;
+  Tiny_Vector<double, 10> b;
 
   M = 1;
 

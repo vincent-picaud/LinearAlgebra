@@ -3,32 +3,34 @@ LinearAlgebra_headers += [
   'expr/expr_selector.hpp',
   'expr/dimension.hpp',
 
-  # ok  
+  # to update! (use copy as model)  
   'expr/X0_assign_alpha.hpp',
   'expr/V0_assign_alpha.hpp',
   'expr/M0_assign_alpha.hpp',
 
-  # ok  
-  'expr/X0_assign_X1.hpp', 
-  'expr/V0_assign_V1.hpp',
-  'expr/M0_assign_M1.hpp',
+  # OK
+  'expr/copy_vector.hpp', 
+  'expr/copy_matrix.hpp', 
+  'expr/copy/generic_interface.hpp', 
+  'expr/copy/vector_impl.hpp', 
+  'expr/copy/matrix_impl.hpp', 
 
-  # ok
+  # to update! (use copy as model)
   'expr/X0_assign_alpha_X0.hpp', 
   'expr/V0_assign_alpha_V0.hpp', 
   'expr/M0_assign_alpha_M0.hpp',
 
-  # ok
+  # to update! (use copy as model)
   'expr/X0_assign_alpha_X1.hpp',
   'expr/V0_assign_alpha_V1.hpp',
   'expr/M0_assign_alpha_M1.hpp',
 
-  # ok
+  # to update! (use copy as model)
   'expr/X0_assign_alpha_X1_plus_X0.hpp', 
   'expr/V0_assign_alpha_V1_plus_V0.hpp', 
   'expr/M0_assign_alpha_M1_plus_M0.hpp',
 
-  # ok
+  # to update! (use copy as model)
   'expr/X0_assign_alpha_X1_plus_X2.hpp',
   'expr/V0_assign_alpha_V1_plus_V2.hpp',
   'expr/M0_assign_alpha_M1_plus_M2.hpp',
@@ -57,5 +59,6 @@ LinearAlgebra_headers += [
   'expr/assign_fallback.hpp', # fallback to shorten error messages
   'expr/expr.hpp',            # convenience header file
 ]
+
 
 subdir('M_eq_aMM_bM')

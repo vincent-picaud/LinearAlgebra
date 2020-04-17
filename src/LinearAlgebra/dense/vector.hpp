@@ -10,9 +10,6 @@
 namespace LinearAlgebra
 {
   template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
-  class Default_Vector;
-
-  template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
   struct Crtp_Type_Traits<LinearAlgebra::Default_Vector<T, SIZE_TYPE, INCREMENT_TYPE>>
   {
     using storage_scheme_type =
@@ -28,6 +25,7 @@ namespace LinearAlgebra
     using increment_type = typename storage_scheme_type::increment_type;
   };
 
+  // Definition of Default_Vector
   template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
   class Default_Vector : public Dense_Vector_Crtp<Default_Vector<T, SIZE_TYPE, INCREMENT_TYPE>>
   {
@@ -94,9 +92,6 @@ namespace LinearAlgebra
   //   View_Default_Memory_Chunk)
   //
   //****************************************************************
-
-  template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
-  class Default_Vector_View;
 
   template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
   struct Crtp_Type_Traits<LinearAlgebra::Default_Vector_View<T, SIZE_TYPE, INCREMENT_TYPE>>

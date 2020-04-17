@@ -10,6 +10,9 @@ LinearAlgebra_headers += [
   #
   # Common to vector, matrix etc..
   #
+  'dense/vector_fwd.hpp',
+  'dense/matrix_fwd.hpp',
+
   'dense/vector_are_compatible.hpp',
   'dense/matrix_are_compatible.hpp',
 
@@ -53,7 +56,4 @@ LinearAlgebra_headers += [
   'dense/vector_header.hpp',
 
   'dense/vmt_assignment_operator_define.hpp',
-
-  'dense/vector_create_generic_view.hpp',
-  'dense/matrix_create_generic_view.hpp',
 ]

@@ -2,6 +2,7 @@
 
 #include <cstddef>
 
+#include "LinearAlgebra/dense/vector_fwd.hpp"
 #include "LinearAlgebra/dense/vmt_crtp.hpp"
 #include "LinearAlgebra/expr/V0_assign_V1.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha.hpp"
@@ -160,6 +161,21 @@ namespace LinearAlgebra
     // Crtp Interface //
     ////////////////////
     //
+    auto
+    as_generic_view()
+    {
+      return base_type::impl().impl_as_generic_view();
+    }
+    auto
+    as_generic_view() const
+    {
+      return base_type::impl().impl_as_generic_view();
+    }
+    auto
+    as_generic_const_view() const
+    {
+      return base_type::as_const().as_generic_view();
+    }
 
     // auto makes sense for const views
     auto*

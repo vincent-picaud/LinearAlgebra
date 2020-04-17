@@ -3,6 +3,9 @@
 //
 #pragma once
 
+#include <cstddef>
+#include <type_traits>
+
 namespace LinearAlgebra
 {
   //
@@ -26,12 +29,12 @@ namespace LinearAlgebra
   //================================================================
   //
 
-  template <typename T, size_t SIZE>
+  template <typename T, std::size_t SIZE>
   using Tiny_Vector = Default_Vector<T, std::integral_constant<std::size_t, SIZE>,
                                      std::integral_constant<std::size_t, 1>>;
 
   template <typename T>
-  using Vector = Default_Vector<T, size_t, std::integral_constant<std::size_t, 1>>;
+  using Vector = Default_Vector<T, std::size_t, std::integral_constant<std::size_t, 1>>;
 
   //
   //================================================================

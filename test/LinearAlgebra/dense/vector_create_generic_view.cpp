@@ -1,5 +1,3 @@
-#include "LinearAlgebra/dense/vector_create_generic_view.hpp"
-
 #include "LinearAlgebra/dense/vector.hpp"
 
 #include <gtest/gtest.h>

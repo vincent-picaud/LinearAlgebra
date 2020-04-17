@@ -6,7 +6,6 @@
 #include <limits>
 #include <memory>
 
-#include "LinearAlgebra/dense/vector_create_generic_view.hpp"
 #include "LinearAlgebra/dense/vector_view.hpp"
 #include "LinearAlgebra/vector.hpp"
 

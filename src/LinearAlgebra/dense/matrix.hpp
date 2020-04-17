@@ -206,7 +206,36 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
+    // Generic View Converter
+    operator Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>() const
+    {
+      return impl_as_generic_view();
+    }
+    operator Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>()
+    {
+      return this->as_const().impl_as_generic_view();
+    }
+    operator Generic_Matrix_View<T, SPECIAL_STRUCTURE, MASK>() { return impl_as_generic_view(); }
+
     VMT_ASSIGNMENT_OPERATOR(Default_Matrix);
+
+    ///////////////////////////////////
+    // Crtp Interface Implementation //
+    ///////////////////////////////////
+    //
+   protected:
+    friend base_type;
+
+    Generic_Matrix_View<T, SPECIAL_STRUCTURE, MASK>
+    impl_as_generic_view()
+    {
+      return {this->data(), this->I_size(), this->J_size(), this->leading_dimension()};
+    }
+    Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>
+    impl_as_generic_view() const
+    {
+      return {this->data(), this->I_size(), this->J_size(), this->leading_dimension()};
+    }
   };
 
   //****************************************************************
@@ -295,7 +324,36 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
+    // Generic View Converter
+    operator Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>() const
+    {
+      return impl_as_generic_view();
+    }
+    operator Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>()
+    {
+      return this->as_const().impl_as_generic_view();
+    }
+    operator Generic_Matrix_View<T, SPECIAL_STRUCTURE, MASK>() { return impl_as_generic_view(); }
+
     VMT_ASSIGNMENT_OPERATOR(Default_Matrix_View);
+
+    ///////////////////////////////////
+    // Crtp Interface Implementation //
+    ///////////////////////////////////
+    //
+   protected:
+    friend base_type;
+
+    Generic_Matrix_View<T, SPECIAL_STRUCTURE, MASK>
+    impl_as_generic_view()
+    {
+      return {this->data(), this->I_size(), this->J_size(), this->leading_dimension()};
+    }
+    Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>
+    impl_as_generic_view() const
+    {
+      return {this->data(), this->I_size(), this->J_size(), this->leading_dimension()};
+    }
   };
 
   //================================================================
@@ -386,7 +444,31 @@ namespace LinearAlgebra
     ////////////////////
     //
    public:
+    // Generic View Converter
+    operator Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>() const
+    {
+      return impl_as_generic_view();
+    }
+    operator Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>()
+    {
+      return this->as_const().impl_as_generic_view();
+    }
+    operator Generic_Matrix_View<T, SPECIAL_STRUCTURE, MASK>() { return impl_as_generic_view(); }
+
     DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Matrix_Const_View);
+
+    ///////////////////////////////////
+    // Crtp Interface Implementation //
+    ///////////////////////////////////
+    //
+   protected:
+    friend base_type;
+
+    Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>
+    impl_as_generic_view() const
+    {
+      return *this;
+    }
   };
 
 }

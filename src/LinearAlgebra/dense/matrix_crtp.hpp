@@ -121,8 +121,8 @@ namespace LinearAlgebra
       {
         // we cannot set src size=0 after move! this would left it in
         // a BROKEN state (data=nullptr but size!=0)
-	//
-	// To preserve invariant we perform a deep copy instead
+        //
+        // To preserve invariant we perform a deep copy instead
         _storage_scheme = src._storage_scheme;
         _memory_chunk   = src._memory_chunk;
       }
@@ -161,6 +161,22 @@ namespace LinearAlgebra
     // Crtp Interface //
     ////////////////////
     //
+    auto
+    as_generic_view()
+    {
+      return base_type::impl().impl_as_generic_view();
+    }
+    auto
+    as_generic_view() const
+    {
+      return base_type::impl().impl_as_generic_view();
+    }
+    auto
+    as_generic_const_view() const
+    {
+      return base_type::as_const().as_generic_view();
+    }
+
     // auto makes sense for const views
     auto*
     data()

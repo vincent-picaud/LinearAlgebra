@@ -67,13 +67,13 @@ to_line_search_f_Tn_T_by_reference(const Differentiable_Function_Tn_T<T>& f_Tn_T
       _buffer_Xn = _X0 + x * _direction;
       if (dy)
       {
-        auto view_buffer_gradn = create_generic_view(_buffer_gradn);
-        f_Tn_T(create_generic_view(_buffer_Xn.as_const()), y, &view_buffer_gradn);
+        auto view_buffer_gradn = _buffer_gradn.as_generic_view();
+        f_Tn_T(_buffer_Xn.as_generic_const_view(), y, &view_buffer_gradn);
         *dy = dot(view_buffer_gradn, _direction);
       }
       else
       {
-        f_Tn_T(create_generic_view(_buffer_Xn.as_const()), y, nullptr);
+        f_Tn_T(_buffer_Xn.as_generic_const_view(), y, nullptr);
       }
     }
   };

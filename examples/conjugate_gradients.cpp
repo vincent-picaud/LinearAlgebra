@@ -33,6 +33,10 @@ cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0, const Dense_Vec
 
   // Sanity check
   //
+  static_assert(A_IMPL::matrix_special_structure_type::value ==  // For demo...
+                Matrix_Special_Structure_Enum::Symmetric);       // could be: SFINAE,
+                                                                 // hermitian, etc...
+
   assert(all_sizes_are_equal_p(A.I_size(), A.J_size(), X0.size(), b.size()));
 
   // Working vector type, use a static size one if possible
@@ -90,13 +94,13 @@ main()
 {
   // Dynamic vectors/matrices
 
-  Matrix<double> M(10, 10);
+  Symmetric_Matrix<double> M(10, 10);
   Vector<double> X0(10);
   Vector<double> b(10);
 
   // Here static one, no more dynamic memory allocations.
 
-  // Tiny_Matrix<double, 10, 10> M;
+  // Tiny_Symmetric_Matrix<double, 10, 10> M;
   // Tiny_Vector<double, 10> X0;
   // Tiny_Vector<double, 10> b;
 

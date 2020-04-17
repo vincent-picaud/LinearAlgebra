@@ -75,42 +75,37 @@ prints
 
 The generic definition for these matrix types is:
 #+begin_src cpp :eval never
-template <typename T,                     // is the component type
-          Matrix_Special_Structure_Enum   //
-              SPECIAL_STRUCTURE,          // is in {None, Symmetric, Hermitian, Triangular,
-                                          //        Unit_Triangular, Triangular_Strict}
-          Matrix_Storage_Mask_Enum MASK,  // is in {None, Upper, Upper_Strict, Lower, Lower_Strict }
-          typename N_TYPE,                // std::size_t or a std::integral_constant<std::size_t,N>
-          typename M_TYPE,                // std::size_t or a std::integral_constant<std::size_t,M>
-          typename LEADING_DIMENSION      // std::size_t or a std::integral_constant<std::size_t,LD>
-          >                               //
-class Default_Matrix;                     // or {Default_Matrix_View, Default_Matrix_Const_View}
+template <T,                  // is the component type
+          SPECIAL_STRUCTURE,  // is in {None, Symmetric, Hermitian, Triangular,
+                              //        Unit_Triangular, Triangular_Strict}
+          MASK,               // is in {None, Upper, Upper_Strict, Lower, Lower_Strict }
+          N_TYPE,             // std::size_t or a std::integral_constant<std::size_t,N>
+          M_TYPE,             // std::size_t or a std::integral_constant<std::size_t,M>
+          LEADING_DIMENSION   // std::size_t or a std::integral_constant<std::size_t,LD>
+          >                   //
+class Default_Matrix;         // or {Default_Matrix_View, Default_Matrix_Const_View}
 #+end_src
 
 There are some alias covering the usual cases:
 
-#+begin_src cpp :eval never
-Matrix<T> M(I_size, J_size);
-Tiny_Matrix<T, I_SIZE, J_SIZE> M;
+|------------------------------------------------------+-----------------------------------------------------------|
+| Dynamic                                              | Static                                                    |
+|------------------------------------------------------+-----------------------------------------------------------|
+| Matrix<T> M(I_size, J_size);                         | Tiny_Matrix<T, I_SIZE, J_SIZE> M;                         |
+|                                                      |                                                           |
+| Symmetric_Matrix<T> M(I_size, J_size);               | Tiny_Symmetric_Matrix<T, SIZE> M;                         |
+| Hermitian_Matrix<T> M(I_size, J_size);               | Tiny_Hermitian_Matrix<T, SIZE> M;                         |
+|                                                      |                                                           |
+| Lower_Triangular_Matrix<T> M(I_size, J_size);        | Tiny_Lower_Triangular_Matrix<T, I_SIZE, J_SIZE> M;        |
+| Upper_Triangular_Matrix<T> M(I_size, J_size);        | Tiny_Upper_Triangular_Matrix<T, I_SIZE, J_SIZE> M;        |
+|                                                      |                                                           |
+| Lower_Triangular_Strict_Matrix<T> M(I_size, J_size); | Tiny_Lower_Triangular_Strict_Matrix<T, I_SIZE, J_SIZE> M; |
+| Upper_Triangular_Strict_Matrix<T> M(I_size, J_size); | Tiny_Upper_Triangular_Strict_Matrix<T, I_SIZE, J_SIZE> M; |
+|                                                      |                                                           |
+| Lower_Unit_Triangular_Matrix<T> M(I_size, J_size);   | Tiny_Lower_Unit_Triangular_Matrix<T, I_SIZE, J_SIZE> M;   |
+| Upper_Unit_Triangular_Matrix<T> MI_size, J_size);    | Tiny_Upper_Unit_Triangular_Matrix<T, I_SIZE, J_SIZE> M;   |
+|------------------------------------------------------+-----------------------------------------------------------|
 
-Lower_Triangular_Strict_Matrix<T> M(I_size_, J_size);
-Tiny_Lower_Triangular_Strict_Matrix<T, I_SIZE, J_SIZE> M;
-
-Upper_Triangular_Strict_Matrix<T> M(I_size_, J_size);
-Tiny_Upper_Triangular_Strict_Matrix<T, I_SIZE, J_SIZE> M;
-
-Lower_Unit_Triangular_Matrix<T> M(I_size_, J_size);
-Tiny_Lower_Unit_Triangular_Matrix<T, I_SIZE, J_SIZE> M;
-
-Upper_Unit_Triangular_Matrix<T> MI_size_, J_size);
-Tiny_Upper_Unit_Triangular_Matrix<T, I_SIZE, J_SIZE> M;
-
-Symmetric_Matrix<T> M(I_size_, J_size);  // I_size = J_size
-Tiny_Symmetric_Matrix<T, SIZE> M;
-
-Hermitian_Matrix<T> M;  // I_size = J_size
-Tiny_Hermitian_Matrix<T, SIZE> M;
-#+end_src
 
 Please note that by default Symmetric/Hermitian matrices are stored in their *Lower* part.
 
@@ -173,6 +168,10 @@ cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0, const Dense_Vec
 
   // Sanity check
   //
+  static_assert(A_IMPL::matrix_special_structure_type::value ==  // For demo...
+                Matrix_Special_Structure_Enum::Symmetric);       // could be: SFINAE,
+                                                                 // hermitian, etc...
+
   assert(all_sizes_are_equal_p(A.I_size(), A.J_size(), X0.size(), b.size()));
 
   // Working vector type, use a static size one if possible
@@ -230,13 +229,13 @@ main()
 {
   // Dynamic vectors/matrices
 
-  Matrix<double> M(10, 10);
+  Symmetric_Matrix<double> M(10, 10);
   Vector<double> X0(10);
   Vector<double> b(10);
 
   // Here static one, no more dynamic memory allocations.
 
-  // Tiny_Matrix<double, 10, 10> M;
+  // Tiny_Symmetric_Matrix<double, 10, 10> M;
   // Tiny_Vector<double, 10> X0;
   // Tiny_Vector<double, 10> b;
 

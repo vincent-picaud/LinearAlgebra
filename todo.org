@@ -1,12 +1,18 @@
 #+TITLE: Reminder & TODO list
 
-* Things todo [1/3]
+* Things todo [2/3]
 
-  - [ ] Note taken on [2020-04-17 Fri 00:02] \\
+
+  - Note taken on [2020-04-17 Fri 18:58] \\
+    [ ] check include problematic (in CG)
+    #+BEGIN_SRC cpp :eval never
+    #include "LinearAlgebra/dense/matrix_fwd.hpp"
+    #+END_SRC
+  - [X] Note taken on [2020-04-17 Fri 00:02] \\
     - URGENT!
-      - [ ] add as_generic_view() + as_view() dans vector, teste si ok, pui dans matrice
-      - [ ] remove create_generic_view file
-      - [ ] test with optimization
+      - [X] add as_generic_view() + as_view() dans vector, teste si ok, pui dans matrice
+      - [X] remove create_generic_view file
+      - [X] test with optimization
   - [ ] Note taken on [2020-04-16 Thu 16:09] \\
     Fix $X=Y-Z$ which is currently not available
   - [X] Note taken on [2020-04-15 Wed 17:06] \\

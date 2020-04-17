@@ -15,6 +15,7 @@
 //
 #include "LinearAlgebra/expr/M0_assign_alpha_M0.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha_V0.hpp"
+#include "LinearAlgebra/utils/element_type.hpp"
 //
 //         and not simply
 //
@@ -24,7 +25,6 @@
 
 namespace LinearAlgebra
 {
-
   //////////////////////////////////////////////////////////////////
   // User interface
   //////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ namespace LinearAlgebra
   {
     if (alpha.value() == 0)
     {
-      assign(X0, 0);
+      assign(X0, Scalar_CRef<Element_Type_t<ALPHA_IMPL>>(0));
       return;
     }
 
@@ -76,7 +76,8 @@ namespace LinearAlgebra
       return;
     }
 
-    fill([&alpha](const auto& X1_component) { return alpha.value() * X1_component; }, X0.impl(), X1.impl());
+    fill([&alpha](const auto& X1_component) { return alpha.value() * X1_component; }, X0.impl(),
+         X1.impl());
 
     DEBUG_SET_SELECTED(selected);
   }

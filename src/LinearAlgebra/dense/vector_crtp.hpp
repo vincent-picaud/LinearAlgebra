@@ -4,8 +4,9 @@
 
 #include "LinearAlgebra/dense/vector_fwd.hpp"
 #include "LinearAlgebra/dense/vmt_crtp.hpp"
-#include "LinearAlgebra/expr/V0_assign_alpha.hpp"
+#include "LinearAlgebra/expr/X_eq_alpha_vector.hpp"
 #include "LinearAlgebra/expr/copy_vector.hpp"
+#include "LinearAlgebra/expr/scalar_crtp.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 
 #include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
@@ -241,7 +242,7 @@ namespace LinearAlgebra
     IMPL&
     impl_assign(const element_type& scalar)
     {
-      assign(*this, scalar);
+      assign(*this, Scalar_CRef<element_type>(scalar));
       return base_type::impl();
     }
 

@@ -28,7 +28,7 @@ as_Function_T_T(const Differentiable_Function_T_T<T>& f)
   using namespace std::placeholders;
   return std::bind(f, _1, _2, nullptr);
 }
-
+ 
 //////////////////////////////////////////////////////////////////
 
 template <typename T>

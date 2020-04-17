@@ -1,5 +1,3 @@
-#include "LinearAlgebra/expr/V0_assign_alpha.hpp"
-
 #include "LinearAlgebra/dense/vector.hpp"
 
 #include <gtest/gtest.h>
@@ -14,7 +12,7 @@ TEST(V_assign_alpha, assign)
   v[2] = 3;
 
   DEBUG_RESET_SELECTED();
-  assign(v, -1);
+  assign(v, Scalar_CRef<int>(-1));
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v[0], -1);

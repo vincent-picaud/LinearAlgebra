@@ -4,9 +4,15 @@ LinearAlgebra_headers += [
   'expr/dimension.hpp',
 
   # to update! (use copy as model)  
-  'expr/X0_assign_alpha.hpp',
-  'expr/V0_assign_alpha.hpp',
-  'expr/M0_assign_alpha.hpp',
+  # 'expr/X0_assign_alpha.hpp',
+  # 'expr/V0_assign_alpha.hpp',
+  # 'expr/M0_assign_alpha.hpp',
+  
+  'expr/X_eq_alpha_vector.hpp', 
+  'expr/X_eq_alpha_matrix.hpp', 
+  'expr/X_eq_alpha/generic_interface.hpp', 
+  'expr/X_eq_alpha/vector_impl.hpp', 
+  'expr/X_eq_alpha/matrix_impl.hpp', 
 
   # OK
   'expr/copy_vector.hpp', 

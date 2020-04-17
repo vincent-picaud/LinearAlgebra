@@ -47,7 +47,8 @@ generate_string(Dense_Matrix_Crtp<IMPL>& M, const std::size_t I_size, const std:
   const auto lambda = [&](const auto& special_structure, const auto& mask) {
     auto M_submatrix             = create_matrix_view(M, 0, I_size, 0, J_size);
     auto M_submatrix_with_struct = create_matrix_view(M_submatrix, special_structure, mask);
-    assign(M, 0);
+
+    M = 0;
     fill_all<RC>(M_submatrix_with_struct);
     out << M << std::endl;
   };
@@ -208,7 +209,7 @@ const std::string column_wide =
 TEST(Matrix_View_Row_Column, Row)
 {
   Matrix<int> M(5, 5);
-  assign(M, 0);
+  M = 0;
 
   EXPECT_EQ(row_tall, generate_string<Row_Column_Enum::Row>(M, 5, 3));
   EXPECT_EQ(row_wide, generate_string<Row_Column_Enum::Row>(M, 3, 5));
@@ -217,7 +218,7 @@ TEST(Matrix_View_Row_Column, Row)
 TEST(Matrix_View_Row_Columnn, Column)
 {
   Matrix<int> M(5, 5);
-  assign(M, 0);
+  M = 0;
 
   EXPECT_EQ(column_tall, generate_string<Row_Column_Enum::Column>(M, 5, 3));
   EXPECT_EQ(column_wide, generate_string<Row_Column_Enum::Column>(M, 3, 5));

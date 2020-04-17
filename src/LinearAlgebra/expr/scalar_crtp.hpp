@@ -52,6 +52,13 @@ namespace LinearAlgebra
   template <typename ELEMENT_TYPE>
   class Scalar_CRef final : public Scalar_Crtp<Scalar_CRef<ELEMENT_TYPE>>
   {
+    // avoid some recurrent errors like:
+    //    Scalar_CRef<ALPHA_IMPL>(0)
+    // instead of
+    //    Scalar_CRef<Element_Type_t<ALPHA_IMPL>>(0)
+    //
+    static_assert(not Is_Crtp_Interface_Of_v<Scalar_Crtp, ELEMENT_TYPE>);
+
    public:
     using base_type    = Scalar_Crtp<Scalar_CRef<ELEMENT_TYPE>>;
     using element_type = typename base_type::element_type;

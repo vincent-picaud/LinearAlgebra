@@ -22,3 +22,7 @@ executable('conjugate_gradients',
 	   'conjugate_gradients.cpp',
 	   dependencies : [LinearAlgebra_dep])
 
+executable('lapack_potrf',
+	   'lapack_potrf.cpp',
+	   dependencies : [LinearAlgebra_dep])
+

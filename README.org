@@ -118,7 +118,7 @@ will return a constant view (a lightweight matrix where only pointers
 are stored and not owned).
 
 * Examples
-* Matrix views (TODO)
+** Matrix views (TODO)
 
 #+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
 cat $(pwd)/examples/matrix_view.cpp
@@ -192,8 +192,6 @@ submatrix:
                1               1               1               1               1               X
                1               1               1               1               1               1
 #+END_example
-
-
 
 ** Conjugate gradients
 
@@ -326,6 +324,99 @@ main()
   std::cout << std::boolalpha << status << std::endl;
 }
 #+END_src
+
+** Direct call to Lapack (TODO)
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/lapack_potrf.cpp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/lapack/lapack.hpp"
+#include "LinearAlgebra/matrix.hpp"
+#include "LinearAlgebra/vector.hpp"
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  const size_t n = 5;
+
+  Vector<double> v(n), w(n);
+  v = 1;
+
+  Symmetric_Matrix<double> M(n, n);
+
+  M                                     = 0;
+  create_vector_view_matrix_diagonal(M) = 10;
+  M(4, 0)                               = 5;
+
+  w = M * v;
+
+  std::cout << "symmetric M :" << M << std::endl;
+  std::cout << "v       :" << v << std::endl;
+  std::cout << "w = M.v :" << w << std::endl;
+
+  // Low level call of lapack: L*L^t decomposition
+  //
+  int info = Lapack::potrf(Lapack::Lapack_Order_Enum::Column_Major, Lapack::Lapack_UpLo_Enum::Low,
+                           M.I_size(), M.data(), M.leading_dimension());
+  assert(info == 0);
+
+  auto L = create_matrix_view_lower_triangular(M.as_const());
+  std::cout << "L:" << L << std::endl;
+
+  // inplace solve of w = M.v = L.L^t.v
+  // caveat: at the end w "contains" v
+  w = inverse(L) * w;             // L^(-1).w = L^t.v
+  w = inverse(transpose(L)) * w;  // L^(-t).L^(-1).w = v
+
+  std::cout << "v such that w=M.v :" << std::endl << w << std::endl;
+}
+#+END_src
+
+prints:
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/lapack_potrf
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_example :eval never
+symmetric M :
+              10               X               X               X               X
+               0              10               X               X               X
+               0               0              10               X               X
+               0               0               0              10               X
+               5               0               0               0              10
+v       :
+1
+1
+1
+1
+1
+w = M.v :
+15
+10
+10
+10
+15
+L:
+         3.16228               X               X               X               X
+               0         3.16228               X               X               X
+               0               0         3.16228               X               X
+               0               0               0         3.16228               X
+         1.58114               0               0               0         2.73861
+v such that w=M.v :
+
+1
+1
+1
+1
+1
+#+END_example
 
 
 * FAQ

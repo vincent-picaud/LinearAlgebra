@@ -113,7 +113,7 @@ namespace LinearAlgebra
     //
     template <typename ELEMENT_TYPE, typename SIZE, typename INCREMENT>
     auto
-    create_view_vector_helper(ELEMENT_TYPE* data, const SIZE size,
+    create_vector_view_helper(ELEMENT_TYPE* data, const SIZE size,
                               const INCREMENT increment) noexcept
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<SIZE>);
@@ -145,7 +145,7 @@ namespace LinearAlgebra
   auto
   create_vector_view(ELEMENT_TYPE* data, const SIZE size, const INCREMENT increment)
   {
-    return Detail::create_view_vector_helper(data, Detail::size_type_normalization(size),
+    return Detail::create_vector_view_helper(data, Detail::size_type_normalization(size),
                                              Detail::size_type_normalization(increment));
   }
   template <typename ELEMENT_TYPE, typename SIZE>
@@ -167,7 +167,7 @@ namespace LinearAlgebra
 
     auto size = Detail::compute_size_from_begin_end(begin, end);
 
-    return Detail::create_view_vector_helper(
+    return Detail::create_vector_view_helper(
         &vector[begin],  // CAVEAT: and not data()+begin
         //                          which does not take into account increment
         size, vector.increment());
@@ -182,7 +182,7 @@ namespace LinearAlgebra
 
     auto size = Detail::compute_size_from_begin_end(begin, end);
 
-    return Detail::create_view_vector_helper(
+    return Detail::create_vector_view_helper(
         &vector[begin],  // CAVEAT: and not data()+begin
                          //                          which does not take into account increment
         size, vector.increment());

@@ -13,18 +13,23 @@ main()
 
   view_mat = -1;
 
-  std::cout << mat << std::endl;
+  std::cout << "full matrix:" << mat << std::endl;
 
   //================
 
   Tiny_Symmetric_Matrix<int, 6> mat_S;
 
-  mat_S = 1;
+  create_matrix_view_full(mat_S) = 0;  // fill the full matrix
 
+  mat_S = 1;  // here as mat_S is symmetric
+              // only fill lower triangular part is filled
+
+  // Take a subview of a _symmetric matrix_
   auto view_mat_S = create_matrix_view(mat_S, 1, 3, 1, 3);
 
-  view_mat_S = -1;
+  view_mat_S = -1;  // here the subview mat_S is symmetric too and
+                    // only the lower triangular part will be filled
 
-  std::cout << create_matrix_view_full(mat_S) << std::endl;
-  std::cout << mat_S << std::endl;
+  std::cout << "full matrix:" << create_matrix_view_full(mat_S) << std::endl;
+  std::cout << "submatrix:" << mat_S << std::endl;
 }

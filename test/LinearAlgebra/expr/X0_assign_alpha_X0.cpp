@@ -1,4 +1,5 @@
-#include "LinearAlgebra/expr/X0_assign_alpha_X0.hpp"
+#include "LinearAlgebra/expr/X_eq_aX_vector.hpp"
+#include "LinearAlgebra/expr/X_eq_aX_matrix.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"

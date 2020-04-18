@@ -3,11 +3,8 @@ LinearAlgebra_headers += [
   'expr/expr_selector.hpp',
   'expr/dimension.hpp',
 
-  # to update! (use copy as model)  
-  # 'expr/X0_assign_alpha.hpp',
-  # 'expr/V0_assign_alpha.hpp',
-  # 'expr/M0_assign_alpha.hpp',
-  
+
+  # OK
   'expr/X_eq_alpha_vector.hpp', 
   'expr/X_eq_alpha_matrix.hpp', 
   'expr/X_eq_alpha/generic_interface.hpp', 
@@ -22,14 +19,14 @@ LinearAlgebra_headers += [
   'expr/copy/matrix_impl.hpp', 
 
   # to update! (use copy as model)
-  'expr/X0_assign_alpha_X0.hpp', 
-  'expr/V0_assign_alpha_V0.hpp', 
-  'expr/M0_assign_alpha_M0.hpp',
-
-  # to update! (use copy as model)
-  'expr/X0_assign_alpha_X1.hpp',
-  'expr/V0_assign_alpha_V1.hpp',
-  'expr/M0_assign_alpha_M1.hpp',
+  # 'expr/X0_assign_alpha_X0.hpp', 
+  # 'expr/V0_assign_alpha_V0.hpp', 
+  # 'expr/M0_assign_alpha_M0.hpp',
+  'expr/X_eq_aX_vector.hpp', 
+  'expr/X_eq_aX_matrix.hpp', 
+  'expr/X_eq_aX/generic_interface.hpp', 
+  'expr/X_eq_aX/vector_impl.hpp', 
+  'expr/X_eq_aX/matrix_impl.hpp', 
 
   # to update! (use copy as model)
   'expr/X0_assign_alpha_X1_plus_X0.hpp', 

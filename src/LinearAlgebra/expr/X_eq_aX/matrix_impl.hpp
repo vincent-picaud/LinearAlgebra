@@ -24,7 +24,7 @@ namespace LinearAlgebra
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, Dense_Matrix_Crtp<X0_IMPL>& X0,
          const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha, const _lhs_t_)
   {
-    assign_helper(X0.impl(), _product_, alpha.impl(), _rhs_t_);
+    assign_helper(X0.impl(), _product_, alpha.impl(), _lhs_);
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -42,7 +42,7 @@ namespace LinearAlgebra
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, Dense_Matrix_Crtp<X0_IMPL>& X0,
          const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha, const _lhs_t_)
   {
-    assign_helper(X0.impl(), _product_, alpha.impl(), _rhs_t_);
+    assign_helper(X0.impl(), _product_, alpha.impl(), _lhs_);
 
     DEBUG_SET_SELECTED(selected);
   }

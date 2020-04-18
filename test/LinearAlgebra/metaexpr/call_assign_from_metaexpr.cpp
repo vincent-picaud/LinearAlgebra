@@ -1,5 +1,5 @@
-#include "LinearAlgebra/expr/M0_assign_alpha_M1.hpp"
-#include "LinearAlgebra/expr/V0_assign_alpha_V1.hpp"
+#include "LinearAlgebra/expr/X_eq_aX_matrix.hpp"
+#include "LinearAlgebra/expr/X_eq_aX_vector.hpp"
 
 #include "LinearAlgebra/metaexpr/call_assign_from_metaexpr.hpp"
 
@@ -19,7 +19,7 @@ TEST(Call_Assign_From_Metaexpr, V0_assign_alpha_V0_bis)
   x = 5;
   DEBUG_RESET_SELECTED();
   y = std::complex<int>(3) * x;
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(y[1], std::complex<int>(3) * x[1]);
 }
@@ -37,7 +37,7 @@ TEST(Call_Assign_From_Metaexpr, V0_assign_alpha_V0)
 
   DEBUG_RESET_SELECTED();
   Detail::call_assign_from_metaexpr(vector, 4 * vector);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(vector[0], 40);
 
@@ -65,7 +65,7 @@ TEST(Call_Assign_From_Metaexpr, M0_assign_alpha_M0)
 
   DEBUG_RESET_SELECTED();
   Detail::call_assign_from_metaexpr(matrix, 4 * matrix);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   // matrix class
   //

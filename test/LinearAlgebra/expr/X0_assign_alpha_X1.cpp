@@ -1,4 +1,5 @@
-#include "LinearAlgebra/expr/X0_assign_alpha_X1.hpp"
+#include "LinearAlgebra/expr/X_eq_aX_vector.hpp"
+#include "LinearAlgebra/expr/X_eq_aX_matrix.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
@@ -20,7 +21,7 @@ TEST(X0_Assign_Alpha_X1, vector)
 
   DEBUG_RESET_SELECTED();
   assign(w, _product_, Scalar_CRef(3), v);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(v[1], 2);
@@ -32,7 +33,7 @@ TEST(X0_Assign_Alpha_X1, vector)
 
   DEBUG_RESET_SELECTED();
   assign(w, _product_, Scalar_CRef(3), w);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(v[1], 2);
@@ -56,7 +57,7 @@ TEST(X0_Assign_Alpha_X1, matrix)
 
   DEBUG_RESET_SELECTED();
   assign(w, _product_, Scalar_CRef(3), v);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v(0, 0), 1);
   EXPECT_EQ(v(1, 0), 2);
@@ -68,7 +69,7 @@ TEST(X0_Assign_Alpha_X1, matrix)
 
   DEBUG_RESET_SELECTED();
   assign(w, _product_, Scalar_CRef(3), w);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v(0, 0), 1);
   EXPECT_EQ(v(1, 0), 2);

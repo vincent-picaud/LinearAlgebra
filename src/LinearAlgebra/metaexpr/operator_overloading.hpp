@@ -6,6 +6,7 @@
 #include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/expr/scalar_crtp.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp.hpp"
+#include "LinearAlgebra/utils/complex.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
 
 namespace LinearAlgebra
@@ -87,6 +88,25 @@ namespace LinearAlgebra
     return {arg_0, arg_1.impl()};
   }
 
+  // Handle expression like: U * Vector<T>, where U = Scalar_CRef<USER_SCALAR>
+  // (in that case the user must _explicitly_ define the scalar type)
+  template <typename USER_SCALAR, typename A1_IMPL>
+  std::enable_if_t<
+      Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+      Detail::MetaExpr_BinaryOp<Common_Element_Type_t<Scalar_CRef<USER_SCALAR>, A1_IMPL>,
+                                _product_t_, Scalar_CRef<USER_SCALAR>, A1_IMPL>>
+  operator*(const Scalar_CRef<USER_SCALAR>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  {
+    return {arg_0, arg_1.impl()};
+  }
+
+  //----------------------------------------------------------------
+  // std::complex
+  //----------------------------------------------------------------
+  //
+  // Note: follow the same scheme to adapt this to AD<T> autodiff
+  //
+
   // Handle expression like: complex<T> * Vector<T>
   template <typename A1_IMPL>
   std::enable_if_t<
@@ -100,17 +120,22 @@ namespace LinearAlgebra
     return {arg_0, arg_1.impl()};
   }
 
-  // Handle expression like: U * Vector<T>, where U = Scalar_CRef<USER_SCALAR>
-  // (in that case the user must _explicitly_ define the scalar type)
-  template <typename USER_SCALAR, typename A1_IMPL>
+  // Handle expression like: T * Vector<complex<T>>
+  template <typename A1_IMPL>
   std::enable_if_t<
-      Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
-      Detail::MetaExpr_BinaryOp<Common_Element_Type_t<Scalar_CRef<USER_SCALAR>, A1_IMPL>,
-                                _product_t_, Scalar_CRef<USER_SCALAR>, A1_IMPL>>
-  operator*(const Scalar_CRef<USER_SCALAR>& arg_0, const Crtp<A1_IMPL>& arg_1)
+      Is_Supported_MetaExpr_Argument_v<A1_IMPL> && Is_Complex_v<Element_Type_t<A1_IMPL>>,
+      Detail::MetaExpr_BinaryOp<
+          Common_Element_Type_t<Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>, A1_IMPL>,
+          _product_t_, Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>, A1_IMPL>>
+  operator*(const Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>& arg_0,
+            const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0, arg_1.impl()};
   }
+
+  //----------------------------------------------------------------
+  // std::complex END
+  //----------------------------------------------------------------
 
   //================================================================
   // Plus

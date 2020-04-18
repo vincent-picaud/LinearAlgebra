@@ -10,6 +10,8 @@ test_array = [
   'V0_assign_alpha_op_M_V1_plus_beta_VX_header',
 
   'V0_assign_alpha_V1_plus_V0',
+
+  'operator_overloading',
 ]
 
 foreach test : test_array

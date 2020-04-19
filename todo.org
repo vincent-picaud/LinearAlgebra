@@ -3,6 +3,19 @@
 * Things todo [2/3]
 
 
+  - Note taken on [2020-04-19 Sun 11:29] \\
+    Add as_view(), similar to as_generic_view()
+  - Note taken on [2020-04-19 Sun 11:24] \\
+    [ ] IMPORTANT ad AD support (in peculiar simplification removing α
+    when α==1 is a bad practice if α is AutoDiff. One must introduce special function like
+    
+       allowed_simplification(α,value)
+    
+    that returns false whenever α type is an AutoDiff type
+    
+    Concrete example: even if α == 1 you cannot simplify f=α.β by f=β as
+    
+    \partial_α f = β in one case and \partial_α f = 0 (wrong) in the "simplified" case.
   - Note taken on [2020-04-17 Fri 18:58] \\
     [ ] check include problematic (in CG)
     #+BEGIN_SRC cpp :eval never

@@ -26,6 +26,7 @@ TEST(Vector, constructor_static)
   v[2] = 2;
   EXPECT_EQ(v[2], 2);
 }
+
 TEST(Vector, constructor_dynamic)
 {
   Vector<int> v(3);
@@ -36,7 +37,7 @@ TEST(Vector, constructor_dynamic)
   EXPECT_EQ(v[2], 2);
 }
 
-TEST(Vector_View, constructor_raw_pointer)
+TEST(Vector, constructor_raw_pointer)
 {
   int data[] = {1, 2, 3, 4, 5};
 
@@ -53,7 +54,7 @@ TEST(Vector_View, constructor_raw_pointer)
   EXPECT_EQ(data[2], 10);
 }
 
-TEST(Vector_View, view_constness)
+TEST(Vector, view_constness)
 {
   int data[] = {1, 2, 3, 4, 5};
 

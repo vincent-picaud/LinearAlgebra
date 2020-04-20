@@ -3,6 +3,21 @@
 * Things todo [2/3]
 
 
+  - Note taken on [2020-04-20 Mon 16:02] \\
+    [ ] add copy contructor:
+    #+BEGIN_SRC cpp
+    Vector V(V_OTHER);
+    #+END_SRC
+    
+    However some extra work will be needed to handle case where dest vector
+    has Static_Size and source Dynamic Size:
+    
+    #+BEGIN_SRC cpp
+    template<typename OTHER_IMPL>
+    Dense_Vector(const SIZE n)
+    #+END_SRC
+    
+    cause a compile time error
   - Note taken on [2020-04-19 Sun 11:29] \\
     Add as_view(), similar to as_generic_view()
   - Note taken on [2020-04-19 Sun 11:24] \\

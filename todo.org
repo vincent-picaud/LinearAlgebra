@@ -47,6 +47,15 @@
 
 * Some Reminders
 
+  - Note taken on [2020-04-21 Tue 12:25] \\
+    meson + valgrind:
+    
+    #+BEGIN_SRC sh :eval never
+    meson test --wrap='valgrind --leak-check=full --error-exitcode=1' 
+    #+END_SRC
+    
+    Also see:
+    https://mesonbuild.com/Unit-tests.html#other-test-options
   - Note taken on [2020-04-15 Wed 22:04] \\
     I just fixed a *bug* by replacing:
     

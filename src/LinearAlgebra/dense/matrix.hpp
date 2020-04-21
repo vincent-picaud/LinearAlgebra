@@ -460,7 +460,6 @@ namespace LinearAlgebra
     {
       return this->as_const().impl_as_generic_view();
     }
-    operator Generic_Matrix_View<T, SPECIAL_STRUCTURE, MASK>() { return impl_as_generic_view(); }
 
     DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Matrix_Const_View);
 

@@ -251,7 +251,10 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
-    Default_Vector_Const_View() : Default_Vector_Const_View(nullptr) { assert(this->data() == nullptr); }
+    Default_Vector_Const_View() : Default_Vector_Const_View(nullptr)
+    {
+      assert(this->data() == nullptr);
+    }
     Default_Vector_Const_View(const T* data)
         : base_type(storage_scheme_type(), data) {}  // <- "CHANGE HERE" T* -> const T*
     Default_Vector_Const_View(const T* data, const SIZE_TYPE n,
@@ -267,7 +270,6 @@ namespace LinearAlgebra
     // Generic View Converter
     operator Generic_Vector_Const_View<T>() const { return impl_as_generic_view(); }
     operator Generic_Vector_Const_View<T>() { return this->as_const().impl_as_generic_view(); }
-    operator Generic_Vector_View<T>() { return impl_as_generic_view(); }
 
     DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Vector_Const_View);
 

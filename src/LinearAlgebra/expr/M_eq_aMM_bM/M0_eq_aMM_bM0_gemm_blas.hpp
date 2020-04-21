@@ -51,10 +51,10 @@ namespace LinearAlgebra
     // (what=1) C := alpha*A*A' + beta*C
     // (what=2) C := alpha*A'*A + beta*C
     constexpr int what = (OP1_ENUM == Matrix_Unary_Op_Enum::Identity &&
-                         (OP2_ENUM == Matrix_Unary_Op_Enum::Transpose ||
-                          OP2_ENUM == Matrix_Unary_Op_Enum::TransConj))
-                            ? 1
-                            : 2;
+                          (OP2_ENUM == Matrix_Unary_Op_Enum::Transpose ||
+                           OP2_ENUM == Matrix_Unary_Op_Enum::TransConj))
+                             ? 1
+                             : 2;
 
     // std::size_t K;
     // CBLAS_TRANSPOSE Trans;

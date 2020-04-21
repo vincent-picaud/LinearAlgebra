@@ -30,7 +30,7 @@ namespace LinearAlgebra
       if (mem_chunk_1.data() + mem_chunk_1.capacity() < mem_chunk_0.data()) return true;
       return false;
     }
-    // 
+    //
     return true;
   }
   template <typename MEM_CHUNK_0, typename MEM_CHUNK_1>

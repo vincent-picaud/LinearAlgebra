@@ -24,7 +24,7 @@ namespace LinearAlgebra
 
     using element_type = typename traits_type::element_type;
 
-  //////////////////
+    //////////////////
     // Prevent object slicing
     //////////////////
     //

@@ -1,9 +1,9 @@
-#include "LinearAlgebra/utils/crtp.hpp"
 #include "LinearAlgebra/utils/always.hpp"
+#include "LinearAlgebra/utils/crtp.hpp"
 
+#include <ccomplex>
 #include <iostream>
 #include <vector>
-#include <ccomplex>
 
 namespace LinearAlgebra
 {
@@ -86,7 +86,6 @@ namespace LinearAlgebra
 //////////////////////////////////////////////////////////////////
 
 using namespace LinearAlgebra;
-
 
 void
 test_scalar()

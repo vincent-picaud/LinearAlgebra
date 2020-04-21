@@ -72,6 +72,4 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_VX_header, alias)
 
   V = V - M * W;
   V = -V - M * W;
-
-
 }

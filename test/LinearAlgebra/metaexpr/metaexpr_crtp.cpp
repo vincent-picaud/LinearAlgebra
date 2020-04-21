@@ -1,8 +1,8 @@
 #include "LinearAlgebra/metaexpr/metaexpr_crtp.hpp"
 
-#include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
+#include "LinearAlgebra/expr/expr_tags.hpp"
 
 #include <gtest/gtest.h>
 

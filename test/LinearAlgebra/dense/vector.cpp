@@ -106,5 +106,5 @@ TEST(Vector, view_empty_constructor_debug_death)
                       std::integral_constant<std::size_t, 4>>
       V;
 
-  EXPECT_DEBUG_DEATH(V[0],"");
+  EXPECT_DEBUG_DEATH(V[0], "");
 }

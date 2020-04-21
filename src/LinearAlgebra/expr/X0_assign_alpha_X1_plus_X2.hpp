@@ -11,8 +11,8 @@
 #include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/size_utils.hpp"
 
-#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 #include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
+#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 
 #include "LinearAlgebra/expr/X0_assign_alpha_X1_plus_X0.hpp"
 

@@ -24,7 +24,8 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_gemv)
   x[1] = 2;
 
   DEBUG_RESET_SELECTED();
-  assign(y, _plus_, _product_, _product_, Scalar_CRef<T>(2), _identity_, M, x, _product_, Scalar_CRef<T>(0), _lhs_);
+  assign(y, _plus_, _product_, _product_, Scalar_CRef<T>(2), _identity_, M, x, _product_,
+         Scalar_CRef<T>(0), _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(y[0], 2 * x[0]);
@@ -55,7 +56,8 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_symv)
   auto y_cpy_as_int = create_default_storable(Type_v<int>, y);
 
   DEBUG_RESET_SELECTED();
-  assign(y, _plus_, _product_, _product_, Scalar_CRef<T>(2), _identity_, M, x, _product_, Scalar_CRef<T>(0), _lhs_);
+  assign(y, _plus_, _product_, _product_, Scalar_CRef<T>(2), _identity_, M, x, _product_,
+         Scalar_CRef<T>(0), _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   // y_cpy_as_int = 2 * transpose(M) * x + 0 * y_cpy_as_int;

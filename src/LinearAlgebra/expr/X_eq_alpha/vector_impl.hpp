@@ -2,8 +2,8 @@
 
 #include "LinearAlgebra/expr/X_eq_alpha/generic_interface.hpp"
 
-#include "LinearAlgebra/utils/has_static_dimension.hpp"
 #include "LinearAlgebra/dense/vector_fill.hpp"
+#include "LinearAlgebra/utils/has_static_dimension.hpp"
 
 namespace LinearAlgebra
 {

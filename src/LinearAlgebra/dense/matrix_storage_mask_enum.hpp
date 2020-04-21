@@ -100,15 +100,15 @@ namespace LinearAlgebra
           break;
       }
     }
-    
+
     //////////////////////////////////////////////////////////////////
 
     // same code but check at each iteration if one must continue
     template <typename LAMBDA, Matrix_Storage_Mask_Enum MASK, typename I_SIZE, typename J_SIZE>
     inline constexpr bool
     loop_over_indices_while(const LAMBDA& lambda,
-                      const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
-                      const I_SIZE I_size, const J_SIZE J_size)
+                            const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
+                            const I_SIZE I_size, const J_SIZE J_size)
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<I_SIZE>);
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<J_SIZE>);

@@ -5,9 +5,8 @@
 
 // Involved subroutines
 //
-#include "LinearAlgebra/expr/copy_vector.hpp"
 #include "LinearAlgebra/expr/X_eq_alpha_vector.hpp"
+#include "LinearAlgebra/expr/copy_vector.hpp"
 
 #include "LinearAlgebra/dense/vector_fill.hpp"
 #include "LinearAlgebra/dense/vector_transform.hpp"
-

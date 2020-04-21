@@ -5,7 +5,8 @@
 
 using namespace LinearAlgebra;
 
-int main()
+int
+main()
 {
-  std::cout << hello()  << " from bin/ " << std::endl;
+  std::cout << hello() << " from bin/ " << std::endl;
 }

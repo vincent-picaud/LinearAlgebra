@@ -19,7 +19,7 @@
 //
 #include "LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_V0_driver.hpp"
 //
-// This file considers expression of the form 
+// This file considers expression of the form
 //
 //   V0 = α op(M) V1 + β V2
 //
@@ -43,4 +43,3 @@
 //
 #include "LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_VX_blas.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_VX_generic.hpp"
-

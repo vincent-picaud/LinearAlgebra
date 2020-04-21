@@ -30,12 +30,12 @@ namespace LinearAlgebra
     Factorization_LLt(Crtp<IMPL>&& matrix) : _matrix(std::move(matrix.impl()))
     {
       std::cout << "MATRIX:" << std::endl << _matrix << std::endl;
-      _matrix=0;
+      _matrix = 0;
     }
     Factorization_LLt(const Crtp<IMPL>& matrix) : _matrix(matrix.impl())
     {
       std::cout << "MATRIX:" << std::endl << _matrix << std::endl;
-      _matrix=0;
+      _matrix = 0;
     }
   };
 

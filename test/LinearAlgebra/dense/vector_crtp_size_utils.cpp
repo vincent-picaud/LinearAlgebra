@@ -18,7 +18,7 @@ TEST(Vector_Crtp_Size_Utils, get_size)
 
   // EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 4>, decltype(tv_size)>));
 
-  // auto v_size = get_size(v, v, v, v, v, v, v); 
+  // auto v_size = get_size(v, v, v, v, v, v, v);
 
   // EXPECT_TRUE((std::is_same_v<std::size_t, decltype(v_size)>));
   // EXPECT_EQ(v_size, 5);

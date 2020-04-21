@@ -37,7 +37,7 @@ namespace LinearAlgebra
         Default_Matrix<T, IMPL::matrix_special_structure_type::value,
                        IMPL::matrix_storage_mask_type::value, typename IMPL::I_size_type,
                        typename IMPL::J_size_type, leading_dimension_type>;
-    return matrix_type{matrix_dest_I_size,matrix_dest_J_size};
+    return matrix_type{matrix_dest_I_size, matrix_dest_J_size};
   }
 
   template <typename IMPL, typename... IMPL_OPTIONAL>

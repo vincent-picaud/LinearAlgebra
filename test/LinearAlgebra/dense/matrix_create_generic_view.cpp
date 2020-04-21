@@ -81,14 +81,13 @@ TEST(Matrix_Create_Generic_View, test_alias_symmetric)
   Tiny_Symmetric_Matrix<int, 2> M1;
 
   auto view_M1 = M1.as_generic_view();
-  EXPECT_TRUE(
-      (std::is_same_v<decltype(view_M1),
-                      Generic_Matrix_View<int, Matrix_Special_Structure_Enum::Symmetric,
-                                                    Matrix_Storage_Mask_Enum::Lower>>));
+  EXPECT_TRUE((std::is_same_v<decltype(view_M1),
+                              Generic_Matrix_View<int, Matrix_Special_Structure_Enum::Symmetric,
+                                                  Matrix_Storage_Mask_Enum::Lower>>));
 
   auto const_view_M1 = M1.as_generic_const_view();
   EXPECT_TRUE(
-      (std::is_same_v<decltype(const_view_M1), Generic_Matrix_Const_View<
-                                                   int, Matrix_Special_Structure_Enum::Symmetric,
-                                                   Matrix_Storage_Mask_Enum::Lower>>));
+      (std::is_same_v<decltype(const_view_M1),
+                      Generic_Matrix_Const_View<int, Matrix_Special_Structure_Enum::Symmetric,
+                                                Matrix_Storage_Mask_Enum::Lower>>));
 }

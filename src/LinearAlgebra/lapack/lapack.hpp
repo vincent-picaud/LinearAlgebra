@@ -7,4 +7,3 @@
 #if (HAS_LAPACK)
 #include "LinearAlgebra/lapack/subroutines.hpp"
 #endif
-

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "LinearAlgebra/expr/expr_selector.hpp"
-#include "LinearAlgebra/utils/crtp.hpp"
 #include "LinearAlgebra/utils/always.hpp"
+#include "LinearAlgebra/utils/crtp.hpp"
 
 namespace LinearAlgebra
 {

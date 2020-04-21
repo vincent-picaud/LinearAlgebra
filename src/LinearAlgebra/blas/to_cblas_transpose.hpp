@@ -13,7 +13,6 @@
 #include "LinearAlgebra/expr/expr_tags.hpp"  // for _matrix_unary_op_t_<Matrix_Unary_Op_Enum::XXX>
 #include "LinearAlgebra/utils/is_complete.hpp"
 
-
 namespace LinearAlgebra
 {
   namespace Blas

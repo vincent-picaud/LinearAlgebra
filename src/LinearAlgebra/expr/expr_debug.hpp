@@ -21,7 +21,7 @@ namespace LinearAlgebra::Detail
 
 #endif
 
-  // TODO (not urgent): maybe move into test/ directory 
+  // TODO (not urgent): maybe move into test/ directory
 #ifndef NDEBUG
 #define DEBUG_EXPECT_EQ(A, B) EXPECT_EQ((A), (B))
 #else

@@ -7,8 +7,8 @@
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/utils/always.hpp"
 
-#include <cmath>
 #include <ccomplex>
+#include <cmath>
 
 namespace LinearAlgebra
 {

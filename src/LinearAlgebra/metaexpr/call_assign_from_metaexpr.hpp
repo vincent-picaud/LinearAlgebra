@@ -3,8 +3,8 @@
 #pragma once
 
 #include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"
-#include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/expr/assign_fallback.hpp"
+#include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 #include "LinearAlgebra/utils/crtp.hpp"
 

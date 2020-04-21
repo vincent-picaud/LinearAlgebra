@@ -63,5 +63,8 @@ LinearAlgebra_headers += [
   'expr/expr.hpp',            # convenience header file
 ]
 
+LinearAlgebra_sources += [
+  'expr/expr_debug.cpp',
+]
 
 subdir('M_eq_aMM_bM')

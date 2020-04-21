@@ -51,22 +51,22 @@ namespace LinearAlgebra::Blas
   // Xnrm2
   //================
   //
-  auto
+  static inline auto
   nrm2(const std::size_t n, const float *x, const std::size_t incx)
   {
     return cblas_snrm2(n, x, incx);
   }
-  auto
+  static inline auto
   nrm2(const std::size_t n, const double *x, const std::size_t incx)
   {
     return cblas_dnrm2(n, x, incx);
   }
-  auto
+  static inline auto
   nrm2(const std::size_t n, const std::complex<float> *x, const std::size_t incx)
   {
     return cblas_scnrm2(n, x, incx);
   }
-  auto
+  static inline auto
   nrm2(const std::size_t n, const std::complex<double> *x, const std::size_t incx)
   {
     return cblas_dznrm2(n, x, incx);
@@ -75,7 +75,7 @@ namespace LinearAlgebra::Blas
   // Xdot
   //================
   //
-  auto
+  static inline auto
   dot(const std::size_t n, const float *x, const std::size_t incx, const float *y,
       const std::size_t incy)
   {
@@ -83,7 +83,7 @@ namespace LinearAlgebra::Blas
 
     return cblas_sdot(n, x, incx, y, incy);
   }
-  auto
+  static inline auto
   dot(const std::size_t n, const double *x, const std::size_t incx, const double *y,
       const std::size_t incy)
   {
@@ -91,7 +91,7 @@ namespace LinearAlgebra::Blas
 
     return cblas_ddot(n, x, incx, y, incy);
   }
-  std::complex<float>
+  static inline std::complex<float>
   dot(const std::size_t n, const std::complex<float> *x, const std::size_t incx,
       const std::complex<float> *y, const std::size_t incy)
   {
@@ -100,7 +100,7 @@ namespace LinearAlgebra::Blas
     // dotc x^H.y <- hermitian inner prod.
     return cblas_cdotc(n, x, incx, y, incy);
   }
-  std::complex<double>
+  static inline std::complex<double>
   dot(const std::size_t n, const std::complex<double> *x, const std::size_t incx,
       const std::complex<double> *y, const std::size_t incy)
   {
@@ -113,7 +113,7 @@ namespace LinearAlgebra::Blas
   // Xcopy
   //================
   //
-  void
+  static inline void
   copy(const std::size_t n, const float *x, const std::size_t incx, float *y,
        const std::size_t incy)
   {
@@ -122,7 +122,7 @@ namespace LinearAlgebra::Blas
     cblas_scopy(n, x, incx, y, incy);
   }
 
-  void
+  static inline void
   copy(const std::size_t n, const double *x, const std::size_t incx, double *y,
        const std::size_t incy)
   {
@@ -131,7 +131,7 @@ namespace LinearAlgebra::Blas
     cblas_dcopy(n, x, incx, y, incy);
   }
 
-  void
+  static inline void
   copy(const std::size_t n, const std::complex<float> *x, const std::size_t incx,
        std::complex<float> *y, const std::size_t incy)
   {
@@ -140,7 +140,7 @@ namespace LinearAlgebra::Blas
     cblas_ccopy(n, x, incx, y, incy);
   }
 
-  void
+  static inline void
   copy(const std::size_t n, const std::complex<double> *x, const std::size_t incx,
        std::complex<double> *y, const std::size_t incy)
   {
@@ -187,7 +187,7 @@ namespace LinearAlgebra::Blas
   // Xtrmv: y=α.M.x, M triangular
   //================
   //
-  void
+  static inline void
   trmv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
        const enum CBLAS_DIAG diag, const std::size_t n, const float *a, const std::size_t lda,
        float *x, const std::size_t incx)
@@ -196,7 +196,7 @@ namespace LinearAlgebra::Blas
 
     cblas_strmv(order, uplo, trans, diag, n, a, lda, x, incx);
   }
-  void
+  static inline void
   trmv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
        const enum CBLAS_DIAG diag, const std::size_t n, const double *a, const std::size_t lda,
        double *x, const std::size_t incx)
@@ -205,7 +205,7 @@ namespace LinearAlgebra::Blas
 
     cblas_dtrmv(order, uplo, trans, diag, n, a, lda, x, incx);
   }
-  void
+  static inline void
   trmv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
        const enum CBLAS_DIAG diag, const std::size_t n, const std::complex<float> *a,
        const std::size_t lda, std::complex<float> *x, const std::size_t incx)
@@ -214,7 +214,7 @@ namespace LinearAlgebra::Blas
 
     cblas_ctrmv(order, uplo, trans, diag, n, a, lda, x, incx);
   }
-  void
+  static inline void
   trmv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
        const enum CBLAS_DIAG diag, const std::size_t n, const std::complex<double> *a,
        const std::size_t lda, std::complex<double> *x, const std::size_t incx)
@@ -227,7 +227,7 @@ namespace LinearAlgebra::Blas
   // Xtrsv: y=α.inverse(M).x, M triangular
   //================
   //
-  void
+  static inline void
   trsv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
        const enum CBLAS_DIAG diag, const std::size_t n, const float *a, const std::size_t lda,
        float *x, const std::size_t incx)
@@ -236,7 +236,7 @@ namespace LinearAlgebra::Blas
 
     cblas_strsv(order, uplo, trans, diag, n, a, lda, x, incx);
   }
-  void
+  static inline void
   trsv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
        const enum CBLAS_DIAG diag, const std::size_t n, const double *a, const std::size_t lda,
        double *x, const std::size_t incx)
@@ -245,7 +245,7 @@ namespace LinearAlgebra::Blas
 
     cblas_dtrsv(order, uplo, trans, diag, n, a, lda, x, incx);
   }
-  void
+  static inline void
   trsv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
        const enum CBLAS_DIAG diag, const std::size_t n, const std::complex<float> *a,
        const std::size_t lda, std::complex<float> *x, const std::size_t incx)
@@ -254,7 +254,7 @@ namespace LinearAlgebra::Blas
 
     cblas_ctrsv(order, uplo, trans, diag, n, a, lda, x, incx);
   }
-  void
+  static inline void
   trsv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const enum CBLAS_TRANSPOSE trans,
        const enum CBLAS_DIAG diag, const std::size_t n, const std::complex<double> *a,
        const std::size_t lda, std::complex<double> *x, const std::size_t incx)
@@ -268,7 +268,7 @@ namespace LinearAlgebra::Blas
   //================
   // CAVEAT: blas only provides float, double
   //
-  void
+  static inline void
   symv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const std::size_t n,
        const float alpha, const float *a, const std::size_t lda, const float *x,
        const std::size_t incx, const float beta, float *y, const std::size_t incy)
@@ -277,7 +277,7 @@ namespace LinearAlgebra::Blas
 
     cblas_ssymv(order, uplo, n, alpha, a, lda, x, incx, beta, y, incy);
   }
-  void
+  static inline void
   symv(const enum CBLAS_ORDER order, const enum CBLAS_UPLO uplo, const std::size_t n,
        const double alpha, const double *a, const std::size_t lda, const double *x,
        const std::size_t incx, const double beta, double *y, const std::size_t incy)
@@ -290,7 +290,7 @@ namespace LinearAlgebra::Blas
   // Xgemv: y=α.M.x+βy
   //================
   //
-  void
+  static inline void
   gemv(const enum CBLAS_ORDER order, const enum CBLAS_TRANSPOSE trans, const std::size_t m,
        const std::size_t n, const float alpha, const float *a, const std::size_t lda,
        const float *x, const std::size_t incx, const float beta, float *y, const std::size_t incy)
@@ -299,7 +299,7 @@ namespace LinearAlgebra::Blas
 
     cblas_sgemv(order, trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
   }
-  void
+  static inline void
   gemv(const enum CBLAS_ORDER order, const enum CBLAS_TRANSPOSE trans, const std::size_t m,
        const std::size_t n, const double alpha, const double *a, const std::size_t lda,
        const double *x, const std::size_t incx, const double beta, double *y,
@@ -309,7 +309,7 @@ namespace LinearAlgebra::Blas
 
     cblas_dgemv(order, trans, m, n, alpha, a, lda, x, incx, beta, y, incy);
   }
-  void
+  static inline void
   gemv(const enum CBLAS_ORDER order, const enum CBLAS_TRANSPOSE trans, const std::size_t m,
        const std::size_t n, const std::complex<float> &alpha, const std::complex<float> *a,
        const std::size_t lda, const std::complex<float> *x, const std::size_t incx,
@@ -319,7 +319,7 @@ namespace LinearAlgebra::Blas
 
     cblas_cgemv(order, trans, m, n, &alpha, a, lda, x, incx, &beta, y, incy);
   }
-  void
+  static inline void
   gemv(const enum CBLAS_ORDER order, const enum CBLAS_TRANSPOSE trans, const std::size_t m,
        const std::size_t n, const std::complex<double> &alpha, const std::complex<double> *a,
        const std::size_t lda, const std::complex<double> *x, const std::size_t incx,
@@ -353,7 +353,7 @@ namespace LinearAlgebra::Blas
   // or
   // C := alpha*A'*A + beta*C,
   //
-  void
+  static inline void
   syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
        const std::size_t N, const std::size_t K, const float alpha, const float *A,
        const std::size_t lda, const float beta, float *C, const std::size_t ldc)
@@ -362,7 +362,7 @@ namespace LinearAlgebra::Blas
 
     cblas_ssyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
   }
-  void
+  static inline void
   syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
        const std::size_t N, const std::size_t K, const double alpha, const double *A,
        const std::size_t lda, const double beta, double *C, const std::size_t ldc)
@@ -371,7 +371,7 @@ namespace LinearAlgebra::Blas
 
     cblas_dsyrk(Order, Uplo, Trans, N, K, alpha, A, lda, beta, C, ldc);
   }
-  void
+  static inline void
   syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
        const std::size_t N, const std::size_t K, const std::complex<float> &alpha,
        const std::complex<float> *A, const std::size_t lda, const std::complex<float> &beta,
@@ -381,7 +381,7 @@ namespace LinearAlgebra::Blas
 
     cblas_csyrk(Order, Uplo, Trans, N, K, &alpha, A, lda, &beta, C, ldc);
   }
-  void
+  static inline void
   syrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE Trans,
        const std::size_t N, const std::size_t K, const std::complex<double> &alpha,
        const std::complex<double> *A, const std::size_t lda, const std::complex<double> &beta,

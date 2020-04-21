@@ -8,7 +8,9 @@
 namespace LinearAlgebra::Detail
 {
 #ifndef NDEBUG
-  Expr_Selector_Enum debug_selected;
+
+  extern Expr_Selector_Enum debug_selected;
+
 #define DEBUG_RESET_SELECTED() LinearAlgebra::Detail::debug_selected = Expr_Selector_Enum::END
 #define DEBUG_GET_SELECTED() (LinearAlgebra::Detail::debug_selected)
 #define DEBUG_SET_SELECTED(value) LinearAlgebra::Detail::debug_selected = (value)

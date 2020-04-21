@@ -301,6 +301,8 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
+    Default_Matrix_View() : Default_Matrix_View(nullptr) { assert(this->data() == nullptr); }
+
     Default_Matrix_View(T* data) : base_type(storage_scheme_type(), data)
     {
       assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
@@ -420,6 +422,11 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
+    Default_Matrix_Const_View() : Default_Matrix_Const_View(nullptr)
+    {
+      assert(this->data() == nullptr);
+    }
+
     Default_Matrix_Const_View(const T* data) : base_type(storage_scheme_type(), data)
     {
       assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||

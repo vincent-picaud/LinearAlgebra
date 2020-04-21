@@ -1,27 +1,26 @@
 #+TITLE: Reminder & TODO list
 
-* Things todo [2/3]
+* Things todo [4/8]
 
 
-  - Note taken on [2020-04-20 Mon 16:02] \\
-    [ ] add copy contructor:
-    #+BEGIN_SRC cpp
-    Vector V(V_OTHER);
+  - [ ] Note taken on [2020-04-21 Tue 11:17] \\
+    As we have introduced empty constructor for views, one must define a
+    rebind() method. CAVEAT: take care of constness.
+  - [X] Note taken on [2020-04-20 Mon 16:02] \\
+    Add copy contructor: NO! (closed TODO)
+
+    This is a bad idea as it introduce a asymmetry between View and
+    Storable:
+    #+BEGIN_SRC cpp 
+    Vector V(V_OTHER);      // <- DEEP copy
+    Vector_View V(V_OTHER); // <- SHARING copy
     #+END_SRC
-    
-    However some extra work will be needed to handle case where dest vector
-    has Static_Size and source Dynamic Size:
-    
-    #+BEGIN_SRC cpp
-    template<typename OTHER_IMPL>
-    Dense_Vector(const SIZE n)
-    #+END_SRC
-    
-    cause a compile time error
-  - Note taken on [2020-04-19 Sun 11:29] \\
+
+    WE DO NOT WANT THAT!
+  - [ ] Note taken on [2020-04-19 Sun 11:29] \\
     Add as_view(), similar to as_generic_view()
-  - Note taken on [2020-04-19 Sun 11:24] \\
-    [ ] IMPORTANT ad AD support (in peculiar simplification removing α
+  - [ ] Note taken on [2020-04-19 Sun 11:24] \\
+    IMPORTANT ad AD support (in peculiar simplification removing α
     when α==1 is a bad practice if α is AutoDiff. One must introduce special function like
     
        allowed_simplification(α,value)
@@ -31,8 +30,8 @@
     Concrete example: even if α == 1 you cannot simplify f=α.β by f=β as
     
     \partial_α f = β in one case and \partial_α f = 0 (wrong) in the "simplified" case.
-  - Note taken on [2020-04-17 Fri 18:58] \\
-    [ ] check include problematic (in CG)
+  - [X] Note taken on [2020-04-17 Fri 18:58] \\
+    Check include problematic (in CG)
     #+BEGIN_SRC cpp :eval never
     #include "LinearAlgebra/dense/matrix_fwd.hpp"
     #+END_SRC

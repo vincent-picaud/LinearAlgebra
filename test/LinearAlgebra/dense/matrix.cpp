@@ -177,3 +177,29 @@ TEST(Matrix, move_dynamic_but_static_sizes)
   EXPECT_EQ(m2(1, 1), 5);
   EXPECT_EQ(m2(2, 1), 6);
 }
+
+TEST(Matrix, view_empty_constructor)
+{
+  Generic_Matrix_Const_View<int, Matrix_Special_Structure_Enum::None,
+                            Matrix_Storage_Mask_Enum::None>
+      V1;
+  Generic_Matrix_View<int, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None> V2;
+  Default_Matrix_View<int, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
+                      std::integral_constant<size_t, 3>, std::integral_constant<size_t, 2>,
+                      std::integral_constant<size_t, 5>>
+      V3;
+
+  EXPECT_TRUE(V1.data() == nullptr);
+  EXPECT_TRUE(V2.data() == nullptr);
+  EXPECT_TRUE(V3.data() == nullptr);
+}
+
+TEST(Matrix, view_empty_constructor_debug_death)
+{
+  Default_Matrix_View<int, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
+                      std::integral_constant<size_t, 3>, std::integral_constant<size_t, 2>,
+                      std::integral_constant<size_t, 5>>
+      V;
+
+  EXPECT_DEBUG_DEATH(V(0, 0), "");
+}

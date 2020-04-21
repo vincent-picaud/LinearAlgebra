@@ -291,12 +291,14 @@ namespace LinearAlgebra
     impl_random_access(const size_t idx)
     {
       assert(_storage_scheme.check_index(idx));
+      assert(_memory_chunk.data());
       return *(_memory_chunk.data() + _storage_scheme.offset(idx));
     }
     const element_type&
     impl_random_access(const size_t idx) const
     {
       assert(_storage_scheme.check_index(idx));
+      assert(_memory_chunk.data());
       return *(_memory_chunk.data() + _storage_scheme.offset(idx));
     }
   };

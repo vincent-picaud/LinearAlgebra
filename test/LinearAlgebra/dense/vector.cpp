@@ -1,7 +1,9 @@
 #include "LinearAlgebra/dense/vector.hpp"
 
+#include <gtest/gtest-death-test.h>
 #include <gtest/gtest.h>
 #include <type_traits>
+#include "LinearAlgebra/dense/vector_fwd.hpp"
 
 using namespace LinearAlgebra;
 
@@ -83,4 +85,26 @@ TEST(Vector, view_constness)
       c_cv(data);
 
   EXPECT_TRUE(std::is_const_v<std::remove_reference_t<decltype(c_cv[0])>>);
+}
+
+TEST(Vector, view_empty_constructor)
+{
+  Generic_Vector_Const_View<int> V1;
+  Generic_Vector_View<int> V2;
+  Default_Vector_View<int, std::integral_constant<std::size_t, 4>,
+                      std::integral_constant<std::size_t, 4>>
+      V3;
+
+  EXPECT_TRUE(V1.data() == nullptr);
+  EXPECT_TRUE(V2.data() == nullptr);
+  EXPECT_TRUE(V3.data() == nullptr);
+}
+
+TEST(Vector, view_empty_constructor_debug_death)
+{
+  Default_Vector_View<int, std::integral_constant<std::size_t, 4>,
+                      std::integral_constant<std::size_t, 4>>
+      V;
+
+  EXPECT_DEBUG_DEATH(V[0],"");
 }

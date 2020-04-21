@@ -300,12 +300,14 @@ namespace LinearAlgebra
     impl_random_access(const size_t i, const size_t j)
     {
       assert(_storage_scheme.check_index(i, j));
+      assert(data() != nullptr);
       return *(data() + _storage_scheme.offset(i, j));
     }
     const element_type&
     impl_random_access(const size_t i, const size_t j) const
     {
       assert(_storage_scheme.check_index(i, j));
+      assert(data() != nullptr);
       return *(data() + _storage_scheme.offset(i, j));
     }
   };

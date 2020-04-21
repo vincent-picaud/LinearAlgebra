@@ -163,6 +163,7 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
+    Default_Vector_View() : Default_Vector_View(nullptr) { assert(this->data() == nullptr); }
     Default_Vector_View(T* data) : base_type(storage_scheme_type(), data) {}   // <- "CHANGE HERE"
     Default_Vector_View(T* data, const SIZE_TYPE n, const INCREMENT_TYPE inc)  // <- "CHANGE HERE"
         : base_type(storage_scheme_type(n, inc), data)
@@ -250,6 +251,7 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
+    Default_Vector_Const_View() : Default_Vector_Const_View(nullptr) { assert(this->data() == nullptr); }
     Default_Vector_Const_View(const T* data)
         : base_type(storage_scheme_type(), data) {}  // <- "CHANGE HERE" T* -> const T*
     Default_Vector_Const_View(const T* data, const SIZE_TYPE n,

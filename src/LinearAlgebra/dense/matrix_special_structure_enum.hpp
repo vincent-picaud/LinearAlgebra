@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 namespace LinearAlgebra
 {
   enum class Matrix_Special_Structure_Enum

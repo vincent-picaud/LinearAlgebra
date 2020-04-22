@@ -12,4 +12,5 @@ LinearAlgebra_headers += [
   'utils/type_identity.hpp',
   'utils/complex.hpp',
   'utils/same_mathematical_object_p.hpp',
+  'utils/enum_class_to_value.hpp'
 ]

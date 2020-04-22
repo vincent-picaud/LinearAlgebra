@@ -11,7 +11,7 @@
 
 // A (temporary) patch to see which routines are used
 // (comment me out in production)
-#define BLAS_DEBUG
+// #define BLAS_DEBUG
 
 #ifdef BLAS_DEBUG
 #include <iostream>  // For debug

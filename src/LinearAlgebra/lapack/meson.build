@@ -7,11 +7,12 @@
 #
 LinearAlgebra_headers += [
   'lapack/lapack.hpp',
+  'lapack/lapack_enum.hpp',
   'lapack/subroutines.hpp',
-  # 'lapack/to_clapack_transpose.hpp',
-  # 'lapack/to_clapack_uplo.hpp',
-  # 'lapack/to_clapack_diag.hpp',
-  # 'lapack/is_clapack_supported_scalar.hpp',
+  # 'lapack/to_lapack_transpose.hpp',
+  'lapack/to_lapack_uplo.hpp',
+  # 'lapack/to_lapack_diag.hpp',
+  'lapack/is_lapack_supported_scalar.hpp',
 ]
 
 # Prepare lapack_config.hpp.in

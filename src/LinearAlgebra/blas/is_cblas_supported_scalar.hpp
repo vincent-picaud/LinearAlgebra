@@ -2,6 +2,8 @@
 //
 #pragma once
 
+#include "LinearAlgebra/blas/blas_config.hpp"
+
 #if !(HAS_BLAS)
 #error
 #endif

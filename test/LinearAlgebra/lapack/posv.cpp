@@ -2,6 +2,7 @@
 #include "LinearAlgebra/dense/matrix_fwd.hpp"
 #include "LinearAlgebra/lapack/lapack_enum.hpp"
 #include "LinearAlgebra/lapack/subroutines.hpp"
+#include "LinearAlgebra/lapack/to_lapack_uplo.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
@@ -102,7 +103,7 @@ namespace LinearAlgebra
 
   // template <Matrix_Storage_Mask_Enum OP_M>
   //   struct To_Lapack_UpLo;
-  
+
   // template<typename IMPL>
   // constexpr std::integral_constant<Lapack::Lapack_UpLo_Enum,Lapack::Lapack_UpLo_Enum::Low>
   // to_lapack_uplo(const std::integral_constant<)
@@ -114,36 +115,34 @@ namespace LinearAlgebra
   template <typename MA_IMPL, typename MB_IMPL>
   auto
   posv(Dense_Matrix_Crtp<MA_IMPL>& A, Dense_Matrix_Crtp<MB_IMPL>& B) -> std::enable_if_t<
-      Always_True_v<decltype(Lapack::posv(
-          Lapack::Lapack_Order_Enum::Column_Major, Lapack::Lapack_UpLo_Enum::Low, A.I_size(),
-          B.J_size(), A.data(), A.leading_dimension(), B.data(), B.leading_dimension()))> and
-          Is_Symmetric_Matrix_v<MA_IMPL> and Is_Full_Matrix_v<MB_IMPL>,
+      //
+      // CAVEAT: check if we can use potentially use an incomplete
+      //         type Lapack::To_Lapack_UpLo_v<MA_IMPL> instead of
+      //         Lapack::Lapack_UpLo_Enum::Low in a SFINEA context.
+      //
+      Always_True_v<decltype(Lapack::posv(Lapack::Lapack_Order_Enum::Column_Major,  //
+                                          Lapack::Lapack_UpLo_Enum::Low,            // <- here
+                                          A.I_size(),                               //
+                                          B.J_size(),                               //
+                                          A.data(),                                 //
+                                          A.leading_dimension(),                    //
+                                          B.data(),                                 //
+                                          B.leading_dimension()))>                  //
+                                                                                    //
+          and
+          //
+          Is_Symmetric_Matrix_v<MA_IMPL>
+          //
+          and
+          //
+          Is_Full_Matrix_v<MB_IMPL>,
+      //
       lapack_int>
   {
-    return Lapack::posv(Lapack::Lapack_Order_Enum::Column_Major, Lapack::Lapack_UpLo_Enum::Low,
+    return Lapack::posv(Lapack::Lapack_Order_Enum::Column_Major, Lapack::To_Lapack_UpLo_v<MA_IMPL>,
                         A.I_size(), B.J_size(), A.data(), A.leading_dimension(), B.data(),
                         B.leading_dimension());
   }
-
-  // template <typename MA_IMPL, typename MB_IMPL>
-  // auto
-  // posv(Dense_Matrix_Crtp<MA_IMPL>& A, Dense_Matrix_Crtp<MB_IMPL>& B) -> std::enable_if_t<
-  //     Always_True_v<decltype(Lapack::posv(
-  //         Lapack::Lapack_Order_Enum::Column_Major, Lapack::Lapack_UpLo_Enum::Low, A.I_size(),
-  //         B.J_size(), A.data(), A.leading_dimension(), B.data(),
-  //         B.leading_dimension()))>and decltype(is_symmetric_or_hermitian_matrix_p(A))::value,
-  //     lapack_int>
-  // {
-  //   return Lapack::posv(Lapack::Lapack_Order_Enum::Column_Major, Lapack::Lapack_UpLo_Enum::Low,
-  //                       A.I_size(), B.J_size(), A.data(), A.leading_dimension(), B.data(),
-  //                       B.leading_dimension());
-  // }
-
-  template <typename T>
-  struct Is_Symmetric_Matrix<T, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Vector_Crtp, T>>>
-      : std::true_type
-  {
-  };
 }
 
 using namespace LinearAlgebra;
@@ -156,5 +155,5 @@ TEST(Posv, sfinae)
 
   posv(B, A);
 
-  EXPECT_TRUE(Is_Symmetric_Matrix_v<Vector<double>>);
+  EXPECT_FALSE(Is_Symmetric_Matrix_v<Vector<double>>);
 }

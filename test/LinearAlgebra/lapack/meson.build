@@ -3,6 +3,7 @@ test_array = [
     'is_lapack_supported_scalar',
     'to_lapack_uplo',
     'posv',
+    'subroutines_dense',
   ]
 
 foreach test : test_array

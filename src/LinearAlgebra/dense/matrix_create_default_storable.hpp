@@ -23,7 +23,8 @@ namespace LinearAlgebra
   //
   template <typename T, typename IMPL, typename... IMPL_OPTIONAL>
   auto
-  create_default_storable(const Type<T>, const Dense_Matrix_Crtp<IMPL>& matrix,
+  create_default_storable(const Type<T>,
+                          const Dense_Matrix_Crtp<IMPL>& matrix,
                           const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
     assert(are_compatible_p(matrix.impl(), matrix_optional.impl()...));
@@ -33,10 +34,12 @@ namespace LinearAlgebra
 
     // Like we use column major storage, ld is directly related to I_size
     using leading_dimension_type = decltype(matrix_dest_I_size);
-    using matrix_type =
-        Default_Matrix<T, IMPL::matrix_special_structure_type::value,
-                       IMPL::matrix_storage_mask_type::value, typename IMPL::I_size_type,
-                       typename IMPL::J_size_type, leading_dimension_type>;
+    using matrix_type            = Default_Matrix<T,
+                                       IMPL::matrix_special_structure_type::value,
+                                       IMPL::matrix_storage_mask_type::value,
+                                       typename IMPL::I_size_type,
+                                       typename IMPL::J_size_type,
+                                       leading_dimension_type>;
     return matrix_type{matrix_dest_I_size, matrix_dest_J_size};
   }
 

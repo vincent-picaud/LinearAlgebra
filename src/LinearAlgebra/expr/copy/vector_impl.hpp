@@ -18,7 +18,8 @@ namespace LinearAlgebra
   //
   template <typename X0_TYPE, typename X1_TYPE>
   void
-  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, Dense_Vector_Crtp<X0_TYPE>& X0,
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
+         Dense_Vector_Crtp<X0_TYPE>& X0,
          const Dense_Vector_Crtp<X1_TYPE>& X1)
   {
     assign_helper(X0, X1);
@@ -49,14 +50,18 @@ namespace LinearAlgebra
   assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
          Dense_Vector_Crtp<VECTOR_0_TYPE>& vector_0,       // vector_0
          const Dense_Vector_Crtp<VECTOR_1_TYPE>& vector_1  // vector_1
-         )
-      -> std::enable_if_t<
-          Always_True_v<decltype(Blas::copy(vector_0.size(), vector_1.data(), vector_1.increment(),
-                                            vector_0.data(), vector_0.increment()))>>
+         ) -> std::enable_if_t<Always_True_v<decltype(Blas::copy(vector_0.size(),
+                                                                 vector_1.data(),
+                                                                 vector_1.increment(),
+                                                                 vector_0.data(),
+                                                                 vector_0.increment()))>>
   {
     assert(are_compatible_p(vector_0, vector_1));
 
-    Blas::copy(vector_0.size(), vector_1.data(), vector_1.increment(), vector_0.data(),
+    Blas::copy(vector_0.size(),
+               vector_1.data(),
+               vector_1.increment(),
+               vector_0.data(),
                vector_0.increment());
 
     DEBUG_SET_SELECTED(selected);
@@ -71,7 +76,8 @@ namespace LinearAlgebra
   //
   template <typename X0_TYPE, typename X1_TYPE>
   std::enable_if_t<Any_Has_Static_Dimension_v<X0_TYPE, X1_TYPE>>
-  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, Dense_Vector_Crtp<X0_TYPE>& X0,
+  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,
+         Dense_Vector_Crtp<X0_TYPE>& X0,
          const Dense_Vector_Crtp<X1_TYPE>& X1)
   {
     assign_helper(X0, X1);

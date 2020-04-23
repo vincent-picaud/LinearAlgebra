@@ -145,7 +145,9 @@ namespace LinearAlgebra
 
   //================================================================
 
-  template <typename N_0_TYPE, typename INCREMENT_0_INCREMENT, typename N_1_TYPE,
+  template <typename N_0_TYPE,
+            typename INCREMENT_0_INCREMENT,
+            typename N_1_TYPE,
             typename INCREMENT_1_INCREMENT>
   inline constexpr bool
   are_compatible_p(

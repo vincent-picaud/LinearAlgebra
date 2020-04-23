@@ -2,7 +2,7 @@
 
 #include "LinearAlgebra/lapack/lapack_config.hpp"
 
-#if !(HAS_LAPACK) 
+#if !(HAS_LAPACK)
 #error
 #endif
 
@@ -29,7 +29,8 @@ namespace LinearAlgebra::Lapack
   // Complex
   //
   template <typename T>
-  struct Is_Lapack_Supported_Complex_Scalar : LinearAlgebra::Blas::Is_CBlas_Supported_Complex_Scalar<T>
+  struct Is_Lapack_Supported_Complex_Scalar
+      : LinearAlgebra::Blas::Is_CBlas_Supported_Complex_Scalar<T>
   {
   };
 

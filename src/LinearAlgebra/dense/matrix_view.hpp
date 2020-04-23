@@ -59,15 +59,20 @@ namespace LinearAlgebra
     //
     // Note: use size_type_normalization() before calling me
     //
-    template <typename ELEMENT_TYPE, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-              Matrix_Storage_Mask_Enum MASK, typename I_SIZE, typename J_SIZE,
+    template <typename ELEMENT_TYPE,
+              Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+              Matrix_Storage_Mask_Enum MASK,
+              typename I_SIZE,
+              typename J_SIZE,
               typename LEADING_DIMENSION>
     auto
     create_matrix_view_helper(
         ELEMENT_TYPE* data,
         const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
-        const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>, const I_SIZE I_size,
-        const J_SIZE J_size, const LEADING_DIMENSION leading_dimension)
+        const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
+        const I_SIZE I_size,
+        const J_SIZE J_size,
+        const LEADING_DIMENSION leading_dimension)
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<I_SIZE>);
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<J_SIZE>);
@@ -76,13 +81,21 @@ namespace LinearAlgebra
 
       if constexpr (std::is_const_v<ELEMENT_TYPE>)
       {
-        return Default_Matrix_Const_View<std::remove_const_t<ELEMENT_TYPE>, SPECIAL_STRUCTURE, MASK,
-                                         I_SIZE, J_SIZE, LEADING_DIMENSION>(data, I_size, J_size,
-                                                                            leading_dimension);
+        return Default_Matrix_Const_View<std::remove_const_t<ELEMENT_TYPE>,
+                                         SPECIAL_STRUCTURE,
+                                         MASK,
+                                         I_SIZE,
+                                         J_SIZE,
+                                         LEADING_DIMENSION>(
+            data, I_size, J_size, leading_dimension);
       }
       else
       {
-        return Default_Matrix_View<ELEMENT_TYPE, SPECIAL_STRUCTURE, MASK, I_SIZE, J_SIZE,
+        return Default_Matrix_View<ELEMENT_TYPE,
+                                   SPECIAL_STRUCTURE,
+                                   MASK,
+                                   I_SIZE,
+                                   J_SIZE,
                                    LEADING_DIMENSION>(data, I_size, J_size, leading_dimension);
       }
     }
@@ -113,7 +126,9 @@ namespace LinearAlgebra
   //
   template <typename ELEMENT_TYPE, typename I_SIZE, typename J_SIZE, typename LEADING_DIMENSION>
   auto
-  create_matrix_view(ELEMENT_TYPE* data, const I_SIZE I_size, const J_SIZE J_size,
+  create_matrix_view(ELEMENT_TYPE* data,
+                     const I_SIZE I_size,
+                     const J_SIZE J_size,
                      const LEADING_DIMENSION leading_dimension)
   {
     return Detail::create_matrix_view_helper(
@@ -121,7 +136,8 @@ namespace LinearAlgebra
         std::integral_constant<Matrix_Special_Structure_Enum,
                                Matrix_Special_Structure_Enum::None>(),
         std::integral_constant<Matrix_Storage_Mask_Enum, Matrix_Storage_Mask_Enum::None>(),
-        Detail::size_type_normalization(I_size), Detail::size_type_normalization(J_size),
+        Detail::size_type_normalization(I_size),
+        Detail::size_type_normalization(J_size),
         Detail::size_type_normalization(leading_dimension));
   }
   // default leading_dimension=I_size
@@ -129,7 +145,8 @@ namespace LinearAlgebra
   auto
   create_matrix_view(ELEMENT_TYPE* data, const I_SIZE I_size, const J_SIZE J_size)
   {
-    return create_matrix_view(data, Detail::size_type_normalization(I_size),
+    return create_matrix_view(data,
+                              Detail::size_type_normalization(I_size),
                               Detail::size_type_normalization(J_size),
                               Detail::size_type_normalization(I_size));
   }
@@ -150,7 +167,8 @@ namespace LinearAlgebra
     template <typename IMPL>
     bool
     check_create_matrix_view_arguments_p(const Dense_Matrix_Crtp<IMPL>& matrix,
-                                         const std::size_t I_begin, const std::size_t I_end,
+                                         const std::size_t I_begin,
+                                         const std::size_t I_end,
                                          const std::size_t J_begin,
                                          const std::size_t J_end) noexcept
     {
@@ -166,8 +184,11 @@ namespace LinearAlgebra
 
   template <typename IMPL, typename I_BEGIN, typename I_END, typename J_BEGIN, typename J_END>
   auto
-  create_matrix_view(Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin, const I_END I_end,
-                     const J_BEGIN J_begin, const J_END J_end) noexcept
+  create_matrix_view(Dense_Matrix_Crtp<IMPL>& matrix,
+                     const I_BEGIN I_begin,
+                     const I_END I_end,
+                     const J_BEGIN J_begin,
+                     const J_END J_end) noexcept
   {
     assert(Detail::check_create_matrix_view_arguments_p(matrix, I_begin, I_end, J_begin, J_end));
 
@@ -175,15 +196,21 @@ namespace LinearAlgebra
     auto J_size = Detail::compute_size_from_begin_end(J_begin, J_end);
 
     return Detail::create_matrix_view_helper(
-        &matrix(I_begin, J_begin), typename IMPL::matrix_special_structure_type(),
-        typename IMPL::storage_scheme_type::matrix_storage_mask_type(), I_size, J_size,
+        &matrix(I_begin, J_begin),
+        typename IMPL::matrix_special_structure_type(),
+        typename IMPL::storage_scheme_type::matrix_storage_mask_type(),
+        I_size,
+        J_size,
         matrix.leading_dimension());
   }
 
   template <typename IMPL, typename I_BEGIN, typename I_END, typename J_BEGIN, typename J_END>
   auto
-  create_matrix_view(const Dense_Matrix_Crtp<IMPL>& matrix, const I_BEGIN I_begin,
-                     const I_END I_end, const J_BEGIN J_begin, const J_END J_end) noexcept
+  create_matrix_view(const Dense_Matrix_Crtp<IMPL>& matrix,
+                     const I_BEGIN I_begin,
+                     const I_END I_end,
+                     const J_BEGIN J_begin,
+                     const J_END J_end) noexcept
   {
     assert(Detail::check_create_matrix_view_arguments_p(matrix, I_begin, I_end, J_begin, J_end));
 
@@ -191,8 +218,11 @@ namespace LinearAlgebra
     auto J_size = Detail::compute_size_from_begin_end(J_begin, J_end);
 
     return Detail::create_matrix_view_helper(
-        &matrix(I_begin, J_begin), typename IMPL::matrix_special_structure_type(),
-        typename IMPL::storage_scheme_type::matrix_storage_mask_type(), I_size, J_size,
+        &matrix(I_begin, J_begin),
+        typename IMPL::matrix_special_structure_type(),
+        typename IMPL::storage_scheme_type::matrix_storage_mask_type(),
+        I_size,
+        J_size,
         matrix.leading_dimension());
   }
 
@@ -203,16 +233,22 @@ namespace LinearAlgebra
   auto
   create_matrix_view(Dense_Matrix_Crtp<IMPL>& matrix) noexcept
   {
-    return create_matrix_view(matrix, std::integral_constant<size_t, 0>(), matrix.I_size(),
-                              std::integral_constant<size_t, 0>(), matrix.J_size());
+    return create_matrix_view(matrix,
+                              std::integral_constant<size_t, 0>(),
+                              matrix.I_size(),
+                              std::integral_constant<size_t, 0>(),
+                              matrix.J_size());
   }
   // const
   template <typename IMPL>
   auto
   create_matrix_view(const Dense_Matrix_Crtp<IMPL>& matrix) noexcept
   {
-    return create_matrix_view(matrix, std::integral_constant<size_t, 0>(), matrix.I_size(),
-                              std::integral_constant<size_t, 0>(), matrix.J_size());
+    return create_matrix_view(matrix,
+                              std::integral_constant<size_t, 0>(),
+                              matrix.I_size(),
+                              std::integral_constant<size_t, 0>(),
+                              matrix.J_size());
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,28 +261,36 @@ namespace LinearAlgebra
   //
   // General routines using Enum (see shorter Alias below)
   //
-  template <typename IMPL, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+  template <typename IMPL,
+            Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK>
   auto
   create_matrix_view(Dense_Matrix_Crtp<IMPL>& matrix,
                      const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
                      const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>) noexcept
   {
-    return Default_Matrix_View<typename IMPL::element_type, SPECIAL_STRUCTURE, MASK,
-                               typename IMPL::I_size_type, typename IMPL::J_size_type,
+    return Default_Matrix_View<typename IMPL::element_type,
+                               SPECIAL_STRUCTURE,
+                               MASK,
+                               typename IMPL::I_size_type,
+                               typename IMPL::J_size_type,
                                typename IMPL::leading_dimension_type>(
         matrix.data(), matrix.I_size(), matrix.J_size(), matrix.leading_dimension());
   }
   // const version
-  template <typename IMPL, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+  template <typename IMPL,
+            Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK>
   auto
   create_matrix_view(const Dense_Matrix_Crtp<IMPL>& matrix,
                      const std::integral_constant<Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>,
                      const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>) noexcept
   {
-    return Default_Matrix_Const_View<typename IMPL::element_type, SPECIAL_STRUCTURE, MASK,
-                                     typename IMPL::I_size_type, typename IMPL::J_size_type,
+    return Default_Matrix_Const_View<typename IMPL::element_type,
+                                     SPECIAL_STRUCTURE,
+                                     MASK,
+                                     typename IMPL::I_size_type,
+                                     typename IMPL::J_size_type,
                                      typename IMPL::leading_dimension_type>(
         matrix.data(), matrix.I_size(), matrix.J_size(), matrix.leading_dimension());
   }
@@ -616,29 +660,29 @@ namespace LinearAlgebra
 
   }
 
-#define LINALG_CODE_NO_DUPLICATE(CONST)                                                   \
-  template <typename IMPL>                                                                \
-  auto create_vector_view_matrix_diagonal(CONST Dense_Matrix_Crtp<IMPL>& matrix) noexcept \
-  {                                                                                       \
-    if constexpr (Has_Static_I_Size_v<IMPL> && Has_Static_J_Size_v<IMPL>)                 \
-    {                                                                                     \
-      if constexpr (IMPL::I_size_type::value <= IMPL::J_size_type::value)                 \
-      {                                                                                   \
-        return create_vector_view(matrix.data(), matrix.I_size(),                         \
-                                  Detail::increment(matrix.leading_dimension()));         \
-      }                                                                                   \
-      else                                                                                \
-      {                                                                                   \
-        return create_vector_view(matrix.data(), matrix.J_size(),                         \
-                                  Detail::increment(matrix.leading_dimension()));         \
-      }                                                                                   \
-    }                                                                                     \
-    else                                                                                  \
-    {                                                                                     \
-      return create_vector_view(matrix.data(),                                            \
-                                std::min<std::size_t>(matrix.I_size(), matrix.J_size()),  \
-                                Detail::increment(matrix.leading_dimension()));           \
-    }                                                                                     \
+#define LINALG_CODE_NO_DUPLICATE(CONST)                                                     \
+  template <typename IMPL>                                                                  \
+  auto create_vector_view_matrix_diagonal(CONST Dense_Matrix_Crtp<IMPL>& matrix) noexcept   \
+  {                                                                                         \
+    if constexpr (Has_Static_I_Size_v<IMPL> && Has_Static_J_Size_v<IMPL>)                   \
+    {                                                                                       \
+      if constexpr (IMPL::I_size_type::value <= IMPL::J_size_type::value)                   \
+      {                                                                                     \
+        return create_vector_view(                                                          \
+            matrix.data(), matrix.I_size(), Detail::increment(matrix.leading_dimension())); \
+      }                                                                                     \
+      else                                                                                  \
+      {                                                                                     \
+        return create_vector_view(                                                          \
+            matrix.data(), matrix.J_size(), Detail::increment(matrix.leading_dimension())); \
+      }                                                                                     \
+    }                                                                                       \
+    else                                                                                    \
+    {                                                                                       \
+      return create_vector_view(matrix.data(),                                              \
+                                std::min<std::size_t>(matrix.I_size(), matrix.J_size()),    \
+                                Detail::increment(matrix.leading_dimension()));             \
+    }                                                                                       \
   }
 
   LINALG_CODE_NO_DUPLICATE();

@@ -15,8 +15,9 @@
 namespace LinearAlgebra
 {
   template <typename MEM_CHUNK_0, typename MEM_CHUNK_1>
-  std::enable_if_t<
-      Detail::Is_Memory_Chunk_v<MEM_CHUNK_0> and Detail::Is_Memory_Chunk_v<MEM_CHUNK_1>, bool>
+  std::enable_if_t<Detail::Is_Memory_Chunk_v<MEM_CHUNK_0> and
+                       Detail::Is_Memory_Chunk_v<MEM_CHUNK_1>,
+                   bool>
   are_not_aliased_p(const MEM_CHUNK_0& mem_chunk_0, const MEM_CHUNK_1& mem_chunk_1) noexcept
   {
     // The idea is to check if:
@@ -34,8 +35,9 @@ namespace LinearAlgebra
     return true;
   }
   template <typename MEM_CHUNK_0, typename MEM_CHUNK_1>
-  std::enable_if_t<
-      Detail::Is_Memory_Chunk_v<MEM_CHUNK_0> and Detail::Is_Memory_Chunk_v<MEM_CHUNK_1>, bool>
+  std::enable_if_t<Detail::Is_Memory_Chunk_v<MEM_CHUNK_0> and
+                       Detail::Is_Memory_Chunk_v<MEM_CHUNK_1>,
+                   bool>
   are_possibly_aliased_p(const MEM_CHUNK_0& mem_chunk_0, const MEM_CHUNK_1& mem_chunk_1) noexcept
   {
     return not are_not_aliased_p(mem_chunk_0, mem_chunk_1);

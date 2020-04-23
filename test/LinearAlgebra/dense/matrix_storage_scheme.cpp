@@ -6,7 +6,8 @@ using namespace LinearAlgebra;
 
 TEST(Default_Matrix_Storage_Scheme, Basic)
 {
-  Default_Matrix_Storage_Scheme<Matrix_Storage_Mask_Enum::None, std::integral_constant<size_t, 3>,
+  Default_Matrix_Storage_Scheme<Matrix_Storage_Mask_Enum::None,
+                                std::integral_constant<size_t, 3>,
                                 std::integral_constant<size_t, 2>,
                                 std::integral_constant<size_t, 5>>
       storage_blas;
@@ -21,9 +22,10 @@ TEST(Default_Matrix_Storage_Scheme, Basic)
 
 TEST(Default_Matrix_Storage_Scheme, constexpr_test)
 {
-  constexpr Default_Matrix_Storage_Scheme<
-      Matrix_Storage_Mask_Enum::None, std::integral_constant<size_t, 3>,
-      std::integral_constant<size_t, 2>, std::integral_constant<size_t, 5>>
+  constexpr Default_Matrix_Storage_Scheme<Matrix_Storage_Mask_Enum::None,
+                                          std::integral_constant<size_t, 3>,
+                                          std::integral_constant<size_t, 2>,
+                                          std::integral_constant<size_t, 5>>
       storage_blas;
 
   // AFAIK there is not other way to check constexpr
@@ -40,7 +42,8 @@ TEST(Default_Matrix_Storage_Scheme, constexpr_test)
 // Zero size peculiar case, can be problematic due, to use of N-1, M-1
 TEST(Default_Matrix_Storage_Scheme, Zero_Sizes)
 {
-  Default_Matrix_Storage_Scheme<Matrix_Storage_Mask_Enum::None, std::integral_constant<size_t, 0>,
+  Default_Matrix_Storage_Scheme<Matrix_Storage_Mask_Enum::None,
+                                std::integral_constant<size_t, 0>,
                                 std::integral_constant<size_t, 2>,
                                 std::integral_constant<size_t, 5>>
       storage_blas;

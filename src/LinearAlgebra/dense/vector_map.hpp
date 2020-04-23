@@ -11,13 +11,14 @@ namespace LinearAlgebra
 {
   template <typename LAMBDA, typename IMPL_SRC, typename... IMPL_SRC_OPTIONAL>
   auto
-  map(const LAMBDA& lambda, const Dense_Vector_Crtp<IMPL_SRC>& vector_src,
+  map(const LAMBDA& lambda,
+      const Dense_Vector_Crtp<IMPL_SRC>& vector_src,
       const Dense_Vector_Crtp<IMPL_SRC_OPTIONAL>&... vector_src_optional)
   {
     using vector_dest_element_type =
         decltype(lambda(vector_src.as_const()[0], vector_src_optional.as_const()[0]...));
-    auto vector_dest = create_default_storable(Type_v<vector_dest_element_type>, vector_src,
-                                               vector_src_optional...);
+    auto vector_dest = create_default_storable(
+        Type_v<vector_dest_element_type>, vector_src, vector_src_optional...);
 
     //----------------
 

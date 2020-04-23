@@ -31,7 +31,8 @@ namespace LinearAlgebra
         [](const auto& vmt_0_component, const auto& vmt_1_component) {           \
           return vmt_0_component OP vmt_1_component;                             \
         },                                                                       \
-        vmt_0.impl(), vmt_1.impl());                                             \
+        vmt_0.impl(),                                                            \
+        vmt_1.impl());                                                           \
   }
 
   LINALG_CODE(==);

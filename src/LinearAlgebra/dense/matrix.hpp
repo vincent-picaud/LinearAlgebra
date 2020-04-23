@@ -96,8 +96,11 @@ namespace LinearAlgebra
     constexpr bool is_structure_mask_combination_allowed_v =
         Is_Structure_Mask_Combination_Allowed<SPECIAL_STRUCTURE, MASK>::value;
 
-    template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-              Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE, typename J_SIZE_TYPE,
+    template <typename T,
+              Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+              Matrix_Storage_Mask_Enum MASK,
+              typename I_SIZE_TYPE,
+              typename J_SIZE_TYPE,
               typename LEADING_DIMENSION_TYPE>
     constexpr bool sanity_check_v =
         is_structure_mask_combination_allowed_v<SPECIAL_STRUCTURE, MASK>and
@@ -114,15 +117,21 @@ namespace LinearAlgebra
   // - Default_Matrix_Const_View
   //
 
-  template <typename T, LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            LinearAlgebra::Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE,
-            typename J_SIZE_TYPE, typename LEADING_DIMENSION_TYPE>
-  struct Crtp_Type_Traits<LinearAlgebra::Default_Matrix<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                        J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>
+  template <typename T,
+            LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            LinearAlgebra::Matrix_Storage_Mask_Enum MASK,
+            typename I_SIZE_TYPE,
+            typename J_SIZE_TYPE,
+            typename LEADING_DIMENSION_TYPE>
+  struct Crtp_Type_Traits<LinearAlgebra::Default_Matrix<T,
+                                                        SPECIAL_STRUCTURE,
+                                                        MASK,
+                                                        I_SIZE_TYPE,
+                                                        J_SIZE_TYPE,
+                                                        LEADING_DIMENSION_TYPE>>
   {
-    using storage_scheme_type =
-        LinearAlgebra::Default_Matrix_Storage_Scheme<MASK, I_SIZE_TYPE, J_SIZE_TYPE,
-                                                     LEADING_DIMENSION_TYPE>;
+    using storage_scheme_type = LinearAlgebra::
+        Default_Matrix_Storage_Scheme<MASK, I_SIZE_TYPE, J_SIZE_TYPE, LEADING_DIMENSION_TYPE>;
     using memory_chunk_type =
         LinearAlgebra::Default_Memory_Chunk<T,
                                             typename storage_scheme_type::required_capacity_type>;
@@ -138,23 +147,37 @@ namespace LinearAlgebra
         std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
 
-  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE, typename J_SIZE_TYPE,
+  template <typename T,
+            Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK,
+            typename I_SIZE_TYPE,
+            typename J_SIZE_TYPE,
             typename LEADING_DIMENSION_TYPE>
-  class Default_Matrix
-      : public Dense_Matrix_Crtp<Default_Matrix<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>
+  class Default_Matrix : public Dense_Matrix_Crtp<Default_Matrix<T,
+                                                                 SPECIAL_STRUCTURE,
+                                                                 MASK,
+                                                                 I_SIZE_TYPE,
+                                                                 J_SIZE_TYPE,
+                                                                 LEADING_DIMENSION_TYPE>>
   {
-    static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                        J_SIZE_TYPE, LEADING_DIMENSION_TYPE>);
+    static_assert(Default_Matrix_Detail::sanity_check_v<T,
+                                                        SPECIAL_STRUCTURE,
+                                                        MASK,
+                                                        I_SIZE_TYPE,
+                                                        J_SIZE_TYPE,
+                                                        LEADING_DIMENSION_TYPE>);
 
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = Dense_Matrix_Crtp<Default_Matrix<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                       J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>;
+    using base_type = Dense_Matrix_Crtp<Default_Matrix<T,
+                                                       SPECIAL_STRUCTURE,
+                                                       MASK,
+                                                       I_SIZE_TYPE,
+                                                       J_SIZE_TYPE,
+                                                       LEADING_DIMENSION_TYPE>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
     using memory_chunk_type   = typename base_type::memory_chunk_type;
@@ -240,17 +263,23 @@ namespace LinearAlgebra
 
   //****************************************************************
 
-  template <typename T, LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            LinearAlgebra::Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE,
-            typename J_SIZE_TYPE, typename LEADING_DIMENSION_TYPE>
-  struct Crtp_Type_Traits<LinearAlgebra::Default_Matrix_View<
-      T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE, J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>
+  template <typename T,
+            LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            LinearAlgebra::Matrix_Storage_Mask_Enum MASK,
+            typename I_SIZE_TYPE,
+            typename J_SIZE_TYPE,
+            typename LEADING_DIMENSION_TYPE>
+  struct Crtp_Type_Traits<LinearAlgebra::Default_Matrix_View<T,
+                                                             SPECIAL_STRUCTURE,
+                                                             MASK,
+                                                             I_SIZE_TYPE,
+                                                             J_SIZE_TYPE,
+                                                             LEADING_DIMENSION_TYPE>>
   {
-    using storage_scheme_type =
-        LinearAlgebra::Default_Matrix_Storage_Scheme<MASK, I_SIZE_TYPE, J_SIZE_TYPE,
-                                                     LEADING_DIMENSION_TYPE>;
-    using memory_chunk_type = LinearAlgebra::View_Default_Memory_Chunk<
-        T, typename storage_scheme_type::required_capacity_type>;
+    using storage_scheme_type = LinearAlgebra::
+        Default_Matrix_Storage_Scheme<MASK, I_SIZE_TYPE, J_SIZE_TYPE, LEADING_DIMENSION_TYPE>;
+    using memory_chunk_type = LinearAlgebra::
+        View_Default_Memory_Chunk<T, typename storage_scheme_type::required_capacity_type>;
 
     using element_type = typename memory_chunk_type::element_type;
 
@@ -263,23 +292,37 @@ namespace LinearAlgebra
         std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
 
-  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE, typename J_SIZE_TYPE,
+  template <typename T,
+            Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK,
+            typename I_SIZE_TYPE,
+            typename J_SIZE_TYPE,
             typename LEADING_DIMENSION_TYPE>
-  class Default_Matrix_View
-      : public Dense_Matrix_Crtp<Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                     J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>
+  class Default_Matrix_View : public Dense_Matrix_Crtp<Default_Matrix_View<T,
+                                                                           SPECIAL_STRUCTURE,
+                                                                           MASK,
+                                                                           I_SIZE_TYPE,
+                                                                           J_SIZE_TYPE,
+                                                                           LEADING_DIMENSION_TYPE>>
   {
-    static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                        J_SIZE_TYPE, LEADING_DIMENSION_TYPE>);
+    static_assert(Default_Matrix_Detail::sanity_check_v<T,
+                                                        SPECIAL_STRUCTURE,
+                                                        MASK,
+                                                        I_SIZE_TYPE,
+                                                        J_SIZE_TYPE,
+                                                        LEADING_DIMENSION_TYPE>);
 
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type = Dense_Matrix_Crtp<Default_Matrix_View<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                            J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>;
+    using base_type = Dense_Matrix_Crtp<Default_Matrix_View<T,
+                                                            SPECIAL_STRUCTURE,
+                                                            MASK,
+                                                            I_SIZE_TYPE,
+                                                            J_SIZE_TYPE,
+                                                            LEADING_DIMENSION_TYPE>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
     using memory_chunk_type   = typename base_type::memory_chunk_type;
@@ -308,7 +351,9 @@ namespace LinearAlgebra
       assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
              (base_type::I_size() == base_type::J_size()));
     }
-    Default_Matrix_View(T* data, const I_SIZE_TYPE n, const J_SIZE_TYPE m,
+    Default_Matrix_View(T* data,
+                        const I_SIZE_TYPE n,
+                        const J_SIZE_TYPE m,
                         const LEADING_DIMENSION_TYPE ld)
         : base_type(storage_scheme_type(n, m, ld), data)
     {
@@ -360,17 +405,23 @@ namespace LinearAlgebra
 
   //================================================================
 
-  template <typename T, LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            LinearAlgebra::Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE,
-            typename J_SIZE_TYPE, typename LEADING_DIMENSION_TYPE>
-  struct Crtp_Type_Traits<LinearAlgebra::Default_Matrix_Const_View<
-      T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE, J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>
+  template <typename T,
+            LinearAlgebra::Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            LinearAlgebra::Matrix_Storage_Mask_Enum MASK,
+            typename I_SIZE_TYPE,
+            typename J_SIZE_TYPE,
+            typename LEADING_DIMENSION_TYPE>
+  struct Crtp_Type_Traits<LinearAlgebra::Default_Matrix_Const_View<T,
+                                                                   SPECIAL_STRUCTURE,
+                                                                   MASK,
+                                                                   I_SIZE_TYPE,
+                                                                   J_SIZE_TYPE,
+                                                                   LEADING_DIMENSION_TYPE>>
   {
-    using storage_scheme_type =
-        LinearAlgebra::Default_Matrix_Storage_Scheme<MASK, I_SIZE_TYPE, J_SIZE_TYPE,
-                                                     LEADING_DIMENSION_TYPE>;
-    using memory_chunk_type = LinearAlgebra::Const_View_Default_Memory_Chunk<
-        T, typename storage_scheme_type::required_capacity_type>;
+    using storage_scheme_type = LinearAlgebra::
+        Default_Matrix_Storage_Scheme<MASK, I_SIZE_TYPE, J_SIZE_TYPE, LEADING_DIMENSION_TYPE>;
+    using memory_chunk_type = LinearAlgebra::
+        Const_View_Default_Memory_Chunk<T, typename storage_scheme_type::required_capacity_type>;
 
     using element_type = typename memory_chunk_type::element_type;
 
@@ -383,24 +434,38 @@ namespace LinearAlgebra
         std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
 
-  template <typename T, Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
-            Matrix_Storage_Mask_Enum MASK, typename I_SIZE_TYPE, typename J_SIZE_TYPE,
+  template <typename T,
+            Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
+            Matrix_Storage_Mask_Enum MASK,
+            typename I_SIZE_TYPE,
+            typename J_SIZE_TYPE,
             typename LEADING_DIMENSION_TYPE>
   class Default_Matrix_Const_View
-      : public Dense_Matrix_Crtp<Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                           J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>
+      : public Dense_Matrix_Crtp<Default_Matrix_Const_View<T,
+                                                           SPECIAL_STRUCTURE,
+                                                           MASK,
+                                                           I_SIZE_TYPE,
+                                                           J_SIZE_TYPE,
+                                                           LEADING_DIMENSION_TYPE>>
   {
-    static_assert(Default_Matrix_Detail::sanity_check_v<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                        J_SIZE_TYPE, LEADING_DIMENSION_TYPE>);
+    static_assert(Default_Matrix_Detail::sanity_check_v<T,
+                                                        SPECIAL_STRUCTURE,
+                                                        MASK,
+                                                        I_SIZE_TYPE,
+                                                        J_SIZE_TYPE,
+                                                        LEADING_DIMENSION_TYPE>);
 
     ///////////
     // Types //
     ///////////
     //
    public:
-    using base_type =
-        Dense_Matrix_Crtp<Default_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK, I_SIZE_TYPE,
-                                                    J_SIZE_TYPE, LEADING_DIMENSION_TYPE>>;
+    using base_type = Dense_Matrix_Crtp<Default_Matrix_Const_View<T,
+                                                                  SPECIAL_STRUCTURE,
+                                                                  MASK,
+                                                                  I_SIZE_TYPE,
+                                                                  J_SIZE_TYPE,
+                                                                  LEADING_DIMENSION_TYPE>>;
 
     using storage_scheme_type = typename base_type::storage_scheme_type;
     using memory_chunk_type   = typename base_type::memory_chunk_type;
@@ -433,7 +498,9 @@ namespace LinearAlgebra
              (base_type::I_size() == base_type::J_size()));
     }
 
-    Default_Matrix_Const_View(const T* data, const I_SIZE_TYPE n, const J_SIZE_TYPE m,
+    Default_Matrix_Const_View(const T* data,
+                              const I_SIZE_TYPE n,
+                              const J_SIZE_TYPE m,
                               const LEADING_DIMENSION_TYPE ld)
         : Default_Matrix_Const_View(storage_scheme_type(n, m, ld), data)
     {

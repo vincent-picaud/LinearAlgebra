@@ -13,11 +13,12 @@ namespace LinearAlgebra
   class Factorization_LLt;
 
   template <typename IMPL>
-  class Factorization_LLt<IMPL, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, IMPL> and
-                                                 ((IMPL::matrix_special_structure_type::value ==
-                                                   Matrix_Special_Structure_Enum::Symmetric) or
-                                                  (IMPL::matrix_special_structure_type::value ==
-                                                   Matrix_Special_Structure_Enum::Hermitian))>>
+  class Factorization_LLt<IMPL,
+                          std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, IMPL> and
+                                           ((IMPL::matrix_special_structure_type::value ==
+                                             Matrix_Special_Structure_Enum::Symmetric) or
+                                            (IMPL::matrix_special_structure_type::value ==
+                                             Matrix_Special_Structure_Enum::Hermitian))>>
   {
     // static_assert(
     //     (IMPL::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::Symmetric) or
@@ -111,8 +112,12 @@ main()
   std::cout << "w:" << std::endl << w << std::endl;
 
   // L*LT
-  int info = Lapack::potrf(Lapack::Lapack_Order_Enum::Column_Major, Lapack::Lapack_UpLo_Enum::Low,
-                           M.I_size(), M.data(), M.leading_dimension());
+  int info = Lapack::potrf(Lapack::Lapack_Order_Enum::Column_Major,
+                           Lapack::Lapack_UpLo_Enum::Low,
+                           M.I_size(),
+                           M.data(),
+                           M.leading_dimension());
+  assert(info == 0);
 
   std::cout << "L:" << std::endl << M << std::endl;
 

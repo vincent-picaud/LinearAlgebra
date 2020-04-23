@@ -16,7 +16,9 @@ namespace LinearAlgebra
   // M0 := α.M1^t.M1 + β.M0
   //
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, Matrix_Unary_Op_Enum OP2_ENUM, typename MATRIX0_IMPL,
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            Matrix_Unary_Op_Enum OP2_ENUM,
+            typename MATRIX0_IMPL,
             typename MATRIX1_IMPL>
   std::enable_if_t<
       // Supported matrix op?
@@ -38,11 +40,18 @@ namespace LinearAlgebra
        Matrix_Special_Structure_Enum::Symmetric) &&
       (MATRIX1_IMPL::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::None)>
   assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
-         Dense_Matrix_Crtp<MATRIX0_IMPL>& matrix0, const _plus_t_, const _product_t_,
-         const _product_t_, const Common_Element_Type_t<MATRIX0_IMPL, MATRIX1_IMPL>& alpha,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const _matrix_unary_op_t_<OP2_ENUM> op2, const _rhs_1_t_, const _product_t_,
-         const Common_Element_Type_t<MATRIX0_IMPL, MATRIX1_IMPL>& beta, const _lhs_t_)
+         Dense_Matrix_Crtp<MATRIX0_IMPL>& matrix0,
+         const _plus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Common_Element_Type_t<MATRIX0_IMPL, MATRIX1_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const _matrix_unary_op_t_<OP2_ENUM> op2,
+         const _rhs_1_t_,
+         const _product_t_,
+         const Common_Element_Type_t<MATRIX0_IMPL, MATRIX1_IMPL>& beta,
+         const _lhs_t_)
 
   {
     assert(are_not_aliased_p(matrix0.impl(), matrix1.impl()));
@@ -71,9 +80,17 @@ namespace LinearAlgebra
       Trans = Blas::To_CBlas_Transpose_v<Matrix_Unary_Op_Enum::Transpose>;
     }
 
-    Blas::syrk(CblasColMajor, Blas::To_CBlas_UpLo_v<MATRIX0_IMPL::matrix_storage_mask_type::value>,
-               Trans, matrix0.I_size(), K, alpha, matrix1.data(), matrix1.leading_dimension(), beta,
-               matrix0.data(), matrix0.leading_dimension());
+    Blas::syrk(CblasColMajor,
+               Blas::To_CBlas_UpLo_v<MATRIX0_IMPL::matrix_storage_mask_type::value>,
+               Trans,
+               matrix0.I_size(),
+               K,
+               alpha,
+               matrix1.data(),
+               matrix1.leading_dimension(),
+               beta,
+               matrix0.data(),
+               matrix0.leading_dimension());
   }
 
 #endif

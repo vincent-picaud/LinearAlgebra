@@ -47,7 +47,8 @@ namespace LinearAlgebra
 
   template <template <typename> class CRTP_INTERFACE, typename OBJ>
   struct Is_Crtp_Interface_Of<
-      CRTP_INTERFACE, OBJ,
+      CRTP_INTERFACE,
+      OBJ,
       std::enable_if_t<std::is_same_v<CRTP_INTERFACE<Crtp_Final_Impl>, OBJ> ||
                        std::is_base_of_v<CRTP_INTERFACE<typename OBJ::exact_type>, OBJ>>>
       : std::true_type

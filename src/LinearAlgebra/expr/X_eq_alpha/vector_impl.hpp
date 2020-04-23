@@ -18,7 +18,8 @@ namespace LinearAlgebra
   //
   template <typename V0_IMPL, typename ALPHA_IMPL>
   void
-  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, Dense_Vector_Crtp<V0_IMPL>& V0,
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
+         Dense_Vector_Crtp<V0_IMPL>& V0,
          const Scalar_Crtp<ALPHA_IMPL>& alpha)
   {
     assign_helper(V0, alpha);
@@ -39,7 +40,8 @@ namespace LinearAlgebra
   //
   template <typename V0_IMPL, typename ALPHA_IMPL>
   std::enable_if_t<Any_Has_Static_Dimension_v<V0_IMPL, ALPHA_IMPL>>
-  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, Dense_Vector_Crtp<V0_IMPL>& V0,
+  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,
+         Dense_Vector_Crtp<V0_IMPL>& V0,
          const Scalar_Crtp<ALPHA_IMPL>& alpha)
   {
     assign_helper(V0, alpha);

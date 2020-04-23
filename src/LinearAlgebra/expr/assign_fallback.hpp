@@ -20,7 +20,8 @@ namespace LinearAlgebra
 
   template <typename DEST_IMPL, typename... ARG_IMPL>
   void
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected, Crtp<DEST_IMPL>&,
+  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
+         Crtp<DEST_IMPL>&,
          const Crtp<ARG_IMPL>&...)
   {
     static_assert(Always_False_v<DEST_IMPL>, "Known Pattern, Unknown specialization ");

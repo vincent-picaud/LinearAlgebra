@@ -26,8 +26,11 @@ main()
 
   // Low level call of lapack: L*L^t decomposition
   //
-  int info = Lapack::potrf(Lapack::Lapack_Order_Enum::Column_Major, Lapack::Lapack_UpLo_Enum::Low,
-                           M.I_size(), M.data(), M.leading_dimension());
+  int info = Lapack::potrf(Lapack::Lapack_Order_Enum::Column_Major,
+                           Lapack::Lapack_UpLo_Enum::Low,
+                           M.I_size(),
+                           M.data(),
+                           M.leading_dimension());
   assert(info == 0);
 
   auto L = create_matrix_view_lower_triangular(M.as_const());

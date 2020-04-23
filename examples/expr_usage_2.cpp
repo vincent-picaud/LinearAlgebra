@@ -29,8 +29,17 @@ main()
 
 #if (HAS_BLAS)
   //assign(y,  0, _lhs_, _plus_, Scalar_CRef<T>(2), _identity_, M, x);
-  assign(y, _plus_, _product_, _product_, Scalar_CRef<T>(2), _identity_, M, x, _product_,
-         Scalar_CRef<T>(0), _lhs_);
+  assign(y,
+         _plus_,
+         _product_,
+         _product_,
+         Scalar_CRef<T>(2),
+         _identity_,
+         M,
+         x,
+         _product_,
+         Scalar_CRef<T>(0),
+         _lhs_);
 #else
   assert(0 && "Not implemented yet");
 #endif

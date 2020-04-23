@@ -19,7 +19,8 @@ namespace LinearAlgebra
   //
   template <typename X0_TYPE, typename X1_TYPE>
   void
-  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected, Dense_Matrix_Crtp<X0_TYPE>& X0,
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
+         Dense_Matrix_Crtp<X0_TYPE>& X0,
          const Dense_Matrix_Crtp<X1_TYPE>& X1)
   {
     assign_helper(X0, X1);
@@ -42,7 +43,8 @@ namespace LinearAlgebra
   //
   template <typename X0_TYPE, typename X1_TYPE>
   std::enable_if_t<Any_Has_Static_Dimension_v<X0_TYPE, X1_TYPE>>
-  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected, Dense_Matrix_Crtp<X0_TYPE>& X0,
+  assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,
+         Dense_Matrix_Crtp<X0_TYPE>& X0,
          const Dense_Matrix_Crtp<X1_TYPE>& X1)
   {
     assign_helper(X0, X1);

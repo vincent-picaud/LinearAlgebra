@@ -20,7 +20,8 @@ namespace LinearAlgebra
   //
   template <typename T, typename IMPL, typename... IMPL_OPTIONAL>
   auto
-  create_default_storable(const Type<T>, const Dense_Vector_Crtp<IMPL>& vector,
+  create_default_storable(const Type<T>,
+                          const Dense_Vector_Crtp<IMPL>& vector,
                           const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
     assert(are_compatible_p(vector.impl(), vector_optional.impl()...));
@@ -39,7 +40,7 @@ namespace LinearAlgebra
   create_default_storable(const Dense_Vector_Crtp<IMPL>& vector,
                           const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
-    return create_default_storable(Type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, vector,
-                                   vector_optional...);
+    return create_default_storable(
+        Type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, vector, vector_optional...);
   }
 }

@@ -74,13 +74,15 @@ TEST(Vector, view_constness)
   //       with only one "const" which is less versatile but simpler
   //       to implement)
   //
-  const Default_Vector_View<int, std::integral_constant<size_t, 3>,
+  const Default_Vector_View<int,
+                            std::integral_constant<size_t, 3>,
                             std::integral_constant<size_t, 2>>
       c_v(data);
 
   EXPECT_TRUE(std::is_const_v<std::remove_reference_t<decltype(c_v[0])>>);
 
-  Default_Vector_Const_View<int, std::integral_constant<size_t, 3>,
+  Default_Vector_Const_View<int,
+                            std::integral_constant<size_t, 3>,
                             std::integral_constant<size_t, 2>>
       c_cv(data);
 
@@ -91,7 +93,8 @@ TEST(Vector, view_empty_constructor)
 {
   Generic_Vector_Const_View<int> V1;
   Generic_Vector_View<int> V2;
-  Default_Vector_View<int, std::integral_constant<std::size_t, 4>,
+  Default_Vector_View<int,
+                      std::integral_constant<std::size_t, 4>,
                       std::integral_constant<std::size_t, 4>>
       V3;
 
@@ -102,7 +105,8 @@ TEST(Vector, view_empty_constructor)
 
 TEST(Vector, view_empty_constructor_debug_death)
 {
-  Default_Vector_View<int, std::integral_constant<std::size_t, 4>,
+  Default_Vector_View<int,
+                      std::integral_constant<std::size_t, 4>,
                       std::integral_constant<std::size_t, 4>>
       V;
 

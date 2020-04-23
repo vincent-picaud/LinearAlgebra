@@ -15,10 +15,12 @@ TEST(Matrix_Create_Generic_View, basic)
   // Check that we get the _same_ expected type
   EXPECT_TRUE((std::is_same_v<decltype(M1_generic_view), decltype(M2_generic_view)>));
   EXPECT_TRUE((std::is_same_v<decltype(M1_generic_view),
-                              Generic_Matrix_View<int, Matrix_Special_Structure_Enum::None,
+                              Generic_Matrix_View<int,
+                                                  Matrix_Special_Structure_Enum::None,
                                                   Matrix_Storage_Mask_Enum::None>>));
   EXPECT_TRUE((std::is_same_v<decltype(M2_generic_view),
-                              Generic_Matrix_View<int, Matrix_Special_Structure_Enum::None,
+                              Generic_Matrix_View<int,
+                                                  Matrix_Special_Structure_Enum::None,
                                                   Matrix_Storage_Mask_Enum::None>>));
 
   //================================================================
@@ -34,10 +36,12 @@ TEST(Matrix_Create_Generic_View, basic)
   EXPECT_FALSE((std::is_same_v<decltype(M1_generic_view), decltype(const_M1_generic_view)>));
 
   EXPECT_TRUE((std::is_same_v<decltype(const_M1_generic_view),
-                              Generic_Matrix_Const_View<int, Matrix_Special_Structure_Enum::None,
+                              Generic_Matrix_Const_View<int,
+                                                        Matrix_Special_Structure_Enum::None,
                                                         Matrix_Storage_Mask_Enum::None>>));
   EXPECT_TRUE((std::is_same_v<decltype(const_M2_generic_view),
-                              Generic_Matrix_Const_View<int, Matrix_Special_Structure_Enum::None,
+                              Generic_Matrix_Const_View<int,
+                                                        Matrix_Special_Structure_Enum::None,
                                                         Matrix_Storage_Mask_Enum::None>>));
 
   //================================================================
@@ -67,12 +71,14 @@ TEST(Matrix_Create_Generic_View, test_alias)
 
   auto view_M1 = M1.as_generic_view();
   EXPECT_TRUE((std::is_same_v<decltype(view_M1),
-                              Generic_Matrix_View<int, Matrix_Special_Structure_Enum::None,
+                              Generic_Matrix_View<int,
+                                                  Matrix_Special_Structure_Enum::None,
                                                   Matrix_Storage_Mask_Enum::None>>));
 
   auto const_view_M1 = M1.as_generic_const_view();
   EXPECT_TRUE((std::is_same_v<decltype(const_view_M1),
-                              Generic_Matrix_Const_View<int, Matrix_Special_Structure_Enum::None,
+                              Generic_Matrix_Const_View<int,
+                                                        Matrix_Special_Structure_Enum::None,
                                                         Matrix_Storage_Mask_Enum::None>>));
 }
 
@@ -82,12 +88,13 @@ TEST(Matrix_Create_Generic_View, test_alias_symmetric)
 
   auto view_M1 = M1.as_generic_view();
   EXPECT_TRUE((std::is_same_v<decltype(view_M1),
-                              Generic_Matrix_View<int, Matrix_Special_Structure_Enum::Symmetric,
+                              Generic_Matrix_View<int,
+                                                  Matrix_Special_Structure_Enum::Symmetric,
                                                   Matrix_Storage_Mask_Enum::Lower>>));
 
   auto const_view_M1 = M1.as_generic_const_view();
-  EXPECT_TRUE(
-      (std::is_same_v<decltype(const_view_M1),
-                      Generic_Matrix_Const_View<int, Matrix_Special_Structure_Enum::Symmetric,
-                                                Matrix_Storage_Mask_Enum::Lower>>));
+  EXPECT_TRUE((std::is_same_v<decltype(const_view_M1),
+                              Generic_Matrix_Const_View<int,
+                                                        Matrix_Special_Structure_Enum::Symmetric,
+                                                        Matrix_Storage_Mask_Enum::Lower>>));
 }

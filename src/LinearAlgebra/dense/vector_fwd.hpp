@@ -30,7 +30,8 @@ namespace LinearAlgebra
   //
 
   template <typename T, std::size_t SIZE>
-  using Tiny_Vector = Default_Vector<T, std::integral_constant<std::size_t, SIZE>,
+  using Tiny_Vector = Default_Vector<T,
+                                     std::integral_constant<std::size_t, SIZE>,
                                      std::integral_constant<std::size_t, 1>>;
 
   template <typename T>

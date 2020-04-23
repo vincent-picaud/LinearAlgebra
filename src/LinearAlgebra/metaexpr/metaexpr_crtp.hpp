@@ -140,12 +140,16 @@ namespace LinearAlgebra
 
   namespace Detail
   {
-    template <typename ELEMENT_TYPE, typename BINARY_OPERATOR_TYPE, typename ARG_0_TYPE,
+    template <typename ELEMENT_TYPE,
+              typename BINARY_OPERATOR_TYPE,
+              typename ARG_0_TYPE,
               typename ARG_1_TYPE>
     class MetaExpr_BinaryOp;
   }
 
-  template <typename ELEMENT_TYPE, typename BINARY_OPERATOR_TYPE, typename ARG_0_TYPE,
+  template <typename ELEMENT_TYPE,
+            typename BINARY_OPERATOR_TYPE,
+            typename ARG_0_TYPE,
             typename ARG_1_TYPE>
   struct Crtp_Type_Traits<
       Detail::MetaExpr_BinaryOp<ELEMENT_TYPE, BINARY_OPERATOR_TYPE, ARG_0_TYPE, ARG_1_TYPE>>

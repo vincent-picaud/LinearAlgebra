@@ -31,7 +31,8 @@ namespace LinearAlgebra
     //
     template <Matrix_Storage_Mask_Enum MASK, typename I_INDEX, typename J_INDEX>
     constexpr bool
-    check_index(const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>, const I_INDEX i,
+    check_index(const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
+                const I_INDEX i,
                 const J_INDEX j) noexcept
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<I_INDEX>);
@@ -65,7 +66,8 @@ namespace LinearAlgebra
     inline constexpr void
     loop_over_indices(const LAMBDA& lambda,
                       const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
-                      const I_SIZE I_size, const J_SIZE J_size)
+                      const I_SIZE I_size,
+                      const J_SIZE J_size)
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<I_SIZE>);
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<J_SIZE>);
@@ -108,7 +110,8 @@ namespace LinearAlgebra
     inline constexpr bool
     loop_over_indices_while(const LAMBDA& lambda,
                             const std::integral_constant<Matrix_Storage_Mask_Enum, MASK>,
-                            const I_SIZE I_size, const J_SIZE J_size)
+                            const I_SIZE I_size,
+                            const J_SIZE J_size)
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<I_SIZE>);
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<J_SIZE>);

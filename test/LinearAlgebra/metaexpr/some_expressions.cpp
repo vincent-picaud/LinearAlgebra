@@ -53,8 +53,16 @@ TEST(MetaExpr_Crtp, gemv)
   x = 2;
   y = 3;
   // TODO
-  assign(y, _plus_, _product_, _product_, Scalar_CRef<double>(4), M, x, _product_,
-         Scalar_CRef<double>(2), y);
+  assign(y,
+         _plus_,
+         _product_,
+         _product_,
+         Scalar_CRef<double>(4),
+         M,
+         x,
+         _product_,
+         Scalar_CRef<double>(2),
+         y);
 
   y = 4 * M * x + 2 * y;
   y = 4 * M * x - 2 * y;

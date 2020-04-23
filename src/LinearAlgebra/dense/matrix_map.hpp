@@ -10,7 +10,8 @@ namespace LinearAlgebra
 {
   template <typename LAMBDA, typename IMPL_SRC, typename... IMPL_SRC_OPTIONAL>
   auto
-  map(const LAMBDA& lambda, const Dense_Matrix_Crtp<IMPL_SRC>& matrix_src,
+  map(const LAMBDA& lambda,
+      const Dense_Matrix_Crtp<IMPL_SRC>& matrix_src,
       const Dense_Matrix_Crtp<IMPL_SRC_OPTIONAL>&... matrix_src_optional)
   {
     using matrix_dest_element_type =

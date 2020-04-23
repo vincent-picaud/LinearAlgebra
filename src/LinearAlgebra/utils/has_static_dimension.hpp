@@ -41,7 +41,8 @@ namespace LinearAlgebra
   struct Has_Static_Dimension<IMPL, std::enable_if_t<Is_Crtp_Interface_Of_v<Vector_Crtp, IMPL>>>
       : std::conditional_t<
             Is_Std_Integral_Constant_Of_Type_v<std::size_t, typename IMPL::size_type>,
-            std::true_type, std::false_type>
+            std::true_type,
+            std::false_type>
   {
   };
 
@@ -53,7 +54,8 @@ namespace LinearAlgebra
       : std::conditional_t<
             Is_Std_Integral_Constant_Of_Type_v<std::size_t, typename IMPL::I_size_type> and
                 Is_Std_Integral_Constant_Of_Type_v<std::size_t, typename IMPL::J_size_type>,
-            std::true_type, std::false_type>
+            std::true_type,
+            std::false_type>
   {
   };
 

@@ -13,6 +13,6 @@ enum class A_Enum : int
 TEST(Crtp, trivial)
 {
   A_Enum e = A_Enum::Two;
-  
-  EXPECT_EQ(enum_class_to_value(e),2);
+
+  EXPECT_EQ(enum_class_to_value(e), 2);
 }

@@ -34,7 +34,8 @@ namespace LinearAlgebra
 
     scan([&sum](const auto& v0_component,
                 const auto& v1_component) { sum += squared_norm_2(v0_component - v1_component); },
-         V0.impl(), V1.impl());
+         V0.impl(),
+         V1.impl());
 
     return sum;
   }
@@ -66,9 +67,10 @@ namespace LinearAlgebra
   dist_2(const Expr_Selector<Expr_Selector_Enum::Static>,  //
          const Dense_Vector_Crtp<V0_IMPL>& V0,             //
          const Dense_Vector_Crtp<V1_IMPL>& V1              //
-         ) -> std::enable_if_t<Any_Has_Static_Dimension_v<V0_IMPL, V1_IMPL>,
-                               decltype(dist_2(Expr_Selector<Expr_Selector_Enum::Generic>(),
-                                               V0.impl(), V1.impl()))>
+         )
+      -> std::enable_if_t<
+          Any_Has_Static_Dimension_v<V0_IMPL, V1_IMPL>,
+          decltype(dist_2(Expr_Selector<Expr_Selector_Enum::Generic>(), V0.impl(), V1.impl()))>
 
   {
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Static);
@@ -83,8 +85,8 @@ namespace LinearAlgebra
                  const Dense_Vector_Crtp<V1_IMPL>& V1              //
                  )
       -> std::enable_if_t<Any_Has_Static_Dimension_v<V0_IMPL, V1_IMPL>,
-                          decltype(squared_dist_2(Expr_Selector<Expr_Selector_Enum::Generic>(),
-                                                  V0.impl(), V1.impl()))>
+                          decltype(squared_dist_2(
+                              Expr_Selector<Expr_Selector_Enum::Generic>(), V0.impl(), V1.impl()))>
 
   {
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Static);

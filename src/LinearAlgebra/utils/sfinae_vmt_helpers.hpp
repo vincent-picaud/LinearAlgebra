@@ -24,9 +24,10 @@ namespace LinearAlgebra
   };
 
   template <typename T>
-  struct Is_Full_Matrix<T, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
-                                            (T::matrix_special_structure_type::value ==
-                                             Matrix_Special_Structure_Enum::None)>> : std::true_type
+  struct Is_Full_Matrix<T,
+                        std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                                         (T::matrix_special_structure_type::value ==
+                                          Matrix_Special_Structure_Enum::None)>> : std::true_type
   {
   };
 
@@ -41,9 +42,10 @@ namespace LinearAlgebra
   };
 
   template <typename T>
-  struct Is_Symmetric_Matrix<T, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
-                                                 (T::matrix_special_structure_type::value ==
-                                                  Matrix_Special_Structure_Enum::Symmetric)>>
+  struct Is_Symmetric_Matrix<T,
+                             std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                                              (T::matrix_special_structure_type::value ==
+                                               Matrix_Special_Structure_Enum::Symmetric)>>
       : std::true_type
   {
   };
@@ -59,9 +61,10 @@ namespace LinearAlgebra
   };
 
   template <typename T>
-  struct Is_Hermitian_Matrix<T, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
-                                                 (T::matrix_special_structure_type::value ==
-                                                  Matrix_Special_Structure_Enum::Hermitian)>>
+  struct Is_Hermitian_Matrix<T,
+                             std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                                              (T::matrix_special_structure_type::value ==
+                                               Matrix_Special_Structure_Enum::Hermitian)>>
       : std::true_type
   {
   };
@@ -77,9 +80,10 @@ namespace LinearAlgebra
   };
 
   template <typename T>
-  struct Is_Triangular_Matrix<T, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
-                                                  (T::matrix_special_structure_type::value ==
-                                                   Matrix_Special_Structure_Enum::Triangular)>>
+  struct Is_Triangular_Matrix<T,
+                              std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                                               (T::matrix_special_structure_type::value ==
+                                                Matrix_Special_Structure_Enum::Triangular)>>
       : std::true_type
   {
   };
@@ -96,9 +100,10 @@ namespace LinearAlgebra
 
   template <typename T>
   struct Is_Unit_Triangular_Matrix<
-      T, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
-                          (T::matrix_special_structure_type::value ==
-                           Matrix_Special_Structure_Enum::Unit_Triangular)>> : std::true_type
+      T,
+      std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                       (T::matrix_special_structure_type::value ==
+                        Matrix_Special_Structure_Enum::Unit_Triangular)>> : std::true_type
   {
   };
 

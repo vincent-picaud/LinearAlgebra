@@ -42,8 +42,12 @@ TEST(Matrix, Dynamic)
 
 TEST(Matrix, weird_type)
 {
-  Default_Matrix<int, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None, size_t,
-                 std::integral_constant<size_t, 2>, std::integral_constant<size_t, 5>>
+  Default_Matrix<int,
+                 Matrix_Special_Structure_Enum::None,
+                 Matrix_Storage_Mask_Enum::None,
+                 size_t,
+                 std::integral_constant<size_t, 2>,
+                 std::integral_constant<size_t, 5>>
       m(3, std::integral_constant<size_t, 2>(), std::integral_constant<size_t, 5>());
 
   EXPECT_EQ(m.I_size(), 3);
@@ -57,8 +61,8 @@ TEST(Matrix, Static_View)
 {
   int d[10];
 
-  auto m = create_matrix_view(d, std::integral_constant<std::size_t, 3>(),
-                              std::integral_constant<std::size_t, 2>());
+  auto m = create_matrix_view(
+      d, std::integral_constant<std::size_t, 3>(), std::integral_constant<std::size_t, 2>());
 
   EXPECT_EQ(m.I_size(), 3);
   EXPECT_EQ(m.J_size(), 2);
@@ -131,8 +135,11 @@ TEST(Matrix, move_dynamic_but_static_sizes)
   // CAVEAT: to check move operation one must use a dynamic matrix,
   //         but here we have static size that must prevent from
   //         "moving" the memory chunk
-  Default_Matrix<int, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
-                 std::integral_constant<size_t, 3>, std::integral_constant<size_t, 2>,
+  Default_Matrix<int,
+                 Matrix_Special_Structure_Enum::None,
+                 Matrix_Storage_Mask_Enum::None,
+                 std::integral_constant<size_t, 3>,
+                 std::integral_constant<size_t, 2>,
                  std::integral_constant<size_t, 5>>
       m;
 
@@ -180,12 +187,16 @@ TEST(Matrix, move_dynamic_but_static_sizes)
 
 TEST(Matrix, view_empty_constructor)
 {
-  Generic_Matrix_Const_View<int, Matrix_Special_Structure_Enum::None,
+  Generic_Matrix_Const_View<int,
+                            Matrix_Special_Structure_Enum::None,
                             Matrix_Storage_Mask_Enum::None>
       V1;
   Generic_Matrix_View<int, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None> V2;
-  Default_Matrix_View<int, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
-                      std::integral_constant<size_t, 3>, std::integral_constant<size_t, 2>,
+  Default_Matrix_View<int,
+                      Matrix_Special_Structure_Enum::None,
+                      Matrix_Storage_Mask_Enum::None,
+                      std::integral_constant<size_t, 3>,
+                      std::integral_constant<size_t, 2>,
                       std::integral_constant<size_t, 5>>
       V3;
 
@@ -196,8 +207,11 @@ TEST(Matrix, view_empty_constructor)
 
 TEST(Matrix, view_empty_constructor_debug_death)
 {
-  Default_Matrix_View<int, Matrix_Special_Structure_Enum::None, Matrix_Storage_Mask_Enum::None,
-                      std::integral_constant<size_t, 3>, std::integral_constant<size_t, 2>,
+  Default_Matrix_View<int,
+                      Matrix_Special_Structure_Enum::None,
+                      Matrix_Storage_Mask_Enum::None,
+                      std::integral_constant<size_t, 3>,
+                      std::integral_constant<size_t, 2>,
                       std::integral_constant<size_t, 5>>
       V;
 

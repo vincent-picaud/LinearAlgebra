@@ -41,7 +41,10 @@ using Differentiable_Function_Tn_T =
 //
 // CAVEAT: f_Tn_T is passed by reference (hence take care of dangling reference!)
 //
-template <typename T, typename X0_IMPL, typename DIRECTION_IMPL, typename BUFFER_XN_IMPL,
+template <typename T,
+          typename X0_IMPL,
+          typename DIRECTION_IMPL,
+          typename BUFFER_XN_IMPL,
           typename BUFFER_GRADN_IMPL>
 Differentiable_Function_T_T<T>
 to_line_search_f_Tn_T_by_reference(const Differentiable_Function_Tn_T<T>& f_Tn_T,
@@ -57,10 +60,12 @@ to_line_search_f_Tn_T_by_reference(const Differentiable_Function_Tn_T<T>& f_Tn_T
   // TODO: here, for performance reason, f_Tn_T is taken by reference
   //       maybe define a new "to_line_search" that perform a copy.
   //
-  auto wrap = [&f_Tn_T, _X0 = X0.impl(), _direction = direction.impl(),
+  auto wrap = [&f_Tn_T,
+               _X0           = X0.impl(),
+               _direction    = direction.impl(),
                _buffer_Xn    = std::move(buffer_Xn.impl()),
-               _buffer_gradn = std::move(buffer_gradn.impl())](const T& x, T* y,
-                                                               T* dy) mutable -> void {
+               _buffer_gradn = std::move(buffer_gradn.impl())](
+                  const T& x, T* y, T* dy) mutable -> void {
     if (y or dy)
     {
       _buffer_Xn = _X0 + x * _direction;
@@ -106,7 +111,8 @@ Rosenbrock(const Generic_Vector_Const_View<T>& x, T* y, Generic_Vector_View<T>* 
 auto
 test_wrap(double c)
 {
-  auto wrap_Rosenbrock = [c](const Generic_Vector_Const_View<double>& x, double* y,
+  auto wrap_Rosenbrock = [c](const Generic_Vector_Const_View<double>& x,
+                             double* y,
                              Generic_Vector_View<double>* grad) { Rosenbrock(x, y, grad, c); };
 
   auto f = Differentiable_Function_Tn_T<double>{wrap_Rosenbrock};
@@ -116,9 +122,11 @@ test_wrap(double c)
   // Note: using views avoid copying vectors!
   //
   // auto f_lin = to_line_search(f, X0, direction, std::move(buffer));
-  auto f_lin = to_line_search_f_Tn_T_by_reference(
-      f, create_vector_view(X0), create_vector_view(direction), create_vector_view(buffer_Xn),
-      create_vector_view(buffer_gradn));
+  auto f_lin = to_line_search_f_Tn_T_by_reference(f,
+                                                  create_vector_view(X0),
+                                                  create_vector_view(direction),
+                                                  create_vector_view(buffer_Xn),
+                                                  create_vector_view(buffer_gradn));
 }
 
 // A simple demo function
@@ -155,7 +163,9 @@ show_iteration(size_t iter, T x, T f)
 
 template <typename T>
 bool
-Newton(const std::function<void(const T x, T* f, T* df)>& f_obj, T& x0, double epsilon = 1e-10,
+Newton(const std::function<void(const T x, T* f, T* df)>& f_obj,
+       T& x0,
+       double epsilon  = 1e-10,
        size_t max_iter = 20)
 {
   T f, df;

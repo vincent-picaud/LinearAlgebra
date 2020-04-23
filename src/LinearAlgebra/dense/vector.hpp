@@ -123,8 +123,8 @@ namespace LinearAlgebra
     using storage_scheme_type =
         LinearAlgebra::Default_Vector_Storage_Scheme<SIZE_TYPE,
                                                      INCREMENT_TYPE>;  // <- "CHANGE HERE"
-    using memory_chunk_type = LinearAlgebra::View_Default_Memory_Chunk<
-        T, typename storage_scheme_type::required_capacity_type>;
+    using memory_chunk_type = LinearAlgebra::
+        View_Default_Memory_Chunk<T, typename storage_scheme_type::required_capacity_type>;
 
     using element_type = typename memory_chunk_type::element_type;
 
@@ -211,8 +211,9 @@ namespace LinearAlgebra
     using storage_scheme_type =
         LinearAlgebra::Default_Vector_Storage_Scheme<SIZE_TYPE, INCREMENT_TYPE>;
     using memory_chunk_type = LinearAlgebra::Const_View_Default_Memory_Chunk<
-        T, typename storage_scheme_type::
-               required_capacity_type>;  // <- "CHANGE HERE" View -> Const_View
+        T,
+        typename storage_scheme_type::
+            required_capacity_type>;  // <- "CHANGE HERE" View -> Const_View
 
     using element_type = typename memory_chunk_type::element_type;
 
@@ -257,7 +258,8 @@ namespace LinearAlgebra
     }
     Default_Vector_Const_View(const T* data)
         : base_type(storage_scheme_type(), data) {}  // <- "CHANGE HERE" T* -> const T*
-    Default_Vector_Const_View(const T* data, const SIZE_TYPE n,
+    Default_Vector_Const_View(const T* data,
+                              const SIZE_TYPE n,
                               const INCREMENT_TYPE inc)  // <- "CHANGE HERE" T* -> const T*
         : base_type(storage_scheme_type(n, inc), data)
     {

@@ -39,8 +39,13 @@ namespace LinearAlgebra
       //
       lapack_int>
   {
-    return Lapack::posv(Lapack::Lapack_Order_Enum::Column_Major, Lapack::To_Lapack_UpLo_v<MA_IMPL>,
-                        A.I_size(), B.J_size(), A.data(), A.leading_dimension(), B.data(),
+    return Lapack::posv(Lapack::Lapack_Order_Enum::Column_Major,
+                        Lapack::To_Lapack_UpLo_v<MA_IMPL>,
+                        A.I_size(),
+                        B.J_size(),
+                        A.data(),
+                        A.leading_dimension(),
+                        B.data(),
                         B.leading_dimension());
   }
 }

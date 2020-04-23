@@ -31,8 +31,9 @@ namespace LinearAlgebra::Blas
   //
   template <typename T>
   struct Is_CBlas_Supported_Complex_Scalar
-      : std::integral_constant<bool, std::is_same_v<std::complex<float>, T> or
-                                         std::is_same_v<std::complex<double>, T>>
+      : std::integral_constant<bool,
+                               std::is_same_v<std::complex<float>, T> or
+                                   std::is_same_v<std::complex<double>, T>>
   {
   };
 
@@ -43,8 +44,9 @@ namespace LinearAlgebra::Blas
   //
   template <typename T>
   struct Is_CBlas_Supported_Scalar
-      : std::integral_constant<bool, Is_CBlas_Supported_Real_Scalar_v<T> or
-                                         Is_CBlas_Supported_Complex_Scalar_v<T>>
+      : std::integral_constant<bool,
+                               Is_CBlas_Supported_Real_Scalar_v<T> or
+                                   Is_CBlas_Supported_Complex_Scalar_v<T>>
   {
   };
 

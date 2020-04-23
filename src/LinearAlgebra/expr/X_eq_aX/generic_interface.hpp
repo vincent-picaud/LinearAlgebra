@@ -33,7 +33,9 @@ namespace LinearAlgebra
   //
   template <typename ALPHA_IMPL, typename X0_IMPL>
   void
-  assign(VMT_Crtp<X0_IMPL>& X0, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
+  assign(VMT_Crtp<X0_IMPL>& X0,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const _lhs_t_)
   {
     if (alpha.value() == 0)
@@ -65,7 +67,9 @@ namespace LinearAlgebra
 
   template <typename ALPHA_IMPL, typename X0_IMPL>
   void
-  assign_helper(VMT_Crtp<X0_IMPL>& X0, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
+  assign_helper(VMT_Crtp<X0_IMPL>& X0,
+                const _product_t_,
+                const Scalar_Crtp<ALPHA_IMPL>& alpha,
                 const _lhs_t_)
   {
     transform([&alpha](const auto X0_component) { return alpha.value() * X0_component; },
@@ -82,7 +86,9 @@ namespace LinearAlgebra
   //
   template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   void
-  assign(VMT_Crtp<X0_IMPL>& X0, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
+  assign(VMT_Crtp<X0_IMPL>& X0,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1)
   {
     assert(dimension_predicate(X0.impl()) == dimension_predicate(X1.impl()));
@@ -122,10 +128,13 @@ namespace LinearAlgebra
 
   template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
   void
-  assign_helper(VMT_Crtp<X0_IMPL>& X0, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
+  assign_helper(VMT_Crtp<X0_IMPL>& X0,
+                const _product_t_,
+                const Scalar_Crtp<ALPHA_IMPL>& alpha,
                 const VMT_Crtp<X1_IMPL>& X1)
   {
-    fill([&alpha](const auto X1_component) { return alpha.value() * X1_component; }, X0.impl(),
+    fill([&alpha](const auto X1_component) { return alpha.value() * X1_component; },
+         X0.impl(),
          X1.impl());
   }
 }

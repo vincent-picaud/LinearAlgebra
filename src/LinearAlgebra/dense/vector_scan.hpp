@@ -14,7 +14,8 @@ namespace LinearAlgebra
   //
   template <typename LAMBDA, typename IMPL, typename... IMPL_OPTIONAL>
   void
-  scan(const LAMBDA& lambda, const Dense_Vector_Crtp<IMPL>& vector,
+  scan(const LAMBDA& lambda,
+       const Dense_Vector_Crtp<IMPL>& vector,
        const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
     assert(are_compatible_p(vector, vector_optional...));
@@ -34,7 +35,8 @@ namespace LinearAlgebra
   //
   template <typename LAMBDA, typename IMPL, typename... IMPL_OPTIONAL>
   void
-  scan_indexed(const LAMBDA& lambda, const Dense_Vector_Crtp<IMPL>& vector,
+  scan_indexed(const LAMBDA& lambda,
+               const Dense_Vector_Crtp<IMPL>& vector,
                const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
     assert(are_compatible_p(vector, vector_optional...));
@@ -57,7 +59,8 @@ namespace LinearAlgebra
   //
   template <typename LAMBDA, typename IMPL, typename... IMPL_OPTIONAL>
   bool
-  scan_while(const LAMBDA& lambda, const Dense_Vector_Crtp<IMPL>& vector,
+  scan_while(const LAMBDA& lambda,
+             const Dense_Vector_Crtp<IMPL>& vector,
              const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
     assert(are_compatible_p(vector, vector_optional...));

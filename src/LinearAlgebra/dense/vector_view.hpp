@@ -55,7 +55,8 @@ namespace LinearAlgebra
     //
     //
     constexpr bool
-    check_size_begin_end_p(const std::size_t size, const std::size_t begin,
+    check_size_begin_end_p(const std::size_t size,
+                           const std::size_t begin,
                            const std::size_t end) noexcept
     {
       bool ok = true;
@@ -113,7 +114,8 @@ namespace LinearAlgebra
     //
     template <typename ELEMENT_TYPE, typename SIZE, typename INCREMENT>
     auto
-    create_vector_view_helper(ELEMENT_TYPE* data, const SIZE size,
+    create_vector_view_helper(ELEMENT_TYPE* data,
+                              const SIZE size,
                               const INCREMENT increment) noexcept
     {
       static_assert(Is_Std_Integral_Constant_Size_Or_Std_Size_v<SIZE>);
@@ -145,8 +147,8 @@ namespace LinearAlgebra
   auto
   create_vector_view(ELEMENT_TYPE* data, const SIZE size, const INCREMENT increment)
   {
-    return Detail::create_vector_view_helper(data, Detail::size_type_normalization(size),
-                                             Detail::size_type_normalization(increment));
+    return Detail::create_vector_view_helper(
+        data, Detail::size_type_normalization(size), Detail::size_type_normalization(increment));
   }
   template <typename ELEMENT_TYPE, typename SIZE>
   auto
@@ -170,12 +172,14 @@ namespace LinearAlgebra
     return Detail::create_vector_view_helper(
         &vector[begin],  // CAVEAT: and not data()+begin
         //                          which does not take into account increment
-        size, vector.increment());
+        size,
+        vector.increment());
   }
   // const version
   template <typename IMPL, typename BEGIN, typename END>
   auto
-  create_vector_view(const Dense_Vector_Crtp<IMPL>& vector, const BEGIN begin,
+  create_vector_view(const Dense_Vector_Crtp<IMPL>& vector,
+                     const BEGIN begin,
                      const END end) noexcept
   {
     assert(Detail::check_size_begin_end_p(vector.size(), begin, end));
@@ -185,7 +189,8 @@ namespace LinearAlgebra
     return Detail::create_vector_view_helper(
         &vector[begin],  // CAVEAT: and not data()+begin
                          //                          which does not take into account increment
-        size, vector.increment());
+        size,
+        vector.increment());
   }
 
   //

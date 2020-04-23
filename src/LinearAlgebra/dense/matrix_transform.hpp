@@ -14,7 +14,8 @@ namespace LinearAlgebra
   //
   template <typename LAMBDA, typename IMPL, typename... IMPL_OPTIONAL>
   void
-  transform(const LAMBDA& lambda, Dense_Matrix_Crtp<IMPL>& matrix,
+  transform(const LAMBDA& lambda,
+            Dense_Matrix_Crtp<IMPL>& matrix,
             const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
     assert(are_compatible_p(matrix, matrix_optional...));
@@ -28,7 +29,8 @@ namespace LinearAlgebra
 
     Detail::loop_over_indices(loop_over_indices_lambda,
                               typename IMPL::storage_scheme_type::matrix_storage_mask_type(),
-                              matrix_dest_I_size, matrix_dest_J_size);
+                              matrix_dest_I_size,
+                              matrix_dest_J_size);
   }
 
   //
@@ -36,7 +38,8 @@ namespace LinearAlgebra
   //
   template <typename LAMBDA, typename IMPL, typename... IMPL_OPTIONAL>
   void
-  transform_indexed(const LAMBDA& lambda, Dense_Matrix_Crtp<IMPL>& matrix,
+  transform_indexed(const LAMBDA& lambda,
+                    Dense_Matrix_Crtp<IMPL>& matrix,
                     const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
     const auto loop_over_indices_lambda = [&](const std::size_t i, const std::size_t j) {
@@ -48,6 +51,7 @@ namespace LinearAlgebra
 
     Detail::loop_over_indices(loop_over_indices_lambda,
                               typename IMPL::storage_scheme_type::matrix_storage_mask_type(),
-                              matrix_dest_I_size, matrix_dest_J_size);
+                              matrix_dest_I_size,
+                              matrix_dest_J_size);
   }
 }

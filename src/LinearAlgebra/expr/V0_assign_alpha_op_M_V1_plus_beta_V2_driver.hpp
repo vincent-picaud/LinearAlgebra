@@ -29,15 +29,25 @@ namespace LinearAlgebra
   // V0 = alpha * transpose(M1) * V1 + beta * V2
   // vector0 = + * * alpha op1 matrix1 vector1 * beta vector2
   //
-  template <typename ALPHA_IMPL, typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM,
-            typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
   assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
-         Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
-         const _product_t_, const Scalar_Crtp<BETA_IMPL>& beta,
+         Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     static_assert(Always_False_v<MATRIX1_IMPL>, "Not implemented");
@@ -49,14 +59,24 @@ namespace LinearAlgebra
   // User interface
   //////////////////////////////////////////////////////////////////
   //
-  template <typename ALPHA_IMPL, typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM,
-            typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
-         const _product_t_, const Scalar_Crtp<BETA_IMPL>& beta,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     // Here is the right place to check dimension once for all.
@@ -73,8 +93,18 @@ namespace LinearAlgebra
       // vector0 = vector2;
       assign(vector0, vector2);
     }
-    assign(Expr_Selector<>(), vector0.impl(), _plus_, _product_, _product_, alpha.impl(), op1,
-           matrix1.impl(), vector1.impl(), _product_, beta.impl(), _lhs_);
+    assign(Expr_Selector<>(),
+           vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           _lhs_);
   }
 
   //////////////////////////////////////////////////////////////////
@@ -126,56 +156,98 @@ namespace LinearAlgebra
   // V0 = M1 * V1 + V2
   // vector0 = + * matrix1 vector1 vector2
   //
-  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = M1 * V1 + beta * V2
   // vector0 = + * matrix1 vector1 * beta vector2
   //
-  template <typename BETA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename BETA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
-         const _product_t_, const Scalar_Crtp<BETA_IMPL>& beta,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = M1 * V1 - V2
   // vector0 = - * matrix1 vector1 vector2
   //
-  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
     assign(
-        vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), _identity_,
-        matrix1.impl(), vector1.impl(), _product_,
+        vector0.impl(),
+        _plus_,
+        _product_,
+        _product_,
+        Scalar_CRef_Type(1),
+        _identity_,
+        matrix1.impl(),
+        vector1.impl(),
+        _product_,
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>(
             -1),
         vector2.impl());
@@ -185,131 +257,238 @@ namespace LinearAlgebra
   // V0 = V2 + M1 * V1
   // vector0 = + vector2 * matrix1 vector1
   //
-  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = V2 + transpose(M1) * V1
   // vector0 = + vector2 * op1 matrix1 vector1
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = V2 + alpha * M1 * V1
   // vector0 = + vector2 * * alpha matrix1 vector1
   //
-  template <typename ALPHA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), _identity_, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = V2 + alpha * transpose(M1) * V1
   // vector0 = + vector2 * * alpha op1 matrix1 vector1
   //
-  template <typename ALPHA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL, typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = V2 - M1 * V1
   // vector0 = - vector2 * matrix1 vector1
   //
-  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = V2 - transpose(M1) * V1
   // vector0 = - vector2 * op1 matrix1 vector1
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = V2 - alpha * M1 * V1
   // vector0 = - vector2 * * alpha matrix1 vector1
   //
-  template <typename ALPHA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-alpha.value()),
-           _identity_, matrix1.impl(), vector1.impl(), _product_, Scalar_CRef_Type(1),
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-alpha.value()),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
            vector2.impl());
   }
 
@@ -317,542 +496,1048 @@ namespace LinearAlgebra
   // V0 = transpose(M1) * V1 + V2
   // vector0 = + * op1 matrix1 vector1 vector2
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = transpose(M1) * V1 + beta * V2
   // vector0 = + * op1 matrix1 vector1 * beta vector2
   //
-  template <typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL, typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename BETA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), op1, matrix1.impl(),
-           vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = transpose(M1) * V1 - V2
   // vector0 = - * op1 matrix1 vector1 vector2
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = alpha * M1 * V1 + beta * V2
   // vector0 = + * * alpha matrix1 vector1 * beta vector2
   //
-  template <typename ALPHA_IMPL, typename BETA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), _identity_, matrix1.impl(),
-           vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = alpha * M1 * V1 - beta * V2
   // vector0 = - * * alpha matrix1 vector1 * beta vector2
   //
-  template <typename ALPHA_IMPL, typename BETA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<ALPHA_IMPL, BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL,
-                                          VECTOR2_IMPL, MATRIX1_IMPL>>;
+    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<ALPHA_IMPL,
+                                                               BETA_IMPL,
+                                                               VECTOR0_IMPL,
+                                                               VECTOR1_IMPL,
+                                                               VECTOR2_IMPL,
+                                                               MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), _identity_, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-beta.value()), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-beta.value()),
+           vector2.impl());
   }
 
   //
   // V0 = alpha * M1 * V1 + V2
   // vector0 = + * * alpha matrix1 vector1 vector2
   //
-  template <typename ALPHA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), _identity_, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = alpha * M1 * V1 - V2
   // vector0 = - * * alpha matrix1 vector1 vector2
   //
-  template <typename ALPHA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), _identity_, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = alpha * transpose(M1) * V1 + V2
   // vector0 = + * * alpha op1 matrix1 vector1 vector2
   //
-  template <typename ALPHA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL, typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = alpha * transpose(M1) * V1 - V2
   // vector0 = - * * alpha op1 matrix1 vector1 vector2
   //
-  template <typename ALPHA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL, typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = beta * V2 + alpha * M1 * V1
   // vector0 = + * beta vector2 * * alpha matrix1 vector1
   //
-  template <typename ALPHA_IMPL, typename BETA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2,
-         const _product_t_, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), _identity_, matrix1.impl(),
-           vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = beta * V2 - alpha * M1 * V1
   // vector0 = - * beta vector2 * * alpha matrix1 vector1
   //
-  template <typename ALPHA_IMPL, typename BETA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2,
-         const _product_t_, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<ALPHA_IMPL, BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL,
-                                          VECTOR2_IMPL, MATRIX1_IMPL>>;
+    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<ALPHA_IMPL,
+                                                               BETA_IMPL,
+                                                               VECTOR0_IMPL,
+                                                               VECTOR1_IMPL,
+                                                               VECTOR2_IMPL,
+                                                               MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-alpha.value()),
-           _identity_, matrix1.impl(), vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-alpha.value()),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = beta * V2 + M1 * V1
   // vector0 = + * beta vector2 * matrix1 vector1
   //
-  template <typename BETA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename BETA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2,
-         const _product_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = beta * V2 + transpose(M1) * V1
   // vector0 = + * beta vector2 * op1 matrix1 vector1
   //
-  template <typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL, typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename BETA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2,
-         const _product_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), op1, matrix1.impl(),
-           vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = beta * V2 + alpha * transpose(M1) * V1
   // vector0 = + * beta vector2 * * alpha op1 matrix1 vector1
   //
-  template <typename ALPHA_IMPL, typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM,
-            typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2,
-         const _product_t_, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), op1, matrix1.impl(),
-           vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = beta * V2 - M1 * V1
   // vector0 = - * beta vector2 * matrix1 vector1
   //
-  template <typename BETA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename BETA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2,
-         const _product_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = beta * V2 - transpose(M1) * V1
   // vector0 = - * beta vector2 * op1 matrix1 vector1
   //
-  template <typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL, typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename BETA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2,
-         const _product_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), op1, matrix1.impl(),
-           vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = beta * V2 - alpha * transpose(M1) * V1
   // vector0 = - * beta vector2 * * alpha op1 matrix1 vector1
   //
-  template <typename ALPHA_IMPL, typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM,
-            typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2,
-         const _product_t_, const _product_t_, const Scalar_Crtp<ALPHA_IMPL>& alpha,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<ALPHA_IMPL, BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL,
-                                          VECTOR2_IMPL, MATRIX1_IMPL>>;
+    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<ALPHA_IMPL,
+                                                               BETA_IMPL,
+                                                               VECTOR0_IMPL,
+                                                               VECTOR1_IMPL,
+                                                               VECTOR2_IMPL,
+                                                               MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-alpha.value()), op1,
-           matrix1.impl(), vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-alpha.value()),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = -M1 * V1 + V2
   // vector0 = + * - matrix1 vector1 vector2
   //
-  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const _unary_minus_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _unary_minus_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = -M1 * V1 + beta * V2
   // vector0 = + * - matrix1 vector1 * beta vector2
   //
-  template <typename BETA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename BETA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const _unary_minus_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _unary_minus_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = -M1 * V1 - V2
   // vector0 = - * - matrix1 vector1 vector2
   //
-  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
-         const _unary_minus_t_, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1, const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const _unary_minus_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = -V2 + M1 * V1
   // vector0 = + - vector2 * matrix1 vector1
   //
-  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _unary_minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = -V2 + transpose(M1) * V1
   // vector0 = + - vector2 * op1 matrix1 vector1
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _unary_minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(1), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = -V2 + alpha * M1 * V1
   // vector0 = + - vector2 * * alpha matrix1 vector1
   //
-  template <typename ALPHA_IMPL, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _unary_minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), _identity_, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = -V2 + alpha * transpose(M1) * V1
   // vector0 = + - vector2 * * alpha op1 matrix1 vector1
   //
-  template <typename ALPHA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL, typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename ALPHA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _unary_minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_, const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<ALPHA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, alpha.impl(), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha.impl(),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = -V2 - M1 * V1
   // vector0 = - - vector2 * matrix1 vector1
   //
-  template <typename VECTOR0_IMPL, typename VECTOR1_IMPL, typename VECTOR2_IMPL,
+  template <typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
             typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _unary_minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1)
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), _identity_,
-           matrix1.impl(), vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           _identity_,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = -V2 - transpose(M1) * V1
   // vector0 = - - vector2 * op1 matrix1 vector1
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _unary_minus_t_,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2, const _product_t_,
-         const _matrix_unary_op_t_<OP1_ENUM> op1, const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _unary_minus_t_,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2,
+         const _product_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
   //
   // V0 = -transpose(M1) * V1 + V2
   // vector0 = + * - op1 matrix1 vector1 vector2
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const _unary_minus_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _unary_minus_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(1),
+           vector2.impl());
   }
 
   //
   // V0 = -transpose(M1) * V1 + beta * V2
   // vector0 = + * - op1 matrix1 vector1 * beta vector2
   //
-  template <typename BETA_IMPL, Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL, typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <typename BETA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _plus_t_, const _product_t_,
-         const _unary_minus_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
-         const _product_t_, const Scalar_Crtp<BETA_IMPL>& beta,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _unary_minus_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type = Scalar_CRef<
         Common_Element_Type_t<BETA_IMPL, VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), op1, matrix1.impl(),
-           vector1.impl(), _product_, beta.impl(), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           beta.impl(),
+           vector2.impl());
   }
 
   //
   // V0 = -transpose(M1) * V1 - V2
   // vector0 = - * - op1 matrix1 vector1 vector2
   //
-  template <Matrix_Unary_Op_Enum OP1_ENUM, typename VECTOR0_IMPL, typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL, typename MATRIX1_IMPL>
+  template <Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename VECTOR2_IMPL,
+            typename MATRIX1_IMPL>
   void
-  assign(Vector_Crtp<VECTOR0_IMPL>& vector0, const _minus_t_, const _product_t_,
-         const _unary_minus_t_, const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1, const Vector_Crtp<VECTOR1_IMPL>& vector1,
+  assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _minus_t_,
+         const _product_t_,
+         const _unary_minus_t_,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
          const Vector_Crtp<VECTOR2_IMPL>& vector2)
   {
     using Scalar_CRef_Type =
         Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>>;
 
-    assign(vector0.impl(), _plus_, _product_, _product_, Scalar_CRef_Type(-1), op1, matrix1.impl(),
-           vector1.impl(), _product_, Scalar_CRef_Type(-1), vector2.impl());
+    assign(vector0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           Scalar_CRef_Type(-1),
+           op1,
+           matrix1.impl(),
+           vector1.impl(),
+           _product_,
+           Scalar_CRef_Type(-1),
+           vector2.impl());
   }
 
 }

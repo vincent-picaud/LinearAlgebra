@@ -10,7 +10,6 @@
 // library... A better place is maybe "lapack_config.hpp"
 namespace LinearAlgebra::Lapack
 {
-
   // Note: we generally use enum CLASS, however here we already are
   // into 2 nested namespaces (LinearAlgebra & Lapack)... this is
   // certainly sufficient to avoid name collision.

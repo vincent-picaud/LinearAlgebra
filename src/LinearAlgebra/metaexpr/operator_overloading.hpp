@@ -46,9 +46,10 @@ namespace LinearAlgebra
   //----------------------------------------------------------------
   //
   template <typename A0_IMPL, typename A1_IMPL>
-  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
-                   Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _product_t_,
-                                             A0_IMPL, A1_IMPL>>
+  std::enable_if_t<
+      Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
+      Detail::
+          MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _product_t_, A0_IMPL, A1_IMPL>>
   operator*(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0.impl(), arg_1.impl()};
@@ -81,8 +82,10 @@ namespace LinearAlgebra
   // Handle expression like: T * Vector<T>
   template <typename A1_IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
-                   Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>, _product_t_,
-                                             Scalar_CRef<Element_Type_t<A1_IMPL>>, A1_IMPL>>
+                   Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>,
+                                             _product_t_,
+                                             Scalar_CRef<Element_Type_t<A1_IMPL>>,
+                                             A1_IMPL>>
   operator*(const Scalar_CRef<Element_Type_t<A1_IMPL>>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0, arg_1.impl()};
@@ -94,7 +97,9 @@ namespace LinearAlgebra
   std::enable_if_t<
       Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
       Detail::MetaExpr_BinaryOp<Common_Element_Type_t<Scalar_CRef<USER_SCALAR>, A1_IMPL>,
-                                _product_t_, Scalar_CRef<USER_SCALAR>, A1_IMPL>>
+                                _product_t_,
+                                Scalar_CRef<USER_SCALAR>,
+                                A1_IMPL>>
   operator*(const Scalar_CRef<USER_SCALAR>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0, arg_1.impl()};
@@ -113,7 +118,9 @@ namespace LinearAlgebra
       Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
       Detail::MetaExpr_BinaryOp<
           Common_Element_Type_t<Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>,
-          _product_t_, Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>>
+          _product_t_,
+          Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>,
+          A1_IMPL>>
   operator*(const Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>& arg_0,
             const Crtp<A1_IMPL>& arg_1)
   {
@@ -126,7 +133,9 @@ namespace LinearAlgebra
       Is_Supported_MetaExpr_Argument_v<A1_IMPL> && Is_Complex_v<Element_Type_t<A1_IMPL>>,
       Detail::MetaExpr_BinaryOp<
           Common_Element_Type_t<Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>, A1_IMPL>,
-          _product_t_, Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>, A1_IMPL>>
+          _product_t_,
+          Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>,
+          A1_IMPL>>
   operator*(const Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>& arg_0,
             const Crtp<A1_IMPL>& arg_1)
   {
@@ -142,9 +151,10 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename A0_IMPL, typename A1_IMPL>
-  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
-                   Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _plus_t_,
-                                             A0_IMPL, A1_IMPL>>
+  std::enable_if_t<
+      Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
+      Detail::
+          MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _plus_t_, A0_IMPL, A1_IMPL>>
   operator+(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0.impl(), arg_1.impl()};
@@ -166,9 +176,10 @@ namespace LinearAlgebra
   //================================================================
   //
   template <typename A0_IMPL, typename A1_IMPL>
-  std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
-                   Detail::MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _minus_t_,
-                                             A0_IMPL, A1_IMPL>>
+  std::enable_if_t<
+      Is_Supported_MetaExpr_Argument_v<A0_IMPL, A1_IMPL>,
+      Detail::
+          MetaExpr_BinaryOp<Common_Element_Type_t<A0_IMPL, A1_IMPL>, _minus_t_, A0_IMPL, A1_IMPL>>
   operator-(const Crtp<A0_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
     return {arg_0.impl(), arg_1.impl()};

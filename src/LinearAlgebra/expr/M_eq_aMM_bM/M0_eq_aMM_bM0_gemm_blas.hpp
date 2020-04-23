@@ -10,8 +10,11 @@
 namespace LinearAlgebra
 {
 #if (HAS_BLAS)
-  template <typename M0_TYPE, Matrix_Unary_Op_Enum OP1_ENUM, typename M1_TYPE,
-            Matrix_Unary_Op_Enum OP2_ENUM, typename M2_TYPE>
+  template <typename M0_TYPE,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename M1_TYPE,
+            Matrix_Unary_Op_Enum OP2_ENUM,
+            typename M2_TYPE>
   std::enable_if_t<
       // Supported matrix op?
       ((OP1_ENUM == Matrix_Unary_Op_Enum::Identity &&

@@ -18,7 +18,8 @@ namespace LinearAlgebra
   struct Matrix_Special_Structure_Imposes_Square_Matrix
       : std::conditional_t<CATEGORY == Matrix_Special_Structure_Enum::Symmetric or
                                CATEGORY == Matrix_Special_Structure_Enum::Hermitian,
-                           std::true_type, std::false_type>
+                           std::true_type,
+                           std::false_type>
   {
   };
 

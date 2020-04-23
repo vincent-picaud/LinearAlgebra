@@ -38,13 +38,15 @@ namespace LinearAlgebra
     {
       scan([&sum](const auto& v0_component,
                   const auto& v1_component) { sum += conjugate(v0_component) * v1_component; },
-           V0, V1);
+           V0,
+           V1);
     }
     else
     {
       scan([&sum](const auto& v0_component,
                   const auto& v1_component) { sum += v0_component * v1_component; },
-           V0, V1);
+           V0,
+           V1);
     }
     return sum;
   }
@@ -79,9 +81,10 @@ namespace LinearAlgebra
   dot(const Expr_Selector<Expr_Selector_Enum::Static>,  //
       const Dense_Vector_Crtp<V0_IMPL>& V0,             //
       const Dense_Vector_Crtp<V1_IMPL>& V1              //
-      ) -> std::enable_if_t<Any_Has_Static_Dimension_v<V0_IMPL, V1_IMPL>,
-                            decltype(dot(Expr_Selector<Expr_Selector_Enum::Generic>(), V0.impl(),
-                                         V1.impl()))>
+      )
+      -> std::enable_if_t<
+          Any_Has_Static_Dimension_v<V0_IMPL, V1_IMPL>,
+          decltype(dot(Expr_Selector<Expr_Selector_Enum::Generic>(), V0.impl(), V1.impl()))>
 
   {
     DEBUG_SET_SELECTED(Expr_Selector_Enum::Static);

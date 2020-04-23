@@ -14,7 +14,8 @@ namespace LinearAlgebra
   //
   template <typename LAMBDA, typename IMPL, typename... IMPL_OPTIONAL>
   void
-  transform(const LAMBDA& lambda, Dense_Vector_Crtp<IMPL>& vector,
+  transform(const LAMBDA& lambda,
+            Dense_Vector_Crtp<IMPL>& vector,
             const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
     assert(are_compatible_p(vector, vector_optional...));
@@ -34,7 +35,8 @@ namespace LinearAlgebra
   //
   template <typename LAMBDA, typename IMPL, typename... IMPL_OPTIONAL>
   void
-  transform_indexed(const LAMBDA& lambda, Dense_Vector_Crtp<IMPL>& vector,
+  transform_indexed(const LAMBDA& lambda,
+                    Dense_Vector_Crtp<IMPL>& vector,
                     const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
     assert(are_compatible_p(vector, vector_optional...));

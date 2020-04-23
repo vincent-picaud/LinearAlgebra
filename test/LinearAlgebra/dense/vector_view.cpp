@@ -26,9 +26,9 @@ TEST(Vector_View, static_of_static)
 {
   Tiny_Vector<int, 10> v;
   v           = 1;
-  auto view_v = create_vector_view(v, std::integral_constant<std::size_t, 1>(),
-                                   std::integral_constant<std::size_t, 3>());
-  view_v      = 2;
+  auto view_v = create_vector_view(
+      v, std::integral_constant<std::size_t, 1>(), std::integral_constant<std::size_t, 3>());
+  view_v = 2;
 
   EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>,
                               typename decltype(view_v)::size_type>));
@@ -44,9 +44,9 @@ TEST(Vector_View, static_of_dynamic)
 {
   Vector<int> v(10);
   v           = 1;
-  auto view_v = create_vector_view(v, std::integral_constant<std::size_t, 1>(),
-                                   std::integral_constant<std::size_t, 3>());
-  view_v      = 2;
+  auto view_v = create_vector_view(
+      v, std::integral_constant<std::size_t, 1>(), std::integral_constant<std::size_t, 3>());
+  view_v = 2;
 
   EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>,
                               typename decltype(view_v)::size_type>));
@@ -63,9 +63,9 @@ TEST(Vector_View, static_of_dynamic_with_stride)
   Default_Vector<int, std::size_t, std::integral_constant<std::size_t, 5>> v(10);
 
   v           = 1;
-  auto view_v = create_vector_view(v, std::integral_constant<std::size_t, 1>(),
-                                   std::integral_constant<std::size_t, 3>());
-  view_v      = 2;
+  auto view_v = create_vector_view(
+      v, std::integral_constant<std::size_t, 1>(), std::integral_constant<std::size_t, 3>());
+  view_v = 2;
 
   EXPECT_TRUE((std::is_same_v<std::integral_constant<std::size_t, 2>,
                               typename decltype(view_v)::size_type>));

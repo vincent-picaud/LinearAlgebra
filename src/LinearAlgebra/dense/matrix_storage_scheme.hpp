@@ -15,7 +15,8 @@ namespace LinearAlgebra
     //
     template <typename N_TYPE, typename M_TYPE, typename LEADING_DIMENSION>
     inline constexpr auto
-    matrix_required_capacity_helper(const N_TYPE n, const M_TYPE m,
+    matrix_required_capacity_helper(const N_TYPE n,
+                                    const M_TYPE m,
                                     const LEADING_DIMENSION ld) noexcept
     {
       return (n == 0 or m == 0) ? 0 : (n - 1) + (m - 1) * ld + 1;
@@ -23,7 +24,8 @@ namespace LinearAlgebra
     template <size_t N, size_t M, size_t LEADING_DIMENSION>
     inline constexpr auto
     matrix_required_capacity_helper(
-        const std::integral_constant<size_t, N>, const std::integral_constant<size_t, M>,
+        const std::integral_constant<size_t, N>,
+        const std::integral_constant<size_t, M>,
         const std::integral_constant<size_t, LEADING_DIMENSION>) noexcept
     {
       return std::integral_constant<size_t,
@@ -68,7 +70,9 @@ namespace LinearAlgebra
 
   // For the moment we restrict our self to Fortan-Blas like scheme
   // (use Column major storage)
-  template <Matrix_Storage_Mask_Enum MASK, typename N_TYPE, typename M_TYPE,
+  template <Matrix_Storage_Mask_Enum MASK,
+            typename N_TYPE,
+            typename M_TYPE,
             typename LEADING_DIMENSION>
   class Default_Matrix_Storage_Scheme
   {
@@ -102,15 +106,16 @@ namespace LinearAlgebra
    public:
     constexpr Default_Matrix_Storage_Scheme() noexcept = default;
 
-    constexpr Default_Matrix_Storage_Scheme(const N_TYPE n, const M_TYPE m,
+    constexpr Default_Matrix_Storage_Scheme(const N_TYPE n,
+                                            const M_TYPE m,
                                             const LEADING_DIMENSION ld) noexcept
         : _I_size(n), _J_size(m), _ld(ld)
     {
       assert(check_invariant());
     }
     constexpr Default_Matrix_Storage_Scheme(const N_TYPE n, const M_TYPE m) noexcept
-        : Default_Matrix_Storage_Scheme(n, m,
-                                        Detail::ld_default_value_helper(n, LEADING_DIMENSION()))
+        : Default_Matrix_Storage_Scheme(
+              n, m, Detail::ld_default_value_helper(n, LEADING_DIMENSION()))
     {
     }
 
@@ -163,9 +168,14 @@ namespace LinearAlgebra
 
   //================================================================
 
-  template <Matrix_Storage_Mask_Enum MASK_0, typename N_0_TYPE, typename M_0_TYPE,
-            typename LEADING_DIMENSION_0, Matrix_Storage_Mask_Enum MASK_1, typename N_1_TYPE,
-            typename M_1_TYPE, typename LEADING_DIMENSION_1>
+  template <Matrix_Storage_Mask_Enum MASK_0,
+            typename N_0_TYPE,
+            typename M_0_TYPE,
+            typename LEADING_DIMENSION_0,
+            Matrix_Storage_Mask_Enum MASK_1,
+            typename N_1_TYPE,
+            typename M_1_TYPE,
+            typename LEADING_DIMENSION_1>
   inline constexpr bool
   are_compatible_p(
       const Default_Matrix_Storage_Scheme<MASK_0, N_0_TYPE, M_0_TYPE, LEADING_DIMENSION_0>&

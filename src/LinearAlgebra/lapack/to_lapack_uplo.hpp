@@ -58,17 +58,18 @@ namespace LinearAlgebra
     //
     template <typename T>
     struct To_Lapack_UpLo<
-        T, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
-			    // NOTE: Is_Complete etc.. is mandatory
-			    //       You can try to comment it and see
-			    //       the result in to_lapack_uplo.cpp
-			    //       file:
-			    //
-			    // The test:
-			    // Is_Complete_v<To_Lapack_UpLo<Matrix<double>>
-			    // does NOT work anymore
-			    //
-                            Is_Complete_v<To_Lapack_UpLo<typename T::matrix_storage_mask_type>>>>
+        T,
+        std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                         // NOTE: Is_Complete etc.. is mandatory
+                         //       You can try to comment it and see
+                         //       the result in to_lapack_uplo.cpp
+                         //       file:
+                         //
+                         // The test:
+                         // Is_Complete_v<To_Lapack_UpLo<Matrix<double>>
+                         // does NOT work anymore
+                         //
+                         Is_Complete_v<To_Lapack_UpLo<typename T::matrix_storage_mask_type>>>>
         : To_Lapack_UpLo<typename T::matrix_storage_mask_type>
     {
     };

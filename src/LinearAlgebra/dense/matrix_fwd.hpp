@@ -221,34 +221,10 @@ namespace LinearAlgebra
                                           std::size_t,
                                           std::size_t>;
 
+  //////////////////////////////////////////////////////////////////
+  // Generic View  + Alias
+  //////////////////////////////////////////////////////////////////
   //
-  //================================================================
-  // Generic View Alias
-  //================================================================
-  //
-  // template <typename ELEMENT_TYPE>
-  // using Generic_Matrix_View =
-  //     Default_Matrix_View<ELEMENT_TYPE, Matrix_Special_Structure_Enum::None,
-  //                         Matrix_Storage_Mask_Enum::None, std::size_t, std::size_t, std::size_t>;
-
-  // template <typename ELEMENT_TYPE>
-  // using Generic_Matrix_Const_View =
-  //     Default_Matrix_Const_View<ELEMENT_TYPE, Matrix_Special_Structure_Enum::None,
-  //                               Matrix_Storage_Mask_Enum::None, std::size_t, std::size_t,
-  //                               std::size_t>;
-
-  // // Symmetric Matrix alias
-  // //
-  // template <typename ELEMENT_TYPE>
-  // using Generic_Symmetric_Matrix_View =
-  //     Default_Matrix_View<ELEMENT_TYPE, Matrix_Special_Structure_Enum::Symmetric,
-  //                         Matrix_Storage_Mask_Enum::Lower, std::size_t, std::size_t, std::size_t>;
-
-  // template <typename ELEMENT_TYPE>
-  // using Generic_Symmetric_Matrix_Const_View =
-  //     Default_Matrix_Const_View<ELEMENT_TYPE, Matrix_Special_Structure_Enum::Symmetric,
-  //                               Matrix_Storage_Mask_Enum::Lower, std::size_t, std::size_t,
-  //                               std::size_t>;
 
   template <typename ELEMENT_TYPE,
             Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
@@ -292,18 +268,19 @@ namespace LinearAlgebra
   //----------------------------------------------------------------
 
   template <typename ELEMENT_TYPE>
-  using Generic_Symmetric_Matrix_View = Default_Matrix_View<ELEMENT_TYPE,
-                                                            Matrix_Special_Structure_Enum::None,
-                                                            Matrix_Storage_Mask_Enum::None,
-                                                            std::size_t,
-                                                            std::size_t,
-                                                            std::size_t>;
+  using Generic_Symmetric_Matrix_View =
+      Default_Matrix_View<ELEMENT_TYPE,
+                          Matrix_Special_Structure_Enum::Symmetric,
+                          Matrix_Storage_Mask_Enum::Lower,
+                          std::size_t,
+                          std::size_t,
+                          std::size_t>;
 
   template <typename ELEMENT_TYPE>
   using Generic_Symmetric_Matrix_Const_View =
       Default_Matrix_Const_View<ELEMENT_TYPE,
-                                Matrix_Special_Structure_Enum::None,
-                                Matrix_Storage_Mask_Enum::None,
+                                Matrix_Special_Structure_Enum::Symmetric,
+                                Matrix_Storage_Mask_Enum::Lower,
                                 std::size_t,
                                 std::size_t,
                                 std::size_t>;

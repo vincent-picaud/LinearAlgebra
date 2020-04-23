@@ -12,8 +12,8 @@
     This is a bad idea as it introduce a asymmetry between View and
     Storable:
     #+BEGIN_SRC cpp 
-    Vector V(V_OTHER);      // <- DEEP copy
-    Vector_View V(V_OTHER); // <- SHARING copy
+Vector V(V_OTHER);      // <- DEEP copy
+Vector_View V(V_OTHER); // <- SHARING copy
     #+END_SRC
 
     WE DO NOT WANT THAT!
@@ -23,7 +23,7 @@
     IMPORTANT ad AD support (in peculiar simplification removing α
     when α==1 is a bad practice if α is AutoDiff. One must introduce special function like
     
-       allowed_simplification(α,value)
+    allowed_simplification(α,value)
     
     that returns false whenever α type is an AutoDiff type
     
@@ -33,7 +33,7 @@
   - [X] Note taken on [2020-04-17 Fri 18:58] \\
     Check include problematic (in CG)
     #+BEGIN_SRC cpp :eval never
-    #include "LinearAlgebra/dense/matrix_fwd.hpp"
+#include "LinearAlgebra/dense/matrix_fwd.hpp"
     #+END_SRC
   - [X] Note taken on [2020-04-17 Fri 00:02] \\
     - URGENT!
@@ -47,7 +47,89 @@
 
 * Some Reminders
 
+  - Note taken on [2020-04-23 Thu 16:40] \\
+    In order to use SFINAE to interface blas/lapack method we introduced Is_Symmetric_Matrix_v
+    
+    Concerning predicate like Is_Symmetric_Matrix:
+    
+    We cannot use something like: (returning a bool instead of std::integral_const<bool,...>
+    
+    #+BEGIN_SRC cpp :eval never
+    template <typename IMPL>
+    constexpr bool
+    is_symmetric_matrix_p(const Dense_Matrix_Crtp<IMPL>&) noexcept
+    {
+      return IMPL::matrix_special_structure_type::value == Matrix_Special_Structure_Enum::Symmetric;
+    }
+    #+END_SRC  
+      
+    Reason:
+    
+    If you want to use it in SFINAE, you cannot do 
+    #+BEGIN_SRC cpp :eval never
+    auto foo(M m) -> enable_if_t<is_symmetric_matrix_p(m)>
+    #+END_SRC
+      
+    A fix is:
+    
+    #+BEGIN_SRC cpp :eval never
+    template <typename IMPL>
+    constexpr std::integral_constant<bool, IMPL::matrix_special_structure_type::value ==
+                                               Matrix_Special_Structure_Enum::Symmetric>
+    is_symmetric_matrix_p(const Dense_Matrix_Crtp<IMPL>&) noexcept
+    {
+      return {};
+    }
+    #+END_SRC 
+    
+    then
+    
+    #+BEGIN_SRC cpp :eval never
+    auto foo(M m) -> enable_if_t<decltype(is_symmetric_matrix_p(m))::value>
+    #+END_SRC
+    
+    That works, but that's not a nice syntax
+    
+    One can define 
+    #+BEGIN_SRC cpp :eval never
+    template <typename T>
+    struct Is_Symmetric_Matrix : decltype(is_symmetric_matrix_p(std::declval<T>()))
+    {
+    };
+    
+    template <typename T>
+    constexpr bool Is_Symmetric_Matrix_v = Is_Symmetric_Matrix<T>::value;
+    #+END_SRC
+    
+    then
+    
+    #+BEGIN_SRC cpp :eval never
+    auto foo(M m) -> enable_if_t<Is_Symmetric_Matrix_v<M>>
+    #+END_SRC
+
+    However as we finally end up with a struct "Is_Symmetric_Matrix"
+    it it SHORTED to directly define it:
+#+BEGIN_SRC cpp :eval never
+template <typename T, typename ENABLE = void>
+struct Is_Symmetric_Matrix : std::false_type
+{
+};
+
+template <typename T>
+struct Is_Symmetric_Matrix<T, std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                                               (T::matrix_special_structure_type::value ==
+                                                Matrix_Special_Structure_Enum::Symmetric)>>
+    : std::true_type
+{
+};
+
+template <typename T>
+constexpr bool Is_Symmetric_Matrix_v = Is_Symmetric_Matrix<T>::value;
+#+END_SRC
+
+
   - Note taken on [2020-04-23 Thu 15:17] \\
+    *IMPORTANT*
     A SFINAE example that may be useful when wrapping blas...
     as it avoid usage of Is_Supported_Scalar etc...
 
@@ -105,7 +187,7 @@ struct B : A<T>
 template <typename T>
 auto
 test(const B<T>& b)
-    -> std::enable_if_t<Always_True_v<decltype(foo(b.x))> && true /* <- extra constraints */>
+  -> std::enable_if_t<Always_True_v<decltype(foo(b.x))> && true /* <- extra constraints */>
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
@@ -152,7 +234,7 @@ main()
     meson + valgrind:
     
     #+BEGIN_SRC sh :eval never
-    meson test --wrap='valgrind --leak-check=full --error-exitcode=1' 
+meson test --wrap='valgrind --leak-check=full --error-exitcode=1' 
     #+END_SRC
     
     Also see:
@@ -160,28 +242,28 @@ main()
   - Note taken on [2020-04-15 Wed 22:04] \\
     I just fixed a *bug* by replacing:
     
-    #+BEGIN_SRC cpp
-    Common_Element_Type_t<V0_IMPL, V1_IMPL> sum{};  // <--
+    #+BEGIN_SRC cpp :eval never
+Common_Element_Type_t<V0_IMPL, V1_IMPL> sum{};  // <--
     
-    if constexpr (Is_Complex_v<Element_Type_t<V0_IMPL>>)
-    {
-      scan([&sum](const auto& v0_component,
-                  const auto& v1_component) { sum += conjugate(v0_component) * v1_component; },
-           V0, V1);
+if constexpr (Is_Complex_v<Element_Type_t<V0_IMPL>>)
+{
+  scan([&sum](const auto& v0_component,
+	      const auto& v1_component) { sum += conjugate(v0_component) * v1_component; },
+       V0, V1);
     }
     #+END_SRC
     
     by
     
-    #+BEGIN_SRC cpp
-    Common_Element_Type_t<V0_IMPL, V1_IMPL> sum;  // <--
-    sum = 0;                                      // <--
+    #+BEGIN_SRC cpp :eval never
+Common_Element_Type_t<V0_IMPL, V1_IMPL> sum;  // <--
+sum = 0;                                      // <--
     
-    if constexpr (Is_Complex_v<Element_Type_t<V0_IMPL>>)
-    {
-      scan([&sum](const auto& v0_component,
-                  const auto& v1_component) { sum += conjugate(v0_component) * v1_component; },
-           V0, V1);
+if constexpr (Is_Complex_v<Element_Type_t<V0_IMPL>>)
+{
+  scan([&sum](const auto& v0_component,
+	      const auto& v1_component) { sum += conjugate(v0_component) * v1_component; },
+       V0, V1);
     }
     #+END_SRC
     

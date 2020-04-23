@@ -47,6 +47,107 @@
 
 * Some Reminders
 
+  - Note taken on [2020-04-23 Thu 15:17] \\
+    A SFINAE example that may be useful when wrapping blas...
+    as it avoid usage of Is_Supported_Scalar etc...
+
+    #+BEGIN_SRC cpp :wrap "EXAMPLE" :results raw :eval no-export :flags "-std=c++17" :main no
+#include <iostream>
+#include <type_traits>
+
+template <typename... T>
+struct Always_True : std::true_type
+{
+};
+
+template <typename... T>
+inline constexpr bool Always_True_v = Always_True<T...>::value;
+
+template <typename... T>
+struct Always_False : std::false_type
+{
+};
+
+template <typename... T>
+inline constexpr bool Always_False_v = Always_False<T...>::value;
+
+void
+foo(double x)
+{
+}
+void
+foo(float x)
+{
+}
+
+template <typename T>
+struct A
+{
+  T x;
+};
+
+template <typename T>
+struct B : A<T>
+{
+};
+
+// Works, however we cannot add extra constraints
+//
+// template <typename T>
+// auto
+// test(const B<T>& b) -> decltype(foo(b.x))
+// {
+//   std::cout << __PRETTY_FUNCTION__ << std::endl;
+// }
+
+// Alternative
+//
+template <typename T>
+auto
+test(const B<T>& b)
+    -> std::enable_if_t<Always_True_v<decltype(foo(b.x))> && true /* <- extra constraints */>
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
+
+template <typename T>
+void
+test(const A<T>& a)
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
+
+int
+main()
+{
+  {
+    B<double> b;
+    test(b);
+  }
+  {
+    B<float> b;
+    test(b);
+  }
+
+  {
+    B<int> b;
+    test(b);
+  }
+  {
+    B<A<int>> b;
+    test(b);
+  }
+}
+    #+END_SRC
+
+    #+RESULTS:
+    #+BEGIN_EXAMPLE
+    std::enable_if_t<(Always_True_v<decltype (foo(b.x))> && true)> test(const B<T>&) [with T = double; std::enable_if_t<(Always_True_v<decltype (foo(b.x))> && true)> = void]
+    std::enable_if_t<(Always_True_v<decltype (foo(b.x))> && true)> test(const B<T>&) [with T = float; std::enable_if_t<(Always_True_v<decltype (foo(b.x))> && true)> = void]
+    void test(const A<T>&) [with T = int]
+    void test(const A<T>&) [with T = A<int>]
+    #+END_EXAMPLE
+
   - Note taken on [2020-04-21 Tue 12:25] \\
     meson + valgrind:
     

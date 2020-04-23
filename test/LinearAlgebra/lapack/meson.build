@@ -2,6 +2,7 @@ test_array = [
     'cholesky',
     'is_lapack_supported_scalar',
     'to_lapack_uplo',
+    'posv',
   ]
 
 foreach test : test_array

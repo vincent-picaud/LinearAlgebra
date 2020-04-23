@@ -26,7 +26,7 @@
 
 namespace LinearAlgebra::Lapack
 {
-  // potrf (Cholesky)
+  // potrf L.L^H or U^H.U Cholesky Factorization
   //================================================================
   //
   lapack_int
@@ -53,4 +53,38 @@ namespace LinearAlgebra::Lapack
   {
     return LAPACKE_zpotrf2(matrix_layout, uplo, n, a, lda);
   }
+
+  // potrs solve linear system from portf result
+  //
+  // CAVEAT: if rhs is a vector, its inc must be =1 
+  //================================================================
+  //
+
+  lapack_int
+  potrf(const Lapack_Order_Enum matrix_layout, const Lapack_UpLo_Enum uplo, const std::size_t n,
+        const std::size_t nrhs, float* a, const std::size_t lda, float* b, const std::size_t ldb)
+  {
+    return LAPACKE_spotrs(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
+  };
+  lapack_int
+  potrf(const Lapack_Order_Enum matrix_layout, const Lapack_UpLo_Enum uplo, const std::size_t n,
+        const std::size_t nrhs, double* a, const std::size_t lda, double* b, const std::size_t ldb)
+  {
+    return LAPACKE_dpotrs(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
+  };
+
+  lapack_int
+  potrf(const Lapack_Order_Enum matrix_layout, const Lapack_UpLo_Enum uplo, const std::size_t n,
+        const std::size_t nrhs, std::complex<float>* a, const std::size_t lda, std::complex<float>* b, const std::size_t ldb)
+  {
+    return LAPACKE_cpotrs(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
+  };
+
+  lapack_int
+  potrf(const Lapack_Order_Enum matrix_layout, const Lapack_UpLo_Enum uplo, const std::size_t n,
+        const std::size_t nrhs, std::complex<double>* a, const std::size_t lda, std::complex<double>* b, const std::size_t ldb)
+  {
+    return LAPACKE_zpotrs(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
+  };
+
 }

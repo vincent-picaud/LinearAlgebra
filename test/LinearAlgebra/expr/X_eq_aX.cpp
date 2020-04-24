@@ -128,3 +128,29 @@ TEST(X0_Eq_AX1, matrix)
   EXPECT_EQ(w(1, 0), 3 * 3 * 2);
   EXPECT_EQ(w(2, 0), 3 * 3 * 3);
 }
+
+TEST(X0_Eq_AX1, unary_minus)
+{
+  Vector<double> v(3), w(3);
+  v[0] = 1;
+  v[1] = 2;
+  v[2] = 3;
+
+  DEBUG_RESET_SELECTED();
+  assign(w, _unary_minus_, w);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
+                  (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
+}
+
+TEST(X0_Eq_AX1, double_use_blas)
+{
+  Vector<double> v(3), w(3);
+  v[0] = 1;
+  v[1] = 2;
+  v[2] = 3;
+
+  DEBUG_RESET_SELECTED();
+  assign(w, _product_, Scalar_CRef<double>(2), w);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
+                  (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
+}

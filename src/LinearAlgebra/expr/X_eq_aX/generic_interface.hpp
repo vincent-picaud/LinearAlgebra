@@ -118,8 +118,14 @@ namespace LinearAlgebra
   // Alias
   //================================================================
   //
-  // Not needed for this simple expression
+  // One alias: v = - w : unary_minus
   //
+  template <typename X0_IMPL, typename X1_IMPL>
+  void
+  assign(VMT_Crtp<X0_IMPL>& X0, const _unary_minus_t_, const VMT_Crtp<X1_IMPL>& X1)
+  {
+    assign(X0.impl(), _product_, Scalar_CRef<int>(-1), X1);
+  }
 
   //================================================================
   // Generic implementation that uses the VMT type
@@ -137,4 +143,4 @@ namespace LinearAlgebra
          X0.impl(),
          X1.impl());
   }
-}
+}  // namespace LinearAlgebra

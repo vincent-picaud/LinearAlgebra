@@ -1,8 +1,7 @@
 //
-// Create an uninitialized mutable array with the given element type
-// and size, based upon the given source array.
-//
-// Usage example: temporary creation
+// Define:
+// - similar
+// - copy
 //
 #pragma once
 
@@ -14,6 +13,11 @@
 
 namespace LinearAlgebra
 {
+  //////////////////////////////////////////////////////////////////
+  // Similar
+  //////////////////////////////////////////////////////////////////
+  //
+
   // Create default a storable vector from vector
   //
   // If IMPL_OPTIONAL is not empty, checks that all these vectors have
@@ -42,6 +46,30 @@ namespace LinearAlgebra
           const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
   {
     return similar(
+        Type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, vector, vector_optional...);
+  }
+
+  //////////////////////////////////////////////////////////////////
+  // Copy
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename T, typename IMPL, typename... IMPL_OPTIONAL>
+  auto
+  copy(const Type<T>,
+          const Dense_Vector_Crtp<IMPL>& vector,
+          const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
+  {
+    auto cpy = similar(Type_v<T>,vector,vector_optional...);
+    cpy=vector;
+    return cpy;
+  }
+
+  template <typename IMPL, typename... IMPL_OPTIONAL>
+  auto
+  copy(const Dense_Vector_Crtp<IMPL>& vector,
+          const Dense_Vector_Crtp<IMPL_OPTIONAL>&... vector_optional)
+  {
+    return copy(
         Type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, vector, vector_optional...);
   }
 }  // namespace LinearAlgebra

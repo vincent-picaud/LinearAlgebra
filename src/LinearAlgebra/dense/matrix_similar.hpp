@@ -1,7 +1,7 @@
 //
-// Create default storable matrix
-//
-// Usage example: temporary creation
+// Define:
+// - similar
+// - copy
 //
 #pragma once
 
@@ -14,6 +14,11 @@
 
 namespace LinearAlgebra
 {
+  //////////////////////////////////////////////////////////////////
+  // Similar
+  //////////////////////////////////////////////////////////////////
+  //
+
   // Create default a storable matrix from matrix
   //
   // If IMPL_OPTIONAL is not empty, checks that all these matrixs have
@@ -24,8 +29,8 @@ namespace LinearAlgebra
   template <typename T, typename IMPL, typename... IMPL_OPTIONAL>
   auto
   similar(const Type<T>,
-                          const Dense_Matrix_Crtp<IMPL>& matrix,
-                          const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
+          const Dense_Matrix_Crtp<IMPL>& matrix,
+          const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
     assert(are_compatible_p(matrix.impl(), matrix_optional.impl()...));
 
@@ -46,8 +51,32 @@ namespace LinearAlgebra
   template <typename IMPL, typename... IMPL_OPTIONAL>
   auto
   similar_matrix(const Dense_Matrix_Crtp<IMPL>& matrix,
-                                 const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
+                 const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
     return similar(Type_v<typename IMPL::element_type>, matrix, matrix_optional...);
   }
-}
+
+  //////////////////////////////////////////////////////////////////
+  // Copy
+  //////////////////////////////////////////////////////////////////
+  //
+  template <typename T, typename IMPL, typename... IMPL_OPTIONAL>
+  auto
+  copy(const Type<T>,
+       const Dense_Matrix_Crtp<IMPL>& matrix,
+       const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
+  {
+    auto cpy = similar(Type_v<T>, matrix, matrix_optional...);
+    cpy      = matrix;
+    return cpy;
+  }
+
+  template <typename IMPL, typename... IMPL_OPTIONAL>
+  auto
+  copy(const Dense_Matrix_Crtp<IMPL>& matrix,
+          const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
+  {
+    return copy(
+        Type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, matrix, matrix_optional...);
+  }
+}  // namespace LinearAlgebra

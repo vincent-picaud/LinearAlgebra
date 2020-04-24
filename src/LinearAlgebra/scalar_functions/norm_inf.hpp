@@ -63,19 +63,21 @@ namespace LinearAlgebra
   //  Generic
   //================================================================
   //
-
-  template <typename IMPL>
-  auto
-  norm_inf_helper(const VMT_Crtp<IMPL>& VMT)
-
+  namespace Detail
   {
-    using std::max;
+    template <typename IMPL>
+    auto
+    norm_inf_helper(const VMT_Crtp<IMPL>& VMT)
 
-    decltype(norm_inf(std::declval<Element_Type_t<IMPL>>())) value;
-    value = std::numeric_limits<decltype(value)>::lowest();
+    {
+      using std::max;
 
-    scan([&value](const auto& c) { value = max(value, norm_inf(c)); }, VMT.impl());
+      decltype(norm_inf(std::declval<Element_Type_t<IMPL>>())) value;
+      value = std::numeric_limits<decltype(value)>::lowest();
 
-    return value;
+      scan([&value](const auto& c) { value = max(value, norm_inf(c)); }, VMT.impl());
+
+      return value;
+    }
   }
 }

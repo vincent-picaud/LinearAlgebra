@@ -12,9 +12,11 @@ TEST(norm_inf, vector_blas)
   V = 2;
   DEBUG_RESET_SELECTED();
   ASSERT_DOUBLE_EQ(norm_inf(V), 2);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
-                  (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
 
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+
+  // DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
+  //                 (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
 }
 
 TEST(norm_inf, vector_blas_complex)
@@ -25,7 +27,9 @@ TEST(norm_inf, vector_blas_complex)
   DEBUG_RESET_SELECTED();
 
   ASSERT_FLOAT_EQ(norm_inf(V), 2);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
-                  (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
-}
 
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Generic);
+
+  // DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
+  //                (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
+}

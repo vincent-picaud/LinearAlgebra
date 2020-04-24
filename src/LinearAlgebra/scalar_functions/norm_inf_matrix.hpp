@@ -2,7 +2,7 @@
 
 #include "LinearAlgebra/scalar_functions/norm_inf.hpp"
 
-#include "LinearAlgebra/dense/vector_scan.hpp"
+#include "LinearAlgebra/dense/matrix_scan.hpp"
 #include "LinearAlgebra/expr/expr_debug.hpp"
 
 namespace LinearAlgebra
@@ -20,7 +20,7 @@ namespace LinearAlgebra
   template <typename IMPL>
   auto
   norm_inf(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
-           const Dense_Vector_Crtp<IMPL>& VMT)
+           const Dense_Matrix_Crtp<IMPL>& VMT)
   {
     DEBUG_SET_SELECTED(selected);
 

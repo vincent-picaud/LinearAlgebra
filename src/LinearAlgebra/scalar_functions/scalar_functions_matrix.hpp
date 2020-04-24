@@ -1,5 +1,5 @@
 #pragma once
 
-// Nothing for the moment
-//
 // TODO: trace etc...
+
+#include "LinearAlgebra/scalar_functions/norm_inf_matrix.hpp"

@@ -20,12 +20,12 @@ namespace LinearAlgebra
   //----------------------------------------------------------------
 
   template <typename T, typename ENABLE = void>
-  struct Is_Matrix_Stored_Upper : std::false_type
+  struct Is_Upper_Matrix_Storage : std::false_type
   {
   };
 
   template <typename T>
-  struct Is_Matrix_Stored_Upper<
+  struct Is_Upper_Matrix_Storage<
       T,
       std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
                        (T::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)>>
@@ -33,15 +33,18 @@ namespace LinearAlgebra
   {
   };
 
+  template <typename T>
+  constexpr bool Is_Upper_Matrix_Storage_v = Is_Upper_Matrix_Storage<T>::value;
+
   //----------------------------------------------------------------
 
   template <typename T, typename ENABLE = void>
-  struct Is_Matrix_Stored_Upper_Strict : std::false_type
+  struct Is_Upper_Strict_Matrix_Storage : std::false_type
   {
   };
 
   template <typename T>
-  struct Is_Matrix_Stored_Upper_Strict<
+  struct Is_Upper_Strict_Matrix_Storage<
       T,
       std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
                        (T::matrix_storage_mask_type::value ==
@@ -49,15 +52,18 @@ namespace LinearAlgebra
   {
   };
 
+  template <typename T>
+  constexpr bool Is_Upper_Strict_Matrix_Storage_v = Is_Upper_Strict_Matrix_Storage<T>::value;
+
   //----------------------------------------------------------------
 
   template <typename T, typename ENABLE = void>
-  struct Is_Matrix_Stored_Lower : std::false_type
+  struct Is_Lower_Matrix_Storage : std::false_type
   {
   };
 
   template <typename T>
-  struct Is_Matrix_Stored_Lower<
+  struct Is_Lower_Matrix_Storage<
       T,
       std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
                        (T::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower)>>
@@ -65,21 +71,27 @@ namespace LinearAlgebra
   {
   };
 
+  template <typename T>
+  constexpr bool Is_Lower_Matrix_Storage_v = Is_Lower_Matrix_Storage<T>::value;
+
   //----------------------------------------------------------------
 
   template <typename T, typename ENABLE = void>
-  struct Is_Matrix_Stored_Lower_Strict : std::false_type
+  struct Is_Lower_Strict_Matrix_Storage : std::false_type
   {
   };
 
   template <typename T>
-  struct Is_Matrix_Stored_Lower_Strict<
+  struct Is_Lower_Strict_Matrix_Storage<
       T,
       std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
                        (T::matrix_storage_mask_type::value ==
                         Matrix_Storage_Mask_Enum::Lower_Strict)>> : std::true_type
   {
   };
+
+  template <typename T>
+  constexpr bool Is_Lower_Strict_Matrix_Storage_v = Is_Lower_Strict_Matrix_Storage<T>::value;
 
   //////////////////////////////////////////////////////////////////
   //

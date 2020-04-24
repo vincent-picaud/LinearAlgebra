@@ -4,7 +4,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/vector.hpp"
-#include "LinearAlgebra/dense/vector_create_default_storable.hpp"
+#include "LinearAlgebra/dense/vector_similar.hpp"
 #include "LinearAlgebra/utils/size_utils.hpp"
 
 namespace LinearAlgebra
@@ -17,7 +17,7 @@ namespace LinearAlgebra
   {
     using vector_dest_element_type =
         decltype(lambda(vector_src.as_const()[0], vector_src_optional.as_const()[0]...));
-    auto vector_dest = create_default_storable(
+    auto vector_dest = similar(
         Type_v<vector_dest_element_type>, vector_src, vector_src_optional...);
 
     //----------------
@@ -26,7 +26,7 @@ namespace LinearAlgebra
       vector_dest[i] = lambda(vector_src.as_const()[i], vector_src_optional.as_const()[i]...);
     };
 
-    // Note: create_default_storable() has already selected
+    // Note: similar() has already selected
     //       vector_dest with a static size (if possible) hence we can
     //       use vector_dest for loop_over_indices().
     // CAVEAT: we will have to modify/adapt this when vector_src is sparse

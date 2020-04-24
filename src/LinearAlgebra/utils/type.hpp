@@ -12,8 +12,7 @@
 //    template<typename T> void foo(Type<T>, int n);
 //
 // Used by:
-//   - create_default_storable_vector()
-//   - create_default_storable_matrix()
+//   - similar()
 //
 #pragma once
 

@@ -62,7 +62,7 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_symv)
   x[0] = 1;
   x[1] = 2;
 
-  auto y_cpy_as_int = create_default_storable(Type_v<int>, y);
+  auto y_cpy_as_int = similar(Type_v<int>, y);
 
   DEBUG_RESET_SELECTED();
   assign(y,

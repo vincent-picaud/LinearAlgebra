@@ -103,7 +103,7 @@ namespace LinearAlgebra::Lapack
     }
 
     // Must copy B to have
-    auto B_cpy = create_default_storable(B);
+    auto B_cpy = similar(B);
     B_cpy      = B;
     assert(B_cpy.increment() == 1);
 
@@ -195,7 +195,7 @@ namespace LinearAlgebra::Lapack
     }
 
     // Must copy B to have
-    auto B_cpy = create_default_storable(B);
+    auto B_cpy = similar(B);
     B_cpy      = B;
     assert(B_cpy.increment() == 1);
 

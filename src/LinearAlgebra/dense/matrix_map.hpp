@@ -4,7 +4,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix.hpp"
-#include "LinearAlgebra/dense/matrix_create_default_storable.hpp"
+#include "LinearAlgebra/dense/matrix_similar.hpp"
 
 namespace LinearAlgebra
 {
@@ -16,14 +16,14 @@ namespace LinearAlgebra
   {
     using matrix_dest_element_type =
         decltype(lambda(matrix_src.as_const()(0, 0), matrix_src_optional.as_const()(0, 0)...));
-    auto matrix_dest = create_default_storable(Type_v<matrix_dest_element_type>, matrix_src.impl());
+    auto matrix_dest = similar(Type_v<matrix_dest_element_type>, matrix_src.impl());
 
     //----------------
 
     const auto loop_over_indices_lambda = [&](const std::size_t i, const std::size_t j) {
       matrix_dest(i, j) = lambda(matrix_src.as_const()(i, j));
     };
-    // Note: create_default_storable() has already selected
+    // Note: similar() has already selected
     //       matrix_dest with a static size (if possible) hence we can
     //       use matrix_dest for loop_over_indices().
     // CAVEAT: we will have to modify/adapt this when matrix_src is sparse

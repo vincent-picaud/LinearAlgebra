@@ -170,7 +170,7 @@ namespace LinearAlgebra
     assert(are_not_aliased_p(vector0, vector1) and are_not_aliased_p(vector0, matrix1));
 
     Blas::symv(CblasColMajor,
-               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL::matrix_storage_mask_type::value>,
+               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL>,
                matrix1.I_size(),
                alpha.value(),
                matrix1.data(),
@@ -184,6 +184,6 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
 
-}
+}  // namespace LinearAlgebra
 
 #endif

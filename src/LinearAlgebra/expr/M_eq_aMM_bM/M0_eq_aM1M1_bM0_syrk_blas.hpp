@@ -81,7 +81,7 @@ namespace LinearAlgebra
     }
 
     Blas::syrk(CblasColMajor,
-               Blas::To_CBlas_UpLo_v<MATRIX0_IMPL::matrix_storage_mask_type::value>,
+               Blas::To_CBlas_UpLo_v<MATRIX0_IMPL>,
                Trans,
                matrix0.I_size(),
                K,

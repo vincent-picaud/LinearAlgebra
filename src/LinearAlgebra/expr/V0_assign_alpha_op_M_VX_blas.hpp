@@ -58,7 +58,7 @@ namespace LinearAlgebra
           // Scalar support
           Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
           // *NOT* Triangular Matrix
-          !Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
+          !Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
 
   {
     // redirect
@@ -109,7 +109,7 @@ namespace LinearAlgebra
           // Scalar support
           Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
           // Triangular Matrix
-          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
+          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
     assert(are_not_aliased_p(vector0, matrix1));
@@ -117,9 +117,9 @@ namespace LinearAlgebra
     assign(vector0, _product_, alpha.impl(), _lhs_);
 
     Blas::trmv(CblasColMajor,
-               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL::matrix_storage_mask_type::value>,
+               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL>,
                Blas::To_CBlas_Transpose_v<OP1_ENUM>,
-               Blas::To_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
+               Blas::To_CBlas_Diag_v<MATRIX1_IMPL>,
                matrix1.I_size(),
                matrix1.data(),
                matrix1.leading_dimension(),
@@ -156,7 +156,7 @@ namespace LinearAlgebra
           // Scalar support
           Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
           // Triangular Matrix
-          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
+          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 
@@ -196,7 +196,7 @@ namespace LinearAlgebra
           // Scalar support
           Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
           // Triangular Matrix
-          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
+          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
     assert(are_not_aliased_p(vector0, matrix1));
@@ -204,9 +204,9 @@ namespace LinearAlgebra
     assign(vector0, _product_, alpha.impl(), _lhs_);
 
     Blas::trsv(CblasColMajor,
-               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL::matrix_storage_mask_type::value>,
+               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL>,
                Blas::To_CBlas_Transpose_v<OP1_ENUM>,
-               Blas::To_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>,
+               Blas::To_CBlas_Diag_v<MATRIX1_IMPL>,
                matrix1.I_size(),
                matrix1.data(),
                matrix1.leading_dimension(),
@@ -244,7 +244,7 @@ namespace LinearAlgebra
           // Scalar support
           Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
           // Triangular Matrix
-          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL::matrix_special_structure_type::value>>
+          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 
@@ -254,6 +254,6 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
 
-}
+}  // namespace LinearAlgebra
 
 #endif

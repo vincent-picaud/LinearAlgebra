@@ -5,9 +5,82 @@
 #include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 
 #include "LinearAlgebra/dense/matrix_special_structure_enum.hpp"
+#include "LinearAlgebra/dense/matrix_storage_mask_enum.hpp"
 
 namespace LinearAlgebra
 {
+  //////////////////////////////////////////////////////////////////
+  //
+  // Tests using Matrix_Special_Structure_Enum
+  //
+  //////////////////////////////////////////////////////////////////
+  //
+  // Note: in the future you can add further specializations if required
+  //
+  //----------------------------------------------------------------
+
+  template <typename T, typename ENABLE = void>
+  struct Is_Matrix_Stored_Upper : std::false_type
+  {
+  };
+
+  template <typename T>
+  struct Is_Matrix_Stored_Upper<
+      T,
+      std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                       (T::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Upper)>>
+      : std::true_type
+  {
+  };
+
+  //----------------------------------------------------------------
+
+  template <typename T, typename ENABLE = void>
+  struct Is_Matrix_Stored_Upper_Strict : std::false_type
+  {
+  };
+
+  template <typename T>
+  struct Is_Matrix_Stored_Upper_Strict<
+      T,
+      std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                       (T::matrix_storage_mask_type::value ==
+                        Matrix_Storage_Mask_Enum::Upper_Strict)>> : std::true_type
+  {
+  };
+
+  //----------------------------------------------------------------
+
+  template <typename T, typename ENABLE = void>
+  struct Is_Matrix_Stored_Lower : std::false_type
+  {
+  };
+
+  template <typename T>
+  struct Is_Matrix_Stored_Lower<
+      T,
+      std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                       (T::matrix_storage_mask_type::value == Matrix_Storage_Mask_Enum::Lower)>>
+      : std::true_type
+  {
+  };
+
+  //----------------------------------------------------------------
+
+  template <typename T, typename ENABLE = void>
+  struct Is_Matrix_Stored_Lower_Strict : std::false_type
+  {
+  };
+
+  template <typename T>
+  struct Is_Matrix_Stored_Lower_Strict<
+      T,
+      std::enable_if_t<Is_Crtp_Interface_Of_v<Dense_Matrix_Crtp, T> and
+                       (T::matrix_storage_mask_type::value ==
+                        Matrix_Storage_Mask_Enum::Lower_Strict)>> : std::true_type
+  {
+  };
+
   //////////////////////////////////////////////////////////////////
   //
   // Tests using Matrix_Special_Structure_Enum
@@ -110,4 +183,4 @@ namespace LinearAlgebra
   template <typename T>
   constexpr bool Is_Unit_Triangular_Matrix_v = Is_Unit_Triangular_Matrix<T>::value;
 
-}
+}  // namespace LinearAlgebra

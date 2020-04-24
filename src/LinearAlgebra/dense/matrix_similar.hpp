@@ -50,8 +50,8 @@ namespace LinearAlgebra
 
   template <typename IMPL, typename... IMPL_OPTIONAL>
   auto
-  similar_matrix(const Dense_Matrix_Crtp<IMPL>& matrix,
-                 const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
+  similar(const Dense_Matrix_Crtp<IMPL>& matrix,
+          const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
     return similar(Type_v<typename IMPL::element_type>, matrix, matrix_optional...);
   }
@@ -74,9 +74,8 @@ namespace LinearAlgebra
   template <typename IMPL, typename... IMPL_OPTIONAL>
   auto
   copy(const Dense_Matrix_Crtp<IMPL>& matrix,
-          const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
+       const Dense_Matrix_Crtp<IMPL_OPTIONAL>&... matrix_optional)
   {
-    return copy(
-        Type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, matrix, matrix_optional...);
+    return copy(Type_v<Common_Element_Type_t<IMPL, IMPL_OPTIONAL...>>, matrix, matrix_optional...);
   }
 }  // namespace LinearAlgebra

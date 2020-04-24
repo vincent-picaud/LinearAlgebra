@@ -8,7 +8,56 @@
 
 using namespace LinearAlgebra;
 
-TEST(X0_Assign_Alpha_X1, vector)
+//////////////////////////////////////////////////////////////////
+// X0 = α rhs
+//////////////////////////////////////////////////////////////////
+//
+
+TEST(X0_Eq_AX0, vector)
+{
+  Tiny_Vector<int, 3> v;
+  v[0] = 1;
+  v[1] = 2;
+  v[2] = 3;
+
+  EXPECT_EQ(v[0], 1);
+  EXPECT_EQ(v[1], 2);
+  EXPECT_EQ(v[2], 3);
+
+  DEBUG_RESET_SELECTED();
+  assign(v, _product_, Scalar_CRef(3), _lhs_);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
+
+  EXPECT_EQ(v[0], 3 * 1);
+  EXPECT_EQ(v[1], 3 * 2);
+  EXPECT_EQ(v[2], 3 * 3);
+}
+
+TEST(X0_Eq_AX0, matrix)
+{
+  Tiny_Matrix<int, 3, 1> v;
+  v(0, 0) = 1;
+  v(1, 0) = 2;
+  v(2, 0) = 3;
+
+  EXPECT_EQ(v(0, 0), 1);
+  EXPECT_EQ(v(1, 0), 2);
+  EXPECT_EQ(v(2, 0), 3);
+
+  DEBUG_RESET_SELECTED();
+  assign(v, _product_, Scalar_CRef(3), _lhs_);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
+
+  EXPECT_EQ(v(0, 0), 3 * 1);
+  EXPECT_EQ(v(1, 0), 3 * 2);
+  EXPECT_EQ(v(2, 0), 3 * 3);
+}
+
+//////////////////////////////////////////////////////////////////
+// X0 = α X1
+//////////////////////////////////////////////////////////////////
+//
+TEST(X0_Eq_AX1, vector)
 {
   Tiny_Vector<int, 3> v, w;
   v[0] = 1;
@@ -44,7 +93,7 @@ TEST(X0_Assign_Alpha_X1, vector)
   EXPECT_EQ(w[2], 3 * 3 * 3);
 }
 
-TEST(X0_Assign_Alpha_X1, matrix)
+TEST(X0_Eq_AX1, matrix)
 {
   Tiny_Matrix<int, 3, 1> v, w;
   v(0, 0) = 1;

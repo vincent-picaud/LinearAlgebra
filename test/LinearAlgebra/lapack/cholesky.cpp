@@ -4,9 +4,25 @@
 
 #include "LinearAlgebra/scalar_functions/dist_2_vector.hpp"
 
+#include "LinearAlgebra/expr/V0_assign_alpha_op_M_VX_blas.hpp"
+
 #include <gtest/gtest.h>
 
 using namespace LinearAlgebra;
+
+TEST(Lapack, potrf_debug)
+{
+  EXPECT_FALSE(Blas::Support_CBlas_Diag_v<Symmetric_Matrix<double>>);
+
+  const size_t n = 5;
+
+  Vector<double> v(n), w(n);
+  v = 1;
+  Symmetric_Matrix<double> M(n, n);
+
+  // w = M * v;
+  w = identity(M) * v;
+}
 
 TEST(Lapack, potrf)
 {

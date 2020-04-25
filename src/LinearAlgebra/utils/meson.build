@@ -14,4 +14,5 @@ LinearAlgebra_headers += [
   'utils/same_mathematical_object_p.hpp',
   'utils/enum_class_to_value.hpp',
   'utils/sfinae_vmt_helpers.hpp',
+  'utils/undefined.hpp',
 ]

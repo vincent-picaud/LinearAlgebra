@@ -93,7 +93,7 @@ namespace LinearAlgebra
             typename VECTOR0_IMPL,
             typename MATRIX1_IMPL>
   auto
-  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,  // Undefined implementation
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
          Dense_Vector_Crtp<VECTOR0_IMPL>& vector0,
          const _product_t_,
          const _product_t_,
@@ -101,30 +101,14 @@ namespace LinearAlgebra
          const _matrix_unary_op_t_<OP1_ENUM> op1,
          const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const _lhs_t_)
-      -> std::enable_if_t<
-          // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-          // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>> &&
-          // Scalar support
-          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-          // Triangular Matrix
-          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
+      -> std::enable_if_t<Always_True_v<decltype(Blas::scal(alpha.value(), vector0))> and
+                          Always_True_v<decltype(Blas::trmv(op1, matrix1, vector0))>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
     assert(are_not_aliased_p(vector0, matrix1));
 
-    assign(vector0, _product_, alpha.impl(), _lhs_);
-
-    Blas::trmv(CblasColMajor,
-               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL>,
-               Blas::To_CBlas_Transpose_v<OP1_ENUM>,
-               Blas::To_CBlas_Diag_v<MATRIX1_IMPL>,
-               matrix1.I_size(),
-               matrix1.data(),
-               matrix1.leading_dimension(),
-               vector0.data(),
-               vector0.increment());
+    Blas::scal(alpha.value(), vector0);
+    Blas::trmv(op1, matrix1, vector0);
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -147,21 +131,22 @@ namespace LinearAlgebra
          const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
       -> std::enable_if_t<
-          // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-          // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>,
-                          Element_Type_t<VECTOR0_IMPL>,
-                          Element_Type_t<VECTOR1_IMPL>> &&
-          // Scalar support
-          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-          // Triangular Matrix
-          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
+          Always_True_v<decltype(Blas::copy(vector1, vector0))> and  // <-------------- here p
+          Always_True_v<decltype(Blas::scal(alpha.value(), vector0))> and
+          Always_True_v<decltype(Blas::trmv(op1, matrix1, vector0))>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 
-    assign(vector0, _product_, alpha.impl(), vector1);
-    assign(selected, vector0, _product_, _product_, ALPHA_IMPL(1), op1, matrix1, _lhs_);
+    if (not same_mathematical_object_p(vector0, vector1))
+    {
+      Blas::copy(vector1, vector0);
+    }
+
+    assert(are_not_aliased_p(vector0, matrix1));
+    assert(same_mathematical_object_p(vector0, vector1));
+
+    Blas::scal(alpha.value(), vector0);
+    Blas::trmv(op1, matrix1, vector0);
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -188,30 +173,14 @@ namespace LinearAlgebra
          const _inverse_t_,
          const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const _lhs_t_)
-      -> std::enable_if_t<
-          // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-          // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>, Element_Type_t<VECTOR0_IMPL>> &&
-          // Scalar support
-          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-          // Triangular Matrix
-          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
+      -> std::enable_if_t<Always_True_v<decltype(Blas::scal(alpha.value(), vector0))> and
+                          Always_True_v<decltype(Blas::trsv(op1, matrix1, vector0))>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
     assert(are_not_aliased_p(vector0, matrix1));
 
-    assign(vector0, _product_, alpha.impl(), _lhs_);
-
-    Blas::trsv(CblasColMajor,
-               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL>,
-               Blas::To_CBlas_Transpose_v<OP1_ENUM>,
-               Blas::To_CBlas_Diag_v<MATRIX1_IMPL>,
-               matrix1.I_size(),
-               matrix1.data(),
-               matrix1.leading_dimension(),
-               vector0.data(),
-               vector0.increment());
+    Blas::scal(alpha.value(), vector0);
+    Blas::trsv(op1, matrix1, vector0);
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -234,22 +203,22 @@ namespace LinearAlgebra
          const _inverse_t_,
          const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
-      -> std::enable_if_t<
-          // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-          // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>,
-                          Element_Type_t<VECTOR0_IMPL>,
-                          Element_Type_t<VECTOR1_IMPL>> &&
-          // Scalar support
-          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-          // Triangular Matrix
-          Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
+      -> std::enable_if_t<Always_True_v<decltype(Blas::copy(vector1, vector0))> and
+                          Always_True_v<decltype(Blas::scal(alpha.value(), vector0))> and
+                          Always_True_v<decltype(Blas::trsv(op1, matrix1, vector0))>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 
-    assign(vector0, _product_, alpha.impl(), vector1);
-    assign(selected, vector0, _product_, _product_, ALPHA_IMPL(1), op1, _inverse_, matrix1, _lhs_);
+    if (not same_mathematical_object_p(vector0, vector1))
+    {
+      Blas::copy(vector1, vector0);
+    }
+
+    assert(are_not_aliased_p(vector0, matrix1));
+    assert(same_mathematical_object_p(vector0, vector1));
+
+    Blas::scal(alpha.value(), vector0);
+    Blas::trsv(op1, matrix1, vector0);
 
     DEBUG_SET_SELECTED(selected);
   }

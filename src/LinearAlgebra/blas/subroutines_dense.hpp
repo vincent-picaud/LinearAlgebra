@@ -8,12 +8,18 @@
 // Note: this a quite "abstract" header, hence we include "blas.hpp"
 // and dense vector & matrix headers
 //
+#include <cblas.h>
 #include "LinearAlgebra/blas/blas.hpp"
 
+#include "LinearAlgebra/blas/subroutines.hpp"
+#include "LinearAlgebra/blas/to_cblas_diag.hpp"
+#include "LinearAlgebra/blas/to_cblas_transpose.hpp"
+#include "LinearAlgebra/blas/to_cblas_uplo.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 
 #include "LinearAlgebra/dense/vector_crtp.hpp"
+#include "LinearAlgebra/expr/expr_tags.hpp"
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/element_type.hpp"
 #include "LinearAlgebra/utils/sfinae_vmt_helpers.hpp"
@@ -65,4 +71,94 @@ namespace LinearAlgebra::Blas
     Blas::scal(V.size(), alpha, V.data(), V.increment());
   }
 
+  /////////////
+  // Level 2 //
+  /////////////
+  //                 options            dim   b-width scalar matrix  vector   scalar vector   prefixes
+  //
+  // - [ ] : _GEMV (        TRANS,      M, N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D, C, Z
+  // - [ ] : _GBMV (        TRANS,      M, N, KL, KU, ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D, C, Z
+  // - [ ] : _HEMV ( UPLO,                 N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) C, Z
+  // - [ ] : _HBMV ( UPLO,                 N, K,      ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) C, Z
+  // - [ ] : _HPMV ( UPLO,                 N,         ALPHA, AP,     X, INCX, BETA,  Y, INCY ) C, Z
+  // - [ ] : _SYMV ( UPLO,                 N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D
+  // - [ ] : _SBMV ( UPLO,                 N, K,      ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D
+  // - [ ] : _SPMV ( UPLO,                 N,         ALPHA, AP,     X, INCX, BETA,  Y, INCY ) S, D
+  // - [X] : _TRMV ( UPLO, TRANS, DIAG,    N,                A, LDA, X, INCX )                 S, D, C, Z
+  // - [ ] : _TBMV ( UPLO, TRANS, DIAG,    N, K,             A, LDA, X, INCX )                 S, D, C, Z
+  // - [ ] : _TPMV ( UPLO, TRANS, DIAG,    N,                AP,     X, INCX )                 S, D, C, Z
+  // - [X] : _TRSV ( UPLO, TRANS, DIAG,    N,                A, LDA, X, INCX )                 S, D, C, Z
+  // - [ ] : _TBSV ( UPLO, TRANS, DIAG,    N, K,             A, LDA, X, INCX )                 S, D, C, Z
+  // - [ ] : _TPSV ( UPLO, TRANS, DIAG,    N,                AP,     X, INCX )                 S, D, C, Z
+  //
+  // - [ ] :         options            dim   scalar vector   vector   matrix  prefixes
+  //
+  // - [ ] : _GER  (                    M, N, ALPHA, X, INCX, Y, INCY, A, LDA ) S, D
+  // - [ ] : _GERU (                    M, N, ALPHA, X, INCX, Y, INCY, A, LDA ) C, Z
+  // - [ ] : _GERC (                    M, N, ALPHA, X, INCX, Y, INCY, A, LDA ) C, Z
+  // - [ ] : _HER  ( UPLO,                 N, ALPHA, X, INCX,          A, LDA ) C, Z
+  // - [ ] : _HPR  ( UPLO,                 N, ALPHA, X, INCX,          AP )     C, Z
+  // - [ ] : _HER2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, A, LDA ) C, Z
+  // - [ ] : _HPR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, AP )     C, Z
+  // - [ ] : _SYR  ( UPLO,                 N, ALPHA, X, INCX,          A, LDA ) S, D
+  // - [ ] : _SPR  ( UPLO,                 N, ALPHA, X, INCX,          AP )     S, D
+  // - [ ] : _SYR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, A, LDA ) S, D
+  // - [ ] : _SPR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, AP )     S, D
+  // - [ ] :
+
+  //==== trmv ====
+  //
+  template <Matrix_Unary_Op_Enum OP, typename X_IMPL, typename M_IMPL>
+  auto
+  trmv(const _matrix_unary_op_t_<OP> op,
+       const Dense_Matrix_Crtp<M_IMPL>& M,
+       Dense_Vector_Crtp<X_IMPL>& x)
+      -> std::enable_if_t<Always_True_v<decltype(Blas::trmv(CblasColMajor,
+                                                            To_CBlas_UpLo_v<M_IMPL>,
+                                                            To_CBlas_Transpose_v<OP>,
+                                                            To_CBlas_Diag_v<M_IMPL>,
+                                                            M.I_size(),
+                                                            M.data(),
+                                                            M.leading_dimension(),
+                                                            x.data(),
+                                                            x.increment()))>>
+  {
+    Blas::trmv(CblasColMajor,
+               To_CBlas_UpLo_v<M_IMPL>,
+               To_CBlas_Transpose_v<OP>,
+               To_CBlas_Diag_v<M_IMPL>,
+               M.I_size(),
+               M.data(),
+               M.leading_dimension(),
+               x.data(),
+               x.increment());
+  }
+
+  //==== trsv ====
+  //
+  template <Matrix_Unary_Op_Enum OP, typename X_IMPL, typename M_IMPL>
+  auto
+  trsv(const _matrix_unary_op_t_<OP> op,
+       const Dense_Matrix_Crtp<M_IMPL>& M,
+       Dense_Vector_Crtp<X_IMPL>& x)
+      -> std::enable_if_t<Always_True_v<decltype(Blas::trsv(CblasColMajor,
+                                                            To_CBlas_UpLo_v<M_IMPL>,
+                                                            To_CBlas_Transpose_v<OP>,
+                                                            To_CBlas_Diag_v<M_IMPL>,
+                                                            M.I_size(),
+                                                            M.data(),
+                                                            M.leading_dimension(),
+                                                            x.data(),
+                                                            x.increment()))>>
+  {
+    Blas::trsv(CblasColMajor,
+               To_CBlas_UpLo_v<M_IMPL>,
+               To_CBlas_Transpose_v<OP>,
+               To_CBlas_Diag_v<M_IMPL>,
+               M.I_size(),
+               M.data(),
+               M.leading_dimension(),
+               x.data(),
+               x.increment());
+  }
 }  // namespace LinearAlgebra::Blas

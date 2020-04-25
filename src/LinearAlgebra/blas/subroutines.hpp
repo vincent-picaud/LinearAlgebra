@@ -37,7 +37,7 @@ namespace LinearAlgebra::Blas
   // - [ ] : SUBROUTINE _ROT  ( N,         X, INCX, Y, INCY,               C, S )          S, D
   // - [ ] : SUBROUTINE _ROTM ( N,         X, INCX, Y, INCY,                      PARAM )  S, D
   // - [ ] : SUBROUTINE _SWAP ( N,         X, INCX, Y, INCY )                              S, D, C, Z
-  // - [ ] : SUBROUTINE _SCAL ( N,  ALPHA, X, INCX )                                       S, D, C, Z, CS, ZD
+  // - [X] : SUBROUTINE _SCAL ( N,  ALPHA, X, INCX )                                       S, D, C, Z, CS, ZD
   // - [X] : SUBROUTINE _COPY ( N,         X, INCX, Y, INCY )                              S, D, C, Z
   // - [ ] : SUBROUTINE _AXPY ( N,  ALPHA, X, INCX, Y, INCY )                              S, D, C, Z
   // - [X] : FUNCTION   _DOT  ( N,         X, INCX, Y, INCY )                              S, D, DS
@@ -48,6 +48,35 @@ namespace LinearAlgebra::Blas
   // - [ ] : FUNCTION   _ASUM ( N,         X, INCX )                                       S, D, SC, DZ
   // - [ ] : FUNCTION   I_AMAX( N,         X, INCX )                                       S, D, C, Z
 
+  // Xscal
+  //================
+  //
+  static inline auto
+  scal(const std::size_t n, const float alpha, float *x, const std::size_t incx)
+  {
+    cblas_sscal(n, alpha, x, incx);
+  }
+  static inline auto
+  scal(const std::size_t n, const double alpha, double *x, const std::size_t incx)
+  {
+    cblas_dscal(n, alpha, x, incx);
+  }
+  static inline auto
+  scal(const std::size_t n,
+       const std::complex<float> &alpha,
+       std::complex<float> *x,
+       const std::size_t incx)
+  {
+    cblas_cscal(n, &alpha, x, incx);
+  }
+  static inline auto
+  scal(const std::size_t n,
+       const std::complex<double> &alpha,
+       std::complex<double> *x,
+       const std::size_t incx)
+  {
+    cblas_zscal(n, &alpha, x, incx);
+  }
   // Xnrm2
   //================
   //
@@ -539,4 +568,4 @@ namespace LinearAlgebra::Blas
 
     cblas_zsyrk(Order, Uplo, Trans, N, K, &alpha, A, lda, &beta, C, ldc);
   }
-}
+}  // namespace LinearAlgebra::Blas

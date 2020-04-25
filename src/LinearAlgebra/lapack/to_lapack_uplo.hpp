@@ -4,26 +4,38 @@
 //
 #pragma once
 
-#include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/lapack/lapack_config.hpp"
-#include "LinearAlgebra/utils/crtp.hpp"
-#include "LinearAlgebra/utils/is_complete.hpp"
 
 #if !(HAS_LAPACK)
 #error
 #endif
 
-#include "LinearAlgebra/lapack/lapack_enum.hpp"
-
+#include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
 #include "LinearAlgebra/dense/matrix_storage_mask_enum.hpp"
+#include "LinearAlgebra/lapack/lapack_enum.hpp"
+#include "LinearAlgebra/utils/crtp.hpp"
+#include "LinearAlgebra/utils/is_complete.hpp"
+#include "LinearAlgebra/utils/undefined.hpp"
 
 namespace LinearAlgebra
 {
   namespace Lapack
   {
+    // Allows instantation, even if not defined
     template <typename T, typename ENABLE = void>
-    struct To_Lapack_UpLo;
+    struct To_Lapack_UpLo
+    {
+      static constexpr Undefined value{};
+    };
+    // Then the predicate to check if defined or not
+    template <typename T>
+    struct Support_Lapack_UpLo
+        : std::integral_constant<
+              bool,
+              not std::is_same_v<decltype(To_Lapack_UpLo<T>::value), const Undefined>>
+    {
+    };
 
     template <>
     struct To_Lapack_UpLo<
@@ -81,5 +93,8 @@ namespace LinearAlgebra
     template <typename T>
     constexpr auto To_Lapack_UpLo_v = To_Lapack_UpLo<T>::value;
 
-  }
-}
+    template <typename T>
+    constexpr auto Support_Lapack_UpLo_v = Support_Lapack_UpLo<T>::value;
+
+  }  // namespace Lapack
+}  // namespace LinearAlgebra

@@ -14,15 +14,4 @@ TEST(To_Lapack_UpLo, demo)
             Lapack_UpLo_Enum::Low);
 
   // EXPECT_EQ(To_Lapack_UpLo_v<Symmetric_Matrix<double>>, Lapack_UpLo_Enum::Low);
-
-  // CAVEAT: if you want to test complete/incomplete do NOT use "_v"
-  // !!! By example,
-  //
-  // EXPECT_FALSE((Is_Complete_v<To_Lapack_UpLo_v<Symmetric_Matrix<double>>>));
-  //
-  // Does NOT work
-  //
-  EXPECT_TRUE((Is_Complete_v<To_Lapack_UpLo<Symmetric_Matrix<double>>>));
-  EXPECT_FALSE(
-      (Is_Complete_v<To_Lapack_UpLo<Matrix<double>>>));  // For full matri no up/lo is defined
 }

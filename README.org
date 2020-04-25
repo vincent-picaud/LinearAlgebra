@@ -119,12 +119,56 @@ auto view = view_as_lower_triangular_strict(M.as_const());
  are stored and not owned).
 
 ** Functions
+
+*** Aliasing 
+    :PROPERTIES:
+    :ID:       7207062d-f90b-4646-a5f0-dd692083176f
+    :END:
+    :BACKLINKS:
+    [2020-04-25 Sat 16:39] <- [[id:4a5f5853-bb5d-4935-abd0-3996a3d62a4e][Same mathematical object]]
+    :END:
+
+Test if two objects are aliased or not.
+#+BEGIN_SRC cpp :eval never
+bool status = are_not_aliased_p(vector0, matrix1)
+#+END_SRC
+
+*Note:* it is easy/fast to check if two objects are *not* aliased (memory
+blocks don't overlap). It can be more tricky (with all the possible
+memory increments/strides) to check if two objects are aliased. That's
+the reason why we also have this function:
+
+#+BEGIN_SRC cpp :eval never
+bool status = are_maybe_aliased_p(vector0, matrix1)
+#+END_SRC
+
+Also see: [[id:4a5f5853-bb5d-4935-abd0-3996a3d62a4e][Same mathematical object]]
+
+*** Same mathematical object
+    :PROPERTIES:
+    :ID:       4a5f5853-bb5d-4935-abd0-3996a3d62a4e
+    :END:
+
+A predicate that checks if two objects represent *exactly* the same
+"mathematical" object. By exactly we mean:
+- same memory
+- same dimension
+
+This is possible, think to a matrix and its view.
+
+#+BEGIN_SRC cpp :eval never
+bool status = same_mathematical_object_p(matrix_1,matrix_2);
+#+END_SRC
+
+*Note:* according to the definition, two identical mathematical objects
+are trivially [[id:7207062d-f90b-4646-a5f0-dd692083176f][Aliased]].
+
 *** =Similar=
     :PROPERTIES:
     :ID:       5afec5bb-bd6c-4173-b513-3b49cef5005a
     :END:
     :BACKLINKS:
-    [2020-04-24 Fri 12:50] <- [[id:07b3fa16-4842-4bf2-9893-7d6626813c9b][=Copy=]]
+    [2020-04-24 Fri 12:50] <- [[id:07b3fa16-4842-4bf2-9893-7d6626813c9b][Copy]]
     :END:
 
  Create an *uninitialized* object of the same type and same dimension:
@@ -135,6 +179,7 @@ auto u = similar(v);
  a variant is to change type:
 
  #+BEGIN_SRC cpp :eval never
+Vector<double> v;
 auto int_u = similar(Type_v<int>,v);
  #+END_SRC
 
@@ -143,7 +188,7 @@ auto int_u = similar(Type_v<int>,v);
     :ID:       07b3fa16-4842-4bf2-9893-7d6626813c9b
     :END:
 
-  Like [[id:5afec5bb-bd6c-4173-b513-3b49cef5005a][=Similar=]] but also perform a copy of the element
+  Like [[id:5afec5bb-bd6c-4173-b513-3b49cef5005a][Similar]] but also performs a copy of the element
 
   #+BEGIN_SRC cpp :eval never
 auto u = copy(v);

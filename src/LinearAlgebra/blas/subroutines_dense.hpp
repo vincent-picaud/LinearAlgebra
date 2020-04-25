@@ -1,6 +1,8 @@
 //
 // Wraps "subroutines" with dense (vector/matrix) objects
 //
+// This is the "abstract subroutine" one must preferably use.
+//
 #pragma once
 
 // Note: this a quite "abstract" header, hence we include "blas.hpp"
@@ -30,7 +32,7 @@ namespace LinearAlgebra::Blas
   // - [ ] : SUBROUTINE _ROTM ( N,         X, INCX, Y, INCY,                      PARAM )  S, D
   // - [ ] : SUBROUTINE _SWAP ( N,         X, INCX, Y, INCY )                              S, D, C, Z
   // - [X] : SUBROUTINE _SCAL ( N,  ALPHA, X, INCX )                                       S, D, C, Z, CS, ZD
-  // - [ ] : SUBROUTINE _COPY ( N,         X, INCX, Y, INCY )                              S, D, C, Z
+  // - [X] : SUBROUTINE _COPY ( N,         X, INCX, Y, INCY )                              S, D, C, Z
   // - [ ] : SUBROUTINE _AXPY ( N,  ALPHA, X, INCX, Y, INCY )                              S, D, C, Z
   // - [ ] : FUNCTION   _DOT  ( N,         X, INCX, Y, INCY )                              S, D, DS
   // - [ ] : FUNCTION   _DOTU ( N,         X, INCX, Y, INCY )                              C, Z
@@ -40,6 +42,21 @@ namespace LinearAlgebra::Blas
   // - [ ] : FUNCTION   _ASUM ( N,         X, INCX )                                       S, D, SC, DZ
   // - [ ] : FUNCTION   I_AMAX( N,         X, INCX )                                       S, D, C, Z
 
+  //==== copy ====
+  //
+  template <typename V0_IMPL, typename V1_IMPL>
+  auto
+  copy(const Dense_Vector_Crtp<V1_IMPL>& V1, Dense_Vector_Crtp<V0_IMPL>& V0)
+      -> std::enable_if_t<Always_True_v<
+          decltype(Blas::copy(V0.size(), V1.data(), V1.increment(), V0.data(), V0.increment()))>>
+  {
+    assert(V0.size() == V1.size());
+
+    Blas::copy(V0.size(), V1.data(), V1.increment(), V0.data(), V0.increment());
+  }
+
+  //==== scal ====
+  //
   template <typename V_IMPL>
   auto
   scal(const Element_Type_t<V_IMPL>& alpha, Dense_Vector_Crtp<V_IMPL>& V) -> std::enable_if_t<

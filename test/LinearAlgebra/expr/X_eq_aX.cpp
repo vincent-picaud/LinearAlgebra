@@ -150,7 +150,7 @@ TEST(X0_Eq_AX1, double_use_blas)
   v[2] = 3;
 
   DEBUG_RESET_SELECTED();
-  assign(w, _product_, Scalar_CRef<double>(2), w);
+  assign(v, _product_, Scalar_CRef<double>(2), w);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
                   (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
 }

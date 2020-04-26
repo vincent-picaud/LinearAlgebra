@@ -26,11 +26,8 @@
 namespace LinearAlgebra
 {
   //================================================================
-  // CAVEAT: redirect matrices that are NOT TRIANGULAR to the more
-  //         general V0=αop(M)V1+βVX
-  // Note: note sure that really a good idea.... <- this is BAD idea: to remove
-  // ================================================================
-  //
+  // symv
+  //================================================================
   //
   // vector0 = alpha * op(M1) * vector1
   // vector0 = * * alpha op1 matrix1 vector1
@@ -54,23 +51,10 @@ namespace LinearAlgebra
   {
     Blas::symv(alpha.value(), op1, matrix1, vector1, 0, vector0);
 
-    // // redirect
-    // assign(selected,
-    //        vector0,
-    //        _plus_,
-    //        _product_,
-    //        _product_,
-    //        alpha.impl(),
-    //        op1,
-    //        matrix1,
-    //        vector1,
-    //        _product_,
-    //        ALPHA_IMPL(0),
-    //        _lhs_);
-
     DEBUG_SET_SELECTED(selected);
   }
 
+    
   //////////////////////////////////////////////////////////////////
 
   //================================================================

@@ -18,7 +18,6 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   U = 1;
 
   DEBUG_RESET_SELECTED();
-  //  Blas::trmv(_identity_, U, V);
   assign(V, _product_, _product_, Scalar_CRef<double>(2), _identity_, U, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 

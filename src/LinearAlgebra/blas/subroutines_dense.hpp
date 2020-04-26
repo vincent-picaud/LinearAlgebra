@@ -154,15 +154,17 @@ namespace LinearAlgebra::Blas
   trmv(const _matrix_unary_op_t_<OP> op,
        const Dense_Matrix_Crtp<M_IMPL>& M,
        Dense_Vector_Crtp<X_IMPL>& x)
-      -> std::enable_if_t<Always_True_v<decltype(Blas::trmv(CblasColMajor,
-                                                            To_CBlas_UpLo_v<M_IMPL>,
-                                                            To_CBlas_Transpose_v<OP>,
-                                                            To_CBlas_Diag_v<M_IMPL>,
-                                                            M.I_size(),
-                                                            M.data(),
-                                                            M.leading_dimension(),
-                                                            x.data(),
-                                                            x.increment()))>>
+      -> std::enable_if_t<
+          (Is_Triangular_Matrix_v<M_IMPL> or Is_Unit_Triangular_Matrix_v<M_IMPL>)and Always_True_v<
+              decltype(Blas::trmv(CblasColMajor,
+                                  To_CBlas_UpLo_v<M_IMPL>,
+                                  To_CBlas_Transpose_v<OP>,
+                                  To_CBlas_Diag_v<M_IMPL>,
+                                  M.I_size(),
+                                  M.data(),
+                                  M.leading_dimension(),
+                                  x.data(),
+                                  x.increment()))>>
   {
     Blas::trmv(CblasColMajor,
                To_CBlas_UpLo_v<M_IMPL>,
@@ -177,28 +179,28 @@ namespace LinearAlgebra::Blas
 
   //==== trsv ====
   //
-  template <
-      Matrix_Unary_Op_Enum OP,
-      typename X_IMPL,
-      typename M_IMPL,
-      // CAVEAT: see trmv note
-      typename ENABLED_To_CBlas_UpLo      = std::enable_if_t<Support_CBlas_UpLo_v<M_IMPL>>,
-      typename ENABLED_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP>>,
-      typename ENABLED_To_CBlas_Diag      = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
-
+  template <Matrix_Unary_Op_Enum OP,
+            typename X_IMPL,
+            typename M_IMPL,
+            // CAVEAT: see trmv note
+            typename ENABLED_To_CBlas_UpLo      = std::enable_if_t<Support_CBlas_UpLo_v<M_IMPL>>,
+            typename ENABLED_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP>>,
+            typename ENABLED_To_CBlas_Diag      = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
   auto
   trsv(const _matrix_unary_op_t_<OP> op,
        const Dense_Matrix_Crtp<M_IMPL>& M,
        Dense_Vector_Crtp<X_IMPL>& x)
-      -> std::enable_if_t<Always_True_v<decltype(Blas::trsv(CblasColMajor,
-                                                            To_CBlas_UpLo_v<M_IMPL>,
-                                                            To_CBlas_Transpose_v<OP>,
-                                                            To_CBlas_Diag_v<M_IMPL>,
-                                                            M.I_size(),
-                                                            M.data(),
-                                                            M.leading_dimension(),
-                                                            x.data(),
-                                                            x.increment()))>>
+      -> std::enable_if_t<
+          (Is_Triangular_Matrix_v<M_IMPL> or Is_Unit_Triangular_Matrix_v<M_IMPL>)and Always_True_v<
+              decltype(Blas::trsv(CblasColMajor,
+                                  To_CBlas_UpLo_v<M_IMPL>,
+                                  To_CBlas_Transpose_v<OP>,
+                                  To_CBlas_Diag_v<M_IMPL>,
+                                  M.I_size(),
+                                  M.data(),
+                                  M.leading_dimension(),
+                                  x.data(),
+                                  x.increment()))>>
   {
     Blas::trsv(CblasColMajor,
                To_CBlas_UpLo_v<M_IMPL>,

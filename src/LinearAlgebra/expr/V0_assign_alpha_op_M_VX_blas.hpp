@@ -19,6 +19,7 @@
 #include "LinearAlgebra/utils/all_same_type.hpp"
 
 #include "LinearAlgebra/blas/blas.hpp"
+#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 
 #if (HAS_BLAS)
 
@@ -31,7 +32,7 @@ namespace LinearAlgebra
   // ================================================================
   //
   //
-  // vector0 = alpha * transpose(M1) * vector1
+  // vector0 = alpha * op(M1) * vector1
   // vector0 = * * alpha op1 matrix1 vector1
   //
   template <typename ALPHA_IMPL,
@@ -49,31 +50,23 @@ namespace LinearAlgebra
          const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
       -> std::enable_if_t<
-          // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-          // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<MATRIX1_IMPL>,
-                          Element_Type_t<VECTOR0_IMPL>,
-                          Element_Type_t<VECTOR1_IMPL>> &&
-          // Scalar support
-          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-          // *NOT* Triangular Matrix
-          !Blas::Support_CBlas_Diag_v<MATRIX1_IMPL>>
-
+          Always_True_v<decltype(Blas::symv(alpha.value(), op1, matrix1, vector1, 0, vector0))>>
   {
-    // redirect
-    assign(selected,
-           vector0,
-           _plus_,
-           _product_,
-           _product_,
-           alpha.impl(),
-           op1,
-           matrix1,
-           vector1,
-           _product_,
-           ALPHA_IMPL(0),
-           _lhs_);
+    Blas::symv(alpha.value(), op1, matrix1, vector1, 0, vector0);
+
+    // // redirect
+    // assign(selected,
+    //        vector0,
+    //        _plus_,
+    //        _product_,
+    //        _product_,
+    //        alpha.impl(),
+    //        op1,
+    //        matrix1,
+    //        vector1,
+    //        _product_,
+    //        ALPHA_IMPL(0),
+    //        _lhs_);
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -85,7 +78,7 @@ namespace LinearAlgebra
   //================================================================
   //
   //
-  // VECTOR0 = alpha * transpose(M1) * VECTOR0
+  // VECTOR0 = alpha * op(M1) * VECTOR0
   // vector0 = * * alpha op1 matrix1 vector0
   //
   template <typename ALPHA_IMPL,
@@ -113,7 +106,7 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
   //
-  // vector0 = alpha * transpose(M1) * vector1
+  // vector0 = alpha * op(M1) * vector1
   // vector0 = * * alpha op1 matrix1 vector1
   //
   template <typename ALPHA_IMPL,

@@ -16,6 +16,8 @@
 #include "LinearAlgebra/blas/to_cblas_transpose.hpp"
 #include "LinearAlgebra/blas/to_cblas_uplo.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/dense/matrix_view.hpp"
+#include "LinearAlgebra/dense/memory_chunk_aliasing_p.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 
 #include "LinearAlgebra/dense/vector_crtp.hpp"
@@ -201,5 +203,47 @@ namespace LinearAlgebra::Blas
                M.leading_dimension(),
                x.data(),
                x.increment());
+  }
+
+  //==== symv ====
+  //
+  // CAVEAT: blas only provides float, double
+  //
+  template <Matrix_Unary_Op_Enum OP, typename M_IMPL, typename X_IMPL, typename Y_IMPL>
+  auto
+  symv(const Element_Type_t<Y_IMPL>& alpha,
+       const _matrix_unary_op_t_<OP> op,
+       const Dense_Matrix_Crtp<M_IMPL>& M,
+       const Dense_Vector_Crtp<X_IMPL>& X,
+       const Element_Type_t<Y_IMPL>& beta,
+       Dense_Vector_Crtp<Y_IMPL>& Y)
+      -> std::enable_if_t<Is_Symmetric_Matrix_v<M_IMPL> and
+                          ((OP == Matrix_Unary_Op_Enum::Identity) or
+                           (OP == Matrix_Unary_Op_Enum::Transpose)) and
+                          Always_True_v<decltype(symv(CblasColMajor,
+                                                      To_CBlas_UpLo_v<M_IMPL>,
+                                                      M.I_size(),
+                                                      alpha,
+                                                      M.data(),
+                                                      M.leading_dimension(),
+                                                      X.data(),
+                                                      X.increment(),
+                                                      beta,
+                                                      Y.data(),
+                                                      Y.increment()))>>
+  {
+    assert(are_not_aliased_p(M, Y) and are_not_aliased_p(X, Y));
+
+    symv(CblasColMajor,
+         To_CBlas_UpLo_v<M_IMPL>,
+         M.I_size(),
+         alpha,
+         M.data(),
+         M.leading_dimension(),
+         X.data(),
+         X.increment(),
+         beta,
+         Y.data(),
+         Y.increment());
   }
 }  // namespace LinearAlgebra::Blas

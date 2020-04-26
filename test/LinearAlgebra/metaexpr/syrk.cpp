@@ -57,10 +57,22 @@ TEST(Syrk, Gemm)
 
   //====
 
-  // Symmetric_Matrix<double> C_AtA(3, 3);
-  // C_AtA = 1;
+  Symmetric_Matrix<double> C_AtA(3, 3);
+  C_AtA = 1;
 
-  // C_AtA = 2 * transpose(A) * identity(A) + 3 * C_AtA;
+  C_AtA = 2 * transpose(A) * identity(A) + 3 * C_AtA;
+
+  EXPECT_EQ(C_AtA(0, 0), 2 * AtA(0, 0) + 3);
+  EXPECT_EQ(C_AtA(1, 0), 2 * AtA(1, 0) + 3);
+  EXPECT_EQ(C_AtA(2, 0), 2 * AtA(2, 0) + 3);
+
+  //  EXPECT_EQ(C_AtA(0, 1), 2 * AtA(0, 1) + 3);
+  EXPECT_EQ(C_AtA(1, 1), 2 * AtA(1, 1) + 3);
+  EXPECT_EQ(C_AtA(2, 1), 2 * AtA(2, 1) + 3);
+
+  //
+  //
+  EXPECT_EQ(C_AtA(2, 2), 2 * AtA(2, 2) + 3);
 
   //================
 

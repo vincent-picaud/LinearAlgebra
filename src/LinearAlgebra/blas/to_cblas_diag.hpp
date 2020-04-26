@@ -18,13 +18,13 @@
 #include "LinearAlgebra/dense/matrix_special_structure_enum.hpp"
 #include "LinearAlgebra/utils/crtp.hpp"
 #include "LinearAlgebra/utils/is_complete.hpp"
-#include "LinearAlgebra/utils/undefined.hpp"
 
 namespace LinearAlgebra
 {
   namespace Blas
   {
-    // Concerning SFINAE it is more robust to always allows _possible_ initialization than to introduce "incomplete type":
+    // Concerning SFINAE:
+    // it is more robust to always allows _possible_ initialization than to introduce "incomplete type":
     //
     // See:
     //      https://stackoverflow.com/questions/44340209/special-rules-regarding-sfinae-for-incomplete-types
@@ -55,19 +55,7 @@ namespace LinearAlgebra
     //                                                           x.data(),
     //                                                           x.increment()))>>
     template <typename T, typename ENABLE = void>
-    struct To_CBlas_Diag
-    {
-      static constexpr Undefined value{};
-    };
-
-    // Then the predicate to check if defined or not
-    template <typename T>
-    struct Support_CBlas_Diag
-        : std::integral_constant<
-              bool,
-              not std::is_same_v<decltype(To_CBlas_Diag<T>::value), const Undefined>>
-    {
-    };
+    struct To_CBlas_Diag;
 
     //================================================================
 
@@ -114,7 +102,7 @@ namespace LinearAlgebra
     constexpr auto To_CBlas_Diag_v = To_CBlas_Diag<T>::value;
 
     template <typename T>
-    constexpr auto Support_CBlas_Diag_v = Support_CBlas_Diag<T>::value;
+    constexpr auto Support_CBlas_Diag_v = Is_Complete_v<To_CBlas_Diag<T>>;
 
   }  // namespace Blas
 }  // namespace LinearAlgebra

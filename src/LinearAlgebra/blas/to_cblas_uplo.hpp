@@ -14,26 +14,13 @@
 #include "LinearAlgebra/dense/matrix_storage_mask_enum.hpp"
 #include "LinearAlgebra/utils/crtp.hpp"
 #include "LinearAlgebra/utils/is_complete.hpp"
-#include "LinearAlgebra/utils/undefined.hpp"
 
 namespace LinearAlgebra
 {
   namespace Blas
   {
-    // Allows instantation, even if not defined
     template <typename T, typename ENABLE = void>
-    struct To_CBlas_UpLo
-    {
-      static constexpr Undefined value{};
-    };
-    // Then the predicate to check if defined or not
-    template <typename T>
-    struct Support_CBlas_UpLo
-        : std::integral_constant<
-              bool,
-              not std::is_same_v<decltype(To_CBlas_UpLo<T>::value), const Undefined>>
-    {
-    };
+    struct To_CBlas_UpLo;
 
     //================================================================
 
@@ -93,7 +80,7 @@ namespace LinearAlgebra
     constexpr auto To_CBlas_UpLo_v = To_CBlas_UpLo<T>::value;
 
     template <typename T>
-    constexpr auto Support_CBlas_UpLo_v = Support_CBlas_UpLo<T>::value;
+    constexpr auto Support_CBlas_UpLo_v = Is_Complete_v<To_CBlas_UpLo<T>>;
 
   }  // namespace Blas
 }  // namespace LinearAlgebra

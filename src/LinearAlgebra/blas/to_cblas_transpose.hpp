@@ -12,24 +12,13 @@
 
 #include "LinearAlgebra/expr/expr_tags.hpp"  // for _matrix_unary_op_t_<Matrix_Unary_Op_Enum::XXX>
 #include "LinearAlgebra/utils/is_complete.hpp"
-#include "LinearAlgebra/utils/undefined.hpp"
 
 namespace LinearAlgebra
 {
   namespace Blas
   {
-    // Tolerate instantation, even if not defined
     template <Matrix_Unary_Op_Enum OP_M>
     struct To_CBlas_Transpose;
-
-    // Then the predicate to check if defined or not
-    template <Matrix_Unary_Op_Enum OP_M>
-    struct Support_CBlas_Transpose
-        : std::integral_constant<
-              bool,
-              not std::is_same_v<decltype(To_CBlas_Transpose<OP_M>::value), const Undefined>>
-    {
-    };
 
     //================================================================
 
@@ -58,7 +47,7 @@ namespace LinearAlgebra
     constexpr auto To_CBlas_Transpose_v = To_CBlas_Transpose<OP_M>::value;
 
     template <Matrix_Unary_Op_Enum OP_M>
-    constexpr auto Support_CBlas_Transpose_v = Support_CBlas_Transpose<OP_M>::value;
+    constexpr auto Support_CBlas_Transpose_v = Is_Complete_v<To_CBlas_Transpose<OP_M>>;
 
   }  // namespace Blas
 }  // namespace LinearAlgebra

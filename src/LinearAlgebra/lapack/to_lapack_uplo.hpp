@@ -16,26 +16,13 @@
 #include "LinearAlgebra/lapack/lapack_enum.hpp"
 #include "LinearAlgebra/utils/crtp.hpp"
 #include "LinearAlgebra/utils/is_complete.hpp"
-#include "LinearAlgebra/utils/undefined.hpp"
 
 namespace LinearAlgebra
 {
   namespace Lapack
   {
-    // Allows instantation, even if not defined
     template <typename T, typename ENABLE = void>
-    struct To_Lapack_UpLo
-    {
-      static constexpr Undefined value{};
-    };
-    // Then the predicate to check if defined or not
-    template <typename T>
-    struct Support_Lapack_UpLo
-        : std::integral_constant<
-              bool,
-              not std::is_same_v<decltype(To_Lapack_UpLo<T>::value), const Undefined>>
-    {
-    };
+    struct To_Lapack_UpLo;
 
     template <>
     struct To_Lapack_UpLo<
@@ -94,7 +81,7 @@ namespace LinearAlgebra
     constexpr auto To_Lapack_UpLo_v = To_Lapack_UpLo<T>::value;
 
     template <typename T>
-    constexpr auto Support_Lapack_UpLo_v = Support_Lapack_UpLo<T>::value;
+    constexpr auto Support_Lapack_UpLo_v = Is_Complete_v<To_Lapack_UpLo<T>>;
 
   }  // namespace Lapack
 }  // namespace LinearAlgebra

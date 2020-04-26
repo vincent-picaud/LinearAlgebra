@@ -108,7 +108,44 @@ namespace LinearAlgebra::Blas
 
   //==== trmv ====
   //
-  template <Matrix_Unary_Op_Enum OP, typename X_IMPL, typename M_IMPL>
+  template <
+      Matrix_Unary_Op_Enum OP,
+      typename X_IMPL,
+      typename M_IMPL,
+      // CAVEAT: This one is REQUIRED to avoid a HARD error and make
+      //         SFINAE works as expected.
+      //
+      // Note: If required you can use the same scheme for UpLo etc.. by adding
+      //
+      //       typename ENABLED_To_CBlas_UpLo = std::enable_if_t<Support_CBlas_UpLo_v<M_IMPL>>>
+      //
+      //
+      // The key point to remember is that
+      //
+      //       "Substitution proceeds in LEXICAL ORDER and stops when
+      //       a failure is encountered."
+      //
+      // Illuminating example: https://en.cppreference.com/w/cpp/language/sfinae
+      // template <typename A>
+      // struct B { using type = typename A::type; };
+      //
+      //----------------------------------------------------------------
+      // template <
+      //   class T,
+      //   class U = typename T::type,      // SFINAE failure if T has no member type
+      //   class V = typename B<T>::type    // hard error if T has no member type
+      //                                    // (guaranteed to not occur as of C++14 because
+      //                                    //  substitution into the default template argument
+      //                                    //  of U would fail first)
+      // > void foo (int);
+      //----------------------------------------------------------------
+      //
+      //
+      // See: extra information (not as illuminating as the previous example)
+      //      https://stackoverflow.com/questions/44340209/special-rules-regarding-sfinae-for-incomplete-types
+      //      https://stackoverflow.com/questions/15260685/what-exactly-is-the-immediate-context-mentioned-in-the-c11-standard-for-whic
+      //
+      typename ENABLED_To_CBlas_Diag = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
   auto
   trmv(const _matrix_unary_op_t_<OP> op,
        const Dense_Matrix_Crtp<M_IMPL>& M,
@@ -136,7 +173,11 @@ namespace LinearAlgebra::Blas
 
   //==== trsv ====
   //
-  template <Matrix_Unary_Op_Enum OP, typename X_IMPL, typename M_IMPL>
+  template <Matrix_Unary_Op_Enum OP,
+            typename X_IMPL,
+            typename M_IMPL,
+            // CAVEAT: see trmv note
+            typename ENABLED_To_CBlas_Diag = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
   auto
   trsv(const _matrix_unary_op_t_<OP> op,
        const Dense_Matrix_Crtp<M_IMPL>& M,

@@ -16,6 +16,7 @@
 #include "LinearAlgebra/blas/to_cblas_transpose.hpp"
 #include "LinearAlgebra/blas/to_cblas_uplo.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/matrix_view.hpp"
 #include "LinearAlgebra/dense/memory_chunk_aliasing_p.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
@@ -299,5 +300,96 @@ namespace LinearAlgebra::Blas
          beta,
          Y.data(),
          Y.increment());
+  }
+
+  /////////////
+  // Level 3 //
+  /////////////
+  //
+  //                 options                          dim      scalar matrix  matrix  scalar matrix  prefixes
+  //
+  // - [ ] : _GEMM (             TRANSA, TRANSB,      M, N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
+  // - [ ] : _SYMM ( SIDE, UPLO,                      M, N,    ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
+  // - [ ] : _HEMM ( SIDE, UPLO,                      M, N,    ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) C, Z
+  // - [X] : _SYRK (       UPLO, TRANS,                  N, K, ALPHA, A, LDA,         BETA,  C, LDC ) S, D, C, Z
+  // - [ ] : _HERK (       UPLO, TRANS,                  N, K, ALPHA, A, LDA,         BETA,  C, LDC ) C, Z
+  // - [ ] : _SYR2K(       UPLO, TRANS,                  N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
+  // - [ ] : _HER2K(       UPLO, TRANS,                  N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) C, Z
+  // - [ ] : _TRMM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
+  // - [ ] : _TRSM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
+
+  //==== syrk ====
+  //
+
+  // AAt
+  template <typename C_IMPL,
+            typename A_IMPL,
+            // CAVEAT: see trmv note
+            typename ENABLED_To_CBlas_UpLo = std::enable_if_t<Support_CBlas_UpLo_v<C_IMPL>>>
+  auto
+  syrk_AAt(const Element_Type_t<A_IMPL>& alpha,
+           const Dense_Matrix_Crtp<A_IMPL>& A,
+           const Element_Type_t<C_IMPL>& beta,
+           Dense_Matrix_Crtp<C_IMPL>& C)
+      -> std::enable_if_t<Is_Full_Matrix_v<A_IMPL> and Is_Symmetric_Matrix_v<C_IMPL> and
+                          Always_True_v<decltype(syrk(CblasColMajor,
+                                                      To_CBlas_UpLo_v<C_IMPL>,
+                                                      CblasNoTrans,  // AAt
+                                                      C.I_size(),
+                                                      A.J_size(),
+                                                      alpha,
+                                                      A.data(),
+                                                      A.leading_dimension(),
+                                                      beta,
+                                                      C.data(),
+                                                      C.leading_dimension()))>>
+  {
+    syrk(CblasColMajor,
+         To_CBlas_UpLo_v<C_IMPL>,
+         CblasNoTrans,  // AAt
+         C.I_size(),
+         A.J_size(),
+         alpha,
+         A.data(),
+         A.leading_dimension(),
+         beta,
+         C.data(),
+         C.leading_dimension());
+  }
+
+  // AtA
+  template <typename C_IMPL,
+            typename A_IMPL,
+            // CAVEAT: see trmv note
+            typename ENABLED_To_CBlas_UpLo = std::enable_if_t<Support_CBlas_UpLo_v<C_IMPL>>>
+  auto
+  syrk_AtA(const Element_Type_t<A_IMPL>& alpha,
+           const Dense_Matrix_Crtp<A_IMPL>& A,
+           const Element_Type_t<C_IMPL>& beta,
+           Dense_Matrix_Crtp<C_IMPL>& C)
+      -> std::enable_if_t<Is_Full_Matrix_v<A_IMPL> and Is_Symmetric_Matrix_v<C_IMPL> and
+                          Always_True_v<decltype(syrk(CblasColMajor,
+                                                      To_CBlas_UpLo_v<C_IMPL>,
+                                                      CblasTrans,  // AtA
+                                                      C.I_size(),
+                                                      A.I_size(),
+                                                      alpha,
+                                                      A.data(),
+                                                      A.leading_dimension(),
+                                                      beta,
+                                                      C.data(),
+                                                      C.leading_dimension()))>>
+  {
+    syrk(CblasColMajor,
+         To_CBlas_UpLo_v<C_IMPL>,
+         CblasTrans,  // AtA
+         C.I_size(),
+         A.I_size(),
+         alpha,
+         A.data(),
+         A.leading_dimension(),
+         beta,
+         C.data(),
+         C.leading_dimension());
   }
 }  // namespace LinearAlgebra::Blas

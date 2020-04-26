@@ -258,4 +258,46 @@ namespace LinearAlgebra::Blas
          Y.data(),
          Y.increment());
   }
+
+  //==== gemv ====
+  //
+  template <Matrix_Unary_Op_Enum OP,
+            typename M_IMPL,
+            typename X_IMPL,
+            typename Y_IMPL,
+            typename ENABLED_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP>>>
+  auto
+  gemv(const Element_Type_t<Y_IMPL>& alpha,
+       const _matrix_unary_op_t_<OP> op,
+       const Dense_Matrix_Crtp<M_IMPL>& M,
+       const Dense_Vector_Crtp<X_IMPL>& X,
+       const Element_Type_t<Y_IMPL>& beta,
+       Dense_Vector_Crtp<Y_IMPL>& Y)
+      -> std::enable_if_t<Is_Full_Matrix_v<M_IMPL> and
+                          Always_True_v<decltype(gemv(CblasColMajor,
+                                                      To_CBlas_Transpose_v<OP>,
+                                                      M.I_size(),
+                                                      M.J_size(),
+                                                      alpha,
+                                                      M.data(),
+                                                      M.leading_dimension(),
+                                                      X.data(),
+                                                      X.increment(),
+                                                      beta,
+                                                      Y.data(),
+                                                      Y.increment()))>>
+  {
+    gemv(CblasColMajor,
+         To_CBlas_Transpose_v<OP>,
+         M.I_size(),
+         M.J_size(),
+         alpha,
+         M.data(),
+         M.leading_dimension(),
+         X.data(),
+         X.increment(),
+         beta,
+         Y.data(),
+         Y.increment());
+  }
 }  // namespace LinearAlgebra::Blas

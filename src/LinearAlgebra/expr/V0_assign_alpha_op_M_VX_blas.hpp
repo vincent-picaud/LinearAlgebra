@@ -26,6 +26,37 @@
 namespace LinearAlgebra
 {
   //================================================================
+  // gemv
+  //================================================================
+  //
+  // vector0 = alpha * op(M1) * vector1
+  // vector0 = * * alpha op1 matrix1 vector1
+  //
+  template <typename ALPHA_IMPL,
+            Matrix_Unary_Op_Enum OP1_ENUM,
+            typename VECTOR0_IMPL,
+            typename VECTOR1_IMPL,
+            typename MATRIX1_IMPL>
+  auto
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+         Dense_Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
+      -> std::enable_if_t<
+          Always_True_v<decltype(Blas::gemv(alpha.value(), op1, matrix1, vector1, 0, vector0))>>
+  {
+    Blas::gemv(alpha.value(), op1, matrix1, vector1, 0, vector0);
+
+    DEBUG_SET_SELECTED(selected);
+  }
+
+  //////////////////////////////////////////////////////////////////
+
+  //================================================================
   // symv
   //================================================================
   //
@@ -54,7 +85,6 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
 
-    
   //////////////////////////////////////////////////////////////////
 
   //================================================================
@@ -107,10 +137,9 @@ namespace LinearAlgebra
          const _matrix_unary_op_t_<OP1_ENUM> op1,
          const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
-      -> std::enable_if_t<
-          Always_True_v<decltype(Blas::copy(vector1, vector0))> and  // <-------------- here p
-          Always_True_v<decltype(Blas::scal(alpha.value(), vector0))> and
-          Always_True_v<decltype(Blas::trmv(op1, matrix1, vector0))>>
+      -> std::enable_if_t<Always_True_v<decltype(Blas::copy(vector1, vector0))> and
+                          Always_True_v<decltype(Blas::scal(alpha.value(), vector0))> and
+                          Always_True_v<decltype(Blas::trmv(op1, matrix1, vector0))>>
   {
     assert(matrix1.I_size() == matrix1.J_size());  // TODO: extend to the rectangular case
 

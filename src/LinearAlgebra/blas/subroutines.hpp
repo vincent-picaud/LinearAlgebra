@@ -478,7 +478,7 @@ namespace LinearAlgebra::Blas
   }
 
   /////////////
-  // Level 2 //
+  // Level 3 //
   /////////////
   //
   //                 options                          dim      scalar matrix  matrix  scalar matrix  prefixes

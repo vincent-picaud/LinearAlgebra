@@ -1,3 +1,4 @@
+#include "LinearAlgebra/dense/matrix_fwd.hpp"
 #include "LinearAlgebra/expr/V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp"
 
 #include "LinearAlgebra/matrix.hpp"
@@ -74,4 +75,18 @@ TEST(MetaExpr_Crtp, gemv)
   //  y = 1 * conjugate(M) * x + 1 * y;
 
   // y = transpose(M);
+}
+
+TEST(MetaExpr_Crtp, symv)
+{
+  using T        = float;
+  const size_t n = 5;
+  Symmetric_Matrix<T> M(n, n);
+  Vector<T> x(n), y(n);
+
+  x = 1;
+  y = 2;
+  M = 3;
+
+  y = M * x + 2 * x;
 }

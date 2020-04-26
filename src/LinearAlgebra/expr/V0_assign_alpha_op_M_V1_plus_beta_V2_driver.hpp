@@ -29,31 +29,31 @@ namespace LinearAlgebra
   // V0 = alpha * transpose(M1) * V1 + beta * V2
   // vector0 = + * * alpha op1 matrix1 vector1 * beta vector2
   //
-  template <typename ALPHA_IMPL,
-            typename BETA_IMPL,
-            Matrix_Unary_Op_Enum OP1_ENUM,
-            typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL,
-            typename MATRIX1_IMPL>
-  void
-  assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
-         Vector_Crtp<VECTOR0_IMPL>& vector0,
-         const _plus_t_,
-         const _product_t_,
-         const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha,
-         const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Vector_Crtp<VECTOR1_IMPL>& vector1,
-         const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta,
-         const Vector_Crtp<VECTOR2_IMPL>& vector2)
-  {
-    static_assert(Always_False_v<MATRIX1_IMPL>, "Not implemented");
+  // template <typename ALPHA_IMPL,
+  //           typename BETA_IMPL,
+  //           Matrix_Unary_Op_Enum OP1_ENUM,
+  //           typename VECTOR0_IMPL,
+  //           typename VECTOR1_IMPL,
+  //           typename VECTOR2_IMPL,
+  //           typename MATRIX1_IMPL>
+  // void
+  // assign(const Expr_Selector<Expr_Selector_Enum::Undefined> selected,
+  //        Vector_Crtp<VECTOR0_IMPL>& vector0,
+  //        const _plus_t_,
+  //        const _product_t_,
+  //        const _product_t_,
+  //        const Scalar_Crtp<ALPHA_IMPL>& alpha,
+  //        const _matrix_unary_op_t_<OP1_ENUM> op1,
+  //        const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  //        const Vector_Crtp<VECTOR1_IMPL>& vector1,
+  //        const _product_t_,
+  //        const Scalar_Crtp<BETA_IMPL>& beta,
+  //        const Vector_Crtp<VECTOR2_IMPL>& vector2)
+  // {
+  //   static_assert(Always_False_v<MATRIX1_IMPL>, "Not implemented");
 
-    DEBUG_SET_SELECTED(selected);
-  }
+  //   DEBUG_SET_SELECTED(selected);
+  // }
 
   //////////////////////////////////////////////////////////////////
   // User interface

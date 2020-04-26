@@ -1,7 +1,10 @@
 //
-// blas gemv routine for
+// Blas gemv, symv... routines for
 //
 //   V0 = α op(M) V1 + β V2
+//
+// CAVEAT: for the moment the interface (aka the assign function without Expr_Selector)
+//         systematically copy V0 <- V2 so that only the routines
 //
 #pragma once
 #include <csignal>
@@ -55,33 +58,35 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
 
-  template <typename ALPHA_IMPL,
-            typename BETA_IMPL,
-            Matrix_Unary_Op_Enum OP1_ENUM,
-            typename VECTOR0_IMPL,
-            typename VECTOR1_IMPL,
-            typename VECTOR2_IMPL,
-            typename MATRIX1_IMPL>
-  auto
-  assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
-         Dense_Vector_Crtp<VECTOR0_IMPL>& vector0,
-         const _plus_t_,
-         const _product_t_,
-         const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha,
-         const _matrix_unary_op_t_<OP1_ENUM> op1,
-         const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1,
-         const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta,
-         const Dense_Vector_Crtp<VECTOR2_IMPL>& vector2)
-      -> std::enable_if_t<Always_True_v<decltype(Blas::copy(vector2, vector0))> and
-                          Always_True_v<decltype(Blas::gemv(
-                              alpha.value(), op1, matrix1, vector1, beta.value(), vector0))>>
-  {
-    Blas::copy(vector2, vector0);
-    Blas::gemv(alpha, op1, matrix1, vector1, beta, vector0);
-  }
+  // Never invoked as V0 <- V2 was performed before
+  //
+  // template <typename ALPHA_IMPL,
+  //           typename BETA_IMPL,
+  //           Matrix_Unary_Op_Enum OP1_ENUM,
+  //           typename VECTOR0_IMPL,
+  //           typename VECTOR1_IMPL,
+  //           typename VECTOR2_IMPL,
+  //           typename MATRIX1_IMPL>
+  // auto
+  // assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+  //        Dense_Vector_Crtp<VECTOR0_IMPL>& vector0,
+  //        const _plus_t_,
+  //        const _product_t_,
+  //        const _product_t_,
+  //        const Scalar_Crtp<ALPHA_IMPL>& alpha,
+  //        const _matrix_unary_op_t_<OP1_ENUM> op1,
+  //        const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  //        const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1,
+  //        const _product_t_,
+  //        const Scalar_Crtp<BETA_IMPL>& beta,
+  //        const Dense_Vector_Crtp<VECTOR2_IMPL>& vector2)
+  //     -> std::enable_if_t<Always_True_v<decltype(Blas::copy(vector2, vector0))> and
+  //                         Always_True_v<decltype(Blas::gemv(
+  //                             alpha.value(), op1, matrix1, vector1, beta.value(), vector0))>>
+  // {
+  //   Blas::copy(vector2, vector0);
+  //   Blas::gemv(alpha, op1, matrix1, vector1, beta, vector0);
+  // }
 
   //================================================================
   // SYMV V0 = α op(M) V1 + β V0

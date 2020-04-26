@@ -493,8 +493,94 @@ namespace LinearAlgebra::Blas
   // - [ ] : _TRMM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
   // - [ ] : _TRSM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
 
+  //==== _gemm ====
   //
-  // Xsyrk:
+
+  void
+  gemm(const enum CBLAS_ORDER Order,
+       const enum CBLAS_TRANSPOSE TransA,
+       const enum CBLAS_TRANSPOSE TransB,
+       const std::size_t M,
+       const std::size_t N,
+       const std::size_t K,
+       const float alpha,
+       const float *A,
+       const std::size_t lda,
+       const float *B,
+       const std::size_t ldb,
+       const float beta,
+       float *C,
+       const std::size_t ldc)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_sgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
+  }
+
+  void
+  gemm(const enum CBLAS_ORDER Order,
+       const enum CBLAS_TRANSPOSE TransA,
+       const enum CBLAS_TRANSPOSE TransB,
+       const std::size_t M,
+       const std::size_t N,
+       const std::size_t K,
+       const double alpha,
+       const double *A,
+       const std::size_t lda,
+       const double *B,
+       const std::size_t ldb,
+       const double beta,
+       double *C,
+       const std::size_t ldc)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_dgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
+  }
+
+  void
+  gemm(const enum CBLAS_ORDER Order,
+       const enum CBLAS_TRANSPOSE TransA,
+       const enum CBLAS_TRANSPOSE TransB,
+       const std::size_t M,
+       const std::size_t N,
+       const std::size_t K,
+       const std::complex<float> &alpha,
+       const std::complex<float> *A,
+       const std::size_t lda,
+       const std::complex<float> *B,
+       const std::size_t ldb,
+       const std::complex<float> &beta,
+       std::complex<float> *C,
+       const std::size_t ldc)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_cgemm(Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, ldc);
+  }
+
+  void
+  gemm(const enum CBLAS_ORDER Order,
+       const enum CBLAS_TRANSPOSE TransA,
+       const enum CBLAS_TRANSPOSE TransB,
+       const std::size_t M,
+       const std::size_t N,
+       const std::size_t K,
+       const std::complex<double> &alpha,
+       const std::complex<double> *A,
+       const std::size_t lda,
+       const std::complex<double> *B,
+       const std::size_t ldb,
+       const std::complex<double> &beta,
+       std::complex<double> *C,
+       const std::size_t ldc)
+  {
+    BLAS_DEBUG_LOG;
+
+    cblas_zgemm(Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, ldc);
+  }
+
+  //==== Xsyrk ====
   //
   // C := alpha*A*A' + beta*C,
   // or

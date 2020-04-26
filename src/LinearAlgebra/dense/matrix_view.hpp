@@ -40,6 +40,8 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/matrix_fwd.hpp"
 #include "LinearAlgebra/dense/vector_view.hpp"
 #include "LinearAlgebra/utils/size_utils.hpp"
 
@@ -99,7 +101,7 @@ namespace LinearAlgebra
                                    LEADING_DIMENSION>(data, I_size, J_size, leading_dimension);
       }
     }
-  }  // Detail
+  }  // namespace Detail
 
   ////////////////////////////////////////////////////
   // Create view from a raw pointer: user interface //
@@ -180,7 +182,7 @@ namespace LinearAlgebra
             (I_begin == J_begin and I_end == J_end);
       return ok;
     }
-  }
+  }  // namespace Detail
 
   template <typename IMPL, typename I_BEGIN, typename I_END, typename J_BEGIN, typename J_END>
   auto
@@ -658,7 +660,7 @@ namespace LinearAlgebra
       return {};
     }
 
-  }
+  }  // namespace Detail
 
 #define LINALG_CODE_NO_DUPLICATE(CONST)                                                     \
   template <typename IMPL>                                                                  \
@@ -690,4 +692,4 @@ namespace LinearAlgebra
 
 #undef LINALG_CODE_NO_DUPLICATE
 
-}
+}  // namespace LinearAlgebra

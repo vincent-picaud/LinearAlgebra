@@ -16,7 +16,8 @@
 
 #pragma once
 
-#include "LinearAlgebra/dense/vector.hpp"
+#include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/vector_fwd.hpp"
 #include "LinearAlgebra/utils/is_std_integral_constant.hpp"
 
 namespace LinearAlgebra
@@ -99,7 +100,7 @@ namespace LinearAlgebra
 
       return {};
     }
-  }
+  }  // namespace Detail
 
   namespace Detail
   {
@@ -132,7 +133,7 @@ namespace LinearAlgebra
         return Default_Vector_View<ELEMENT_TYPE, SIZE, INCREMENT>(data, size, increment);
       }
     }
-  }  // Detail
+  }  // namespace Detail
 
   ////////////////////////////////////////////////////
   // Create view from a raw pointer: user interface //
@@ -210,4 +211,4 @@ namespace LinearAlgebra
     return create_vector_view(vector, std::integral_constant<size_t, 0>(), vector.size());
   }
 
-}
+}  // namespace LinearAlgebra

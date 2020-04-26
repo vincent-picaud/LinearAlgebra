@@ -38,13 +38,11 @@ namespace LinearAlgebra
          const Scalar_Crtp<BETA_IMPL>& beta,
          const Dense_Matrix_Crtp<MATRIX3_IMPL>& matrix3)
       -> std::enable_if_t<
-          true
-          //Is_Symmetric_Matrix_v<MATRIX0_IMPL> and Is_Symmetric_Matrix_v<MATRIX3_IMPL> and
-          //Is_Full_Matrix_v<MATRIX1_IMPL> and Is_Full_Matrix_v<MATRIX2_IMPL> and
-          //        Always_True_v<decltype(assign(matrix0, matrix3))> and
-          //Always_True_v<decltype(Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0))>
-          //
-          >
+          Is_Symmetric_Matrix_v<MATRIX0_IMPL> and Is_Symmetric_Matrix_v<MATRIX3_IMPL> and
+          Is_Full_Matrix_v<MATRIX1_IMPL> and Is_Full_Matrix_v<MATRIX2_IMPL> and
+          Always_True_v<decltype(assign(matrix0, matrix3))> and
+          Always_True_v<decltype(Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0))>>
+
   {
     assert(same_mathematical_object_p(matrix1.impl(), matrix2.impl()));
 
@@ -62,7 +60,7 @@ namespace LinearAlgebra
   //
   // M0 := α.M1^t.M1 + β.M0
   //
-  //
+
 }  // namespace LinearAlgebra
 
 #endif  // HAS_BLAS

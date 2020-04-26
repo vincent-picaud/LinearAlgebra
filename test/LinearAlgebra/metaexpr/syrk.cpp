@@ -1,8 +1,8 @@
 
 #include "LinearAlgebra/dense/matrix_fwd.hpp"
+#include "LinearAlgebra/expr/M_eq_aMM_bM_matrix.hpp"
 #include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/vector.hpp"
-#include "LinearAlgebra/expr/M_eq_aMM_bM_matrix.hpp"
 
 #include <gtest/gtest.h>
 
@@ -43,16 +43,26 @@ TEST(Syrk, Gemm)
   AtA(1, 2) = -20;
   AtA(2, 2) = 20;
 
-  Symmetric_Matrix<double> C_AAt(2, 2), C_AtA(3, 3);
+  //================
+
+  Symmetric_Matrix<double> C_AAt(2, 2);
   C_AAt = 1;
-  C_AtA = 1;
 
   C_AAt = 2 * identity(A) * transpose(A) + 3 * C_AAt;
+
+  EXPECT_EQ(C_AAt(0, 0), 2 * AAt(0, 0) + 3);
+  EXPECT_EQ(C_AAt(1, 0), 2 * AAt(1, 0) + 3);
+
+  EXPECT_EQ(C_AAt(1, 1), 2 * AAt(1, 1) + 3);
+
+  //====
+
+  // Symmetric_Matrix<double> C_AtA(3, 3);
+  // C_AtA = 1;
+
   // C_AtA = 2 * transpose(A) * identity(A) + 3 * C_AtA;
 
-  // EXPECT_EQ(C_AAt(0, 0), AAt(0, 0));
-  // EXPECT_EQ(C_AAt(1, 0), AAt(1, 0));
-  // EXPECT_EQ(C_AAt(2, 0), AAt(2, 0));
+  //================
 
   // Matrix<double> Full_C_AAt(2, 2), Full_C_AtA(3, 3);
 

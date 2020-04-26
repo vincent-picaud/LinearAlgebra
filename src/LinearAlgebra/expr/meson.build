@@ -54,7 +54,7 @@ LinearAlgebra_headers += [
 
   'expr/expr_debug.hpp',
 
-  'expr/M_eq_aMM_bM.hpp', # see subdir('M_eq_aMM_bM')
+
   'expr/M_eq_aMM_bM_matrix.hpp', # specialization for dense default matrix
 
   # scalar_ref introduction

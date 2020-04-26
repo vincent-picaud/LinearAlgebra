@@ -53,20 +53,19 @@ namespace LinearAlgebra
 
     // Delegate computation
     //
-    assert(0);
-    // assign(Expr_Selector<>(),
-    //        matrix0.impl(),
-    //        _plus_,
-    //        _product_,
-    //        _product_,
-    //        alpha,
-    //        op1,
-    //        matrix1.impl(),
-    //        op2,
-    //        matrix2.impl(),
-    //        _product_,
-    //        beta,
-    //        matrix3.impl());
+    assign(Expr_Selector<>(),
+           matrix0.impl(),
+           _plus_,
+           _product_,
+           _product_,
+           alpha,
+           op1,
+           matrix1.impl(),
+           op2,
+           matrix2.impl(),
+           _product_,
+           beta,
+           matrix3.impl());
   }
 
   //////////////////////////////////////////////////////////////////

@@ -46,35 +46,11 @@ namespace LinearAlgebra
          const _product_t_,
          const Scalar_Crtp<BETA_IMPL>& beta,
          const _lhs_t_)
-      -> std::enable_if_t<
-          // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-          // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<ALPHA_IMPL>,
-                          Element_Type_t<BETA_IMPL>,
-                          Element_Type_t<MATRIX1_IMPL>,
-                          Element_Type_t<VECTOR0_IMPL>,
-                          Element_Type_t<VECTOR1_IMPL>> &&
-          // Scalar support
-          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-          // Generic matrix
-          (MATRIX1_IMPL::matrix_special_structure_type::value ==
-           Matrix_Special_Structure_Enum::None)>
+      -> std::enable_if_t<Always_True_v<
+          decltype(Blas::gemv(alpha.value(), op1, matrix1, vector1, beta.value(), vector0))>>
   {
     assert(are_not_aliased_p(vector0, vector1) and are_not_aliased_p(vector0, matrix1));
-
-    Blas::gemv(CblasColMajor,
-               Blas::To_CBlas_Transpose_v<OP1_ENUM>,
-               matrix1.I_size(),
-               matrix1.J_size(),
-               alpha.value(),
-               matrix1.data(),
-               matrix1.leading_dimension(),
-               vector1.data(),
-               vector1.increment(),
-               beta.value(),
-               vector0.data(),
-               vector0.increment());
+    Blas::gemv(alpha.value(), op1, matrix1, vector1, beta.value(), vector0);
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -92,31 +68,19 @@ namespace LinearAlgebra
          const _plus_t_,
          const _product_t_,
          const _product_t_,
-         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& alpha,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const _matrix_unary_op_t_<OP1_ENUM> op1,
          const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1,
          const _product_t_,
-         const Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, VECTOR2_IMPL, MATRIX1_IMPL>& beta,
+         const Scalar_Crtp<BETA_IMPL>& beta,
          const Dense_Vector_Crtp<VECTOR2_IMPL>& vector2)
-      -> std::enable_if_t<
-          // Supported matrix op?
-          Blas::Support_CBlas_Transpose_v<OP1_ENUM> &&
-          // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<ALPHA_IMPL>,
-                          Element_Type_t<BETA_IMPL>,
-                          Element_Type_t<MATRIX1_IMPL>,
-                          Element_Type_t<VECTOR0_IMPL>,
-                          Element_Type_t<VECTOR1_IMPL>,
-                          Element_Type_t<VECTOR2_IMPL>> &&
-          // Scalar support
-          Blas::Is_CBlas_Supported_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-          // Generic matrix
-          (MATRIX1_IMPL::matrix_special_structure_type::value ==
-           Matrix_Special_Structure_Enum::None)>
+      -> std::enable_if_t<Always_True_v<decltype(Blas::copy(vector2, vector0))> and
+                          Always_True_v<decltype(Blas::gemv(
+                              alpha.value(), op1, matrix1, vector1, beta.value(), vector0))>>
   {
-    assign(vector0, vector2);
-    assign(selected, vector0, alpha, op1, matrix1, vector1, _plus_, beta, _lhs_);
+    Blas::copy(vector2, vector0);
+    Blas::gemv(alpha, op1, matrix1, vector1, beta, vector0);
   }
 
   //================================================================
@@ -149,37 +113,14 @@ namespace LinearAlgebra
          const _product_t_,
          const Scalar_Crtp<BETA_IMPL>& beta,
          const _lhs_t_)
-      -> std::enable_if_t<
-          // Supported matrix op?
-          (OP1_ENUM == Matrix_Unary_Op_Enum::Identity or
-           OP1_ENUM == Matrix_Unary_Op_Enum::Transpose) and
-          // Same scalar everywhere
-          All_Same_Type_v<Element_Type_t<ALPHA_IMPL>,
-                          Element_Type_t<BETA_IMPL>,
-                          Element_Type_t<MATRIX1_IMPL>,
-                          Element_Type_t<VECTOR0_IMPL>,
-                          Element_Type_t<VECTOR1_IMPL>> &&
-          // Scalar support
-          Blas::Is_CBlas_Supported_Real_Scalar_v<Element_Type_t<MATRIX1_IMPL>> &&
-          // Matrix structure
-          (MATRIX1_IMPL::matrix_special_structure_type::value ==
-           Matrix_Special_Structure_Enum::Symmetric)>
+      -> std::enable_if_t<Always_True_v<
+          decltype(Blas::symv(alpha.value(), op1, matrix1, vector1, beta.value(), vector0))>>
   {
     // Sanity check
     assert(matrix1.I_size() == matrix1.J_size());
     assert(are_not_aliased_p(vector0, vector1) and are_not_aliased_p(vector0, matrix1));
 
-    Blas::symv(CblasColMajor,
-               Blas::To_CBlas_UpLo_v<MATRIX1_IMPL>,
-               matrix1.I_size(),
-               alpha.value(),
-               matrix1.data(),
-               matrix1.leading_dimension(),
-               vector1.data(),
-               vector1.increment(),
-               beta.value(),
-               vector0.data(),
-               vector0.increment());
+    Blas::symv(alpha.value(), op1, matrix1, vector1, beta.value(), vector0);
 
     DEBUG_SET_SELECTED(selected);
   }

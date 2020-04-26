@@ -76,11 +76,35 @@ TEST(Syrk, Gemm)
 
   //================
 
-  // Matrix<double> Full_C_AAt(2, 2), Full_C_AtA(3, 3);
+  Matrix<double> Full_C_AAt(2, 2);
 
-  // Full_C_AAt = 1;
-  // Full_C_AtA = 1;
+  Full_C_AAt = 1;
 
-  // Full_C_AAt = 2 * identity(A) * transpose(A) + 3 * Full_C_AAt;
-  // Full_C_AtA = 2 * transpose(A) * identity(A) + 3 * Full_C_AtA;
+  Full_C_AAt = 2 * identity(A) * transpose(A) + 3 * Full_C_AAt;
+
+  EXPECT_EQ(Full_C_AAt(0, 0), 2 * AAt(0, 0) + 3);
+  EXPECT_EQ(Full_C_AAt(1, 0), 2 * AAt(1, 0) + 3);
+
+  EXPECT_EQ(Full_C_AAt(0, 1), 2 * AAt(0, 1) + 3);
+  EXPECT_EQ(Full_C_AAt(1, 1), 2 * AAt(1, 1) + 3);
+
+  //====
+
+  Matrix<double> Full_C_AtA(3, 3);
+
+  Full_C_AtA = 1;
+
+  Full_C_AtA = 2 * transpose(A) * identity(A) + 3 * Full_C_AtA;
+
+  EXPECT_EQ(Full_C_AtA(0, 0), 2 * AtA(0, 0) + 3);
+  EXPECT_EQ(Full_C_AtA(1, 0), 2 * AtA(1, 0) + 3);
+  EXPECT_EQ(Full_C_AtA(2, 0), 2 * AtA(2, 0) + 3);
+
+  EXPECT_EQ(Full_C_AtA(0, 1), 2 * AtA(0, 1) + 3);
+  EXPECT_EQ(Full_C_AtA(1, 1), 2 * AtA(1, 1) + 3);
+  EXPECT_EQ(Full_C_AtA(2, 1), 2 * AtA(2, 1) + 3);
+
+  EXPECT_EQ(Full_C_AtA(0, 2), 2 * AtA(0, 2) + 3);
+  EXPECT_EQ(Full_C_AtA(1, 2), 2 * AtA(1, 2) + 3);
+  EXPECT_EQ(Full_C_AtA(2, 2), 2 * AtA(2, 2) + 3);
 }

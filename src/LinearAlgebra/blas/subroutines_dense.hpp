@@ -308,7 +308,7 @@ namespace LinearAlgebra::Blas
   //
   //                 options                          dim      scalar matrix  matrix  scalar matrix  prefixes
   //
-  // - [ ] : _GEMM (             TRANSA, TRANSB,      M, N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
+  // - [X] : _GEMM (             TRANSA, TRANSB,      M, N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
   // - [ ] : _SYMM ( SIDE, UPLO,                      M, N,    ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
   // - [ ] : _HEMM ( SIDE, UPLO,                      M, N,    ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) C, Z
   // - [X] : _SYRK (       UPLO, TRANS,                  N, K, ALPHA, A, LDA,         BETA,  C, LDC ) S, D, C, Z
@@ -392,4 +392,57 @@ namespace LinearAlgebra::Blas
          C.data(),
          C.leading_dimension());
   }
+
+  //==== gemm ====
+  //
+  template <Matrix_Unary_Op_Enum OP1,
+            Matrix_Unary_Op_Enum OP2,
+            typename A_IMPL,
+            typename B_IMPL,
+            typename C_IMPL,
+            //
+            typename ENABLED_1_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP1>>,
+            typename ENABLED_2_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP2>>>
+  auto
+  gemm(const Element_Type_t<C_IMPL>& alpha,
+       const _matrix_unary_op_t_<OP1> op1,
+       const Dense_Matrix_Crtp<A_IMPL>& A,
+       const _matrix_unary_op_t_<OP2> op2,
+       const Dense_Matrix_Crtp<B_IMPL>& B,
+       const Element_Type_t<C_IMPL>& beta,
+       Dense_Matrix_Crtp<C_IMPL>& C)
+      -> std::enable_if_t<Is_Full_Matrix_v<A_IMPL> and Is_Full_Matrix_v<B_IMPL> and
+                          Is_Full_Matrix_v<C_IMPL> and
+                          Always_True_v<decltype(gemm(
+                              CblasColMajor,
+                              To_CBlas_Transpose_v<OP1>,
+                              To_CBlas_Transpose_v<OP2>,
+                              C.I_size(),
+                              C.J_size(),
+                              (does_it_transpose_matrix_dimension(op1) ? A.I_size() : A.J_size()),
+                              alpha,
+                              A.data(),
+                              A.leading_dimension(),
+                              B.data(),
+                              B.leading_dimension(),
+                              beta,
+                              C.data(),
+                              C.leading_dimension()))>>
+  {
+    gemm(CblasColMajor,
+         To_CBlas_Transpose_v<OP1>,
+         To_CBlas_Transpose_v<OP2>,
+         C.I_size(),
+         C.J_size(),
+         (does_it_transpose_matrix_dimension(op1) ? A.I_size() : A.J_size()),
+         alpha,
+         A.data(),
+         A.leading_dimension(),
+         B.data(),
+         B.leading_dimension(),
+         beta,
+         C.data(),
+         C.leading_dimension());
+  }
+
 }  // namespace LinearAlgebra::Blas

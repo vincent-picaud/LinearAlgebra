@@ -12,6 +12,8 @@ test_array = [
   'V0_assign_alpha_V1_plus_V0',
 
   'operator_overloading',
+
+  'syrk',
 ]
 
 foreach test : test_array

@@ -83,7 +83,7 @@ namespace LinearAlgebra::Blas
   // - [ ] : _HEMV ( UPLO,                 N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) C, Z
   // - [ ] : _HBMV ( UPLO,                 N, K,      ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) C, Z
   // - [ ] : _HPMV ( UPLO,                 N,         ALPHA, AP,     X, INCX, BETA,  Y, INCY ) C, Z
-  // - [ ] : _SYMV ( UPLO,                 N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D
+  // - [X] : _SYMV ( UPLO,                 N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D
   // - [ ] : _SBMV ( UPLO,                 N, K,      ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D
   // - [ ] : _SPMV ( UPLO,                 N,         ALPHA, AP,     X, INCX, BETA,  Y, INCY ) S, D
   // - [X] : _TRMV ( UPLO, TRANS, DIAG,    N,                A, LDA, X, INCX )                 S, D, C, Z
@@ -147,7 +147,9 @@ namespace LinearAlgebra::Blas
       //      https://stackoverflow.com/questions/44340209/special-rules-regarding-sfinae-for-incomplete-types
       //      https://stackoverflow.com/questions/15260685/what-exactly-is-the-immediate-context-mentioned-in-the-c11-standard-for-whic
       //
-      typename ENABLED_To_CBlas_Diag = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
+      typename ENABLED_To_CBlas_UpLo      = std::enable_if_t<Support_CBlas_UpLo_v<M_IMPL>>,
+      typename ENABLED_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP>>,
+      typename ENABLED_To_CBlas_Diag      = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
   auto
   trmv(const _matrix_unary_op_t_<OP> op,
        const Dense_Matrix_Crtp<M_IMPL>& M,
@@ -175,11 +177,15 @@ namespace LinearAlgebra::Blas
 
   //==== trsv ====
   //
-  template <Matrix_Unary_Op_Enum OP,
-            typename X_IMPL,
-            typename M_IMPL,
-            // CAVEAT: see trmv note
-            typename ENABLED_To_CBlas_Diag = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
+  template <
+      Matrix_Unary_Op_Enum OP,
+      typename X_IMPL,
+      typename M_IMPL,
+      // CAVEAT: see trmv note
+      typename ENABLED_To_CBlas_UpLo      = std::enable_if_t<Support_CBlas_UpLo_v<M_IMPL>>,
+      typename ENABLED_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP>>,
+      typename ENABLED_To_CBlas_Diag      = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
+
   auto
   trsv(const _matrix_unary_op_t_<OP> op,
        const Dense_Matrix_Crtp<M_IMPL>& M,
@@ -209,7 +215,11 @@ namespace LinearAlgebra::Blas
   //
   // CAVEAT: blas only provides float, double
   //
-  template <Matrix_Unary_Op_Enum OP, typename M_IMPL, typename X_IMPL, typename Y_IMPL>
+  template <Matrix_Unary_Op_Enum OP,
+            typename M_IMPL,
+            typename X_IMPL,
+            typename Y_IMPL,
+            typename ENABLED_To_CBlas_UpLo = std::enable_if_t<Support_CBlas_UpLo_v<M_IMPL>>>
   auto
   symv(const Element_Type_t<Y_IMPL>& alpha,
        const _matrix_unary_op_t_<OP> op,

@@ -496,7 +496,7 @@ namespace LinearAlgebra::Blas
   //==== _gemm ====
   //
 
-  void
+  static inline void
   gemm(const enum CBLAS_ORDER Order,
        const enum CBLAS_TRANSPOSE TransA,
        const enum CBLAS_TRANSPOSE TransB,
@@ -517,7 +517,7 @@ namespace LinearAlgebra::Blas
     cblas_sgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
   }
 
-  void
+  static inline void
   gemm(const enum CBLAS_ORDER Order,
        const enum CBLAS_TRANSPOSE TransA,
        const enum CBLAS_TRANSPOSE TransB,
@@ -538,7 +538,7 @@ namespace LinearAlgebra::Blas
     cblas_dgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
   }
 
-  void
+  static inline void
   gemm(const enum CBLAS_ORDER Order,
        const enum CBLAS_TRANSPOSE TransA,
        const enum CBLAS_TRANSPOSE TransB,
@@ -559,7 +559,7 @@ namespace LinearAlgebra::Blas
     cblas_cgemm(Order, TransA, TransB, M, N, K, &alpha, A, lda, B, ldb, &beta, C, ldc);
   }
 
-  void
+  static inline void
   gemm(const enum CBLAS_ORDER Order,
        const enum CBLAS_TRANSPOSE TransA,
        const enum CBLAS_TRANSPOSE TransB,

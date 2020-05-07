@@ -26,3 +26,7 @@ executable('lapack_potrf',
 	   'lapack_potrf.cpp',
 	   dependencies : [LinearAlgebra_dep])
 
+executable('lb_ub',
+	   'lb_ub.cpp',
+	   dependencies : [LinearAlgebra_dep])
+

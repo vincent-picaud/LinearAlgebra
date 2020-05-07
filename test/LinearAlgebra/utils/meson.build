@@ -8,6 +8,7 @@ test_array = [
   'has_static_dimension',
   'same_mathematical_object_p',
   'enum_class_to_value',
+  'lower_upper_bound',
 ]
 
 foreach test : test_array

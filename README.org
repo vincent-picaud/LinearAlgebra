@@ -9,6 +9,8 @@
 - [[#doc-todo][Doc (TODO)]]
   - [[#types][Types]]
     - [[#matrix-types][Matrix types]]
+  - [[#meta-programming][Meta-Programming]]
+    - [[#some-generic-matrix-type-predicates][Some generic matrix type predicates]]
   - [[#functions][Functions]]
     - [[#aliasing][Aliasing]]
     - [[#same-mathematical-object][Same mathematical object]]
@@ -19,7 +21,7 @@
   - [[#view-from-lowerupper-bounds][View from lower/upper bounds]]
   - [[#matrix-views-todo][Matrix views (TODO)]]
   - [[#conjugate-gradients][Conjugate gradients]]
-  - [[#direct-call-to-lapack-todo][Direct call to Lapack (TODO)]]
+  - [[#direct-call-to-lapack][Direct call to Lapack]]
 - [[#faq][FAQ]]
   - [[#resizable-vectormatrix-][Resizable vector/matrix ?]]
   - [[#expression-template][Expression Template]]
@@ -138,6 +140,58 @@ auto view = view_as_lower_triangular_strict(M.as_const());
 
  will return a constant view (a lightweight matrix where only pointers
  are stored and not owned).
+
+** Meta-Programming 
+
+*** Some generic matrix type predicates
+
+*File:* [[file:src/LinearAlgebra/utils/sfinae_vmt_helpers.hpp][LinearAlgebra/utils/sfinae_vmt_helpers.hpp]]
+
+*Note*: these predicates will also work for sparse matrices (they are
+      not restricted to dense one).
+
+Checks if the matrix is defined by its lower or upper part:
+
+#+BEGIN_SRC cpp :eval never
+template <typename MATRIX>
+constexpr bool Is_Upper_Matrix_Storage_v = Is_Upper_Matrix_Storage<MATRIX>::value;
+
+template <typename MATRIX>
+constexpr bool Is_Upper_Strict_Matrix_Storage_v = Is_Upper_Strict_Matrix_Storage<MATRIX>::value;
+
+template <typename MATRIX>
+constexpr bool Is_Lower_Matrix_Storage_v = Is_Lower_Matrix_Storage<MATRIX>::value;
+
+template <typename MATRIX>
+constexpr bool Is_Lower_Strict_Matrix_Storage_v = Is_Lower_Strict_Matrix_Storage<MATRIX>::value;
+#+END_SRC
+
+
+Checks for special structure:
+
+#+BEGIN_SRC cpp :eval never
+template <typename MATRIX>
+constexpr bool Is_Full_Matrix_v = Is_Full_Matrix<MATRIX>::value;
+
+template <typename MATRIX>
+constexpr bool Is_Symmetric_Matrix_v = Is_Symmetric_Matrix<MATRIX>::value;
+
+template <typename MATRIX>
+constexpr bool Is_Hermitian_Matrix_v = Is_Hermitian_Matrix<MATRIX>::value;
+
+template <typename MATRIX>
+constexpr bool Is_Triangular_Matrix_v = Is_Triangular_Matrix<MATRIX>::value;
+
+template <typename MATRIX>
+constexpr bool Is_Unit_Triangular_Matrix_v = Is_Unit_Triangular_Matrix<MATRIX>::value;
+#+END_SRC
+
+*Usage example:*
+
+#+BEGIN_SRC cpp :eval never
+static_assert(Is_Symmetric_Matrix_v<Symmetric_Matrix<double>>);
+static_assert(Is_Lower_Matrix_Storage_v<Symmetric_Matrix<double>>);
+#+END_SRC
 
 ** Functions
 
@@ -523,7 +577,7 @@ main()
 }
 #+END_src
 
-** Direct call to Lapack (TODO)
+** Direct call to Lapack
 
 #+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
 cat $(pwd)/examples/lapack_potrf.cpp

@@ -19,7 +19,8 @@ TEST(Subroutines_Dense, posv)
   fill_indexed([](auto i, auto j) { return 1 / T(i + j + 1); }, H);
   q = -1;
 
-  Lapack::posv(H, q);
+  auto info = Lapack::posv(H, q);
+  EXPECT_EQ(info,0);
 
   fill_indexed([](auto i, auto j) { return 1 / T(i + j + 1); }, H);
   Vector<T> q_dup(n);

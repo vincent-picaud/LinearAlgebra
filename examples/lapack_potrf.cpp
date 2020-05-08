@@ -31,6 +31,7 @@ main()
 
   // Create a constant view defining L
   // (symmetric matrix uses lower part)
+  static_assert(Is_Lower_Matrix_Storage_v<decltype(M)>);
   //
   auto L = create_matrix_view_lower_triangular(M.as_const());
   std::cout << "L :" << L << std::endl << std::endl;

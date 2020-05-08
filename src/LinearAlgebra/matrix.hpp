@@ -10,3 +10,7 @@
 #include "LinearAlgebra/metaexpr/metaexpr.hpp"
 
 #include "LinearAlgebra/scalar_functions/scalar_functions_matrix.hpp"
+
+// Add some useful functionalities
+//
+#include "LinearAlgebra/utils/sfinae_vmt_helpers.hpp"

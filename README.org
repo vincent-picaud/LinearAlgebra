@@ -4,6 +4,22 @@
 #+HTML_HEAD_EXTRA: <style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
 #+TITLE: A small C++ linear algebra library
 
+* Table of content                                       :TOC:QUOTE:noexport:
+#+BEGIN_QUOTE
+- [[#what-is-it][What is it?]]
+- [[#doc-todo][Doc (TODO)]]
+  - [[#types][Types]]
+  - [[#functions][Functions]]
+- [[#examples][Examples]]
+  - [[#matrix-views-todo][Matrix views (TODO)]]
+  - [[#conjugate-gradients][Conjugate gradients]]
+  - [[#direct-call-to-lapack-todo][Direct call to Lapack (TODO)]]
+- [[#faq][FAQ]]
+  - [[#resizable-vectormatrix-][Resizable vector/matrix ?]]
+  - [[#expression-template][Expression Template]]
+  - [[#tiny-objects--intrinsics][Tiny objects & intrinsics]]
+#+END_QUOTE
+
 * What is it?
 
 This is a light weight Linear Algebra C++17 library I am currently developing for my own stuff.

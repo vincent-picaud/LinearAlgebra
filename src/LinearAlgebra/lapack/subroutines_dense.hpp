@@ -6,11 +6,13 @@
 // Note: this a quite "abstract" header, hence we include "lapack.hpp"
 // and dense vector & matrix headers
 //
+#include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/lapack/lapack.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 
+#include "LinearAlgebra/lapack/to_lapack_uplo.hpp"
 #include "LinearAlgebra/utils/sfinae_vmt_helpers.hpp"
 
 namespace LinearAlgebra::Lapack
@@ -19,7 +21,24 @@ namespace LinearAlgebra::Lapack
   // potrf
   //////////////////////////////////////////////////////////////////
   //
-  // TODO
+  template <typename IMPL, typename = std::enable_if_t<Support_Lapack_UpLo_v<IMPL>>>
+  [[nodiscard]] auto
+  potrf(Dense_Matrix_Crtp<IMPL>& M) -> std::enable_if_t<
+      (Is_Hermitian_Matrix_v<IMPL> or Is_Symmetric_Matrix_v<IMPL>)and Always_True_v<
+          decltype(Lapack::potrf(Lapack::Lapack_Order_Enum::Column_Major,
+                                 Lapack::To_Lapack_UpLo_v<IMPL>,
+                                 M.I_size(),
+                                 M.data(),
+                                 M.leading_dimension()))>,
+      // return type
+      lapack_int>
+  {
+    return Lapack::potrf(Lapack::Lapack_Order_Enum::Column_Major,
+                         Lapack::To_Lapack_UpLo_v<IMPL>,
+                         M.I_size(),
+                         M.data(),
+                         M.leading_dimension());
+  }
 
   //////////////////////////////////////////////////////////////////
   // potrs & posv
@@ -208,4 +227,4 @@ namespace LinearAlgebra::Lapack
                         B_cpy.data(),                             //
                         A.I_size());                              //
   }
-}
+}  // namespace LinearAlgebra::Lapack

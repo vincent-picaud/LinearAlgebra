@@ -13,6 +13,7 @@
 #include "LinearAlgebra/lapack/is_lapack_supported_scalar.hpp"
 #include "LinearAlgebra/lapack/lapack_enum.hpp"
 #include "LinearAlgebra/lapack/subroutines.hpp"
+#include "LinearAlgebra/lapack/subroutines_dense.hpp"
 #include "LinearAlgebra/lapack/to_lapack_uplo.hpp"
 
 #endif

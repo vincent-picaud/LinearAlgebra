@@ -48,26 +48,26 @@ cat $(pwd)/examples/some_matrix_types.cpp
 
  #+RESULTS:
  #+BEGIN_src cpp :eval never
-#include "LinearAlgebra/dense/matrix.hpp"
-#include "LinearAlgebra/dense/vector.hpp"
+ #include "LinearAlgebra/dense/matrix.hpp"
+ #include "LinearAlgebra/dense/vector.hpp"
 
-#include <iostream>
+ #include <iostream>
 
-using namespace LinearAlgebra;
+ using namespace LinearAlgebra;
 
-int
-main()
-{
-  Matrix<double> M_1(4, 5);
+ int
+ main()
+ {
+   Matrix<double> M_1(4, 5);
 
-  Symmetric_Matrix<int> M_2(4, 4);
+   Symmetric_Matrix<int> M_2(4, 4);
 
-  Tiny_Strict_Lower_Triangular_Matrix<float, 4, 7> M_3;
+   Tiny_Strict_Lower_Triangular_Matrix<float, 4, 7> M_3;
 
-  std::cout << M_1 << std::endl;
-  std::cout << M_2 << std::endl;
-  std::cout << M_3 << std::endl;
-}
+   std::cout << M_1 << std::endl;
+   std::cout << M_2 << std::endl;
+   std::cout << M_3 << std::endl;
+ }
  #+END_src
 
  prints
@@ -77,23 +77,23 @@ main()
  #+END_SRC
 
  #+RESULTS:
- #+begin_example :eval never
+ #+BEGIN_example :eval never
 
-               0               0               0               0               0
-               0               0               0               0               0
-               0               0               0               0               0
-               0               0               0               0               0
+		0               0               0               0               0
+		0               0               0               0               0
+		0               0               0               0               0
+		0               0               0               0               0
 
-               0               X               X               X
-               0               0               X               X
-               0               0               0               X
-               0               0               0               0
+		0               X               X               X
+		0               0               X               X
+		0               0               0               X
+		0               0               0               0
 
-               X               X               X               X               X               X               X
-               0               X               X               X               X               X               X
-               0               0               X               X               X               X               X
-               0               0               0               X               X               X               X
- #+end_example
+		X               X               X               X               X               X               X
+		0               X               X               X               X               X               X
+		0               0               X               X               X               X               X
+		0               0               0               X               X               X               X
+ #+END_example
 
  The generic definition for these matrix types is:
  #+begin_src cpp :eval never
@@ -553,25 +553,28 @@ main()
 
   w = M * v;
 
-  std::cout << "symmetric M :" << M << std::endl;
-  std::cout << "v       :" << v << std::endl;
-  std::cout << "w = M.v :" << w << std::endl;
+  std::cout << "symmetric M :" << M << std::endl << std::endl;
+  std::cout << "v :" << v << std::endl << std::endl;
+  std::cout << "w = M.v :" << w << std::endl << std::endl;
 
   // Low level call of lapack: L*L^t decomposition
   //
-  int info = Lapack::potrf(Lapack::Lapack_Order_Enum::Column_Major, Lapack::Lapack_UpLo_Enum::Low,
-                           M.I_size(), M.data(), M.leading_dimension());
+  int info = Lapack::potrf(M);
   assert(info == 0);
 
+  // Create a constant view defining L
+  // (symmetric matrix uses lower part)
+  //
   auto L = create_matrix_view_lower_triangular(M.as_const());
-  std::cout << "L:" << L << std::endl;
+  std::cout << "L :" << L << std::endl << std::endl;
 
-  // inplace solve of w = M.v = L.L^t.v
-  // caveat: at the end w "contains" v
+  // inplace solve of w = M.v = L.L^t.v ...
+  // ... at the end w "contains" v
+  //
   w = inverse(L) * w;             // L^(-1).w = L^t.v
   w = inverse(transpose(L)) * w;  // L^(-t).L^(-1).w = v
 
-  std::cout << "v such that w=M.v :" << std::endl << w << std::endl;
+  std::cout << "v such that w=M.v :" << w << std::endl;
 }
 #+END_src
 
@@ -589,26 +592,29 @@ symmetric M :
                0               0              10               X               X
                0               0               0              10               X
                5               0               0               0              10
-v       :
+
+v :
 1
 1
 1
 1
 1
+
 w = M.v :
 15
 10
 10
 10
 15
-L:
+
+L :
          3.16228               X               X               X               X
                0         3.16228               X               X               X
                0               0         3.16228               X               X
                0               0               0         3.16228               X
          1.58114               0               0               0         2.73861
-v such that w=M.v :
 
+v such that w=M.v :
 1
 1
 1

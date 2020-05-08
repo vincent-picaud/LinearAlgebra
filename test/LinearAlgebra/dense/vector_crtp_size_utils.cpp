@@ -1,4 +1,3 @@
-#include "LinearAlgebra/dense/vector_crtp_size_utils.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 
 #include <gtest/gtest.h>

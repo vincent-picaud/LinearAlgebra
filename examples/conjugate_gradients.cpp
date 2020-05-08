@@ -3,21 +3,6 @@
 
 using namespace LinearAlgebra;
 
-// Illustrates dynamic vs static size vectors
-//
-template <typename T>
-auto
-create_vector(const std::size_t n)
-{
-  return Vector<T>{n};
-}
-template <typename T, std::size_t N>
-auto
-create_vector(const std::integral_constant<std::size_t, N>)
-{
-  return Tiny_Vector<T, N>{};
-}
-
 // Basic CG implementation
 // https://en.wikipedia.org/wiki/Conjugate_gradient_method
 //
@@ -25,28 +10,24 @@ template <typename A_IMPL, typename X0_IMPL, typename B_IMPL>
 bool
 cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0, const Dense_Vector_Crtp<B_IMPL>& b)
 {
+  // Sanity checks
+  //
+  assert(all_sizes_are_equal_p(A.I_size(), A.J_size(), X0.size(), b.size()));
+  static_assert(Is_Symmetric_Matrix_v<A_IMPL> or Is_Hermitian_Matrix_v<A_IMPL>);
+
   // Parameters
   //
   const double eps         = 1e-6;
   const double squared_eps = eps * eps;
   const size_t max_iter    = 100;
 
-  // Sanity check
-  //
-  static_assert(A_IMPL::matrix_special_structure_type::value ==  // For demo...
-                Matrix_Special_Structure_Enum::Symmetric);       // could be: SFINAE,
-                                                                 // hermitian, etc...
-
-  assert(all_sizes_are_equal_p(A.I_size(), A.J_size(), X0.size(), b.size()));
-
-  // Working vector type, use a static size one if possible
+  // Working vector type
   //
   using element_type = Common_Element_Type_t<A_IMPL, X0_IMPL, B_IMPL>;
-  const auto n       = get_static_size_if_any(A.I_size(), A.J_size(), X0.size(), b.size());
 
-  auto r  = create_vector<element_type>(n);
-  auto p  = create_vector<element_type>(n);
-  auto Ap = create_vector<element_type>(n);
+  auto r  = similar(Type_v<element_type>, X0);
+  auto p  = similar(r);
+  auto Ap = similar(r);
 
   // Initialization
   //
@@ -92,23 +73,16 @@ cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0, const Dense_Vec
 int
 main()
 {
-  // Dynamic vectors/matrices
-
   Symmetric_Matrix<double> M(10, 10);
   Vector<double> X0(10);
   Vector<double> b(10);
 
-  // Here static one, no more dynamic memory allocations.
+  M       = 1;
+  M(6, 5) = 5; // Note: in debug mode M(5, 6) = 2 would lead to an
+	       // assert failure as by default symmetric matrices are
+	       // stored into their lower part.
 
-  // Tiny_Symmetric_Matrix<double, 10, 10> M;
-  // Tiny_Vector<double, 10> X0;
-  // Tiny_Vector<double, 10> b;
-
-  M = 1;
-
-  create_vector_view_matrix_diagonal(M) = 20;
-  M(5, 6)                               = 2;
-  M(6, 5)                               = 2;
+  create_vector_view_matrix_diagonal(M) = 10;
 
   b  = 1;
   X0 = 0;

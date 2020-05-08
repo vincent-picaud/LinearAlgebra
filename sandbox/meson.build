@@ -3,9 +3,9 @@ executable('garbage',
 	   'garbage.cpp',
 	   dependencies : [LinearAlgebra_dep])
 
-# deprecated
-executable('deprecated_experimental_meta_expr',
-	   'deprecated_experimental_meta_expr.cpp',
+
+executable('cg_with_static_size_detection',
+	   'cg_with_static_size_detection.cpp',
 	   dependencies : [LinearAlgebra_dep])
 
 executable('experimental_meta_expr',

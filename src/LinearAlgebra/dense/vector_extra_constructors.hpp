@@ -1,5 +1,9 @@
 #pragma once
 
+#include <array>
+#include <vector>
+#include "LinearAlgebra/dense/vector_fwd.hpp"
+
 namespace LinearAlgebra
 {
   template <typename T, std::size_t N>

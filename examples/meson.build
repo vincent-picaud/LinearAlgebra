@@ -30,3 +30,8 @@ executable('lb_ub',
 	   'lb_ub.cpp',
 	   dependencies : [LinearAlgebra_dep])
 
+
+executable('vector_extra_constructors',
+	   'vector_extra_constructors.cpp',
+	   dependencies : [LinearAlgebra_dep])
+

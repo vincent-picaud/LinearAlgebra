@@ -74,6 +74,18 @@ namespace LinearAlgebra
     //       which would be the construction of a vector of size 3.
     explicit Default_Vector(const SIZE_TYPE n) : base_type(storage_scheme_type(n)) {}
 
+    // This allows us to define some extra ways to constructs vector
+    // like:
+    //
+    // #+BEGIN_SRC cpp :eval never
+    // Dense_Vector<T> create_vector(std::vector<T>&& v) {...}
+    // #+END_SRC
+    //
+    Default_Vector(storage_scheme_type&& storage_scheme, memory_chunk_type&& memory_chunk)
+        : base_type(std::move(storage_scheme), std::move(memory_chunk))
+    {
+    }
+
     ////////////////////
     // Public Methods //
     ////////////////////
@@ -289,4 +301,4 @@ namespace LinearAlgebra
     }
   };
 
-}
+}  // namespace LinearAlgebra

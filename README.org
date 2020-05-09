@@ -18,8 +18,10 @@
     - [[#copy][Copy]]
     - [[#lowerupper-bound][lower/upper bound]]
 - [[#examples][Examples]]
+  - [[#vector-construction][Vector construction]]
+    - [[#some-extra-constructors][Some extra "constructors"]]
   - [[#view-from-lowerupper-bounds][View from lower/upper bounds]]
-  - [[#matrix-views-todo][Matrix views (TODO)]]
+  - [[#matrix-views][Matrix views]]
   - [[#conjugate-gradients][Conjugate gradients]]
   - [[#direct-call-to-lapack][Direct call to Lapack]]
 - [[#faq][FAQ]]
@@ -35,6 +37,7 @@ Early development stage *-> Do not use it right now!*
 
 The goals are:
 - a good compromise between performance and library complexity
+- short compilation time (at least shorted than libs like eigen or blaze)
 - a concise wrapping of libraries like Blas, Blis, Lapacke, etc.
 
 * Doc (TODO)
@@ -296,6 +299,88 @@ upper_bound(const Dense_Vector_Crtp<IMPL>& X, const Element_Type_t<IMPL>& value)
 They can be used to create view, see [[id:907674bf-2cae-4a34-8061-b5039240e93b][View from lower/upper bounds]]
 
 * Examples
+** Vector construction
+*** Some extra "constructors"
+
+As this contructions is only available for "storable" vectors and not
+views they are defined using =functions= (and not usual constructors).
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/vector_extra_constructors.cpp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/vector.hpp"
+
+#include <array>
+#include <vector>
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  // Construction of a dense vector using move(std::vector)
+  //
+  std::vector<int> data_1(4, 1);
+
+  auto v_1 = create_vector(std::move(data_1));
+
+  assert(data_1.size() == 0);
+  static_assert(std::is_same_v<Vector<int>, decltype(v_1)>);
+
+  std::cout << v_1 << std::endl;
+
+  //================
+
+  // Construction of a Tiny_Vector from a std::array copy
+  //
+  std::array<int, 4> data_2;
+  for (auto& data_2_i : data_2) data_2_i = 2;
+
+  auto v_2 = create_vector(data_2);
+
+  static_assert(std::is_same_v<Tiny_Vector<int, 4>, decltype(v_2)>);
+
+  std::cout << v_2 << std::endl;
+
+  //================
+
+  // Construction of a Tiny_Vector from a C array
+  //
+  auto v_3 = create_vector({3, 3, 3, 3});
+
+  static_assert(std::is_same_v<Tiny_Vector<int, 4>, decltype(v_3)>);
+
+  std::cout << v_3 << std::endl;
+}
+#+END_src
+
+prints:
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/vector_extra_constructors
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_example :eval never
+
+1
+1
+1
+1
+
+2
+2
+2
+2
+
+3
+3
+3
+3
+#+END_example
 
 ** View from lower/upper bounds
    :PROPERTIES:
@@ -370,7 +455,7 @@ prints:
 6
 #+END_example
 
-** Matrix views (TODO)
+** Matrix views 
 
 #+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
 cat $(pwd)/examples/matrix_view.cpp
@@ -559,19 +644,19 @@ prints:
 
 #+RESULTS:
 #+BEGIN_example :eval never
-iter 0 residue 0.102548
-iter 1 residue 6.19668e-32
+iter 0 residue 0.0652995
+iter 1 residue 1.03037e-32
 
-0.0708661
-0.0708661
-0.0708661
-0.0708661
-0.0708661
-0.0393701
-0.0393701
-0.0708661
-0.0708661
-0.0708661
+0.0543933
+0.0543933
+0.0543933
+0.0543933
+0.0543933
+0.0376569
+0.0376569
+0.0543933
+0.0543933
+0.0543933
 true
 #+END_example
 

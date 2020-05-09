@@ -128,18 +128,16 @@ namespace LinearAlgebra
     // Public constructors
     //////////////////
    public:
-    // Note: this would be a possible solution to perform "move"
-    //       operations. For the moment we did not have to use
-    //       it... hence we keep it commented.
+    // To be used as move constructor
     //
-    // Default_Vector_Crtp(storage_scheme_type&& storage_scheme,
-    //                             memory_chunk_type&&   memory_chunk)
-    //     : _storage_scheme(std::move(storage_scheme)), _memory_chunk(std::move(memory_chunk))
-    // {
-    //   assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
-    // }
+    Dense_Vector_Crtp(storage_scheme_type&& storage_scheme, memory_chunk_type&& memory_chunk)
+        : _storage_scheme(std::move(storage_scheme)), _memory_chunk(std::move(memory_chunk))
+    {
+      assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
+    }
 
-    // This constructor assumes than memory_chunk allocates its memory
+    // This constructor allocates its memory at construction time:
+    // (the _memory_chunk(capacity()) call)
     Dense_Vector_Crtp(const storage_scheme_type& storage_scheme)
         : _storage_scheme(storage_scheme), _memory_chunk(_storage_scheme.required_capacity())
     {
@@ -328,4 +326,4 @@ namespace LinearAlgebra
     return out;
   }
 
-}
+}  // namespace LinearAlgebra

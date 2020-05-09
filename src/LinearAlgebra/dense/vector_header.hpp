@@ -12,4 +12,7 @@
 #include "LinearAlgebra/dense/vector_storage_scheme.hpp"
 #include "LinearAlgebra/dense/vector_transform.hpp"
 #include "LinearAlgebra/dense/vector_view.hpp"
+#include "LinearAlgebra/dense/vector_extra_constructors.hpp"  // maybe do something similar for (dense) matrices
 #include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
+
+

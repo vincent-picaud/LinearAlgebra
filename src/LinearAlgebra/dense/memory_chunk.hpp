@@ -21,7 +21,7 @@ namespace LinearAlgebra
 
     template <typename MEMORY_CHUNK>
     constexpr auto Is_Memory_Chunk_v = std::is_base_of_v<Memory_Chunk_Tag, MEMORY_CHUNK>;
-  }
+  }  // namespace Detail
 
   template <typename T, typename CAPACITY_TYPE>
   class Default_Memory_Chunk;
@@ -42,6 +42,8 @@ namespace LinearAlgebra
    public:
     constexpr Default_Memory_Chunk() noexcept = default;
     constexpr Default_Memory_Chunk(const capacity_type capacity) noexcept {}
+    // try to avoid this one as it assume how data is stored...
+    constexpr Default_Memory_Chunk(const std::array<T, N>& data) noexcept : _data(data) {}
     constexpr capacity_type
     capacity() const noexcept
     {
@@ -75,6 +77,10 @@ namespace LinearAlgebra
    public:
     Default_Memory_Chunk() noexcept = default;
     Default_Memory_Chunk(const capacity_type capacity) : _data(capacity) {}
+    // try to avoid this one as it assume how data is stored...
+    Default_Memory_Chunk(const std::vector<T>& data) : _data(data) {}
+    Default_Memory_Chunk(std::vector<T>&& data) noexcept : _data(std::move(data)) {}
+
     capacity_type
     capacity() const noexcept
     {
@@ -188,4 +194,4 @@ namespace LinearAlgebra
     }
   };
 
-}
+}  // namespace LinearAlgebra

@@ -16,10 +16,7 @@
   THIS_TYPE& operator=(const element_type& scalar) { return this->impl_assign(scalar); } \
                                                                                          \
   /* Be sure that we have a deep copy semantic, even for view */                         \
-  THIS_TYPE& operator=(const THIS_TYPE& other_matrix)                                    \
-  {                                                                                      \
-    return this->impl().impl_assign(other_matrix);                                       \
-  }
+  THIS_TYPE& operator=(const THIS_TYPE& other) { return this->impl().impl_assign(other); }
 
 // Better error messages
 #define DELETE_VMT_ASSIGNMENT_OPERATOR(THIS_TYPE)                \
@@ -29,4 +26,4 @@
   /* Scalar */                                                   \
   THIS_TYPE& operator=(const element_type& scalar) = delete;     \
   /* Be sure that we have a deep copy semantic, even for view */ \
-  THIS_TYPE& operator=(const THIS_TYPE& other_matrix) = delete;
+  THIS_TYPE& operator=(const THIS_TYPE& other) = delete;

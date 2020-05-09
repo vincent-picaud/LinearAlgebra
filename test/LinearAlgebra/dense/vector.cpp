@@ -39,6 +39,57 @@ TEST(Vector, constructor_dynamic)
   EXPECT_EQ(v[2], 2);
 }
 
+//----------------------------------------------------------------
+TEST(Vector, construction_mixed_type_1)
+{
+  Vector<int> v(3);
+  v = 1;
+  Tiny_Vector<double, 3> w(v);
+  EXPECT_EQ(w[0], 1);
+  EXPECT_EQ(w[1], 1);
+  EXPECT_EQ(w[2], 1);
+
+  // Check that we really perform a copy
+  v[1] = 2;
+  EXPECT_EQ(w[1], 1);
+}
+TEST(Vector, construction_mixed_type_2)
+{
+  Tiny_Vector<double, 3> v;
+  v = 1;
+  Vector<int> w(v);
+  EXPECT_EQ(w[0], 1);
+  EXPECT_EQ(w[1], 1);
+  EXPECT_EQ(w[2], 1);
+
+  // Check that we really perform a copy
+  v[1] = 2;
+  EXPECT_EQ(w[1], 1);
+}
+TEST(Vector, construction_mixed_type_3)
+{
+  Vector<double> v(3);
+  v = 1;
+  Vector<int> w(v.as_generic_view());
+  EXPECT_EQ(w[0], 1);
+  EXPECT_EQ(w[1], 1);
+  EXPECT_EQ(w[2], 1);
+
+  // Check that we really perform a copy
+  v[1] = 2;
+  EXPECT_EQ(w[1], 1);
+}
+//----------------------------------------------------------------
+TEST(Vector, extended_constructor_for_static_size)
+{
+  Tiny_Vector<int, 3> v(3);
+  EXPECT_EQ(v.size(), 3);
+}
+TEST(Vector, extended_constructor_for_static_size_check)
+{
+  EXPECT_DEBUG_DEATH((Tiny_Vector<int, 3>(4)), "");
+}
+//----------------------------------------------------------------
 TEST(Vector, constructor_raw_pointer)
 {
   int data[] = {1, 2, 3, 4, 5};

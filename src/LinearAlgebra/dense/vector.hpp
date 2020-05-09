@@ -1,15 +1,19 @@
 #pragma once
 
+#include <type_traits>
+
 #include "LinearAlgebra/dense/memory_chunk.hpp"
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/dense/vector_fwd.hpp"
 #include "LinearAlgebra/dense/vector_storage_scheme.hpp"
 
 // Detail
+#include "LinearAlgebra/dense/dynamic_to_static_helper.hpp"
 #include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
 
 namespace LinearAlgebra
 {
+  // Definition of Default_Vector Traits
   template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
   struct Crtp_Type_Traits<LinearAlgebra::Default_Vector<T, SIZE_TYPE, INCREMENT_TYPE>>
   {
@@ -61,18 +65,40 @@ namespace LinearAlgebra
    public:
     Default_Vector() : base_type(storage_scheme_type()) {}
 
-    // Note: this tells to reuse the constructors define in
+    // Note: this tells to reuse the constructors defined in
     //       Default_Vector_Crtp
     Default_Vector(const Default_Vector&) = default;
     Default_Vector(Default_Vector&&)      = default;
 
-    Default_Vector(const SIZE_TYPE n, const INCREMENT_TYPE inc)
+    // Extend copy constructor using other vector type as source
+    template <typename OTHER_IMPL>
+    Default_Vector(const Vector_Crtp<OTHER_IMPL>& other)
+        : Default_Vector(Detail::Dynamic_To_Static_Helper<SIZE_TYPE>(other.size()))
+    {
+      (*this) = other;
+    }
+
+    // // Construction from size and increment
+    // Default_Vector(const SIZE_TYPE n, const INCREMENT_TYPE inc)
+    //     : base_type(storage_scheme_type(n, inc))
+    // {
+    // }
+    // // Note: explicit blocks to possible wrong interpretation of V=3
+    // //       which would be the construction of a vector of size 3.
+    // explicit Default_Vector(const SIZE_TYPE n) : base_type(storage_scheme_type(n)) {}
+
+    // Construction from size and increment
+    Default_Vector(const Detail::Dynamic_To_Static_Helper<SIZE_TYPE> n,
+                   const Detail::Dynamic_To_Static_Helper<INCREMENT_TYPE> inc)
         : base_type(storage_scheme_type(n, inc))
     {
     }
-    // Note: explicit blocks to possible wrong interpreation of V=3
+    // Note: explicit blocks to possible wrong interpretation of V=3
     //       which would be the construction of a vector of size 3.
-    explicit Default_Vector(const SIZE_TYPE n) : base_type(storage_scheme_type(n)) {}
+    explicit Default_Vector(const Detail::Dynamic_To_Static_Helper<SIZE_TYPE> n)
+        : base_type(storage_scheme_type(n))
+    {
+    }
 
     // This allows us to define some extra ways to constructs vector
     // like:
@@ -80,6 +106,8 @@ namespace LinearAlgebra
     // #+BEGIN_SRC cpp :eval never
     // Dense_Vector<T> create_vector(std::vector<T>&& v) {...}
     // #+END_SRC
+    //
+    // Most of them are defined in the "vector_extra_constructors.hpp" file.
     //
     Default_Vector(storage_scheme_type&& storage_scheme, memory_chunk_type&& memory_chunk)
         : base_type(std::move(storage_scheme), std::move(memory_chunk))
@@ -181,7 +209,12 @@ namespace LinearAlgebra
         : base_type(storage_scheme_type(n, inc), data)
     {
     }
-
+    // CAVEAT: do NOT define construction using "storable" vector
+    //         types (like Default_Vector) This would break the
+    //         symmetry between storable and view. In the first case a
+    //         deep copy is performed, but for view construction we
+    //         can only do a shallow copy.
+    //
     ////////////////////
     // Public Methods //
     ////////////////////
@@ -276,6 +309,10 @@ namespace LinearAlgebra
         : base_type(storage_scheme_type(n, inc), data)
     {
     }
+
+    // CAVEAT: do NOT define construction using "storable" vector ->
+    //         see Default_Vector_View comment
+
     ////////////////////
     // Public Methods //
     ////////////////////

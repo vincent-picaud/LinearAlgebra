@@ -6,7 +6,15 @@
 
 * Table of content                                           :TOC_3:noexport:
 - [[#what-is-it][What is it?]]
-- [[#doc-todo][Doc (TODO)]]
+- [[#examples][Examples]]
+  - [[#vector-construction][Vector construction]]
+    - [[#some-extra-constructors][Some extra "constructors"]]
+  - [[#view-from-lowerupper-bounds][View from lower/upper bounds]]
+  - [[#matrix-views][Matrix views]]
+  - [[#generic-view][Generic View]]
+  - [[#conjugate-gradients][Conjugate gradients]]
+  - [[#direct-call-to-lapack][Direct call to Lapack]]
+- [[#doc-under-construction][Doc (Under construction)]]
   - [[#types][Types]]
     - [[#matrix-types][Matrix types]]
   - [[#meta-programming][Meta-Programming]]
@@ -17,13 +25,6 @@
     - [[#similar][Similar]]
     - [[#copy][Copy]]
     - [[#lowerupper-bound][lower/upper bound]]
-- [[#examples][Examples]]
-  - [[#vector-construction][Vector construction]]
-    - [[#some-extra-constructors][Some extra "constructors"]]
-  - [[#view-from-lowerupper-bounds][View from lower/upper bounds]]
-  - [[#matrix-views][Matrix views]]
-  - [[#conjugate-gradients][Conjugate gradients]]
-  - [[#direct-call-to-lapack][Direct call to Lapack]]
 - [[#faq][FAQ]]
   - [[#resizable-vectormatrix-][Resizable vector/matrix ?]]
   - [[#expression-template][Expression Template]]
@@ -40,7 +41,473 @@ The goals are:
 - shorter compilation time than libs like [[https://gitlab.com/libeigen/eigen][Eigen]] or [[https://bitbucket.org/blaze-lib/blaze/src/master/][Blaze]].
 - a concise wrapping of libraries like [[https://github.com/xianyi/OpenBLAS][Blas]], [[https://github.com/flame/blis][Blis]], Lapacke, etc.
 
-* Doc (TODO)
+* Examples
+** Vector construction
+*** Some extra "constructors"
+
+As this contructions is only available for "storable" vectors and not
+views they are defined using =functions= (and not usual constructors).
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/vector_extra_constructors.cpp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/vector.hpp"
+
+#include <array>
+#include <vector>
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  // Construction of a dense vector using move(std::vector)
+  //
+  std::vector<int> data_1(4, 1);
+
+  auto v_1 = create_vector(std::move(data_1));
+
+  assert(data_1.size() == 0);
+  static_assert(std::is_same_v<Vector<int>, decltype(v_1)>);
+
+  std::cout << v_1 << std::endl;
+
+  //================
+
+  // Construction of a Tiny_Vector from a std::array copy
+  //
+  std::array<int, 4> data_2;
+  for (auto& data_2_i : data_2) data_2_i = 2;
+
+  auto v_2 = create_vector(data_2);
+
+  static_assert(std::is_same_v<Tiny_Vector<int, 4>, decltype(v_2)>);
+
+  std::cout << v_2 << std::endl;
+
+  //================
+
+  // Construction of a Tiny_Vector from a C array
+  //
+  auto v_3 = create_vector({3, 3, 3, 3});
+
+  static_assert(std::is_same_v<Tiny_Vector<int, 4>, decltype(v_3)>);
+
+  std::cout << v_3 << std::endl;
+}
+#+END_src
+
+prints:
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/vector_extra_constructors
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_example :eval never
+
+1
+1
+1
+1
+
+2
+2
+2
+2
+
+3
+3
+3
+3
+#+END_example
+
+** View from lower/upper bounds
+   :PROPERTIES:
+   :ID:       907674bf-2cae-4a34-8061-b5039240e93b
+   :END:
+   :BACKLINKS:
+   [2020-05-08 Fri 12:03] <- [[id:3ba0b7cf-95c2-436e-a90c-11e751898497][lower/upper bound]]
+   :END:
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/lb_ub.cpp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/vector.hpp"
+#include "LinearAlgebra/utils/lower_upper_bound.hpp"
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  double data[13] = {1, 1, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6};
+  auto X          = create_vector_view(data, 13);
+
+  std::cout << X << std::endl;
+  
+  auto X_3 = create_vector_view(X, lower_bound(X, 3), upper_bound(X, 3));
+
+  X_3=10;
+
+  std::cout << X << std::endl;
+}
+#+END_src
+
+prints:
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/lb_ub
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_example :eval never
+
+1
+1
+2
+3
+3
+3
+3
+4
+4
+4
+5
+5
+6
+
+1
+1
+2
+10
+10
+10
+10
+4
+4
+4
+5
+5
+6
+#+END_example
+
+** Matrix views 
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/matrix_view.cpp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/matrix.hpp"
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  Tiny_Matrix<int, 5, 6> mat;
+
+  mat = 1;
+
+  auto view_mat = create_matrix_view(mat, 1, 3, 2, 5);
+
+  view_mat = -1;
+
+  std::cout << "full matrix:" << mat << std::endl;
+
+  //================
+
+  Tiny_Symmetric_Matrix<int, 6> mat_S;
+
+  create_matrix_view_full(mat_S) = 0;  // fill the full matrix
+
+  mat_S = 1;  // here as mat_S is symmetric
+              // only fill lower triangular part is filled
+
+  // Take a subview of a _symmetric matrix_
+  auto view_mat_S = create_matrix_view(mat_S, 1, 3, 1, 3);
+
+  view_mat_S = -1;  // here the subview mat_S is symmetric too and
+                    // only the lower triangular part will be filled
+
+  std::cout << "full matrix:" << create_matrix_view_full(mat_S) << std::endl;
+  std::cout << "submatrix:" << mat_S << std::endl;
+}
+#+END_src
+
+prints:
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/matrix_view
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_example :eval never
+full matrix:
+               1               1               1               1               1               1
+               1               1              -1              -1              -1               1
+               1               1              -1              -1              -1               1
+               1               1               1               1               1               1
+               1               1               1               1               1               1
+full matrix:
+               1               0               0               0               0               0
+               1              -1               0               0               0               0
+               1              -1              -1               0               0               0
+               1               1               1               1               0               0
+               1               1               1               1               1               0
+               1               1               1               1               1               1
+submatrix:
+               1               X               X               X               X               X
+               1              -1               X               X               X               X
+               1              -1              -1               X               X               X
+               1               1               1               1               X               X
+               1               1               1               1               1               X
+               1               1               1               1               1               1
+#+END_example
+
+** TODO Generic View
+Easier interfacing with non generic code (.cpp files etc...).
+  - [ ] add some examples
+
+** Conjugate gradients
+
+This is only for demo purpose as a real implementation makes more sense with sparse matrices + a preconditioner.
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/conjugate_gradients.cpp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/matrix.hpp"
+#include "LinearAlgebra/vector.hpp"
+
+using namespace LinearAlgebra;
+
+// Basic CG implementation
+// https://en.wikipedia.org/wiki/Conjugate_gradient_method
+//
+template <typename A_IMPL, typename X0_IMPL, typename B_IMPL>
+bool
+cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0, const Dense_Vector_Crtp<B_IMPL>& b)
+{
+  // Sanity checks
+  //
+  assert(all_sizes_are_equal_p(A.I_size(), A.J_size(), X0.size(), b.size()));
+  static_assert(Is_Symmetric_Matrix_v<A_IMPL> or Is_Hermitian_Matrix_v<A_IMPL>);
+
+  // Parameters
+  //
+  const double eps         = 1e-6;
+  const double squared_eps = eps * eps;
+  const size_t max_iter    = 100;
+
+  // Working vector type
+  //
+  using element_type = Common_Element_Type_t<A_IMPL, X0_IMPL, B_IMPL>;
+
+  auto r  = similar(Type_v<element_type>, X0);
+  auto p  = similar(r);
+  auto Ap = similar(r);
+
+  // Initialization
+  //
+  r = b - A * X0;
+
+  auto squared_norm_r_old = dot(r, r);
+
+  if (squared_norm_r_old < squared_eps)
+  {
+    return true;
+  }
+
+  p = r;
+
+  // Main loop
+  //
+  for (size_t i = 0; i < max_iter; i++)
+  {
+    Ap = A * p;
+
+    auto alpha = squared_norm_r_old / dot(p, Ap);
+
+    X0 = X0 + alpha * p;
+
+    r = r - alpha * Ap;
+
+    auto squared_norm_r_new = dot(r, r);
+
+    std::cout << "iter " << i << " residue " << squared_norm_r_new << std::endl;
+
+    if (squared_norm_r_new < squared_eps)
+    {
+      return true;
+    }
+
+    p = r + squared_norm_r_new / squared_norm_r_old * p;
+
+    squared_norm_r_old = squared_norm_r_new;
+  }
+  return false;
+}
+
+int
+main()
+{
+  Symmetric_Matrix<double> M(10, 10);
+  Vector<double> X0(10);
+  Vector<double> b(10);
+
+  M       = 1;
+  M(6, 5) = 5; // Note: in debug mode M(5, 6) = 2 would lead to an
+	       // assert failure as by default symmetric matrices are
+	       // stored into their lower part.
+
+  create_vector_view_matrix_diagonal(M) = 10;
+
+  b  = 1;
+  X0 = 0;
+
+  bool status = cg(M, X0, b);
+
+  std::cout << X0 << std::endl;
+  std::cout << std::boolalpha << status << std::endl;
+}
+#+END_src
+
+prints:
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/conjugate_gradients
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_example :eval never
+iter 0 residue 0.0652995
+iter 1 residue 1.03037e-32
+
+0.0543933
+0.0543933
+0.0543933
+0.0543933
+0.0543933
+0.0376569
+0.0376569
+0.0543933
+0.0543933
+0.0543933
+true
+#+END_example
+
+** Direct call to Lapack
+
+#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
+cat $(pwd)/examples/lapack_potrf.cpp
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_src cpp :eval never
+#include "LinearAlgebra/lapack/lapack.hpp"
+#include "LinearAlgebra/matrix.hpp"
+#include "LinearAlgebra/vector.hpp"
+
+using namespace LinearAlgebra;
+
+int
+main()
+{
+  const size_t n = 5;
+
+  Vector<double> v(n), w(n);
+  v = 1;
+
+  Symmetric_Matrix<double> M(n, n);
+
+  M                                     = 0;
+  create_vector_view_matrix_diagonal(M) = 10;
+  M(4, 0)                               = 5;
+
+  w = M * v;
+
+  std::cout << "symmetric M :" << M << std::endl << std::endl;
+  std::cout << "v :" << v << std::endl << std::endl;
+  std::cout << "w = M.v :" << w << std::endl << std::endl;
+
+  // Low level call of lapack: L*L^t decomposition
+  //
+  int info = Lapack::potrf(M);
+  assert(info == 0);
+
+  // Create a constant view defining L
+  // (symmetric matrix uses lower part)
+  static_assert(Is_Lower_Matrix_Storage_v<decltype(M)>);
+  //
+  auto L = create_matrix_view_lower_triangular(M.as_const());
+  std::cout << "L :" << L << std::endl << std::endl;
+
+  // inplace solve of w = M.v = L.L^t.v ...
+  // ... at the end w "contains" v
+  //
+  w = inverse(L) * w;             // L^(-1).w = L^t.v
+  w = inverse(transpose(L)) * w;  // L^(-t).L^(-1).w = v
+
+  std::cout << "v such that w=M.v :" << w << std::endl;
+}
+#+END_src
+
+prints:
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+./build/examples/lapack_potrf
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_example :eval never
+symmetric M :
+              10               X               X               X               X
+               0              10               X               X               X
+               0               0              10               X               X
+               0               0               0              10               X
+               5               0               0               0              10
+
+v :
+1
+1
+1
+1
+1
+
+w = M.v :
+15
+10
+10
+10
+15
+
+L :
+         3.16228               X               X               X               X
+               0         3.16228               X               X               X
+               0               0         3.16228               X               X
+               0               0               0         3.16228               X
+         1.58114               0               0               0         2.73861
+
+v such that w=M.v :
+1
+1
+1
+1
+1
+#+END_example
+
+* Doc (Under construction)
 
 ** Types
 *** Matrix types 
@@ -297,468 +764,6 @@ upper_bound(const Dense_Vector_Crtp<IMPL>& X, const Element_Type_t<IMPL>& value)
  #+END_SRC
 
 They can be used to create view, see [[id:907674bf-2cae-4a34-8061-b5039240e93b][View from lower/upper bounds]]
-
-* Examples
-** Vector construction
-*** Some extra "constructors"
-
-As this contructions is only available for "storable" vectors and not
-views they are defined using =functions= (and not usual constructors).
-
-#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
-cat $(pwd)/examples/vector_extra_constructors.cpp
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_src cpp :eval never
-#include "LinearAlgebra/vector.hpp"
-
-#include <array>
-#include <vector>
-
-using namespace LinearAlgebra;
-
-int
-main()
-{
-  // Construction of a dense vector using move(std::vector)
-  //
-  std::vector<int> data_1(4, 1);
-
-  auto v_1 = create_vector(std::move(data_1));
-
-  assert(data_1.size() == 0);
-  static_assert(std::is_same_v<Vector<int>, decltype(v_1)>);
-
-  std::cout << v_1 << std::endl;
-
-  //================
-
-  // Construction of a Tiny_Vector from a std::array copy
-  //
-  std::array<int, 4> data_2;
-  for (auto& data_2_i : data_2) data_2_i = 2;
-
-  auto v_2 = create_vector(data_2);
-
-  static_assert(std::is_same_v<Tiny_Vector<int, 4>, decltype(v_2)>);
-
-  std::cout << v_2 << std::endl;
-
-  //================
-
-  // Construction of a Tiny_Vector from a C array
-  //
-  auto v_3 = create_vector({3, 3, 3, 3});
-
-  static_assert(std::is_same_v<Tiny_Vector<int, 4>, decltype(v_3)>);
-
-  std::cout << v_3 << std::endl;
-}
-#+END_src
-
-prints:
-
-#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
-./build/examples/vector_extra_constructors
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_example :eval never
-
-1
-1
-1
-1
-
-2
-2
-2
-2
-
-3
-3
-3
-3
-#+END_example
-
-** View from lower/upper bounds
-   :PROPERTIES:
-   :ID:       907674bf-2cae-4a34-8061-b5039240e93b
-   :END:
-   :BACKLINKS:
-   [2020-05-08 Fri 12:03] <- [[id:3ba0b7cf-95c2-436e-a90c-11e751898497][lower/upper bound]]
-   :END:
-
-#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
-cat $(pwd)/examples/lb_ub.cpp
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_src cpp :eval never
-#include "LinearAlgebra/vector.hpp"
-#include "LinearAlgebra/utils/lower_upper_bound.hpp"
-
-using namespace LinearAlgebra;
-
-int
-main()
-{
-  double data[13] = {1, 1, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6};
-  auto X          = create_vector_view(data, 13);
-
-  std::cout << X << std::endl;
-  
-  auto X_3 = create_vector_view(X, lower_bound(X, 3), upper_bound(X, 3));
-
-  X_3=10;
-
-  std::cout << X << std::endl;
-}
-#+END_src
-
-prints:
-
-#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
-./build/examples/lb_ub
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_example :eval never
-
-1
-1
-2
-3
-3
-3
-3
-4
-4
-4
-5
-5
-6
-
-1
-1
-2
-10
-10
-10
-10
-4
-4
-4
-5
-5
-6
-#+END_example
-
-** Matrix views 
-
-#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
-cat $(pwd)/examples/matrix_view.cpp
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_src cpp :eval never
-#include "LinearAlgebra/matrix.hpp"
-
-using namespace LinearAlgebra;
-
-int
-main()
-{
-  Tiny_Matrix<int, 5, 6> mat;
-
-  mat = 1;
-
-  auto view_mat = create_matrix_view(mat, 1, 3, 2, 5);
-
-  view_mat = -1;
-
-  std::cout << "full matrix:" << mat << std::endl;
-
-  //================
-
-  Tiny_Symmetric_Matrix<int, 6> mat_S;
-
-  create_matrix_view_full(mat_S) = 0;  // fill the full matrix
-
-  mat_S = 1;  // here as mat_S is symmetric
-              // only fill lower triangular part is filled
-
-  // Take a subview of a _symmetric matrix_
-  auto view_mat_S = create_matrix_view(mat_S, 1, 3, 1, 3);
-
-  view_mat_S = -1;  // here the subview mat_S is symmetric too and
-                    // only the lower triangular part will be filled
-
-  std::cout << "full matrix:" << create_matrix_view_full(mat_S) << std::endl;
-  std::cout << "submatrix:" << mat_S << std::endl;
-}
-#+END_src
-
-prints:
-
-#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
-./build/examples/matrix_view
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_example :eval never
-full matrix:
-               1               1               1               1               1               1
-               1               1              -1              -1              -1               1
-               1               1              -1              -1              -1               1
-               1               1               1               1               1               1
-               1               1               1               1               1               1
-full matrix:
-               1               0               0               0               0               0
-               1              -1               0               0               0               0
-               1              -1              -1               0               0               0
-               1               1               1               1               0               0
-               1               1               1               1               1               0
-               1               1               1               1               1               1
-submatrix:
-               1               X               X               X               X               X
-               1              -1               X               X               X               X
-               1              -1              -1               X               X               X
-               1               1               1               1               X               X
-               1               1               1               1               1               X
-               1               1               1               1               1               1
-#+END_example
-
-** Conjugate gradients
-
-This is only for demo purpose as a real implementation makes more sense with sparse matrices + a preconditioner.
-
-#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
-cat $(pwd)/examples/conjugate_gradients.cpp
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_src cpp :eval never
-#include "LinearAlgebra/matrix.hpp"
-#include "LinearAlgebra/vector.hpp"
-
-using namespace LinearAlgebra;
-
-// Basic CG implementation
-// https://en.wikipedia.org/wiki/Conjugate_gradient_method
-//
-template <typename A_IMPL, typename X0_IMPL, typename B_IMPL>
-bool
-cg(const Matrix_Crtp<A_IMPL>& A, Dense_Vector_Crtp<X0_IMPL>& X0, const Dense_Vector_Crtp<B_IMPL>& b)
-{
-  // Sanity checks
-  //
-  assert(all_sizes_are_equal_p(A.I_size(), A.J_size(), X0.size(), b.size()));
-  static_assert(Is_Symmetric_Matrix_v<A_IMPL> or Is_Hermitian_Matrix_v<A_IMPL>);
-
-  // Parameters
-  //
-  const double eps         = 1e-6;
-  const double squared_eps = eps * eps;
-  const size_t max_iter    = 100;
-
-  // Working vector type
-  //
-  using element_type = Common_Element_Type_t<A_IMPL, X0_IMPL, B_IMPL>;
-
-  auto r  = similar(Type_v<element_type>, X0);
-  auto p  = similar(r);
-  auto Ap = similar(r);
-
-  // Initialization
-  //
-  r = b - A * X0;
-
-  auto squared_norm_r_old = dot(r, r);
-
-  if (squared_norm_r_old < squared_eps)
-  {
-    return true;
-  }
-
-  p = r;
-
-  // Main loop
-  //
-  for (size_t i = 0; i < max_iter; i++)
-  {
-    Ap = A * p;
-
-    auto alpha = squared_norm_r_old / dot(p, Ap);
-
-    X0 = X0 + alpha * p;
-
-    r = r - alpha * Ap;
-
-    auto squared_norm_r_new = dot(r, r);
-
-    std::cout << "iter " << i << " residue " << squared_norm_r_new << std::endl;
-
-    if (squared_norm_r_new < squared_eps)
-    {
-      return true;
-    }
-
-    p = r + squared_norm_r_new / squared_norm_r_old * p;
-
-    squared_norm_r_old = squared_norm_r_new;
-  }
-  return false;
-}
-
-int
-main()
-{
-  Symmetric_Matrix<double> M(10, 10);
-  Vector<double> X0(10);
-  Vector<double> b(10);
-
-  M       = 1;
-  M(6, 5) = 5; // Note: in debug mode M(5, 6) = 2 would lead to an
-	       // assert failure as by default symmetric matrices are
-	       // stored into their lower part.
-
-  create_vector_view_matrix_diagonal(M) = 10;
-
-  b  = 1;
-  X0 = 0;
-
-  bool status = cg(M, X0, b);
-
-  std::cout << X0 << std::endl;
-  std::cout << std::boolalpha << status << std::endl;
-}
-#+END_src
-
-prints:
-
-#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
-./build/examples/conjugate_gradients
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_example :eval never
-iter 0 residue 0.0652995
-iter 1 residue 1.03037e-32
-
-0.0543933
-0.0543933
-0.0543933
-0.0543933
-0.0543933
-0.0376569
-0.0376569
-0.0543933
-0.0543933
-0.0543933
-true
-#+END_example
-
-** Direct call to Lapack
-
-#+BEGIN_SRC sh :wrap "src cpp :eval never" :results output :exports results
-cat $(pwd)/examples/lapack_potrf.cpp
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_src cpp :eval never
-#include "LinearAlgebra/lapack/lapack.hpp"
-#include "LinearAlgebra/matrix.hpp"
-#include "LinearAlgebra/vector.hpp"
-
-using namespace LinearAlgebra;
-
-int
-main()
-{
-  const size_t n = 5;
-
-  Vector<double> v(n), w(n);
-  v = 1;
-
-  Symmetric_Matrix<double> M(n, n);
-
-  M                                     = 0;
-  create_vector_view_matrix_diagonal(M) = 10;
-  M(4, 0)                               = 5;
-
-  w = M * v;
-
-  std::cout << "symmetric M :" << M << std::endl << std::endl;
-  std::cout << "v :" << v << std::endl << std::endl;
-  std::cout << "w = M.v :" << w << std::endl << std::endl;
-
-  // Low level call of lapack: L*L^t decomposition
-  //
-  int info = Lapack::potrf(M);
-  assert(info == 0);
-
-  // Create a constant view defining L
-  // (symmetric matrix uses lower part)
-  static_assert(Is_Lower_Matrix_Storage_v<decltype(M)>);
-  //
-  auto L = create_matrix_view_lower_triangular(M.as_const());
-  std::cout << "L :" << L << std::endl << std::endl;
-
-  // inplace solve of w = M.v = L.L^t.v ...
-  // ... at the end w "contains" v
-  //
-  w = inverse(L) * w;             // L^(-1).w = L^t.v
-  w = inverse(transpose(L)) * w;  // L^(-t).L^(-1).w = v
-
-  std::cout << "v such that w=M.v :" << w << std::endl;
-}
-#+END_src
-
-prints:
-
-#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
-./build/examples/lapack_potrf
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_example :eval never
-symmetric M :
-              10               X               X               X               X
-               0              10               X               X               X
-               0               0              10               X               X
-               0               0               0              10               X
-               5               0               0               0              10
-
-v :
-1
-1
-1
-1
-1
-
-w = M.v :
-15
-10
-10
-10
-15
-
-L :
-         3.16228               X               X               X               X
-               0         3.16228               X               X               X
-               0               0         3.16228               X               X
-               0               0               0         3.16228               X
-         1.58114               0               0               0         2.73861
-
-v such that w=M.v :
-1
-1
-1
-1
-1
-#+END_example
 
 
 * FAQ

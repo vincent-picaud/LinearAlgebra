@@ -9,6 +9,7 @@
 #include "LinearAlgebra/utils/is_std_integral_constant.hpp"
 
 // Detail
+#include "LinearAlgebra/dense/dynamic_to_static_helper.hpp"
 #include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
 
 // Allowed combination Structure + Mask
@@ -108,7 +109,7 @@ namespace LinearAlgebra
                 Is_Std_Integral_Constant_Size_Or_Std_Size_v<J_SIZE_TYPE>and
                     Is_Std_Integral_Constant_Size_Or_Std_Size_v<LEADING_DIMENSION_TYPE>;
 
-  }
+  }  // namespace Default_Matrix_Detail
 
   // Below concrete implementations Default_Matrix_Crtp<> of are defined:
   //
@@ -212,13 +213,39 @@ namespace LinearAlgebra
     Default_Matrix(const Default_Matrix&) = default;
     Default_Matrix(Default_Matrix&&)      = default;
 
-    Default_Matrix(const I_SIZE_TYPE n, const J_SIZE_TYPE m, const LEADING_DIMENSION_TYPE ld)
+    // Extend copy constructor using other matrix type as source
+    template <typename OTHER_IMPL>
+    Default_Matrix(const Matrix_Crtp<OTHER_IMPL>& other)
+        : Default_Matrix(Detail::Dynamic_To_Static_Helper<I_SIZE_TYPE>(other.I_size()),
+                         Detail::Dynamic_To_Static_Helper<J_SIZE_TYPE>(other.J_size()))
+    {
+      (*this) = other;
+    }
+
+    // Default_Matrix(const I_SIZE_TYPE n, const J_SIZE_TYPE m, const LEADING_DIMENSION_TYPE ld)
+    //     : base_type(storage_scheme_type(n, m, ld))
+    // {
+    //   assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+    //          (base_type::I_size() == base_type::J_size()));
+    // }
+    // Default_Matrix(const I_SIZE_TYPE n, const J_SIZE_TYPE m) : base_type(storage_scheme_type(n, m))
+    // {
+    //   assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
+    //          (base_type::I_size() == base_type::J_size()));
+    // }
+
+    Default_Matrix(const Detail::Dynamic_To_Static_Helper<I_SIZE_TYPE> n,
+                   const Detail::Dynamic_To_Static_Helper<J_SIZE_TYPE> m,
+                   const Detail::Dynamic_To_Static_Helper<LEADING_DIMENSION_TYPE> ld)
         : base_type(storage_scheme_type(n, m, ld))
     {
       assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
              (base_type::I_size() == base_type::J_size()));
     }
-    Default_Matrix(const I_SIZE_TYPE n, const J_SIZE_TYPE m) : base_type(storage_scheme_type(n, m))
+
+    Default_Matrix(const Detail::Dynamic_To_Static_Helper<I_SIZE_TYPE> n,
+                   const Detail::Dynamic_To_Static_Helper<J_SIZE_TYPE> m)
+        : base_type(storage_scheme_type(n, m))
     {
       assert((not Matrix_Special_Structure_Imposes_Square_Matrix<SPECIAL_STRUCTURE>::value) ||
              (base_type::I_size() == base_type::J_size()));
@@ -544,4 +571,4 @@ namespace LinearAlgebra
     }
   };
 
-}
+}  // namespace LinearAlgebra

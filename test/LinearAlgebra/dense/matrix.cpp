@@ -56,6 +56,22 @@ TEST(Matrix, weird_type)
   m(2, 1) = 10;
   EXPECT_EQ(m(2, 1), 10);
 }
+TEST(Matrix, weird_type_extended_constructor)
+{
+  Default_Matrix<int,
+                 Matrix_Special_Structure_Enum::None,
+                 Matrix_Storage_Mask_Enum::None,
+                 size_t,
+                 std::integral_constant<size_t, 2>,
+                 std::integral_constant<size_t, 5>>
+      m(3, 2, 5);
+
+  EXPECT_EQ(m.I_size(), 3);
+  EXPECT_EQ(m.J_size(), 2);
+
+  m(2, 1) = 10;
+  EXPECT_EQ(m(2, 1), 10);
+}
 
 TEST(Matrix, Static_View)
 {
@@ -216,4 +232,57 @@ TEST(Matrix, view_empty_constructor_debug_death)
       V;
 
   EXPECT_DEBUG_DEATH(V(0, 0), "");
+}
+
+// XXXx
+
+//----------------------------------------------------------------
+TEST(Matrix, construction_mixed_type_1)
+{
+  Matrix<int> v(3, 3);
+  v = 1;
+  Tiny_Matrix<double, 3, 3> w(v);
+  EXPECT_EQ(w(0,0), 1);
+  EXPECT_EQ(w(1,0), 1);
+  EXPECT_EQ(w(2,0), 1);
+
+  // Check that we really perform a copy
+  v(1,0) = 2;
+  EXPECT_EQ(w(1,0), 1);
+}
+TEST(Matrix, construction_mixed_type_2)
+{
+  Tiny_Matrix<double, 3, 3> v;
+  v = 1;
+  Matrix<int> w(v);
+  EXPECT_EQ(w(0,0), 1);
+  EXPECT_EQ(w(1,0), 1);
+  EXPECT_EQ(w(2,0), 1);
+
+  // Check that we really perform a copy
+  v(1,0) = 2;
+  EXPECT_EQ(w(1,0), 1);
+}
+TEST(Matrix, construction_mixed_type_3)
+{
+  Matrix<double> v(3, 3);
+  v = 1;
+  Matrix<int> w(v.as_generic_view());
+  EXPECT_EQ(w(0,0), 1);
+  EXPECT_EQ(w(1,0), 1);
+  EXPECT_EQ(w(2,0), 1);
+
+  // Check that we really perform a copy
+  v(1,0) = 2;
+  EXPECT_EQ(w(1,0), 1);
+}
+//----------------------------------------------------------------
+TEST(Matrix, extended_constructor_for_static_size)
+{
+  Tiny_Matrix<int, 3, 3> v(3, 3);
+  EXPECT_EQ(v.I_size(), 3);
+}
+TEST(Matrix, extended_constructor_for_static_size_check)
+{
+  EXPECT_DEBUG_DEATH((Tiny_Matrix<int, 3, 3>(3, 4)), "");
 }

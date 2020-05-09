@@ -87,7 +87,6 @@ namespace LinearAlgebra
     // //       which would be the construction of a vector of size 3.
     // explicit Default_Vector(const SIZE_TYPE n) : base_type(storage_scheme_type(n)) {}
 
-    // Construction from size and increment
     Default_Vector(const Detail::Dynamic_To_Static_Helper<SIZE_TYPE> n,
                    const Detail::Dynamic_To_Static_Helper<INCREMENT_TYPE> inc)
         : base_type(storage_scheme_type(n, inc))

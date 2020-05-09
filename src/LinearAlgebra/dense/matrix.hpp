@@ -567,7 +567,7 @@ namespace LinearAlgebra
     Generic_Matrix_Const_View<T, SPECIAL_STRUCTURE, MASK>
     impl_as_generic_view() const
     {
-      return *this;
+      return {this->data(), this->I_size(), this->J_size(), this->leading_dimension()};
     }
   };
 

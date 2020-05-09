@@ -333,7 +333,7 @@ namespace LinearAlgebra
     Generic_Vector_Const_View<T>
     impl_as_generic_view() const
     {
-      return *this;
+      return {this->data(), this->size(), this->increment()};
     }
   };
 

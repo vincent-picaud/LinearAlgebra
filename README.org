@@ -37,8 +37,8 @@ Early development stage *-> Do not use it right now!*
 
 The goals are:
 - a good compromise between performance and library complexity
-- short compilation time (at least shorted than libs like eigen or blaze)
-- a concise wrapping of libraries like Blas, Blis, Lapacke, etc.
+- shorter compilation time than libs like [[https://gitlab.com/libeigen/eigen][Eigen]] or [[https://bitbucket.org/blaze-lib/blaze/src/master/][Blaze]].
+- a concise wrapping of libraries like [[https://github.com/xianyi/OpenBLAS][Blas]], [[https://github.com/flame/blis][Blis]], Lapacke, etc.
 
 * Doc (TODO)
 

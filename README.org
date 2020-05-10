@@ -11,7 +11,7 @@
     - [[#some-extra-constructors][Some extra "constructors"]]
   - [[#view-from-lowerupper-bounds][View from lower/upper bounds]]
   - [[#matrix-views][Matrix views]]
-    - [[#creating-your-own-matrix-type-specialization][Creating your own matrix type specialization]]
+  - [[#creating-your-own-matrix-type-specialization][Creating your own matrix type specialization]]
   - [[#generic-view][Generic View]]
   - [[#conjugate-gradients][Conjugate gradients]]
   - [[#direct-call-to-lapack][Direct call to Lapack]]
@@ -276,7 +276,7 @@ submatrix:
 #+END_example
 
 
-*** Creating your own matrix type specialization
+** Creating your own matrix type specialization
 
 You can define your own matrix type specialization:
 

@@ -21,14 +21,14 @@ namespace LinearAlgebra
   are_not_aliased_p(const MEM_CHUNK_0& mem_chunk_0, const MEM_CHUNK_1& mem_chunk_1) noexcept
   {
     // The idea is to check if:
-    // * mem_chunk_0 < mem_chunk_1 or
-    // * mem_chunk_1 < mem_chunk_0 or
+    // * mem_chunk_0 <= mem_chunk_1 or
+    // * mem_chunk_1 <= mem_chunk_0 or
     //
     if constexpr (std::is_same_v<typename MEM_CHUNK_0::element_type,
                                  typename MEM_CHUNK_1::element_type>)
     {
-      if (mem_chunk_0.data() + mem_chunk_0.capacity() < mem_chunk_1.data()) return true;
-      if (mem_chunk_1.data() + mem_chunk_1.capacity() < mem_chunk_0.data()) return true;
+      if (mem_chunk_0.data() + mem_chunk_0.capacity() <= mem_chunk_1.data()) return true;
+      if (mem_chunk_1.data() + mem_chunk_1.capacity() <= mem_chunk_0.data()) return true;
       return false;
     }
     //

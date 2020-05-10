@@ -7,6 +7,36 @@
 
 namespace LinearAlgebra
 {
+  /////////////////////////
+  // Has_Static_Capacity //
+  /////////////////////////
+  //
+  // Check if the memory chunk can have a static size
+  //
+  // Example:
+  // #+BEGIN_SRC cpp :eval never
+  // static_assert(not Has_Static_Capacity_v<Matrix<int>>);
+  // static_assert(Has_Static_Capacity_v<Tiny_Matrix<int,2,3>>);
+  // static_assert(Has_Static_Capacity_v<Tiny_Vector<int,2>>);
+  // #+END_SRC
+  //
+  template <typename IMPL, typename ENABLE = void>
+  struct Has_Static_Capacity : std::false_type
+  {
+  };
+
+  template <typename IMPL>
+  struct Has_Static_Capacity<IMPL,
+                             std::enable_if_t<Is_Std_Integral_Constant_Of_Type_v<
+                                 std::size_t,
+                                 typename IMPL::storage_scheme_type::required_capacity_type>>>
+      : std::true_type
+  {
+  };
+
+  template <typename IMPL>
+  inline constexpr bool Has_Static_Capacity_v = Has_Static_Capacity<IMPL>::value;
+
   /////////////////////
   // Has_Static_Size //
   /////////////////////
@@ -144,4 +174,4 @@ namespace LinearAlgebra
   {
     return ((size == size_tail) and ...);
   }
-}
+}  // namespace LinearAlgebra

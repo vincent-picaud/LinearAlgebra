@@ -17,7 +17,7 @@ using Matrix_nx2 =
 static_assert(not Has_Static_I_Size_v<Matrix_nx2<int>>);
 static_assert(Has_Static_J_Size_v<Matrix_nx2<int>>);
 
-static_assert(not Has_Static_Capacity_v<Matrix_nx2<int>>);
+static_assert(Has_Static_Capacity_v<Matrix_nx2<int>>);
 static_assert(Has_Static_Capacity_v<Tiny_Matrix<int, 2, 3>>);
 static_assert(Has_Static_Capacity_v<Tiny_Vector<int, 2>>);
 

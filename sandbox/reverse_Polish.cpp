@@ -367,9 +367,9 @@ using namespace LinearAlgebra;
 int
 main()
 {
-  Tiny_Matrix<int, 0, 0> M0;
-  Tiny_Matrix<int, 1, 0> M1;
-  Tiny_Matrix<int, 2, 0> M2;
+  Tiny_Matrix<int, 0, 1> M0;
+  Tiny_Matrix<int, 1, 1> M1;
+  Tiny_Matrix<int, 2, 1> M2;
 
   Tiny_Vector<int, 0> V0;
   Tiny_Vector<int, 1> V1;

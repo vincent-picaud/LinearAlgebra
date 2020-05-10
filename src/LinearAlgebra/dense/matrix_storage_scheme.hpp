@@ -13,23 +13,33 @@ namespace LinearAlgebra
   {
     // substitute to partial specializations
     //
-    template <typename N_TYPE, typename M_TYPE, typename LEADING_DIMENSION>
     inline constexpr auto
-    matrix_required_capacity_helper(const N_TYPE n,
-                                    const M_TYPE m,
-                                    const LEADING_DIMENSION ld) noexcept
+    matrix_required_capacity_helper(const std::size_t n,
+                                    const std::size_t m,
+                                    const std::size_t ld) noexcept
     {
-      return (n == 0 or m == 0) ? 0 : (n - 1) + (m - 1) * ld + 1;
+      assert(n <= ld);
+      return (n == 0) ? 0 : m * ld;
     }
-    template <size_t N, size_t M, size_t LEADING_DIMENSION>
+    template <std::size_t M, std::size_t LEADING_DIMENSION>
+    inline constexpr auto
+    matrix_required_capacity_helper(
+        const std::size_t N,
+        const std::integral_constant<size_t, M>,
+        const std::integral_constant<size_t, LEADING_DIMENSION>) noexcept
+    {
+      assert(N <= LEADING_DIMENSION);
+      return std::integral_constant<std::size_t, M * LEADING_DIMENSION>();
+    }
+    template <std::size_t N, std::size_t M, std::size_t LEADING_DIMENSION>
     inline constexpr auto
     matrix_required_capacity_helper(
         const std::integral_constant<size_t, N>,
         const std::integral_constant<size_t, M>,
         const std::integral_constant<size_t, LEADING_DIMENSION>) noexcept
     {
-      return std::integral_constant<size_t,
-                                    matrix_required_capacity_helper(N, M, LEADING_DIMENSION)>();
+      static_assert(N <= LEADING_DIMENSION);
+      return std::integral_constant < std::size_t, (N == 0) ? 0 : M * LEADING_DIMENSION > ();
     }
 
     template <typename N_TYPE, typename M_TYPE, typename LEADING_DIMENSION>
@@ -66,7 +76,7 @@ namespace LinearAlgebra
     {
       return n;
     }
-  }
+  }  // namespace Detail
 
   // For the moment we restrict our self to Fortan-Blas like scheme
   // (use Column major storage)
@@ -186,4 +196,4 @@ namespace LinearAlgebra
     return (MASK_0 == MASK_1 and matrix_storage_0.I_size() == matrix_storage_1.I_size() and
             matrix_storage_0.J_size() == matrix_storage_1.J_size());
   }
-}
+}  // namespace LinearAlgebra

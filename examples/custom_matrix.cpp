@@ -3,42 +3,36 @@
 using namespace LinearAlgebra;
 
 template <typename T>
-using Matrix_nx2 = Default_Matrix<T,
-                                  Matrix_Special_Structure_Enum::None,
-                                  Matrix_Storage_Mask_Enum::None,
-                                  std::size_t,
-                                  std::integral_constant<std::size_t, 2>,
-                                  std::integral_constant<std::size_t, 10>>;
-//std::size_t>;
+using Matrix_nx2 =
+    Default_Matrix<T,
+                   Matrix_Special_Structure_Enum::None,       // Dense matrix
+                   Matrix_Storage_Mask_Enum::None,            //
+                   std::size_t,                               // Dynamic number of rows
+                   std::integral_constant<std::size_t, 2>,    // Static number of columns, here 2
+                   std::integral_constant<std::size_t, 10>>;  // Static leading dimension, here 10
+
+// note: having a static leading dimension=10 allows to statically
+//       allocate matrix, but this also limits max row size to 10.
 
 static_assert(not Has_Static_I_Size_v<Matrix_nx2<int>>);
 static_assert(Has_Static_J_Size_v<Matrix_nx2<int>>);
 
-// template <typename IMPL, typename ENABLE = void>
-// struct Has_Static_Capacity : std::false_type
-// {
-// };
-
-// template <typename IMPL>
-// struct Has_Static_Capacity<IMPL,
-//                            std::enable_if_t<Is_Std_Integral_Constant_Of_Type_v<
-//                                std::size_t,
-//                                typename IMPL::storage_scheme_type::required_capacity_type>>>
-//     : std::true_type
-// {
-// };
-
-// template <typename IMPL>
-// inline constexpr bool Has_Static_Capacity_v = Has_Static_Capacity<IMPL>::value;
-
 static_assert(not Has_Static_Capacity_v<Matrix_nx2<int>>);
-static_assert(Has_Static_Capacity_v<Tiny_Matrix<int,2,3>>);
-static_assert(Has_Static_Capacity_v<Tiny_Vector<int,2>>);
+static_assert(Has_Static_Capacity_v<Tiny_Matrix<int, 2, 3>>);
+static_assert(Has_Static_Capacity_v<Tiny_Vector<int, 2>>);
 
 int
 main()
 {
-  Matrix_nx2<double> M(15, 2);  // M(5,3) would lead to run-time error in debug mode
+  // Note:
+  //
+  // 1. M(5,3) would lead to run-time error in debug mode
+  //    Reason: request 3 columns, 2 expected
+  //
+  // 2. M(15, 2) would lead to run-time error in debug mode
+  //    Reason: number of rows > statically defined leading dimension
+  //
+  Matrix_nx2<double> M(5, 2);
   M = 0;
 
   // Note: one can also write

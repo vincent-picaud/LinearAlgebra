@@ -18,6 +18,7 @@
   - [[#types][Types]]
     - [[#matrix-types][Matrix types]]
   - [[#meta-programming][Meta-Programming]]
+    - [[#some-size-utils][Some size utils]]
     - [[#some-generic-matrix-type-predicates][Some generic matrix type predicates]]
   - [[#functions][Functions]]
     - [[#aliasing][Aliasing]]
@@ -612,6 +613,65 @@ auto view = view_as_lower_triangular_strict(M.as_const());
  are stored and not owned).
 
 ** Meta-Programming 
+
+*** Some size utils
+
+*File*: [[file:src/LinearAlgebra/utils/size_utils.hpp][file:LinearAlgebra/utils/size_utils.hpp]]
+
+- =Has_Static_Capacity_v:= check if capacity is static or not (a static
+  capacity means that the object can be created without dynamic memory
+  allocation)
+ #+BEGIN_SRC cpp :eval never
+static_assert(not Has_Static_Capacity_v<Vector<double>>);
+static_assert(Has_Static_Capacity_v<Tiny_Matrix<int, 3, 4>>);
+ #+END_SRC
+
+- =Has_Static_Size_v:= check if a vector has a static size
+ #+BEGIN_SRC cpp :eval never
+static_assert(Has_Static_Size_v<Tiny_Vector<double, 3>>);
+static_assert(not Has_Static_Size_v<Vector<double>>);
+
+static_assert(not Has_Static_Size_v<Matrix<double>>);  // safely
+                                                       // returns
+                                                       // false, even
+                                                       // if not a
+                                                       // vector type
+ #+END_SRC
+
+- =Any_Has_Static_Size_v:= check if any vector has a static size
+ #+BEGIN_SRC cpp :eval never
+ static_assert(Any_Has_Static_Size_v<Vector<double>, Tiny_Vector<double, 3>>);
+ #+END_SRC
+
+- =Has_Static_I_Size_v:= check if a matrix has a static =I_size= (number of rows):
+ #+BEGIN_SRC cpp :eval never
+  static_assert(Has_Static_I_Size_v<Tiny_Matrix<int, 3, 4>>);
+  static_assert(not Has_Static_I_Size_v<Matrix<int>>);
+ #+END_SRC
+
+- =Has_Static_I_Size_v:= check if a matrix has a static =I_size= (number of rows):
+ #+BEGIN_SRC cpp :eval never
+  static_assert(Has_Static_I_Size_v<Tiny_Matrix<int, 3, 4>>);
+  static_assert(not Has_Static_I_Size_v<Matrix<int>>);
+ #+END_SRC
+
+- =Any_Static_I_Size_v:= check if any matrix has a static =I_size= (number of rows):
+ #+BEGIN_SRC cpp :eval never
+static_assert(Any_Has_Static_I_Size_v<Vector<int>, Tiny_Matrix<int, 3, 4>>);
+ #+END_SRC
+
+- =Has_Static_J_Size_v:= same than =I_size= but for columns
+- =Any_Static_J_Size_v:= same than =I_size= but for columns
+
+
+TODO: move to function with links:
+
+Two functions, declared as =constexpr=:
+- =get_static_size_if_any(...)= that returns a static size if any. 
+
+  CAVEAT: it does not check if all sizes are equal!
+
+- =all_sizes_are_equal_p(...)= check that all sizes are equal
 
 *** Some generic matrix type predicates
 

@@ -35,3 +35,12 @@ executable('vector_extra_constructors',
 	   'vector_extra_constructors.cpp',
 	   dependencies : [LinearAlgebra_dep])
 
+executable('custom_matrix',
+	   'custom_matrix.cpp',
+	   dependencies : [LinearAlgebra_dep])
+
+#################################################################
+
+executable('doc_size_utils',
+	   'doc_size_utils.cpp',
+	   dependencies : [LinearAlgebra_dep])

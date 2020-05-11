@@ -17,4 +17,7 @@ LinearAlgebra_headers += [
   'scalar_functions/norm_inf_vector.hpp',
   'scalar_functions/norm_inf_matrix.hpp',
 
+  'scalar_functions/min_max.hpp',
+  'scalar_functions/min_max_vector.hpp',
+  'scalar_functions/min_max_matrix.hpp',
 ]

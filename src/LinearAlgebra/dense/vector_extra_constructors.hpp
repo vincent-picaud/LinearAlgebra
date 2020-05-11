@@ -35,15 +35,10 @@ namespace LinearAlgebra
   Tiny_Vector<T, N>
   create_vector(T const (&data)[N])
   {
-    using storage_scheme_type = typename Tiny_Vector<T, N>::storage_scheme_type;
+    Tiny_Vector<T, N> to_return;
+    fill_indexed([&data](const auto i) { return data[i]; }, to_return);
 
-    std::array<T, N> array;
-    for (std::size_t i = 0; i < N; i++)
-    {
-      array[i] = data[i];
-    }
-
-    return {storage_scheme_type{}, array};
+    return to_return;
   }
 
 }  // namespace LinearAlgebra

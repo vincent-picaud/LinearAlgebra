@@ -3,6 +3,7 @@ test_array = [
     'is_lapack_supported_scalar',
     'to_lapack_uplo',
     'posv',
+    'gels',
     'subroutines_dense',
   ]
 

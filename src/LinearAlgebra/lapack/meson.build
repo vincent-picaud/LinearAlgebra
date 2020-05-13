@@ -9,6 +9,7 @@ LinearAlgebra_headers += [
   'lapack/lapack_enum.hpp',
   'lapack/subroutines.hpp',
   'lapack/to_lapack_uplo.hpp',
+  'lapack/to_lapack_transpose.hpp',
   'lapack/is_lapack_supported_scalar.hpp',
 ]
 

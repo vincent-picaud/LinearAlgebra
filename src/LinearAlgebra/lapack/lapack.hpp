@@ -15,5 +15,6 @@
 #include "LinearAlgebra/lapack/subroutines.hpp"
 #include "LinearAlgebra/lapack/subroutines_dense.hpp"
 #include "LinearAlgebra/lapack/to_lapack_uplo.hpp"
+#include "LinearAlgebra/lapack/to_lapack_transpose.hpp"
 
 #endif

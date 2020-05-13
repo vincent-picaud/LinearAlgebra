@@ -28,6 +28,64 @@
 
 namespace LinearAlgebra::Lapack
 {
+  // SGELS Least squares |A.x-b|_2 or |A^t.x-b|_2
+  //================================================================
+  // CAVEAT: inplace!
+  //
+  static inline lapack_int
+  gels(const Lapack_Order_Enum matrix_layout,
+       const Lapack_Transpose_Enum trans,
+       lapack_int m,
+       lapack_int n,
+       lapack_int nrhs,
+       float* a,
+       lapack_int lda,
+       float* b,
+       lapack_int ldb)
+  {
+    return LAPACKE_sgels(matrix_layout, trans, m, n, nrhs, a, lda, b, ldb);
+  }
+  static inline lapack_int
+  gels(const Lapack_Order_Enum matrix_layout,
+       const Lapack_Transpose_Enum trans,
+       lapack_int m,
+       lapack_int n,
+       lapack_int nrhs,
+       double* a,
+       lapack_int lda,
+       double* b,
+       lapack_int ldb)
+  {
+    return LAPACKE_dgels(matrix_layout, trans, m, n, nrhs, a, lda, b, ldb);
+  }
+
+  static inline lapack_int
+  gels(const Lapack_Order_Enum matrix_layout,
+       const Lapack_Transpose_Enum trans,
+       lapack_int m,
+       lapack_int n,
+       lapack_int nrhs,
+       std::complex<float>* a,
+       lapack_int lda,
+       std::complex<float>* b,
+       lapack_int ldb)
+  {
+    return LAPACKE_cgels(matrix_layout, trans, m, n, nrhs, a, lda, b, ldb);
+  }
+  static inline lapack_int
+  gels(const Lapack_Order_Enum matrix_layout,
+       const Lapack_Transpose_Enum trans,
+       lapack_int m,
+       lapack_int n,
+       lapack_int nrhs,
+       std::complex<double>* a,
+       lapack_int lda,
+       std::complex<double>* b,
+       lapack_int ldb)
+  {
+    return LAPACKE_zgels(matrix_layout, trans, m, n, nrhs, a, lda, b, ldb);
+  }
+  
   // potrf L.L^H or U^H.U Cholesky Factorization
   //================================================================
   //

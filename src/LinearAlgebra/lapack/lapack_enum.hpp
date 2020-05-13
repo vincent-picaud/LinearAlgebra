@@ -26,4 +26,11 @@ namespace LinearAlgebra::Lapack
     Up  = 'U',
     Low = 'L'
   };
-}
+
+  enum Lapack_Transpose_Enum : char
+  {
+    Identity  = 'N',
+    Transpose = 'T',
+    TransConj = 'H'
+  };
+}  // namespace LinearAlgebra::Lapack

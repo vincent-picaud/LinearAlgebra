@@ -10,3 +10,7 @@
 #include "LinearAlgebra/metaexpr/metaexpr.hpp"
 
 #include "LinearAlgebra/scalar_functions/scalar_functions_vector.hpp"
+
+// Extra stuff
+//
+#include "LinearAlgebra/utils/lower_upper_bound.hpp"

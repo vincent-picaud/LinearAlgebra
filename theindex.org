@@ -1,0 +1,6 @@
+#+CALL: Setup()
+#+TITLE: Index
+#+CALL: HomeUp()
+
+
+#+INCLUDE: "theindex.inc"

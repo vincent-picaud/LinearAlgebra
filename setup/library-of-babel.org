@@ -1,0 +1,71 @@
+#+NAME: Setup
+#+BEGIN_SRC emacs-lisp :results drawer
+(concat 
+ "#+OPTIONS: H:3 toc:t num:t \\n:nil ::t |:t ^:{} -:t f:t *:t tex:t d:t tags:not-in-toc \n"
+
+ "#+PROPERTY: header-args :mkdirp yes \n"
+
+ "#+HTML_HEAD_EXTRA: <style type=\"text/css\"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style> \n"
+ "#+HTML_HEAD_EXTRA: <style type=\"text/css\"> pre {background:#EEEEEE; padding: 3px 13px}    </style> \n"
+
+ ;; "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"http://orgmode.org/worg/style/worg.css\"/> \n"
+ ;; "#+HTML_HEAD: <style type=\"text/css\">body{ max-width:80%; }</style> \n"
+ ;; "#+INFOJS_OPT: view:showall mouse:underline path:http://orgmode.org/org-info.js \n"
+
+ "#+LATEX_HEADER: \\usepackage[backend=biber, bibencoding=utf8 ]{biblatex}\n" 
+ "#+LATEX_HEADER: \\usepackage{verbatim}\n" 
+ "#+LATEX_HEADER: \\usepackage{minted}\n"
+ "#+LATEX_HEADER: \\hypersetup{colorlinks=true}\n"
+ "#+LATEX_HEADER: \\addbibresource{" my-project-root "bibliography/bibliography.bib}\n"
+
+ "#+BEGIN_EXPORT latex \n"
+ "% from: https://github.com/SublimeText/LaTeXTools/issues/657#issuecomment-188188632 \n"
+ "\\renewcommand{\\MintedPygmentize}{/usr/bin/pygmentize} \n"
+ "\\definecolor{bg}{rgb}{0.95,0.95,0.95} \n"
+ "\\setminted{bgcolor=bg} \n"
+ "\\setminted{fontsize=\\footnotesize}   \n"
+ "\\setminted{breaklines} \n"
+ "\\setminted{breakautoindent=false} \n"
+ "\\setminted{mathescape} \n"
+ "\\setminted{xleftmargin=0pt} \n"
+ "#+END_EXPORT \n"
+ )
+#+END_SRC
+#+NAME: Bibliography
+#+BEGIN_SRC emacs-lisp :results drawer
+(concat "#+BEGIN_EXPORT latex\n\\printbibliography\n"
+	"\\begin{comment}\n#+END_EXPORT\n"
+	"bibliography:" my-project-root "bibliography/bibliography.bib\n"
+	"#+BEGIN_EXPORT latex\n\\end{comment}\n#+END_EXPORT\n")
+#+END_SRC
+
+
+
+#+NAME: Extract
+#+BEGIN_SRC sh :exports none :results drawer :var codeFile="undefined.cpp" :var tag="tag" :var exe=(concat (expand-file-name (car (project-roots (project-current)))) "setup/extract")
+"$exe" "$codeFile" "$tag"
+#+END_SRC
+
+#+NAME: HomeUp
+#+BEGIN_SRC emacs-lisp :results drawer
+(let* ((my-project-root
+	(expand-file-name (car (project-roots (project-current)))))
+       (my-buffer-dir
+	(expand-file-name (file-name-directory buffer-file-name)))
+       (my-up
+	(expand-file-name (concat my-buffer-dir "../index.org")))
+       (my-home
+	(expand-file-name (concat my-project-root "index.org")))
+       (my-can-go-up (string< my-project-root my-buffer-dir))
+       )
+  (concat
+   "#+begin_export latex\n\\begin{comment}\n#+end_export\n"
+   (if (file-exists-p my-home)
+       (format "[[file:%s][*HOME*]] " (file-relative-name my-home my-buffer-dir)))
+   (if (and my-can-go-up (file-exists-p my-up))
+       (format "[[file:%s][*UP*]] " (file-relative-name my-up my-buffer-dir)))
+   "\n#+begin_export latex\n\\end{comment}\n#+end_export\n"
+   )
+  )
+    #+END_SRC
+

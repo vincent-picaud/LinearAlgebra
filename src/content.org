@@ -1,0 +1,15 @@
+#+CALL: Setup()
+#+TITLE: Content
+#+Call: HomeUp()
+
+#+BEGIN_SRC sh :results output drawer :exports results
+orgTree.sh -I index.org -P "*.org"
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
++ SignalProcessing/
+	+ discrete_signal/
+		+ [[file:.//SignalProcessing/discrete_signal/discrete_signal_crtp.org][discrete_signal_crtp]]
+:END:
+

@@ -6,7 +6,6 @@ subprojects/packagecache/
 /LinearAlgebra.srctrlbm
 /LinearAlgebra.srctrldb
 /LinearAlgebra.srctrlprj
-*.html
 /.clangd/
 /compile_commands.json
 /buildclang/

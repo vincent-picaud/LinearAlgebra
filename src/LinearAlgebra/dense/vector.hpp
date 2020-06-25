@@ -1,3 +1,4 @@
+// file:vector.org 
 #pragma once
 
 #include <type_traits>
@@ -30,7 +31,16 @@ namespace LinearAlgebra
     using increment_type = typename storage_scheme_type::increment_type;
   };
 
-  // Definition of Default_Vector
+  // [BEGIN_Default_Vector]
+  //
+  // *The =Default_Vector= class*
+  //
+  // - SIZE_TYPE :: vector dimension, can be a =std::size_t= or a
+  //   =std::integral_constant<std::size_t,N>=
+  //
+  // - INCREMENT_TYPE :: vector stride, can be a =std::size_t= or a
+  //   =std::integral_constant<std::size_t,N>=. Must be >0.
+  //
   template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
   class Default_Vector : public Dense_Vector_Crtp<Default_Vector<T, SIZE_TYPE, INCREMENT_TYPE>>
   {
@@ -92,8 +102,10 @@ namespace LinearAlgebra
         : base_type(storage_scheme_type(n, inc))
     {
     }
-    // Note: explicit blocks to possible wrong interpretation of V=3
-    //       which would be the construction of a vector of size 3.
+    // [DOC]
+    //
+    // Blocks ambiguous syntax like =V=3= which creates a vector of size 3.
+    //
     explicit Default_Vector(const Detail::Dynamic_To_Static_Helper<SIZE_TYPE> n)
         : base_type(storage_scheme_type(n))
     {
@@ -143,6 +155,7 @@ namespace LinearAlgebra
       return {this->data(), this->size(), this->increment()};
     }
   };
+  // [END_Default_Vector]
 
   //****************************************************************
   // Views
@@ -172,6 +185,12 @@ namespace LinearAlgebra
     using increment_type = typename storage_scheme_type::increment_type;
   };
 
+  // [BEGIN_Default_Vector_View]
+  //
+  // *The =Default_Vector_View= class*
+  //
+  // This is a view on =Default_Vector= that only stores pointers.
+  //
   template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
   class Default_Vector_View
       : public Dense_Vector_Crtp<Default_Vector_View<T, SIZE_TYPE, INCREMENT_TYPE>>
@@ -244,6 +263,7 @@ namespace LinearAlgebra
       return {this->data(), this->size(), this->increment()};
     }
   };
+  // [END_Default_Vector_View]
 
   //****************************************************************
   // Const_View
@@ -266,6 +286,13 @@ namespace LinearAlgebra
     using increment_type = typename storage_scheme_type::increment_type;
   };
 
+  // [BEGIN_Default_Vector_Const_View]
+  //
+  // *The =Default_Vector_Const_View= class*
+  //
+  // Compared to =Default_Vector_View= only *constant* access to the
+  // stored component is possible.
+  //
   template <typename T, typename SIZE_TYPE, typename INCREMENT_TYPE>
   class Default_Vector_Const_View
       : public Dense_Vector_Crtp<Default_Vector_Const_View<T, SIZE_TYPE, INCREMENT_TYPE>>
@@ -336,5 +363,5 @@ namespace LinearAlgebra
       return {this->data(), this->size(), this->increment()};
     }
   };
-
+  // [END_Default_Vector_Const_View]
 }  // namespace LinearAlgebra

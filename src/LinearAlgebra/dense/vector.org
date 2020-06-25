@@ -1,0 +1,29 @@
+#+Call: Setup()
+#+Title: vector.hpp
+#+Call: HomeUp()
+
+* Default dense vector type 
+
+This class defines our default dense vector types. There are 3 classes
+
+** =Default_Vector=
+#+Index:Class!Default_Vector
+
+ # file:vector.hpp::BEGIN_Default_Vector
+ #+Call: Extract("vector.hpp","Default_Vector")
+
+** =Default_Vector_View=
+#+Index:Class!Default_Vector_View
+
+
+ # file:vector.hpp::BEGIN_Default_Vector_View
+ #+Call: Extract("vector.hpp","Default_Vector_View")
+
+** =Default_Vector_Const_View=
+#+Index:Class!Default_Vector_Const_View
+
+
+ # file:vector.hpp::BEGIN_Default_Vector_Const_View
+ #+Call: Extract("vector.hpp","Default_Vector_Const_View")
+
+

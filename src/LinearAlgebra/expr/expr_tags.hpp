@@ -30,18 +30,27 @@ namespace LinearAlgebra
   // Tags as CRTP for generic filtering
   ///////////////////////////////////////////////////////
   //
+  // [BEGIN_Expr_Tags_Crtp]
+  //
+  // Crtp base class used by:
+  // - tags
+  // - operator unary, binary
+  //
   template <typename IMPL>
   class Expr_Tags_Crtp : public Crtp_Find_Impl<Expr_Tags_Crtp, IMPL, Crtp>
   {
   };
+  // [END_Expr_Tags_Crtp]
 
-  ///////////////////////////////////////////////////////
-  // Tags used to notify operations (plus, product...) //
   ///////////////////////////////////////////////////////
   //
   // Note: as we do not use capitalized first letter these are LEGAL
   //       C++ identifiers, see
   //       https://en.cppreference.com/w/cpp/language/identifiers
+  //
+  // [BEGIN_Expr_Tags]
+  //
+  // Tags used to notify operations (plus, product...)
   //
   struct _plus_t_ final : Expr_Tags_Crtp<_plus_t_>
   {
@@ -73,9 +82,9 @@ namespace LinearAlgebra
   };
   constexpr auto _assign_ = _assign_t_();
 
-  //////////////////////////////////
-  // Tags used to notify argument //
-  //////////////////////////////////
+  // [DOC]
+  //
+  // Tags used to notify argument
   //
   struct _lhs_t_ final : Expr_Tags_Crtp<_lhs_t_>
   {
@@ -90,6 +99,8 @@ namespace LinearAlgebra
   constexpr auto _lhs_   = _lhs_t_();
   constexpr auto _rhs_1_ = _rhs_1_t_();
   constexpr auto _rhs_2_ = _rhs_2_t_();
+
+  // [END_Expr_Tags]
 
   //----------------------------------------------------------------
 
@@ -227,4 +238,4 @@ namespace LinearAlgebra
     return scalar;
   }
 
-}
+}  // namespace LinearAlgebra

@@ -1,0 +1,26 @@
+#+Call: Setup()
+#+Title: Contents
+#+Call: HomeUp()
+
+#+BEGIN_SRC sh :results output drawer :exports results
+orgTree.sh -I index.org -P "*.org"
+#+END_SRC
+
+* The =LinearAlgebra/expr/= directory                                     :Dev:
+  :PROPERTIES:
+  :ID:       5745a58d-9cc9-49bd-8544-9eb40aee65f0
+  :END:
+
+This directory define low-level API to call computational subroutines. By "low-level" we means that calls are performed by flat function calls
+
+#+begin_src cpp
+assign(V, _lhs_, _plus_ 2, W);
+#+end_src
+
+and not by an expression template mechanism that would allow us to write:
+#+begin_src cpp
+V = V + 2 * W;
+#+end_src
+
+The first steps are to introduce a [[id:5e5dd322-57cf-4297-b1e2-ccf147f4adc3][Base class for VMT (vectors, matrices, tensors...)]] and some tags
+

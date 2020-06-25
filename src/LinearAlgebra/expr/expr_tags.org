@@ -1,0 +1,18 @@
+#+Call: Setup()
+#+Title: expr_tags.hpp
+#+Call: HomeUp()
+
+* The =Expr_Tags_Crtp= base class
+
+  # file:expr_tags.hpp::BEGIN_Expr_Tags_Crtp
+  #+Call: Extract("expr_tags.hpp","Expr_Tags_Crtp")
+
+** Tags
+
+  # file:expr_tags.hpp::BEGIN_Expr_Tags
+  #+Call: Extract("expr_tags.hpp","Expr_Tags")
+
+
+** Operator unary etc...
+
+-> file metaexpr/metaexpr_crtp.hpp

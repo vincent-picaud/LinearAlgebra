@@ -1,0 +1,29 @@
+#+Call: Setup()
+#+Title: matrix.hpp
+#+Call: HomeUp()
+
+* Default dense matrix types
+
+This class defines our default dense matrix types. There are 3 classes
+
+** =Default_Matrix=
+#+Index:Class!Default_Matrix
+
+ # file:matrix.hpp::BEGIN_Default_Matrix
+ #+Call: Extract("matrix.hpp","Default_Matrix")
+
+** =Default_Matrix_View=
+#+Index:Class!Default_Matrix_View
+
+
+ # file:matrix.hpp::BEGIN_Default_Matrix_View
+ #+Call: Extract("matrix.hpp","Default_Matrix_View")
+
+** =Default_Matrix_Const_View=
+#+Index:Class!Default_Matrix_Const_View
+
+
+ # file:matrix.hpp::BEGIN_Default_Matrix_Const_View
+ #+Call: Extract("matrix.hpp","Default_Matrix_Const_View")
+
+

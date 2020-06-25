@@ -1,3 +1,4 @@
+// file:matrix.org
 // TODO: for hermitian matrices, check that diagonal is real
 #pragma once
 
@@ -148,6 +149,10 @@ namespace LinearAlgebra
         std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
 
+  // [BEGIN_Default_Matrix]
+  //
+  // *The =Default_Matrix= class*
+  //
   template <typename T,
             Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK,
@@ -287,6 +292,7 @@ namespace LinearAlgebra
       return {this->data(), this->I_size(), this->J_size(), this->leading_dimension()};
     }
   };
+  // [END_Default_Matrix]
 
   //****************************************************************
 
@@ -319,6 +325,10 @@ namespace LinearAlgebra
         std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
 
+  // [BEGIN_Default_Matrix_View]
+  //
+  // *The =Default_Matrix_View= class*
+  //
   template <typename T,
             Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK,
@@ -460,7 +470,12 @@ namespace LinearAlgebra
     using matrix_special_structure_type =
         std::integral_constant<LinearAlgebra::Matrix_Special_Structure_Enum, SPECIAL_STRUCTURE>;
   };
+  // [END_Default_Matrix_View]
 
+  // [BEGIN_Default_Matrix_Const_View]
+  //
+  // *The =Default_Matrix_Const_View= class*
+  //
   template <typename T,
             Matrix_Special_Structure_Enum SPECIAL_STRUCTURE,
             Matrix_Storage_Mask_Enum MASK,
@@ -482,9 +497,9 @@ namespace LinearAlgebra
                                                         J_SIZE_TYPE,
                                                         LEADING_DIMENSION_TYPE>);
 
-    ///////////
-    // Types //
-    ///////////
+    // [DOC]
+    //
+    // *Public Types*
     //
    public:
     using base_type = Dense_Matrix_Crtp<Default_Matrix_Const_View<T,
@@ -504,14 +519,9 @@ namespace LinearAlgebra
 
     using leading_dimension_type = typename storage_scheme_type::leading_dimension_type;
 
-    /////////////
-    // Members //
-    /////////////
+    // [DOC]
     //
-   protected:
-    //////////////////
-    // Constructors //
-    //////////////////
+    // *Public Constructors*
     //
    public:
     Default_Matrix_Const_View() : Default_Matrix_Const_View(nullptr)
@@ -554,6 +564,7 @@ namespace LinearAlgebra
     {
       return this->as_const().impl_as_generic_view();
     }
+    // [END_Default_Matrix_Const_View]
 
     DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Matrix_Const_View);
 
@@ -569,6 +580,7 @@ namespace LinearAlgebra
     {
       return {this->data(), this->I_size(), this->J_size(), this->leading_dimension()};
     }
+    // [BEGIN_Default_Matrix_Const_View]
   };
-
+  // [END_Default_Matrix_Const_View]
 }  // namespace LinearAlgebra

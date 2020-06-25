@@ -1,0 +1,15 @@
+#+Call: Setup()
+#+Title: vmt_crtp.hpp
+#+Call: HomeUp()
+
+* Base class for VMT (vectors, matrices, tensors...)
+
+We define a "catch-all" base class for all our Vectors, Matrices, ... objects.
+
+# file:vmt_crtp.hpp::BEGIN_VMT
+#
+
+# file:vmt_crtp.hpp::BEGIN_VMT
+#+Call: Extract("vmt_crtp.hpp","VMT")
+
+

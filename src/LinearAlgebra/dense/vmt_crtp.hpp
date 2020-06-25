@@ -1,19 +1,22 @@
-// Define the base class of Vector, Matrix, Tensor types
-//
-// Role: its role is to unifies argument capture in interface functions
-//
+// file:vmt_crtp.org
 #pragma once
 
 #include "LinearAlgebra/utils/crtp.hpp"
 
 namespace LinearAlgebra
 {
+  // [BEGIN_VMT]
+  //
+  // Defines the Vector, Matrix, Tensor... base class
+  //
+  // Its role is to unifies argument capture in interface functions
+  //
   template <typename IMPL>
   class VMT_Crtp : public Crtp_Find_Impl<VMT_Crtp, IMPL, Crtp>
   {
-    ///////////
-    // Types //
-    ///////////
+    //////////////////
+    // Public Types
+    //////////////////
     //
    public:
     using base_type = Crtp_Find_Impl<VMT_Crtp, IMPL, Crtp>;
@@ -24,12 +27,9 @@ namespace LinearAlgebra
 
     using element_type = typename traits_type::element_type;
 
-    //////////////////
     // Prevent object slicing
-    //////////////////
-    //
    protected:
     VMT_Crtp& operator=(const VMT_Crtp&) = default;
   };
-
-}
+  // [END_VMT]
+}  // namespace LinearAlgebra

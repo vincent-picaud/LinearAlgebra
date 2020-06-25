@@ -12,7 +12,6 @@ subprojects/packagecache/
 /buildclang/
 /buildgcc/
 /relbuild/
-/docs/
 /index.org
 /setup/extract
 /theindex.inc

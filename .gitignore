@@ -14,3 +14,7 @@ subprojects/packagecache/
 /index.org
 /setup/extract
 /theindex.inc
+# everything except doc
+/src/**/*.html
+/examples/**/*.html
+/sandbox/**/*.html

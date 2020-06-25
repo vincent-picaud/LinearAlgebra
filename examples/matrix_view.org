@@ -1,0 +1,40 @@
+#+Call: Setup()
+#+Title: Matrix view
+#+Call: HomeUp()
+
+* Matrix view example
+
+This example shows how to create matrix view
+
+# file:matrix_view.cpp
+#+Call: Extract("matrix_view.cpp","matrix_view")
+
+which prints
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+../build/examples/matrix_view
+#+END_SRC
+
+#+RESULTS:
+#+begin_example :eval never
+full matrix:
+               1               1               1               1               1               1
+               1               1              -1              -1              -1               1
+               1               1              -1              -1              -1               1
+               1               1               1               1               1               1
+               1               1               1               1               1               1
+full matrix:
+               1               0               0               0               0               0
+               1              -1               0               0               0               0
+               1              -1              -1               0               0               0
+               1               1               1               1               0               0
+               1               1               1               1               1               0
+               1               1               1               1               1               1
+submatrix:
+               1               X               X               X               X               X
+               1              -1               X               X               X               X
+               1              -1              -1               X               X               X
+               1               1               1               1               X               X
+               1               1               1               1               1               X
+               1               1               1               1               1               1
+#+end_example

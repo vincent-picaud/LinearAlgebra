@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-25 Thu 16:16 -->
+<!-- 2020-06-25 Thu 16:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Index</title>
+<title>Matrix view</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -241,52 +241,161 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">Index</h1>
+<h1 class="title">Matrix view</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org426b69f">1. M</a></li>
-<li><a href="#org8b03aab">2. V</a></li>
+<li><a href="#org44335d2">1. Matrix view example</a></li>
 </ul>
 </div>
 </div>
 
 <p>
-<a href="index.html"><b>HOME</b></a> 
+<a href="../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-
-<div id="outline-container-org426b69f" class="outline-2">
-<h2 id="org426b69f"><span class="section-number-2">1</span> M</h2>
+<div id="outline-container-org44335d2" class="outline-2">
+<h2 id="org44335d2"><span class="section-number-2">1</span> Matrix view example</h2>
 <div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li>Matrix
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/dense/README.html#org786d13d">Matrix_Hierarchy</a></li>
-</ul></li>
-</ul>
+<p>
+This example shows how to create matrix view
+</p>
+
+<blockquote>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/matrix.hpp"</span>
+
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">&lt;iostream&gt;</span>
+
+<span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
+
+<span style="color: #00688b;">int</span>
+<span style="color: #cd9b1d;">main</span>()
+{
+</pre>
 </div>
+
+<p>
+Declares a <b>static</b> matrix of dimension \(5\times 6\).
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp">  <span style="color: #00688b;">Tiny_Matrix</span>&lt;<span style="color: #00688b;">int</span>, 5, 6&gt; <span style="color: #2e8b57;">mat</span>;
+  mat = 1;
+
+</pre>
 </div>
-<div id="outline-container-org8b03aab" class="outline-2">
-<h2 id="org8b03aab"><span class="section-number-2">2</span> V</h2>
-<div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li>Vector
-<ul class="org-ul">
-<li><a href="../SignalProcessing/subprojects/Optimization/subprojects/LinearAlgebra/src/LinearAlgebra/dense/README.html#ID-32e3648d-7757-47a8-b934-f640c47b4dc0">get_size()</a></li>
-<li><a href="../SignalProcessing/subprojects/Optimization/subprojects/LinearAlgebra/src/LinearAlgebra/dense/README.html#ID-37ca8895-814e-4808-882f-fff1bde88bcc">Vector_Hierarchy</a></li>
-</ul></li>
-</ul>
+
+<p>
+Create a sub-matrix [1:3,2:5] view and fills it with 1
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp">  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">view_mat</span> = create_matrix_view(mat, 1, 3, 2, 5);
+  view_mat      = -1;
+
+  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; <span style="color: #8b7355;">"full matrix:"</span> &lt;&lt; mat &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+
+  <span style="color: #7f7f7f;">//</span><span style="color: #7f7f7f;">================</span>
+
+</pre>
+</div>
+
+<p>
+A static, symmetric matrix of dimension \(6\times 6\).
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp">  <span style="color: #00688b;">Tiny_Symmetric_Matrix</span>&lt;<span style="color: #00688b;">int</span>, 6&gt; <span style="color: #2e8b57;">mat_S</span>;
+
+</pre>
+</div>
+
+<p>
+Creates a <b>full</b> view and fills it with 0
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp">  create_matrix_view_full(mat_S) = 0;  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">fill the full matrix</span>
+
+</pre>
+</div>
+
+<p>
+Here as <code>mat_S</code> is symmetric
+only fill lower triangular part is filled
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp">  mat_S = 1;
+  
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Take a subview of a _symmetric matrix_</span>
+  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">view_mat_S</span> = create_matrix_view(mat_S, 1, 3, 1, 3);
+
+  view_mat_S = -1;  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">here the subview mat_S is symmetric too and</span>
+                    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">only the lower triangular part will be filled</span>
+
+  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; <span style="color: #8b7355;">"full matrix:"</span> &lt;&lt; create_matrix_view_full(mat_S) &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; <span style="color: #8b7355;">"submatrix:"</span> &lt;&lt; mat_S &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+}
+</pre>
+</div>
+</blockquote>
+
+<p>
+which prints
+</p>
+
+<pre class="example">
+full matrix:
+               1               1               1               1               1               1
+               1               1              -1              -1              -1               1
+               1               1              -1              -1              -1               1
+               1               1               1               1               1               1
+               1               1               1               1               1               1
+full matrix:
+               1               0               0               0               0               0
+               1              -1               0               0               0               0
+               1              -1              -1               0               0               0
+               1               1               1               1               0               0
+               1               1               1               1               1               0
+               1               1               1               1               1               1
+submatrix:
+               1               X               X               X               X               X
+               1              -1               X               X               X               X
+               1              -1              -1               X               X               X
+               1               1               1               1               X               X
+               1               1               1               1               1               X
+               1               1               1               1               1               1
+</pre>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-06-25 Thu 16:16</p>
+<p class="date">Created: 2020-06-25 Thu 16:12</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,0 +1,21 @@
+#+Call: Setup()
+#+Title: assign_fallback.hpp
+#+Call: HomeUp()
+
+* =assign= fallback
+  :PROPERTIES:
+  :ID:       284f04be-bb9d-4fb9-a02f-955a4b8a66ec
+  :END:
+  :BACKLINKS:
+  [2020-06-26 Fri 06:20] <- [[id:bd2ec7da-4692-4f83-bf16-5441b9d851f5][Motivations]]
+  :END:
+#+Index:Function!assign (fallback)
+
+Defines a default fallback when expression is not defined. These
+functions avoid to redefine such fallback for every new expression.
+
+  # file:assign_fallback.hpp::BEGIN_Fallback
+  #+Call: Extract("assign_fallback.hpp","Fallback")
+
+
+

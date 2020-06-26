@@ -16,7 +16,7 @@ namespace LinearAlgebra
   template <typename IMPL>
   struct Crtp_Type_Traits;
 
-  //! @brief CRTP base class
+  // [BEGIN_Crtp]
   template <typename IMPL>
   class Crtp
   {
@@ -26,20 +26,22 @@ namespace LinearAlgebra
 
    public:
     constexpr const exact_type&
-    impl() const noexcept  //!< use exact_type instance
+    impl() const noexcept
     {
       return static_cast<const exact_type&>(*this);
     };
     constexpr exact_type&
-    impl() noexcept  //!< use exact_type instance
+    impl() noexcept 
     {
       return static_cast<exact_type&>(*this);
     };
 
    protected:
+    // fight against object slicing
     constexpr Crtp& operator=(const Crtp&) = default;
   };
-
+ // [END_Crtp]
+  
   template <template <typename> class CRTP_INTERFACE, typename OBJ, typename ENABLE = void>
   struct Is_Crtp_Interface_Of : std::false_type
   {

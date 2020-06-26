@@ -1,3 +1,4 @@
+// file:assign_fallback.org
 #pragma once
 
 #include "LinearAlgebra/expr/expr_selector.hpp"
@@ -6,10 +7,7 @@
 
 namespace LinearAlgebra
 {
-  // Fallback
-  //
-  // Greatly reduce the length of error message. This was one of the
-  // main reason to introduce Scalar_CRef
+  // [BEGIN_Fallback]
   //
   template <typename DEST_IMPL, typename... ARG_IMPL>
   void
@@ -26,4 +24,5 @@ namespace LinearAlgebra
   {
     static_assert(Always_False_v<DEST_IMPL>, "Known Pattern, Unknown specialization ");
   }
+    // [END_Fallback]
 }

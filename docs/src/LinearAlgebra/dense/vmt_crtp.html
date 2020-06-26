@@ -6,7 +6,7 @@
 <!-- 2020-06-26 Fri 06:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>LinearAlgebra</title>
+<title>vmt_crtp.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,54 +244,64 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">LinearAlgebra</h1>
-
-
-<div id="outline-container-org7196de6" class="outline-2">
-<h2 id="org7196de6"><span class="section-number-2">1</span> My Sitemap</h2>
-<div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li><a href="theindex.html">Index</a></li>
-<li><a href="README.html">A small C++ linear algebra library</a></li>
-<li>src
-<ul class="org-ul">
-<li><a href="src/index.html">Content</a></li>
-<li><a href="src/README.html">Library (meson build)</a></li>
-<li>LinearAlgebra
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/index.html">Content</a></li>
-<li><a href="src/LinearAlgebra/README.html">Library main headers</a></li>
-<li>utils
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/utils/crtp.html">crtp.hpp</a></li>
-</ul></li>
-<li>expr
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/expr/assign_fallback.html">assign_fallback.hpp</a></li>
-<li><a href="src/LinearAlgebra/expr/expr_tags.html">expr_tags.hpp</a></li>
-<li><a href="src/LinearAlgebra/expr/index.html">Contents</a></li>
-</ul></li>
-<li>dense
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/vector.html">vector.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/matrix.html">matrix.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/README.html"><code>LinearAlgebra/dense/</code></a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-<li>misc
-<ul class="org-ul">
-<li><a href="misc/www_links.html">External web links</a></li>
-<li><a href="misc/todo.html">TODO list</a></li>
-<li><a href="misc/todo_old.html">Reminder &amp; TODO list</a></li>
-<li><a href="misc/journal.html">Journal</a></li>
-</ul></li>
-<li>examples
-<ul class="org-ul">
-<li><a href="examples/matrix_view.html">Matrix view</a></li>
-</ul></li>
+<h1 class="title">vmt_crtp.hpp</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org1730b57">1. Base class for VMT (vectors, matrices, tensors&#x2026;)</a></li>
 </ul>
+</div>
+</div>
+
+<p>
+<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+</p>
+
+<div id="outline-container-org1730b57" class="outline-2">
+<h2 id="org1730b57"><span class="section-number-2">1</span> Base class for VMT (vectors, matrices, tensors&#x2026;)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;Thu Jun 25 2020 23:37&gt;</span></span> &lt;- <a href="../expr/index.html#ID-5745a58d-9cc9-49bd-8544-9eb40aee65f0">The <code>LinearAlgebra/expr/</code> directory</a>
+</p>
+
+<p>
+We define a "catch-all" base class for all our Vectors, Matrices, &#x2026; objects.
+</p>
+
+<blockquote>
+<p>
+Defines the Vector, Matrix, Tensor&#x2026; base class
+</p>
+
+<p>
+Its role is to unifies argument capture in interface functions
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">VMT_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
+  {
+    <span style="color: #7f7f7f;">//////////////////</span>
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Public Types</span>
+    <span style="color: #7f7f7f;">//////////////////</span>
+    <span style="color: #7f7f7f;">//</span>
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;;
+    <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">base_type</span>::<span style="color: #00688b;">impl</span>;
+
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
+
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
+
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Prevent object slicing</span>
+   <span style="color: #1c86ee;">protected</span>:
+    <span style="color: #00688b;">VMT_Crtp</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VMT_Crtp</span>&amp;) = <span style="color: #1c86ee;">default</span>;
+  };
+</pre>
+</div>
+</blockquote>
 </div>
 </div>
 </div>

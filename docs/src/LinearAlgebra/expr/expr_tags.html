@@ -6,7 +6,7 @@
 <!-- 2020-06-26 Fri 06:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>LinearAlgebra</title>
+<title>expr_tags.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -241,57 +241,184 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">LinearAlgebra</h1>
-
-
-<div id="outline-container-org7196de6" class="outline-2">
-<h2 id="org7196de6"><span class="section-number-2">1</span> My Sitemap</h2>
-<div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li><a href="theindex.html">Index</a></li>
-<li><a href="README.html">A small C++ linear algebra library</a></li>
-<li>src
-<ul class="org-ul">
-<li><a href="src/index.html">Content</a></li>
-<li><a href="src/README.html">Library (meson build)</a></li>
-<li>LinearAlgebra
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/index.html">Content</a></li>
-<li><a href="src/LinearAlgebra/README.html">Library main headers</a></li>
-<li>utils
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/utils/crtp.html">crtp.hpp</a></li>
-</ul></li>
-<li>expr
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/expr/assign_fallback.html">assign_fallback.hpp</a></li>
-<li><a href="src/LinearAlgebra/expr/expr_tags.html">expr_tags.hpp</a></li>
-<li><a href="src/LinearAlgebra/expr/index.html">Contents</a></li>
-</ul></li>
-<li>dense
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/vector.html">vector.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/matrix.html">matrix.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/README.html"><code>LinearAlgebra/dense/</code></a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-<li>misc
-<ul class="org-ul">
-<li><a href="misc/www_links.html">External web links</a></li>
-<li><a href="misc/todo.html">TODO list</a></li>
-<li><a href="misc/todo_old.html">Reminder &amp; TODO list</a></li>
-<li><a href="misc/journal.html">Journal</a></li>
-</ul></li>
-<li>examples
-<ul class="org-ul">
-<li><a href="examples/matrix_view.html">Matrix view</a></li>
-</ul></li>
+<h1 class="title">expr_tags.hpp</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org38253f9">1. Motivations</a></li>
+<li><a href="#orge1336c3">2. The <code>Expr_Tags_Crtp</code> base class</a>
+<ul>
+<li><a href="#org6ccd1d9">2.1. Tags</a></li>
+<li><a href="#orgda7c2dc">2.2. Operator unary etc&#x2026;</a></li>
 </ul>
+</li>
+</ul>
+</div>
+</div>
+
+<p>
+<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+</p>
+
+<div id="outline-container-org38253f9" class="outline-2">
+<h2 id="org38253f9"><span class="section-number-2">1</span> Motivations</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Define some tags to encode expressions like
+</p>
+\begin{equation*}
+  V=\alpha M W + \beta V
+\end{equation*}
+<p>
+which are translated into:
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"> assign(<span style="color: #00688b;">Vector_Crtp</span>&lt;VECTOR0_IMPL&gt;&amp; <span style="color: #2e8b57;">vector0</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;ALPHA_IMPL&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1_ENUM&gt; <span style="color: #2e8b57;">op1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;MATRIX1_IMPL&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;VECTOR1_IMPL&gt;&amp; <span style="color: #2e8b57;">vector1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;BETA_IMPL&gt;&amp; <span style="color: #2e8b57;">beta</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;VECTOR2_IMPL&gt;&amp; <span style="color: #2e8b57;">vector2</span>);
+</pre>
+</div>
+
+<p>
+In order to define <a href="assign_fallback.html#ID-284f04be-bb9d-4fb9-a02f-955a4b8a66ec"><code>assign</code> fallback</a> all tags must be children classes
+of <a href="../utils/crtp.html#ID-b3bedaa5-c99d-4b5f-88a4-33c44d53be94">The <code>Crtp</code> class</a>. That is the reason why the <a href="#orge1336c3"><code>Expr_Tags_Crtp</code></a> base
+class was introduced.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orge1336c3" class="outline-2">
+<h2 id="orge1336c3"><span class="section-number-2">2</span> The <code>Expr_Tags_Crtp</code> base class</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<p>
+Crtp base class used by:
+</p>
+<ul class="org-ul">
+<li>tags</li>
+<li>operator unary, binary</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-cpp">    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+    <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Expr_Tags_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Expr_Tags_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
+    {
+    };
+</pre>
+</div>
+</blockquote>
+</div>
+
+<div id="outline-container-org6ccd1d9" class="outline-3">
+<h3 id="org6ccd1d9"><span class="section-number-3">2.1</span> Tags</h3>
+<div class="outline-text-3" id="text-2-1">
+<blockquote>
+<p>
+Tags used to notify operations (plus, product&#x2026;)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp">    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_plus_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_plus_t_</span>&gt;
+    {
+    };
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_plus_</span> = _plus_t_();
+
+    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_minus_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_minus_t_</span>&gt;
+    {
+    };
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_minus_</span> = _minus_t_();
+
+    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_unary_minus_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_unary_minus_t_</span>&gt;
+    {
+    };
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_unary_minus_</span> = _unary_minus_t_();
+
+    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_product_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_product_t_</span>&gt;
+    {
+    };
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_product_</span> = _product_t_();
+
+    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_inverse_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_inverse_t_</span>&gt;
+    {
+    };
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_inverse_</span> = _inverse_t_();
+
+    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_assign_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_assign_t_</span>&gt;
+    {
+    };
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_assign_</span> = _assign_t_();
+
+</pre>
+</div>
+
+<p>
+Tags used to notify argument
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp">    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_lhs_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_lhs_t_</span>&gt;
+    {
+    };
+    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_rhs_1_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_rhs_1_t_</span>&gt;
+    {
+    };
+    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_rhs_2_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_rhs_2_t_</span>&gt;
+    {
+    };
+
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_lhs_</span>   = _lhs_t_();
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_rhs_1_</span> = _rhs_1_t_();
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_rhs_2_</span> = _rhs_2_t_();
+
+</pre>
+</div>
+</blockquote>
+</div>
+</div>
+
+
+<div id="outline-container-orgda7c2dc" class="outline-3">
+<h3 id="orgda7c2dc"><span class="section-number-3">2.2</span> Operator unary etc&#x2026;</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+-&gt; file metaexpr/metaexpr_crtp.hpp
+</p>
+</div>
 </div>
 </div>
 </div>

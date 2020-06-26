@@ -2,7 +2,40 @@
 #+Title: expr_tags.hpp
 #+Call: HomeUp()
 
+* Motivations
+  :PROPERTIES:
+  :ID:       bd2ec7da-4692-4f83-bf16-5441b9d851f5
+  :END:
+
+Define some tags to encode expressions like
+\begin{equation*}
+  V=\alpha M W + \beta V
+\end{equation*}
+which are translated into:
+#+begin_src cpp
+ assign(Vector_Crtp<VECTOR0_IMPL>& vector0,
+         const _plus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _matrix_unary_op_t_<OP1_ENUM> op1,
+         const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const Vector_Crtp<VECTOR1_IMPL>& vector1,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Vector_Crtp<VECTOR2_IMPL>& vector2);
+#+end_src
+
+In order to define [[id:284f04be-bb9d-4fb9-a02f-955a4b8a66ec][=assign= fallback]] all tags must be children classes
+of [[id:b3bedaa5-c99d-4b5f-88a4-33c44d53be94][The =Crtp= class]]. That is the reason why the [[id:4009333e-077c-473e-bc26-6b51aff772ad][=Expr_Tags_Crtp=]] base
+class was introduced.
+
+
 * The =Expr_Tags_Crtp= base class
+  :PROPERTIES:
+  :ID:       4009333e-077c-473e-bc26-6b51aff772ad
+  :END:
+
 
   # file:expr_tags.hpp::BEGIN_Expr_Tags_Crtp
   #+Call: Extract("expr_tags.hpp","Expr_Tags_Crtp")

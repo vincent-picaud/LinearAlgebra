@@ -6,7 +6,7 @@
 <!-- 2020-06-26 Fri 06:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>LinearAlgebra</title>
+<title>Contents</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,54 +244,48 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">LinearAlgebra</h1>
-
-
-<div id="outline-container-org7196de6" class="outline-2">
-<h2 id="org7196de6"><span class="section-number-2">1</span> My Sitemap</h2>
-<div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li><a href="theindex.html">Index</a></li>
-<li><a href="README.html">A small C++ linear algebra library</a></li>
-<li>src
-<ul class="org-ul">
-<li><a href="src/index.html">Content</a></li>
-<li><a href="src/README.html">Library (meson build)</a></li>
-<li>LinearAlgebra
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/index.html">Content</a></li>
-<li><a href="src/LinearAlgebra/README.html">Library main headers</a></li>
-<li>utils
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/utils/crtp.html">crtp.hpp</a></li>
-</ul></li>
-<li>expr
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/expr/assign_fallback.html">assign_fallback.hpp</a></li>
-<li><a href="src/LinearAlgebra/expr/expr_tags.html">expr_tags.hpp</a></li>
-<li><a href="src/LinearAlgebra/expr/index.html">Contents</a></li>
-</ul></li>
-<li>dense
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/vector.html">vector.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/matrix.html">matrix.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/README.html"><code>LinearAlgebra/dense/</code></a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-<li>misc
-<ul class="org-ul">
-<li><a href="misc/www_links.html">External web links</a></li>
-<li><a href="misc/todo.html">TODO list</a></li>
-<li><a href="misc/todo_old.html">Reminder &amp; TODO list</a></li>
-<li><a href="misc/journal.html">Journal</a></li>
-</ul></li>
-<li>examples
-<ul class="org-ul">
-<li><a href="examples/matrix_view.html">Matrix view</a></li>
-</ul></li>
+<h1 class="title">Contents</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orga537e27">1. The <code>LinearAlgebra/expr/</code> directory</a></li>
 </ul>
+</div>
+</div>
+
+<p>
+<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+</p>
+
+<ul class="org-ul">
+<li><a href=".//assign_fallback.html">assign_fallback</a></li>
+<li><a href=".//expr_tags.html">expr_tags</a></li>
+</ul>
+
+<div id="outline-container-orga537e27" class="outline-2">
+<h2 id="orga537e27"><span class="section-number-2">1</span> The <code>LinearAlgebra/expr/</code> directory&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Dev">Dev</span></span></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This directory define low-level API to call computational subroutines. By "low-level" we means that calls are performed by flat function calls
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp">assign(V, _lhs_, _plus_ 2, W);
+</pre>
+</div>
+
+<p>
+and not by an expression template mechanism that would allow us to write:
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp">V = V + 2 * W;
+</pre>
+</div>
+
+<p>
+The first steps are to introduce a <a href="../dense/vmt_crtp.html#ID-5e5dd322-57cf-4297-b1e2-ccf147f4adc3">Base class for VMT (vectors, matrices, tensors&#x2026;)</a> and some tags
+</p>
 </div>
 </div>
 </div>

@@ -1,0 +1,20 @@
+#+Call: Setup()
+#+Title: crtp.hpp
+#+Call: HomeUp()
+
+* Static interface
+
+The is a fundamental object used to define *static* interface.
+
+** The =Crtp= class
+   :PROPERTIES:
+   :ID:       b3bedaa5-c99d-4b5f-88a4-33c44d53be94
+   :END:
+   :BACKLINKS:
+   [2020-06-26 Fri 06:28] <- [[id:bd2ec7da-4692-4f83-bf16-5441b9d851f5][Motivations]]
+   :END:
+#+Index:Class!Crtp
+
+# file:crtp.hpp::BEGIN_Crtp
+#+Call: Extract("crtp.hpp","Crtp")
+

@@ -34,6 +34,6 @@ main()
   auto expression_2 = M1 + 4 * M2 * M1 * M2;
   auto expression   = 4 * M2;
 
-  print(from_metaexpr_to_argument_tuple(expression));
-  //  Detail::call_assign_from_metaexpr(M2, expression);
+  print(from_metaexpr_to_reverse_Polish_tuple(expression));
+  //  Detail::call_assign_from_MetaExpr(M2, expression);
 }

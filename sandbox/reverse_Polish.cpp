@@ -304,9 +304,10 @@ namespace LinearAlgebra
     // Everything that's not a Detail::MetaExpr_Crtp is considered as a
     // final node
     template <typename T>
-    static inline std::enable_if_t<not Is_Crtp_Interface_Of<Detail::MetaExpr_Crtp, T>::value,
-                                   std::tuple<const T&>>
-    from_metaexpr_to_reverse_Polish_tuple(const T& t) noexcept
+    static inline std::enable_if_t<
+        not Is_Crtp_Interface_Of<LinearAlgebra::Detail::MetaExpr_Crtp, T>::value,
+        std::tuple<const T&>>
+    modified_from_metaexpr_to_reverse_Polish_tuple(const T& t) noexcept
     {
       return {t};
     }
@@ -314,22 +315,22 @@ namespace LinearAlgebra
     // UnaryOP
     template <typename IMPL>
     static inline auto
-    from_metaexpr_to_reverse_Polish_tuple(
-        const Detail::MetaExpr_UnaryOp_Crtp<IMPL>& expression_tree) noexcept
+    modified_from_metaexpr_to_reverse_Polish_tuple(
+        const LinearAlgebra::Detail::MetaExpr_UnaryOp_Crtp<IMPL>& expression_tree) noexcept
     {
       return std::tuple_cat(std::make_tuple(typename IMPL::operator_type()),
-                            from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg()));
+                            modified_from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg()));
     }
 
     // BinaryOp
     template <typename IMPL>
     static inline auto
-    from_metaexpr_to_reverse_Polish_tuple(
-        const Detail::MetaExpr_BinaryOp_Crtp<IMPL>& expression_tree) noexcept
+    modified_from_metaexpr_to_reverse_Polish_tuple(
+        const LinearAlgebra::Detail::MetaExpr_BinaryOp_Crtp<IMPL>& expression_tree) noexcept
     {
       return std::tuple_cat(std::make_tuple(typename IMPL::operator_type()),
-                            from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_0()),
-                            from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_1()));
+                            modified_from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_0()),
+                            modified_from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_1()));
     }
 
     //////////////////////////////////////////////////////////////////
@@ -340,7 +341,7 @@ namespace LinearAlgebra
     //
     template <PrintMode_Enum MODE, typename DEST_IMPL, typename... ARGS>
     static inline auto
-    call_assign_from_reverse_Polish(VMT_Crtp<DEST_IMPL>& dest,
+    modified_call_assign_from_reverse_Polish(VMT_Crtp<DEST_IMPL>& dest,
                                     const std::tuple<ARGS...>& args_as_tuple)
     {
       // CAVEAT: not args.impl()... as args can be integer,double etc...
@@ -350,19 +351,20 @@ namespace LinearAlgebra
 
     template <PrintMode_Enum MODE, typename DEST_IMPL, typename SRC_IMPL>
     static inline auto
-    call_assign(VMT_Crtp<DEST_IMPL>& dest, const Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
+    modified_call_assign_from_MetaExpr(VMT_Crtp<DEST_IMPL>& dest,
+                const LinearAlgebra::Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
     {
-      return call_assign_from_reverse_Polish<MODE>(
-          dest.impl(), from_metaexpr_to_reverse_Polish_tuple(metaExpr.impl()));
+      return modified_call_assign_from_reverse_Polish<MODE>(
+          dest.impl(), modified_from_metaexpr_to_reverse_Polish_tuple(metaExpr.impl()));
     }
-  }
-}
+  }  // namespace Detail
+}  // namespace LinearAlgebra
 
 using namespace LinearAlgebra;
 
 #define PRINT_EXPR(DEST, EXPR)                           \
   std::cout << "//\n// " #DEST << " = " << #EXPR << "\n" \
-            << Detail::call_assign<PrintMode_Enum::Prototype>(DEST, EXPR);
+            << Detail::modified_call_assign_from_MetaExpr<PrintMode_Enum::Prototype>(DEST, EXPR);
 
 int
 main()

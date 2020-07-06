@@ -4,4 +4,43 @@
 
 * Convert Expression Template to flat assign function 
 
-This file provide methods to call a assign function from an expression template 
+This central file provides methods to call an assign function from an
+expression template.
+
+The entry point is the [[id:824fa948-a765-4710-9de5-2e9c3b721c34][=call_assign_from_MetaExpr()=]].
+
+This function converts the initial Expression Template into a reverse
+Polish expression stored into a =std::tuple== thanks to
+[[id:4b799fee-f3c9-4735-9f2d-1914dfee14fb][=from_metaexpr_to_reverse_Polish_tuple()=.]] 
+
+From this reverse Polish expression the function
+[[id:18ce5b28-8e55-479c-ad49-f2f76236a382][=call_assign_from_reverse_Polish()=]] performs the final call to the
+=assign= functions.
+
+** =call_assign_from_MetaExpr()= function
+   :PROPERTIES:
+   :ID:       824fa948-a765-4710-9de5-2e9c3b721c34
+   :END:
+#+Index:Function!Detail!call_assign_from_MetaExpr
+
+# file:call_assign_from_metaexpr.hpp::BEGIN_call_assign_from_MetaExpr
+#+Call: Extract("call_assign_from_metaexpr.hpp","call_assign_from_MetaExpr")
+
+
+** =from_metaexpr_to_reverse_Polish_tuple()= function
+   :PROPERTIES:
+   :ID:       4b799fee-f3c9-4735-9f2d-1914dfee14fb
+   :END:
+#+Index:Function!Detail!from_metaexpr_to_reverse_Polish_tuple
+
+# file:call_assign_from_metaexpr.hpp::BEGIN_from_metaexpr_to_reverse_Polish_tuple
+#+Call: Extract("call_assign_from_metaexpr.hpp","from_metaexpr_to_reverse_Polish_tuple")
+
+** =call_assign_from_reverse_Polish()= function
+   :PROPERTIES:
+   :ID:       18ce5b28-8e55-479c-ad49-f2f76236a382
+   :END:
+#+Index:Function!Detail!call_assign_from_reverse_Polish
+
+# file:call_assign_from_metaexpr.hpp::BEGIN_call_assign_from_reverse_Polish
+#+Call: Extract("call_assign_from_metaexpr.hpp","call_assign_from_reverse_Polish")

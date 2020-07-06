@@ -233,7 +233,7 @@ namespace LinearAlgebra
     IMPL&
     impl_assign(const Detail::MetaExpr_Crtp<METAEXPR_IMPL>& metaExpr)
     {
-      call_assign_from_metaexpr(*this, metaExpr);
+      call_assign_from_MetaExpr(*this, metaExpr);
       return base_type::impl();
     }
 

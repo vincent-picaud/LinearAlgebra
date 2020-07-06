@@ -6,9 +6,6 @@
   :PROPERTIES:
   :ID:       5e5dd322-57cf-4297-b1e2-ccf147f4adc3
   :END:
-  :BACKLINKS:
-  [2020-06-25 Thu 23:37] <- [[id:5745a58d-9cc9-49bd-8544-9eb40aee65f0][The =LinearAlgebra/expr/= directory]]
-  :END:
 
 We define a "catch-all" base class for all our Vectors, Matrices, ... objects.
 

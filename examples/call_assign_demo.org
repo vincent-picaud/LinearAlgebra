@@ -1,0 +1,13 @@
+#+Title: call_assign_demo.cpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Call assign demo
+
+Show how to:
+- define new vector, matrix type 
+- create some affine function headers
+
+* Define vector type 
+
+The minimal vector interface is [[id:de8a0a1f-0ae5-495d-a839-a7a5d1199091][the =Dense_Vector_Crtp= class]].

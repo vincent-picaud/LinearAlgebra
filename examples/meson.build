@@ -44,3 +44,7 @@ executable('custom_matrix',
 executable('doc_size_utils',
 	   'doc_size_utils.cpp',
 	   dependencies : [LinearAlgebra_dep])
+
+executable('call_assign_demo',
+	   'call_assign_demo.cpp',
+	   dependencies : [LinearAlgebra_dep])

@@ -1,5 +1,9 @@
 ;; Configuration message
 (message (format "Configuring %s" my-project-root))
+;; org-roam
+(setq org-roam-directory my-project-root)
+(setq org-roam-index-file (concat my-project-root "/index.org"))
+
 ;; use =minted= for listings
 (setq org-latex-listings 'minted)
 ;; Load =library-of-babel.org=

@@ -1,5 +1,6 @@
-#+SETUPFILE: ../../../Setup/setupFile-3.org
-#+TITLE:  =LinearAlgebra/dense/= 
+#+Call: Setup()
+#+Call: HomeUp()
+#+Title: =LinearAlgebra/dense/= 
 
 * Role
 

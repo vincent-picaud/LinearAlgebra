@@ -7,9 +7,18 @@ orgTree.sh -I index.org -P "*.org"
 #+END_SRC
 
 #+RESULTS:
-:RESULTS:
-+ SignalProcessing/
-	+ discrete_signal/
-		+ [[file:.//SignalProcessing/discrete_signal/discrete_signal_crtp.org][discrete_signal_crtp]]
-:END:
+:results:
++ LinearAlgebra/
+	+ dense/
+		+ [[file:.//LinearAlgebra/dense/matrix.org][matrix]]
+		+ [[file:.//LinearAlgebra/dense/README.org][README]]
+		+ [[file:.//LinearAlgebra/dense/vector.org][vector]]
+		+ [[file:.//LinearAlgebra/dense/vmt_crtp.org][vmt_crtp]]
+	+ expr/
+		+ [[file:.//LinearAlgebra/expr/assign_fallback.org][assign_fallback]]
+		+ [[file:.//LinearAlgebra/expr/expr_tags.org][expr_tags]]
+	+ utils/
+		+ [[file:.//LinearAlgebra/utils/crtp.org][crtp]]
++ [[file:.//README.org][README]]
+:end:
 

@@ -1,5 +1,5 @@
-#+CALL: Setup()
-#+TITLE: Content
+#+Title: Content
+#+Call: Setup()
 #+Call: HomeUp()
 
 #+BEGIN_SRC sh :results output drawer :exports results

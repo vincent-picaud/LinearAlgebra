@@ -116,4 +116,4 @@ namespace LinearAlgebra
 
     DEBUG_SET_SELECTED(selected);
   }
-}
+}  // namespace LinearAlgebra

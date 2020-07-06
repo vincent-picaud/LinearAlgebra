@@ -2,6 +2,7 @@
 // [BEGIN_call_assign_demo.cpp]
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
+#include "LinearAlgebra/metaexpr/call_assign_from_metaexpr.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp.hpp"
 #include "LinearAlgebra/vector.hpp"
 
@@ -60,9 +61,8 @@ namespace LinearAlgebra
     //
     template <typename EXPR_IMPL>
     Minimal_Vector<T>&
-    impl_assign(const Detail::MetaExpr_Crtp<EXPR_IMPL>&)  // Expression Template
+    impl_assign(const Detail::MetaExpr_Crtp<EXPR_IMPL>& metaExpr)  // Expression Template
     {
-      
       // code here ...
       return *this;
     }
@@ -93,7 +93,7 @@ main()
 {
   Minimal_Vector<int> V(5);
 
-  V = V + V;
+  //  V = V + V;
 
   std::cout << V.size();
 }

@@ -1,7 +1,13 @@
 // [[file:how_to_new_vector.org]]
 // [BEGIN_how_to_new_vector.cpp]
 #include "LinearAlgebra/dense/vector_crtp.hpp"
-#include "LinearAlgebra/metaexpr/metaexpr.hpp" // required by V+V etc...
+#include "LinearAlgebra/expr/expr_tags.hpp"
+#include "LinearAlgebra/metaexpr/metaexpr.hpp"  // required by V+V etc...
+
+// CAVEAT: is not enough:
+// #include "LinearAlgebra/expr/expr.hpp"
+// each expression must be include individually
+#include "LinearAlgebra/expr/V0_assign_alpha_V1_plus_V2.hpp"
 
 #include <iostream>
 
@@ -59,10 +65,10 @@ namespace LinearAlgebra
     //
     template <typename EXPR_IMPL>
     Minimal_Vector<T>&
-    impl_assign(const Detail::MetaExpr_Crtp<EXPR_IMPL>&)  // Expression Template
+    impl_assign(const Detail::MetaExpr_Crtp<EXPR_IMPL>& metaExpr)  // Expression Template
     {
       std::cout << __PRETTY_FUNCTION__ << std::endl;
-      // code here ...
+      Detail::call_assign_from_MetaExpr(*this, metaExpr);  // code here ...
       return *this;
     }
 
@@ -85,6 +91,44 @@ namespace LinearAlgebra
   };
 
   // [END_vector_type]
+
+  // If no generic fill() function etc... you can always specialize the right assign
+  //
+  // CAVEAT: as both brach X2 or _lhs_ are tested in a dynamic way,
+  // one must provide both implementation (otherwise you have a
+  // compile time error)
+  //
+  template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL, typename X2_IMPL>
+  void
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
+         Minimal_Vector<X0_IMPL>& X0,
+         const _plus_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Minimal_Vector<X1_IMPL>& X1,
+         const Minimal_Vector<X2_IMPL>& X2)
+
+  {
+    assert(0);
+
+    // DEBUG_SET_SELECTED(selected);
+  }
+  template <typename ALPHA_IMPL, typename X0_IMPL, typename X1_IMPL>
+  void
+  assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
+         Minimal_Vector<X0_IMPL>& X0,
+         const _plus_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const Minimal_Vector<X1_IMPL>& X1,
+         const _lhs_t_)
+
+  {
+    assert(0);
+
+    // DEBUG_SET_SELECTED(selected);
+  }
+
 }  // namespace LinearAlgebra
 
 // [BEGIN_main]
@@ -93,9 +137,9 @@ using namespace LinearAlgebra;
 int
 main()
 {
-  Minimal_Vector<int> V(5);
+  Minimal_Vector<int> U(5), V(5), W(5);
 
-  V = V + V;
+  U = V + W;
 
   std::cout << V.size();
 }

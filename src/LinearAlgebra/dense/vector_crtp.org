@@ -7,6 +7,9 @@
 This file defines vector interfaces 
 
 ** The =Vector_Crtp= class
+   :PROPERTIES:
+   :ID:       3664b3fc-f74a-410c-8025-a2b2f7051b8e
+   :END:
  #+Index:Class!Vector_Crtp
 
  This Crtp interface defines the =Vector_Crtp= interface. This
@@ -15,6 +18,7 @@ This file defines vector interfaces
  # file:vector_crtp.hpp::BEGIN_Vector_Crtp
  #+Call: Extract("vector_crtp.hpp","Vector_Crtp")
 
+See: [[id:344fb456-2763-4895-bd5d-1221a04cf927][The =VMT_ASSIGNMENT_OPERATOR= macro]]
 
 ** The =Dense_Vector_Crtp= class
    :PROPERTIES:
@@ -28,163 +32,7 @@ This file defines vector interfaces
    # file:vector_crtp.hpp::BEGIN_Dense_Vector_Crtp
    #+Call: Extract("vector_crtp.hpp","Dense_Vector_Crtp")
 
-   #+RESULTS:
-   :results:
-   # no error :-)
-   #+BEGIN_QUOTE
-   # file:vector_crtp.hpp::79
-
-    *Note:* By "default" we assumed that we use/store a
-    [[(storage_scheme)]] and a [[(memory_chunk)]] object. This is not
-    the best design (this does not fulfill the _dependency inversion
-    principle_ : maybe in the future define storage scheme and a memory chunk *interface* instead.
-
-   #+BEGIN_SRC cpp -r -l "// (ref:%s)" :eval never
-     template <typename IMPL>
-     class Dense_Vector_Crtp : public Crtp_Find_Impl<Dense_Vector_Crtp, IMPL, Vector_Crtp>
-     {
-       ///////////
-       // Types //
-       ///////////
-       //
-      public:
-       using base_type = Crtp_Find_Impl<Dense_Vector_Crtp, IMPL, Vector_Crtp>;
-
-       using exact_type  = typename base_type::exact_type;
-       using traits_type = typename base_type::traits_type;
-
-       // Note: take habit to put storage first, as it can be used to
-       // compute required_capacity needed by memory_chunk
-       using storage_scheme_type = typename traits_type::storage_scheme_type;
-       using memory_chunk_type   = typename traits_type::memory_chunk_type;
-       using increment_type      = typename traits_type::increment_type;
-
-       using element_type = typename traits_type::element_type;
-       using size_type    = typename base_type::size_type;
-
-
-       /////////////
-       // Members //
-       /////////////
-       //
-      protected:
-       storage_scheme_type _storage_scheme;  // (ref:storage_scheme)
-       memory_chunk_type _memory_chunk;      // (ref:memory_chunk)
-
-       //////////////////
-       // Protected Constructors
-       //////////////////
-       //
-       // "Protected" avoid object slicing
-      protected:
-       // Copy
-       Dense_Vector_Crtp(const Dense_Vector_Crtp& src) = default;
-       // Move
-       Dense_Vector_Crtp(Dense_Vector_Crtp&& src)
-   #+END_SRC
-   # file:vector_crtp.hpp::151
-   ////////////////
-    Public constructors
-   ////////////////
-   #+BEGIN_SRC cpp -r -l "// (ref:%s)" :eval never
-      public:
-       // To be used as move constructor
-       //
-       Dense_Vector_Crtp(storage_scheme_type&& storage_scheme, memory_chunk_type&& memory_chunk)
-	   : _storage_scheme(std::move(storage_scheme)), _memory_chunk(std::move(memory_chunk))
-       {
-	 assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
-       }
-
-       // This constructor allocates its memory at construction time:
-       // (the _memory_chunk(capacity()) call)
-       Dense_Vector_Crtp(const storage_scheme_type& storage_scheme)
-	   : _storage_scheme(storage_scheme), _memory_chunk(_storage_scheme.required_capacity())
-       {
-	 assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
-       }
-       // This constructor assumes a view
-       Dense_Vector_Crtp(const storage_scheme_type& storage_scheme, element_type* p)
-	   : _storage_scheme(storage_scheme), _memory_chunk(p, _storage_scheme.required_capacity())
-       {
-	 assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
-       }
-       // This constructor assumes a const view
-       Dense_Vector_Crtp(const storage_scheme_type& storage_scheme, const element_type* p)
-	   : _storage_scheme(storage_scheme), _memory_chunk(p, _storage_scheme.required_capacity())
-       {
-	 assert(_storage_scheme.required_capacity() <= _memory_chunk.capacity());
-       }
-
-       ////////////////////
-       // Crtp Interface //
-       ////////////////////
-       //
-       auto
-       as_generic_view()
-       {
-	 return base_type::impl().impl_as_generic_view();
-       }
-       auto
-       as_generic_view() const
-       {
-	 return base_type::impl().impl_as_generic_view();
-       }
-       auto
-       as_generic_const_view() const
-       {
-	 return base_type::as_const().as_generic_view();
-       }
-
-       // auto makes sense for const views
-       auto*
-       data()
-       {
-	 return base_type::impl().impl_data();
-       }
-       const element_type*
-       data() const
-       {
-	 return base_type::impl().impl_data();
-       }
-
-       increment_type
-       increment() const
-       {
-	 return base_type::impl().impl_increment();
-       }
-
-       // Note: for mutable version it's important to use auto, as
-       // memory_chunk.data() maybe returns "const element_type*".  This
-       // is the case for Const_View for instance.
-       auto& operator[](const size_t idx) { return base_type::impl().impl_random_access(idx); }
-       const element_type& operator[](const size_t idx) const
-       {
-	 return base_type::impl().impl_random_access(idx);
-       }
-
-       const storage_scheme_type&
-       storage_scheme() const
-       {
-	 return base_type::impl().impl_storage_scheme();
-       };
-
-       const memory_chunk_type&
-       memory_chunk() const
-       {
-	 return base_type::impl().impl_memory_chunk();
-       };
-
-       /////////////////////////
-       // Assignment operators
-       /////////////////////////
-       //
-       VMT_ASSIGNMENT_OPERATOR(Dense_Vector_Crtp);
-     };
-   #+END_SRC
-   #+END_QUOTE
-
-   :end:
+See: [[id:344fb456-2763-4895-bd5d-1221a04cf927][The =VMT_ASSIGNMENT_OPERATOR= macro]]
 
 *** Implementation
 

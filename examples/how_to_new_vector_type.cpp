@@ -1,11 +1,10 @@
-// [[file:call_assign_demo.org]]
-// [BEGIN_call_assign_demo.cpp]
+// [[file:how_to_new_vector.org]]
+// [BEGIN_how_to_new_vector.cpp]
 #include "LinearAlgebra/dense/vector_crtp.hpp"
-#include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
-#include "LinearAlgebra/metaexpr/metaexpr_crtp.hpp"
-#include "LinearAlgebra/vector.hpp"
+#include "LinearAlgebra/metaexpr/metaexpr.hpp" // required by V+V etc...
 
 #include <iostream>
+
 namespace LinearAlgebra
 {
   // [BEGIN_vector_type]
@@ -62,7 +61,7 @@ namespace LinearAlgebra
     Minimal_Vector<T>&
     impl_assign(const Detail::MetaExpr_Crtp<EXPR_IMPL>&)  // Expression Template
     {
-      
+      std::cout << __PRETTY_FUNCTION__ << std::endl;
       // code here ...
       return *this;
     }
@@ -71,6 +70,7 @@ namespace LinearAlgebra
     Minimal_Vector<T>&
     impl_assign(const Minimal_Vector<T_OTHER>&)  // Compatible Vector
     {
+      std::cout << __PRETTY_FUNCTION__ << std::endl;
       // code here ...
       return *this;
     }
@@ -78,6 +78,7 @@ namespace LinearAlgebra
     Minimal_Vector<T>&
     impl_assign(const element_type&)  // Compatible Scalar
     {
+      std::cout << __PRETTY_FUNCTION__ << std::endl;
       // code here ...
       return *this;
     }
@@ -86,6 +87,7 @@ namespace LinearAlgebra
   // [END_vector_type]
 }  // namespace LinearAlgebra
 
+// [BEGIN_main]
 using namespace LinearAlgebra;
 
 int
@@ -97,4 +99,5 @@ main()
 
   std::cout << V.size();
 }
-// [END_call_assign_demo.cpp]
+// [END_main]
+// [END_how_to_new_vector.cpp]

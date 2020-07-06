@@ -59,6 +59,14 @@ namespace LinearAlgebra
       return base_type::impl();
     }
 
+    // [BEGIN_Vector_Crtp]
+    // operator=
+    //
+    // *Note:* cannot lead to object slicing if impl_assign is
+    //         is defined *at* the final class level.
+    VMT_ASSIGNMENT_OPERATOR(Vector_Crtp);
+    // [END_Vector_Crtp]
+
     /////////////////////////
     // Protected constructors to prevent object slicing
     /////////////////////////
@@ -67,8 +75,7 @@ namespace LinearAlgebra
     Vector_Crtp()                   = default;
     Vector_Crtp(const Vector_Crtp&) = default;
     Vector_Crtp(Vector_Crtp&&)      = default;
-    Vector_Crtp& operator=(const Vector_Crtp&) = default;
-    Vector_Crtp& operator=(Vector_Crtp&&) = default;
+
     // [BEGIN_Vector_Crtp]
   };
   // [END_Vector_Crtp]
@@ -150,7 +157,7 @@ namespace LinearAlgebra
     }
 
     // [BEGIN_Dense_Vector_Crtp]
-    
+
     //////////////////
     // Public constructors
     //////////////////
@@ -188,7 +195,7 @@ namespace LinearAlgebra
     ////////////////////
     //
     //
-    // TODO: 
+    // TODO:
     // - tells if need or not an implementation
     // - remove useless impl_XXX
     //
@@ -247,9 +254,7 @@ namespace LinearAlgebra
       return base_type::impl().impl_memory_chunk();
     };
 
-    /////////////////////////
-    // Assignment operators
-    /////////////////////////
+    // operator=
     //
     VMT_ASSIGNMENT_OPERATOR(Dense_Vector_Crtp);
     // [END_Dense_Vector_Crtp]

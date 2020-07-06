@@ -1,0 +1,31 @@
+#+Title: how_to_new_vector.cpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* How to define a new vector type
+
+The minimal vector interface is [[id:3664b3fc-f74a-410c-8025-a2b2f7051b8e][The =Vector_Crtp= class]]. We also
+illustrate how the [[id:344fb456-2763-4895-bd5d-1221a04cf927][The =VMT_ASSIGNMENT_OPERATOR= macro]] must be used. The
+code is as follows:
+
+# file:how_to_new_vector.hpp::BEGIN_vector_type
+#+Call: Extract("how_to_new_vector_type.cpp","vector_type")
+
+* =main()= function 
+
+# file:how_to_new_vector_type.hpp::BEGIN_main
+#+Call: Extract("how_to_new_vector_type.cpp","main")
+
+prints:
+
+#+BEGIN_SRC sh :wrap "example :eval never" :results output :exports results
+../build/examples/how_to_new_vector_type
+#+END_SRC
+
+#+RESULTS:
+#+begin_example :eval never
+LinearAlgebra::Minimal_Vector<T>& LinearAlgebra::Minimal_Vector<T>::impl_assign(const LinearAlgebra::Detail::MetaExpr_Crtp<METAEXPR_IMPL>&) [with EXPR_IMPL = LinearAlgebra::Detail::MetaExpr_BinaryOp<int, LinearAlgebra::_plus_t_, LinearAlgebra::Minimal_Vector<int>, LinearAlgebra::Minimal_Vector<int> >; T = int]
+0
+#+end_example
+
+

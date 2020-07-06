@@ -1,0 +1,74 @@
+#+Title: vmt_assignment_operator_define.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Macro helper for assigment operators
+
+This macro define a template for =operator== that must be repeated over
+and over... 
+
+By example:
+#+begin_src cpp :eval never
+struct A
+{
+  A& operator=(const A&){/* ... */};
+  A& operator=(A&&){/* ... */};
+};
+
+struct A : B
+{
+  B& operator=(const B&){/* ... */};
+  B& operator=(B&&){/* ... */};
+};
+#+end_src
+ is remplaced by 
+#+begin_src cpp :eval never
+struct A
+{
+  MACRO(A);
+};
+
+struct A : B
+{
+  MACRO(B);
+};
+#+end_src
+
+** The =VMT_ASSIGNMENT_OPERATOR= macro 
+   :PROPERTIES:
+   :ID:       344fb456-2763-4895-bd5d-1221a04cf927
+   :END:
+#+Index:Macro!VMT_ASSIGNMENT_OPERATOR
+
+ # file:vmt_assignment_operator_define.hpp::BEGIN_vmt_assignment_operator_define
+ #+Call: Extract("vmt_assignment_operator_define.hpp","vmt_assignment_operator_define")
+
+** The =DELETE_VMT_ASSIGNMENT_OPERATOR= macro 
+#+Index:Macro!DELETE_VMT_ASSIGNMENT_OPERATOR
+
+Delete =operator== to provide more readable error messages
+
+ # file:delete_vmt_assignment_operator_define.hpp::BEGIN_delete_vmt_assignment_operator_define
+ #+Call: Extract("vmt_assignment_operator_define.hpp","delete_vmt_assignment_operator_define")
+
+ #+RESULTS:
+ :results:
+ # no error :-)
+ #+BEGIN_QUOTE
+ # file:vmt_assignment_operator_define.hpp::24
+  Better error messages
+ #+BEGIN_SRC cpp -r -l "// (ref:%s)" :eval never
+ #define DELETE_VMT_ASSIGNMENT_OPERATOR(THIS_TYPE)                \
+   /* Meta expression etc... */                                   \
+   template <typename OTHER_IMPL>                                 \
+   THIS_TYPE& operator=(const Crtp<OTHER_IMPL>& other) = delete;  \
+   /* Scalar */                                                   \
+   THIS_TYPE& operator=(const element_type& scalar) = delete;     \
+   /* Be sure that we have a deep copy semantic, even for view */ \
+   THIS_TYPE& operator=(const THIS_TYPE& other) = delete;
+ #+END_SRC
+ #+END_QUOTE
+
+ :end:
+
+

@@ -19,3 +19,4 @@ subprojects/packagecache/
 /examples/**/*.html
 /sandbox/**/*.html
 /*.html
+/org-roam.db

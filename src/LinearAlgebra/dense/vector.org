@@ -1,5 +1,5 @@
-#+Call: Setup()
 #+Title: vector.hpp
+#+Call: Setup()
 #+Call: HomeUp()
 
 * Default dense vector type 

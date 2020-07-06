@@ -13,6 +13,10 @@
 
 namespace LinearAlgebra
 {
+  // [BEGIN_Vector_Crtp]
+  //
+  // Minimal requirements for any =Vector= class.
+  //
   template <typename IMPL>
   class Vector_Crtp : public Crtp_Find_Impl<Vector_Crtp, IMPL, VMT_Crtp>
   {
@@ -27,22 +31,30 @@ namespace LinearAlgebra
     using exact_type  = typename base_type::exact_type;
     using traits_type = typename base_type::traits_type;
 
+    // Defines the vector component type =double=, =int= ... )
     using element_type = typename traits_type::element_type;
-    using size_type    = typename traits_type::size_type;
+    // Type used to store vector dimension
+    using size_type = typename traits_type::size_type;
 
     ////////////////////
     // Crtp Interface //
     ////////////////////
     //
    public:
+    // Returns vector dimension
     size_type
     size() const
+    // [END_Vector_Crtp]
     {
       return base_type::impl().impl_size();
     }
 
+    // [BEGIN_Vector_Crtp]
+
+    // Returns const refe;rece
     const IMPL&
     as_const() const
+    // [END_Vector_Crtp]
     {
       return base_type::impl();
     }
@@ -57,12 +69,21 @@ namespace LinearAlgebra
     Vector_Crtp(Vector_Crtp&&)      = default;
     Vector_Crtp& operator=(const Vector_Crtp&) = default;
     Vector_Crtp& operator=(Vector_Crtp&&) = default;
+    // [BEGIN_Vector_Crtp]
   };
-
-  //****************************************************************
-
-  // By "default" we assume that we use the storage_scheme,
-  // memory_chunk policies
+  // [END_Vector_Crtp]
+  //
+  // ****************************************************************
+  //
+  // [BEGIN_Dense_Vector_Crtp]
+  //
+  // Minimal requirements for any =Dense_Vector= class.
+  //
+  // *Note:* We store *implementation* of an [[(storage_scheme)][=storage_scheme=]] and a
+  // [[(memory_chunk)][=memory_chunk=]] object. This is not the best design (this does not
+  // fulfill the _dependency inversion principle_ : maybe in the future
+  // define storage scheme and a memory chunk *interface* instead.
+  //
   template <typename IMPL>
   class Dense_Vector_Crtp : public Crtp_Find_Impl<Dense_Vector_Crtp, IMPL, Vector_Crtp>
   {
@@ -81,20 +102,23 @@ namespace LinearAlgebra
     using storage_scheme_type = typename traits_type::storage_scheme_type;
     using memory_chunk_type   = typename traits_type::memory_chunk_type;
     using increment_type      = typename traits_type::increment_type;
-    static_assert(std::is_same_v<typename storage_scheme_type::increment_type, increment_type>);
-    using element_type = typename traits_type::element_type;
-    static_assert(std::is_same_v<typename memory_chunk_type::element_type, element_type>);
 
-    using size_type = typename base_type::size_type;
+    using element_type = typename traits_type::element_type;
+    using size_type    = typename base_type::size_type;
+
+    // [END_Dense_Vector_Crtp]
+    static_assert(std::is_same_v<typename storage_scheme_type::increment_type, increment_type>);
+    static_assert(std::is_same_v<typename memory_chunk_type::element_type, element_type>);
     static_assert(std::is_same_v<typename storage_scheme_type::size_type, size_type>);
+    // [BEGIN_Dense_Vector_Crtp]
 
     /////////////
     // Members //
     /////////////
     //
    protected:
-    storage_scheme_type _storage_scheme;
-    memory_chunk_type _memory_chunk;
+    storage_scheme_type _storage_scheme;  // (ref:storage_scheme)
+    memory_chunk_type _memory_chunk;      // (ref:memory_chunk)
 
     //////////////////
     // Protected Constructors
@@ -106,6 +130,7 @@ namespace LinearAlgebra
     Dense_Vector_Crtp(const Dense_Vector_Crtp& src) = default;
     // Move
     Dense_Vector_Crtp(Dense_Vector_Crtp&& src)
+    // [END_Dense_Vector_Crtp]
     {
       if constexpr (Is_Std_Integral_Constant_v<size_type>)
       {
@@ -124,6 +149,8 @@ namespace LinearAlgebra
       }
     }
 
+    // [BEGIN_Dense_Vector_Crtp]
+    
     //////////////////
     // Public constructors
     //////////////////
@@ -159,6 +186,11 @@ namespace LinearAlgebra
     ////////////////////
     // Crtp Interface //
     ////////////////////
+    //
+    //
+    // TODO: 
+    // - tells if need or not an implementation
+    // - remove useless impl_XXX
     //
     auto
     as_generic_view()
@@ -220,6 +252,7 @@ namespace LinearAlgebra
     /////////////////////////
     //
     VMT_ASSIGNMENT_OPERATOR(Dense_Vector_Crtp);
+    // [END_Dense_Vector_Crtp]
 
     /////////////////////////
     // Crtp Implementation //
@@ -299,7 +332,9 @@ namespace LinearAlgebra
       assert(_memory_chunk.data());
       return *(_memory_chunk.data() + _storage_scheme.offset(idx));
     }
+    // [BEGIN_Dense_Vector_Crtp]
   };
+  // [END_Dense_Vector_Crtp]
 
   // TODO to move elsewhere and use transform
   template <typename IMPL>

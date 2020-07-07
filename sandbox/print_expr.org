@@ -1,0 +1,12 @@
+#+Title: print_expr.cpp 
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Important
+
+Not a very clean code, but really useful to *automatically* generate [[id:284f04be-bb9d-4fb9-a02f-955a4b8a66ec][=assign= function]] prototypes
+
+# file:print_expr.cpp::BEGIN_print_expr_cpp
+#+Call: Extract("print_expr.cpp","print_expr_cpp")
+
+

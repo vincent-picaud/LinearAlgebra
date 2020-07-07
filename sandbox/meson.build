@@ -12,10 +12,6 @@ executable('experimental_meta_expr',
 	   'experimental_meta_expr.cpp',
 	   dependencies : [LinearAlgebra_dep])
 
-executable('reverse_Polish',
-	   'reverse_Polish.cpp',
-	   dependencies : [LinearAlgebra_dep])
-
 executable('scalar_ref',
 	   'scalar_ref.cpp',
 	   dependencies : [LinearAlgebra_dep])
@@ -30,4 +26,8 @@ executable('lapack_Cholesky',
 
 executable('function',
 	   'function.cpp',
+	   dependencies : [LinearAlgebra_dep])
+
+executable('print_expr',
+	   'print_expr.cpp',
 	   dependencies : [LinearAlgebra_dep])

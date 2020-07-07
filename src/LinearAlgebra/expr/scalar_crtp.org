@@ -1,0 +1,24 @@
+#+Title: scalar_crtp.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Overloading Scalar
+
+In order to have an unified processing (like [[id:284f04be-bb9d-4fb9-a02f-955a4b8a66ec][=assign= fallback]] by
+example), one need to wrap everything in classes inheriting.
+
+This wrapping is momentary, it is created as a product of overloaded
+operators like $\alpha.V$ and is used to call =assign()= functions (see
+[[id:60ec1564-5dfa-4af7-9243-f478ced9845f][Convert Expression Template to flat assign function]]).
+
+** The =Scalar_Crtp= class 
+
+This class is the *base* class of all wrapped scalar type
+
+# file:scalar_crtp.hpp::BEGIN_Scalar_Crtp
+#+Call: Extract("scalar_crtp.hpp","Scalar_Crtp")
+
+** The =Scalar_CRef= default wrapping class 
+
+# file:scalar_crtp.hpp::BEGIN_Scalar_CRef
+#+Call: Extract("scalar_crtp.hpp","Scalar_CRef")

@@ -1,3 +1,4 @@
+// file:scalar_crtp.org
 #pragma once
 
 #include "LinearAlgebra/utils/crtp.hpp"
@@ -10,6 +11,7 @@ namespace LinearAlgebra
   // Scalar_Crtp
   //////////////////////////////////////////////////////////////////
   //
+  // [BEGIN_Scalar_Crtp]
   template <typename IMPL>
   class Scalar_Crtp : public Crtp_Find_Impl<Scalar_Crtp, IMPL, Crtp>
   {
@@ -33,13 +35,14 @@ namespace LinearAlgebra
     // Prevent object slicing
     constexpr Scalar_Crtp() noexcept                   = default;
     constexpr Scalar_Crtp(const Scalar_Crtp&) noexcept = default;
-    constexpr Scalar_Crtp& operator=(const Scalar_Crtp&) noexcept = default;
   };
+  // [END_Scalar_Crtp]
 
   //////////////////////////////////////////////////////////////////
   // Scalar_CRef
   //////////////////////////////////////////////////////////////////
   //
+  // [BEGIN_Scalar_CRef]
   template <typename ELEMENT_TYPE>
   class Scalar_CRef;
 
@@ -64,7 +67,10 @@ namespace LinearAlgebra
     using element_type = typename base_type::element_type;
 
    private:
-    const element_type& _value;
+    // CAVEAT: check that this does not induce dangling reference
+    //         before this line was:
+    //         const element_type& _value;
+    element_type _value;
 
    public:
     // CAVEAT: really use ELEMENT_TYPE and not element_type which
@@ -83,6 +89,10 @@ namespace LinearAlgebra
       return _value;
     }
   };
+
+  static_assert(std::is_trivially_copyable_v<Scalar_CRef<double>>);
+
+  // [END_Scalar_CRef]
 
   // TODO: not sure it is really usefull... comment me and check
   // complex specialization
@@ -116,6 +126,5 @@ namespace LinearAlgebra
   //     return _value;
   //   }
   // };
-  static_assert(std::is_trivially_copyable_v<Scalar_CRef<double>>);
 
-}
+}  // namespace LinearAlgebra

@@ -8,12 +8,36 @@ The minimal vector interface is [[id:3664b3fc-f74a-410c-8025-a2b2f7051b8e][The =
 illustrate how the [[id:344fb456-2763-4895-bd5d-1221a04cf927][The =VMT_ASSIGNMENT_OPERATOR= macro]] must be used. The
 code is as follows:
 
-# file:how_to_new_vector.hpp::BEGIN_vector_type
+# file:how_to_new_vector_type.cpp::BEGIN_vector_type
 #+Call: Extract("how_to_new_vector_type.cpp","vector_type")
+
+* How to define associated =assign()= functions
+
+There is two approaches
+- [[id:cb1c696e-8020-41a2-8b96-c7f5481076a9][Prodividing =fill()= method specialization]]
+- [[id:52626492-6952-44fb-92e4-f0d66d3378ce][Redefining the full set of =assign()= functions]]
+  
+For both cases you must take care of includes:
+
+# file:how_to_new_vector_type.cpp::BEGIN_expr_include_caveat
+#+Call: Extract("how_to_new_vector_type.cpp","expr_include_caveat")
+
+** TODO Prodividing =fill()= method specialization
+   :PROPERTIES:
+   :ID:       cb1c696e-8020-41a2-8b96-c7f5481076a9
+   :END:
+
+** Redefining the full set of =assign()= functions
+   :PROPERTIES:
+   :ID:       52626492-6952-44fb-92e4-f0d66d3378ce
+   :END:
+
+ # file:how_to_new_vector.cpp::BEGIN_assign
+ #+Call: Extract("how_to_new_vector_type.cpp","assign")
 
 * =main()= function 
 
-# file:how_to_new_vector_type.hpp::BEGIN_main
+# file:how_to_new_vector_type.cpp::BEGIN_main
 #+Call: Extract("how_to_new_vector_type.cpp","main")
 
 prints:

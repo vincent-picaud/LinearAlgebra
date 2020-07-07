@@ -69,7 +69,7 @@ namespace LinearAlgebra
   std::string
   print_item(PrintContext& printContext, const Scalar_Crtp<IMPL>& scalar)
   {
-    assert(0);  // todo replace with scalar:
+    return "alpha";  // assert(0);  // todo replace with scalar:
   }
 
   template <PrintMode_Enum MODE>
@@ -328,9 +328,10 @@ namespace LinearAlgebra
     modified_from_metaexpr_to_reverse_Polish_tuple(
         const LinearAlgebra::Detail::MetaExpr_BinaryOp_Crtp<IMPL>& expression_tree) noexcept
     {
-      return std::tuple_cat(std::make_tuple(typename IMPL::operator_type()),
-                            modified_from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_0()),
-                            modified_from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_1()));
+      return std::tuple_cat(
+          std::make_tuple(typename IMPL::operator_type()),
+          modified_from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_0()),
+          modified_from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_1()));
     }
 
     //////////////////////////////////////////////////////////////////
@@ -342,7 +343,7 @@ namespace LinearAlgebra
     template <PrintMode_Enum MODE, typename DEST_IMPL, typename... ARGS>
     static inline auto
     modified_call_assign_from_reverse_Polish(VMT_Crtp<DEST_IMPL>& dest,
-                                    const std::tuple<ARGS...>& args_as_tuple)
+                                             const std::tuple<ARGS...>& args_as_tuple)
     {
       // CAVEAT: not args.impl()... as args can be integer,double etc...
       return std::apply([&](const auto&... args) { return print<MODE>(dest.impl(), args...); },
@@ -351,8 +352,8 @@ namespace LinearAlgebra
 
     template <PrintMode_Enum MODE, typename DEST_IMPL, typename SRC_IMPL>
     static inline auto
-    modified_call_assign_from_MetaExpr(VMT_Crtp<DEST_IMPL>& dest,
-                const LinearAlgebra::Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
+    modified_call_assign_from_MetaExpr(
+        VMT_Crtp<DEST_IMPL>& dest, const LinearAlgebra::Detail::MetaExpr_Crtp<SRC_IMPL>& metaExpr)
     {
       return modified_call_assign_from_reverse_Polish<MODE>(
           dest.impl(), modified_from_metaexpr_to_reverse_Polish_tuple(metaExpr.impl()));

@@ -95,7 +95,9 @@ namespace LinearAlgebra
   // (in that case the user must _explicitly_ define the scalar type)
   template <typename USER_SCALAR, typename A1_IMPL>
   std::enable_if_t<
-      Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+      Is_Supported_MetaExpr_Argument_v<A1_IMPL> and
+          // remove some ambiguities
+          not std::is_same_v<USER_SCALAR, Element_Type_t<A1_IMPL>>,
       Detail::MetaExpr_BinaryOp<Common_Element_Type_t<Scalar_CRef<USER_SCALAR>, A1_IMPL>,
                                 _product_t_,
                                 Scalar_CRef<USER_SCALAR>,
@@ -243,4 +245,4 @@ namespace LinearAlgebra
     return {arg.impl()};
   }
 
-}
+}  // namespace LinearAlgebra

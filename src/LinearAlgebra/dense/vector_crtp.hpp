@@ -1,3 +1,4 @@
+// [[file:vector_crtp.org]]
 #pragma once
 
 #include <cstddef>
@@ -60,10 +61,16 @@ namespace LinearAlgebra
     }
 
     // [BEGIN_Vector_Crtp]
+
     // operator=
     //
-    // *Note:* cannot lead to object slicing if impl_assign is
+    // *Note:* cannot lead to object slicing as we call impl_assign that 
     //         is defined *at* the final class level.
+    //
+    //         Also note that for user convenience (writing V1=V2,
+    //         with V1 type being Vector_Crtp<IMPL>) this op=
+    //         declaration have to be public.
+    //
     VMT_ASSIGNMENT_OPERATOR(Vector_Crtp);
     // [END_Vector_Crtp]
 

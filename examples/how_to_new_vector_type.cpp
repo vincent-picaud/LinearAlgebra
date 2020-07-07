@@ -1,4 +1,4 @@
-// [[file:how_to_new_vector.org]]
+// [[file:how_to_new_vector_type.org]]
 // [BEGIN_how_to_new_vector.cpp]
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"

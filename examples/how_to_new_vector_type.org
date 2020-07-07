@@ -1,4 +1,4 @@
-#+Title: how_to_new_vector.cpp
+#+Title: how_to_new_vector_type.cpp
 #+Call: Setup()
 #+Call: HomeUp()
 
@@ -24,8 +24,6 @@ prints:
 
 #+RESULTS:
 #+begin_example :eval never
-LinearAlgebra::Minimal_Vector<T>& LinearAlgebra::Minimal_Vector<T>::impl_assign(const LinearAlgebra::Detail::MetaExpr_Crtp<METAEXPR_IMPL>&) [with EXPR_IMPL = LinearAlgebra::Detail::MetaExpr_BinaryOp<int, LinearAlgebra::_plus_t_, LinearAlgebra::Minimal_Vector<int>, LinearAlgebra::Minimal_Vector<int> >; T = int]
-0
 #+end_example
 
 

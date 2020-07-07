@@ -4,8 +4,8 @@
 
 * Macro helper for assigment operators
 
-This macro define a template for =operator== that must be repeated over
-and over... 
+This macro define a template for =operator== that must be *repeated over
+and over*...
 
 By example:
 #+begin_src cpp :eval never
@@ -30,7 +30,7 @@ struct A
 
 struct A : B
 {
-  MACRO(B);
+  MACRO(B); // repeat here!
 };
 #+end_src
 

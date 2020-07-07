@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-06 Mon 18:18 -->
+<!-- 2020-07-07 Tue 06:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>vmt_assignment_operator_define.hpp</title>
@@ -200,7 +200,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,10 +249,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4546cba">1. Macro helper for assigment operators</a>
+<li><a href="#org492ac1f">1. Macro helper for assigment operators</a>
 <ul>
-<li><a href="#org633f579">1.1. The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a></li>
-<li><a href="#org54cff38">1.2. The <code>DELETE_VMT_ASSIGNMENT_OPERATOR</code> macro</a></li>
+<li><a href="#orgaf11d61">1.1. The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a></li>
+<li><a href="#org9dfde4f">1.2. The <code>DELETE_VMT_ASSIGNMENT_OPERATOR</code> macro</a></li>
+</ul>
+</li>
+<li><a href="#org6d6aedd">2. Backlinks</a></li>
+<li><a href="#orgb8e7df5">3. 4 Backlinks</a>
+<ul>
+<li><a href="#org1fbaaf7">3.1. call_assign_demo.cpp</a></li>
+<li><a href="#org788c826">3.2. My Sitemap</a></li>
+<li><a href="#org4b29bff">3.3. vector_crtp.hpp</a></li>
 </ul>
 </li>
 </ul>
@@ -263,12 +271,12 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org4546cba" class="outline-2">
-<h2 id="org4546cba"><span class="section-number-2">1</span> Macro helper for assigment operators</h2>
+<div id="outline-container-org492ac1f" class="outline-2">
+<h2 id="org492ac1f"><span class="section-number-2">1</span> Macro helper for assigment operators</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-This macro define a template for <code>operator=</code> that must be repeated over
-and over&#x2026; 
+This macro define a template for <code>operator=</code> that must be <b>repeated over
+and over</b>&#x2026;
 </p>
 
 <p>
@@ -299,14 +307,14 @@ is remplaced by
 
 <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">A</span> : <span style="color: #00688b;">B</span>
 {
-  MACRO(B);
+  MACRO(B); <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">repeat here!</span>
 };
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org633f579" class="outline-3">
-<h3 id="org633f579"><span class="section-number-3">1.1</span> The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</h3>
+<div id="outline-container-orgaf11d61" class="outline-3">
+<h3 id="orgaf11d61"><span class="section-number-3">1.1</span> The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</h3>
 <div class="outline-text-3" id="text-1-1">
 <blockquote>
 <div class="org-src-container">
@@ -329,8 +337,8 @@ is remplaced by
 </div>
 </div>
 
-<div id="outline-container-org54cff38" class="outline-3">
-<h3 id="org54cff38"><span class="section-number-3">1.2</span> The <code>DELETE_VMT_ASSIGNMENT_OPERATOR</code> macro</h3>
+<div id="outline-container-org9dfde4f" class="outline-3">
+<h3 id="org9dfde4f"><span class="section-number-3">1.2</span> The <code>DELETE_VMT_ASSIGNMENT_OPERATOR</code> macro</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Delete <code>operator=</code> to provide more readable error messages
@@ -355,10 +363,53 @@ Better error messages
 </div>
 </div>
 </div>
+
+
+
+<div id="outline-container-org6d6aedd" class="outline-2">
+<h2 id="org6d6aedd"><span class="section-number-2">2</span> Backlinks</h2>
+</div>
+
+
+<div id="outline-container-orgb8e7df5" class="outline-2">
+<h2 id="orgb8e7df5"><span class="section-number-2">3</span> 4 Backlinks</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org1fbaaf7" class="outline-3">
+<h3 id="org1fbaaf7"><span class="section-number-3">3.1</span> <a href="../../../examples/call_assign_demo.html">call_assign_demo.cpp</a></h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+The minimal vector interface is <a href="vector_crtp.html#ID-3664b3fc-f74a-410c-8025-a2b2f7051b8e">The <code>Vector_Crtp</code> class</a>. We also illustrate how the <a href="#orgaf11d61">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a> must be used. The code is as follows:
+</p>
+</div>
+</div>
+
+<div id="outline-container-org788c826" class="outline-3">
+<h3 id="org788c826"><span class="section-number-3">3.2</span> <a href="../../../index.html">My Sitemap</a></h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+<a href="src/LinearAlgebra/dense/vmt_assignment_operator_define.html">vmt_assignment_operator_define.hpp</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4b29bff" class="outline-3">
+<h3 id="org4b29bff"><span class="section-number-3">3.3</span> <a href="vector_crtp.html">vector_crtp.hpp</a></h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+See: <a href="#orgaf11d61">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a>
+</p>
+
+<p>
+See: <a href="#orgaf11d61">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a>
+</p>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-06 Mon 18:18</p>
+<p class="date">Created: 2020-07-07 Tue 06:57</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-06 Mon 18:18 -->
+<!-- 2020-07-07 Tue 06:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>call_assign_demo.cpp</title>
@@ -200,7 +200,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,8 +249,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org465a909">1. Call assign demo</a></li>
-<li><a href="#org7ad7c17">2. Define vector type</a></li>
+<li><a href="#org00395d6">1. Call assign demo</a></li>
+<li><a href="#orgc5f199c">2. Define vector type</a></li>
+<li><a href="#orgda80cb7">3. Backlinks</a></li>
+<li><a href="#org32b8df0">4. 1 Backlinks</a>
+<ul>
+<li><a href="#org6662afe">4.1. My Sitemap</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -259,8 +265,8 @@ for the JavaScript code in this tag.
 <a href="../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org465a909" class="outline-2">
-<h2 id="org465a909"><span class="section-number-2">1</span> Call assign demo</h2>
+<div id="outline-container-org00395d6" class="outline-2">
+<h2 id="org00395d6"><span class="section-number-2">1</span> Call assign demo</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Show how to:
@@ -272,17 +278,18 @@ Show how to:
 </div>
 </div>
 
-<div id="outline-container-org7ad7c17" class="outline-2">
-<h2 id="org7ad7c17"><span class="section-number-2">2</span> Define vector type</h2>
+<div id="outline-container-orgc5f199c" class="outline-2">
+<h2 id="orgc5f199c"><span class="section-number-2">2</span> Define vector type</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-The minimal vector interface is <a href="../src/LinearAlgebra/dense/vector_crtp.html#ID-de8a0a1f-0ae5-495d-a839-a7a5d1199091">the <code>Dense_Vector_Crtp</code> class</a> and the required code is:
+The minimal vector interface is <a href="../src/LinearAlgebra/dense/vector_crtp.html#ID-3664b3fc-f74a-410c-8025-a2b2f7051b8e">The <code>Vector_Crtp</code> class</a>. We also
+illustrate how the <a href="../src/LinearAlgebra/dense/vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a> must be used. The
+code is as follows:
 </p>
 
 <blockquote>
 <p>
-This is the strict minimum to define a new vector inheritings <a href="../src/LinearAlgebra/dense/vector_crtp.html#ID-de8a0a1f-0ae5-495d-a839-a7a5d1199091">The
-<code>Dense_Vector_Crtp</code> class</a>.
+This is the strict minimum to define a new vector type that inherits from <code>Vector_Crtp</code>.
 </p>
 
 <div class="org-src-container">
@@ -311,9 +318,10 @@ This is the strict minimum to define a new vector inheritings <a href="../src/Li
    <span style="color: #1c86ee;">public</span>:
     <span style="color: #1c86ee;">explicit</span> <span style="color: #cd9b1d;">Minimal_Vector</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">number</span>) : _number(number) {}
 
-  
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Provides operator=() -&gt; must be followed by impl_assign</span>
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">implementation (see protected: section)</span>
     VMT_ASSIGNMENT_OPERATOR(Minimal_Vector);
-    
+
    <span style="color: #1c86ee;">protected</span>:
     <span style="color: #1c86ee;">friend</span> <span style="color: #00688b;">base_type</span>;
 
@@ -328,6 +336,31 @@ This is the strict minimum to define a new vector inheritings <a href="../src/Li
     {
       <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
     }
+
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">VMT_ASSIGNMENT_OPERATOR most basic implementation</span>
+    <span style="color: #7f7f7f;">//</span>
+    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">EXPR_IMPL</span>&gt;
+    <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&amp;
+    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_Crtp</span>&lt;<span style="color: #00688b;">EXPR_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">metaExpr</span>)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Expression Template</span>
+    {
+      <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">code here ...</span>
+      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
+    }
+
+    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T_OTHER</span>&gt;
+    <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&amp;
+    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T_OTHER</span>&gt;&amp;)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Compatible Vector</span>
+    {
+      <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">code here ...</span>
+      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
+    }
+
+    <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&amp;
+    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp;)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Compatible Scalar</span>
+    {
+      <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">code here ...</span>
+      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
+    }
   };
 
 </pre>
@@ -335,10 +368,32 @@ This is the strict minimum to define a new vector inheritings <a href="../src/Li
 </blockquote>
 </div>
 </div>
+
+
+
+
+<div id="outline-container-orgda80cb7" class="outline-2">
+<h2 id="orgda80cb7"><span class="section-number-2">3</span> Backlinks</h2>
+</div>
+
+
+<div id="outline-container-org32b8df0" class="outline-2">
+<h2 id="org32b8df0"><span class="section-number-2">4</span> 1 Backlinks</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org6662afe" class="outline-3">
+<h3 id="org6662afe"><span class="section-number-3">4.1</span> <a href="../index.html">My Sitemap</a></h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+<a href="examples/call_assign_demo.html">call_assign_demo.cpp</a>
+</p>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-06 Mon 18:18</p>
+<p class="date">Created: 2020-07-07 Tue 06:57</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

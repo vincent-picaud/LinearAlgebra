@@ -6,7 +6,7 @@
 <!-- 2020-07-07 Tue 06:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>metaexpr.hpp</title>
+<title>how_to_new_vector_type.cpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,16 +244,17 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">metaexpr.hpp</h1>
+<h1 class="title">how_to_new_vector_type.cpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org90a7fd0">1. Main header file</a></li>
-<li><a href="#org0fad440">2. Backlinks</a></li>
-<li><a href="#orgff208fd">3. 1 Backlinks</a>
+<li><a href="#org5ebcd1e">1. How to define a new vector type</a></li>
+<li><a href="#org309810c">2. <code>main()</code> function</a></li>
+<li><a href="#org414c0bf">3. Backlinks</a></li>
+<li><a href="#orgdd91a1d">4. 1 Backlinks</a>
 <ul>
-<li><a href="#orgd2b817a">3.1. My Sitemap</a></li>
+<li><a href="#org375cb6e">4.1. My Sitemap</a></li>
 </ul>
 </li>
 </ul>
@@ -261,42 +262,149 @@ for the JavaScript code in this tag.
 </div>
 
 <p>
-<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+<a href="../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org90a7fd0" class="outline-2">
-<h2 id="org90a7fd0"><span class="section-number-2">1</span> Main header file</h2>
+<div id="outline-container-org5ebcd1e" class="outline-2">
+<h2 id="org5ebcd1e"><span class="section-number-2">1</span> How to define a new vector type</h2>
 <div class="outline-text-2" id="text-1">
+<p>
+The minimal vector interface is <a href="../src/LinearAlgebra/dense/vector_crtp.html#ID-3664b3fc-f74a-410c-8025-a2b2f7051b8e">The <code>Vector_Crtp</code> class</a>. We also
+illustrate how the <a href="../src/LinearAlgebra/dense/vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a> must be used. The
+code is as follows:
+</p>
+
 <blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #cdad00;">  #pragma</span> once
-</pre>
-</div>
+<p>
+This is the strict minimum to define a new vector type that inherits from <code>Vector_Crtp</code>.
+</p>
 
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #cdad00;">  #include</span> <span style="color: #8b7355;">"call_assign_from_metaexpr.hpp"</span>
-<span style="color: #cdad00;">  #include</span> <span style="color: #8b7355;">"metaexpr_crtp.hpp"</span>
-<span style="color: #cdad00;">  #include</span> <span style="color: #8b7355;">"operator_overloading.hpp"</span>
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T</span>&gt;
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Minimal_Vector</span>;
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T</span>&gt;
+  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Crtp_Type_Traits</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&gt;
+  {
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = T;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">size_type</span>    = <span style="color: #6e8b3d;">std</span>::size_t;
+  };
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T</span>&gt;
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Minimal_Vector</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&gt;
+  {
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>    = <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&gt;;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::element_type;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">size_type</span>    = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::size_type;
+
+   <span style="color: #1c86ee;">protected</span>:
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">My data</span>
+    <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">_number</span>;
+
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">explicit</span> <span style="color: #cd9b1d;">Minimal_Vector</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">number</span>) : _number(number) {}
+
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Provides operator=() -&gt; must be followed by impl_assign</span>
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">implementation (see protected: section)</span>
+    VMT_ASSIGNMENT_OPERATOR(Minimal_Vector);
+
+   <span style="color: #1c86ee;">protected</span>:
+    <span style="color: #1c86ee;">friend</span> <span style="color: #00688b;">base_type</span>;
+
+    <span style="color: #00688b;">size_type</span>
+    <span style="color: #cd9b1d;">impl_size</span>() <span style="color: #1c86ee;">const</span>
+    {
+      <span style="color: #1c86ee;">return</span> 0;
+    }
+
+    <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&amp;
+    <span style="color: #cd9b1d;">impl_as_const</span>() <span style="color: #1c86ee;">const</span>
+    {
+      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
+    }
+
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">VMT_ASSIGNMENT_OPERATOR most basic implementation</span>
+    <span style="color: #7f7f7f;">//</span>
+    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">EXPR_IMPL</span>&gt;
+    <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&amp;
+    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_Crtp</span>&lt;<span style="color: #00688b;">EXPR_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">metaExpr</span>)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Expression Template</span>
+    {
+      <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+      <span style="color: #6e8b3d;">Detail</span>::call_assign_from_MetaExpr(*<span style="color: #1c86ee;">this</span>, metaExpr);  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">code here ...</span>
+      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
+    }
+
+    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T_OTHER</span>&gt;
+    <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&amp;
+    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T_OTHER</span>&gt;&amp;)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Compatible Vector</span>
+    {
+      <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+      <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">code here ...</span>
+      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
+    }
+
+    <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&amp;
+    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp;)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Compatible Scalar</span>
+    {
+      <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+      <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">code here ...</span>
+      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
+    }
+  };
+
 </pre>
 </div>
 </blockquote>
 </div>
 </div>
 
-<div id="outline-container-org0fad440" class="outline-2">
-<h2 id="org0fad440"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
+<div id="outline-container-org309810c" class="outline-2">
+<h2 id="org309810c"><span class="section-number-2">2</span> <code>main()</code> function</h2>
+<div class="outline-text-2" id="text-2">
+<blockquote>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
 
+<span style="color: #00688b;">int</span>
+<span style="color: #cd9b1d;">main</span>()
+{
+  <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">int</span>&gt; <span style="color: #2e8b57;">U</span>(5), <span style="color: #2e8b57;">V</span>(5), <span style="color: #2e8b57;">W</span>(5);
 
-<div id="outline-container-orgff208fd" class="outline-2">
-<h2 id="orgff208fd"><span class="section-number-2">3</span> 1 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
+  U = V + W;
+
+  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; V.size();
+}
+</pre>
 </div>
-<div id="outline-container-orgd2b817a" class="outline-3">
-<h3 id="orgd2b817a"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-1">
+</blockquote>
+
 <p>
-<a href="src/LinearAlgebra/metaexpr/metaexpr.html">metaexpr.hpp</a>
+prints:
+</p>
+
+<pre class="example">
+
+</pre>
+</div>
+</div>
+
+
+
+<div id="outline-container-org414c0bf" class="outline-2">
+<h2 id="org414c0bf"><span class="section-number-2">3</span> Backlinks</h2>
+</div>
+
+
+<div id="outline-container-orgdd91a1d" class="outline-2">
+<h2 id="orgdd91a1d"><span class="section-number-2">4</span> 1 Backlinks</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org375cb6e" class="outline-3">
+<h3 id="org375cb6e"><span class="section-number-3">4.1</span> <a href="../index.html">My Sitemap</a></h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+<a href="examples/how_to_new_vector_type.html">how_to_new_vector_type.cpp</a>
 </p>
 </div>
 </div>

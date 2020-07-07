@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-26 Fri 06:31 -->
+<!-- 2020-07-07 Tue 06:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title><code>LinearAlgebra/dense/</code></title>
@@ -193,6 +193,8 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
+<style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -255,13 +257,25 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#orgf3cc74d">2. Other important files</a>
 <ul>
-<li><a href="#org66b9b0f">2.1. get<sub>size</sub>()</a></li>
-<li><a href="#orge254532">2.2. loop<sub>over</sub><sub>indices</sub>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Performance">Performance</span></span></a></li>
+<li><a href="#org66b9b0f">2.1. get_size()</a></li>
+<li><a href="#orge254532">2.2. loop_over_indices</a></li>
+</ul>
+</li>
+<li><a href="#orga172a1e">3. Backlinks</a></li>
+<li><a href="#org7d99e77">4. 5 Backlinks</a>
+<ul>
+<li><a href="#org3a2310c">4.1. My Sitemap</a></li>
+<li><a href="#org81c79c0">4.2. <code>LinearAlgebra/dense/</code></a></li>
+<li><a href="#orgeae98ff">4.3. Content</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
+
+<p>
+<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+</p>
 
 <div id="outline-container-org79e3991" class="outline-2">
 <h2 id="org79e3991"><span class="section-number-2">1</span> Role</h2>
@@ -275,7 +289,7 @@ The genericity is obtained by using a <b>design by policies</b> to define:
 </p>
 <ul class="org-ul">
 <li>storage scheme: static size, etc&#x2026;</li>
-<li>memory<sub>chunk</sub><sub>type</sub>: std::vector, pointer etc..</li>
+<li>memory_chunk_type: std::vector, pointer etc..</li>
 </ul>
 
 <p>
@@ -313,7 +327,7 @@ The vector classes illustrate this (but the same schem is used for matrix etc&#x
 </div>
 
 <p>
-The policies are define thanks to Crtp<sub>Type</sub><sub>Traits</sub>:
+The policies are define thanks to Crtp_Type_Traits:
 </p>
 
 <div class="org-src-container">
@@ -332,9 +346,9 @@ The policies are define thanks to Crtp<sub>Type</sub><sub>Traits</sub>:
 See:
 </p>
 <ul class="org-ul">
-<li><a href="vector_storage_scheme.hpp">file:vector<sub>storage</sub><sub>scheme.hpp</sub></a></li>
-<li><a href="matrix_storage_scheme.hpp">file:matrix<sub>storage</sub><sub>scheme.hpp</sub></a></li>
-<li><a href="memory_chunk.hpp">file:memory<sub>chunk.hpp</sub></a></li>
+<li><a href="vector_storage_scheme.hpp">file:vector_storage_scheme.hpp</a></li>
+<li><a href="matrix_storage_scheme.hpp">file:matrix_storage_scheme.hpp</a></li>
+<li><a href="memory_chunk.hpp">file:memory_chunk.hpp</a></li>
 </ul>
 </div>
 
@@ -376,12 +390,12 @@ Must follow the same scheme as <a href="#org69ccc79">Vector classes</a>.
 </colgroup>
 <tbody>
 <tr>
-<td class="org-left">matrix<sub>crtp</sub><sub>fwd.hpp</sub></td>
+<td class="org-left">matrix_crtp_fwd.hpp</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="org-left">matrix<sub>crtp.hpp</sub></td>
+<td class="org-left">matrix_crtp.hpp</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
@@ -391,32 +405,32 @@ Must follow the same scheme as <a href="#org69ccc79">Vector classes</a>.
 </tr>
 
 <tr>
-<td class="org-left">matrix<sub>special</sub><sub>structure</sub><sub>enum.hpp</sub></td>
-<td class="org-left">define Matrix<sub>Special</sub><sub>Structure</sub><sub>Enum</sub></td>
+<td class="org-left">matrix_special_structure_enum.hpp</td>
+<td class="org-left">define Matrix_Special_Structure_Enum</td>
 </tr>
 
 <tr>
-<td class="org-left">matrix<sub>storage</sub><sub>scheme.hpp</sub></td>
-<td class="org-left"><a href="#orge254532">loop<sub>over</sub><sub>indices</sub></a></td>
+<td class="org-left">matrix_storage_scheme.hpp</td>
+<td class="org-left"><a href="#orge254532">loop_over_indices</a></td>
 </tr>
 
 <tr>
-<td class="org-left">memory<sub>chunk.hpp</sub></td>
+<td class="org-left">memory_chunk.hpp</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="org-left">vector<sub>crtp</sub><sub>fwd.hpp</sub></td>
+<td class="org-left">vector_crtp_fwd.hpp</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="org-left">vector<sub>crtp.hpp</sub></td>
+<td class="org-left">vector_crtp.hpp</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="org-left">vector<sub>crtp</sub><sub>size</sub><sub>utils.hpp</sub></td>
+<td class="org-left">vector_crtp_size_utils.hpp</td>
 <td class="org-left">define <a href="#org66b9b0f"><code>get_size()</code></a></td>
 </tr>
 
@@ -426,7 +440,7 @@ Must follow the same scheme as <a href="#org69ccc79">Vector classes</a>.
 </tr>
 
 <tr>
-<td class="org-left">vector<sub>storage</sub><sub>scheme.hpp</sub></td>
+<td class="org-left">vector_storage_scheme.hpp</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
@@ -435,7 +449,7 @@ Must follow the same scheme as <a href="#org69ccc79">Vector classes</a>.
 
 
 <div id="outline-container-org66b9b0f" class="outline-3">
-<h3 id="org66b9b0f"><span class="section-number-3">2.1</span> get<sub>size</sub>()</h3>
+<h3 id="org66b9b0f"><span class="section-number-3">2.1</span> get_size()</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Do not forget this function exist!
@@ -445,7 +459,7 @@ Do not forget this function exist!
 
 
 <div id="outline-container-orge254532" class="outline-3">
-<h3 id="orge254532"><span class="section-number-3">2.2</span> loop<sub>over</sub><sub>indices</sub>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Performance">Performance</span></span></h3>
+<h3 id="orge254532"><span class="section-number-3">2.2</span> loop_over_indices&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Performance">Performance</span></span></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Important as use by maps function 
@@ -453,10 +467,82 @@ Important as use by maps function
 </div>
 </div>
 </div>
+
+
+
+
+<div id="outline-container-orga172a1e" class="outline-2">
+<h2 id="orga172a1e"><span class="section-number-2">3</span> Backlinks</h2>
+</div>
+
+
+<div id="outline-container-org7d99e77" class="outline-2">
+<h2 id="org7d99e77"><span class="section-number-2">4</span> 5 Backlinks</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org3a2310c" class="outline-3">
+<h3 id="org3a2310c"><span class="section-number-3">4.1</span> <a href="../../../index.html">My Sitemap</a></h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+<a href="src/LinearAlgebra/dense/README.html"><code>LinearAlgebra/dense/</code></a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org81c79c0" class="outline-3">
+<h3 id="org81c79c0"><span class="section-number-3">4.2</span> <a href="README.html"><code>LinearAlgebra/dense/</code></a></h3>
+<div class="outline-text-3" id="text-4-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">vector_crtp_size_utils.hpp</td>
+<td class="org-left">define <a href="#org66b9b0f"><code>get_size()</code></a></td>
+</tr>
+</tbody>
+</table>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">matrix_storage_scheme.hpp</td>
+<td class="org-left"><a href="#orge254532">loop_over_indices</a></td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Must follow the same scheme as <a href="#org69ccc79">Vector classes</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgeae98ff" class="outline-3">
+<h3 id="orgeae98ff"><span class="section-number-3">4.3</span> <a href="../../index.html">Content</a></h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+<a href="src/LinearAlgebra/dense/README.html">README</a>
+</p>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-06-26 Fri 06:31</p>
+<p class="date">Created: 2020-07-07 Tue 06:57</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

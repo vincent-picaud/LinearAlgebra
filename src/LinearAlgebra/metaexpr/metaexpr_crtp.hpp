@@ -10,6 +10,7 @@
 
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/vector_crtp.hpp"
+#include "LinearAlgebra/expr/scalar_crtp.hpp"
 #include "LinearAlgebra/utils/crtp.hpp"
 
 namespace LinearAlgebra
@@ -132,7 +133,7 @@ namespace LinearAlgebra
      protected:
       MetaExpr_BinaryOp_Crtp& operator=(const MetaExpr_BinaryOp_Crtp&) = default;
     };
-  }  // Detail
+  }  // namespace Detail
 
   //////////////////////////////////////////////////////////////////
   // Binary operator default implementation
@@ -179,8 +180,10 @@ namespace LinearAlgebra
       /////////////
       //
      protected:
-      const ARG_0& _arg_0;
-      const ARG_1& _arg_1;
+      std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_0>, const ARG_0, const ARG_0&>
+          _arg_0;
+      std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_1>, const ARG_1, const ARG_1&>
+          _arg_1;
 
       //////////////////
       // Constructors //
@@ -212,7 +215,7 @@ namespace LinearAlgebra
         return _arg_1;
       }
     };
-  }  // Detail
+  }  // namespace Detail
 
   //****************************************************************
 
@@ -256,7 +259,10 @@ namespace LinearAlgebra
       /////////////
       //
      protected:
-      const ARG_TYPE& _arg;
+      std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_TYPE>,
+                         const ARG_TYPE,
+                         const ARG_TYPE&>
+          _arg;
 
       //////////////////
       // Constructors //
@@ -279,6 +285,6 @@ namespace LinearAlgebra
         return _arg;
       }
     };
-  }  // Detail
+  }  // namespace Detail
 
-}
+}  // namespace LinearAlgebra

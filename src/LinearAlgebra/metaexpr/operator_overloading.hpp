@@ -80,24 +80,51 @@ namespace LinearAlgebra
   //
 
   // Handle expression like: T * Vector<T>
+  // template <typename A1_IMPL>
+  // std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+  //                  Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>,
+  //                                            _product_t_,
+  //                                            Scalar_CRef<Element_Type_t<A1_IMPL>>,
+  //                                            A1_IMPL>>
+  // operator*(const Scalar_CRef<Element_Type_t<A1_IMPL>>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  // {
+  //   return {arg_0, arg_1.impl()};
+  // }
+
+  // Handle expression like: U* Vector<T>,
+  //
+  // where U = Scalar_CRef<USER_SCALAR>
+  //
+  // -> user must _explicitly_ define the scalar type
+  //
+  // template <typename USER_SCALAR, typename A1_IMPL>
+  // std::enable_if_t<
+  //     Is_Supported_MetaExpr_Argument_v<A1_IMPL> and
+  //         // remove some ambiguities
+  //         not std::is_same_v<USER_SCALAR, Element_Type_t<A1_IMPL>>,
+  //     Detail::MetaExpr_BinaryOp<Common_Element_Type_t<Scalar_CRef<USER_SCALAR>, A1_IMPL>,
+  //                               _product_t_,
+  //                               Scalar_CRef<USER_SCALAR>,
+  //                               A1_IMPL>>
+  // operator*(const Scalar_CRef<USER_SCALAR>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  // {
+  //   return {arg_0, arg_1.impl()};
+  // }
+
+  // NEW
   template <typename A1_IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
                    Detail::MetaExpr_BinaryOp<Element_Type_t<A1_IMPL>,
                                              _product_t_,
                                              Scalar_CRef<Element_Type_t<A1_IMPL>>,
                                              A1_IMPL>>
-  operator*(const Scalar_CRef<Element_Type_t<A1_IMPL>>& arg_0, const Crtp<A1_IMPL>& arg_1)
+  operator*(const Element_Type_t<A1_IMPL>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
-    return {arg_0, arg_1.impl()};
+    return {Scalar_CRef<Element_Type_t<A1_IMPL>>{arg_0}, arg_1.impl()};
   }
-
-  // Handle expression like: U * Vector<T>, where U = Scalar_CRef<USER_SCALAR>
-  // (in that case the user must _explicitly_ define the scalar type)
   template <typename USER_SCALAR, typename A1_IMPL>
   std::enable_if_t<
-      Is_Supported_MetaExpr_Argument_v<A1_IMPL> and
-          // remove some ambiguities
-          not std::is_same_v<USER_SCALAR, Element_Type_t<A1_IMPL>>,
+      Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
       Detail::MetaExpr_BinaryOp<Common_Element_Type_t<Scalar_CRef<USER_SCALAR>, A1_IMPL>,
                                 _product_t_,
                                 Scalar_CRef<USER_SCALAR>,
@@ -115,6 +142,35 @@ namespace LinearAlgebra
   //
 
   // Handle expression like: complex<T> * Vector<T>
+  // template <typename A1_IMPL>
+  // std::enable_if_t<
+  //     Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
+  //     Detail::MetaExpr_BinaryOp<
+  //         Common_Element_Type_t<Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>, A1_IMPL>,
+  //         _product_t_,
+  //         Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>,
+  //         A1_IMPL>>
+  // operator*(const Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>& arg_0,
+  //           const Crtp<A1_IMPL>& arg_1)
+  // {
+  //   return {arg_0, arg_1.impl()};
+  // }
+
+  // template <typename A1_IMPL>
+  // std::enable_if_t<
+  //     Is_Supported_MetaExpr_Argument_v<A1_IMPL> && Is_Complex_v<Element_Type_t<A1_IMPL>>,
+  //     Detail::MetaExpr_BinaryOp<
+  //         Common_Element_Type_t<Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>, A1_IMPL>,
+  //         _product_t_,
+  //         Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>,
+  //         A1_IMPL>>
+  // operator*(const Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>& arg_0,
+  //           const Crtp<A1_IMPL>& arg_1)
+  // {
+  //   return {arg_0, arg_1.impl()};
+  // }
+
+  // New
   template <typename A1_IMPL>
   std::enable_if_t<
       Is_Supported_MetaExpr_Argument_v<A1_IMPL>,
@@ -123,25 +179,9 @@ namespace LinearAlgebra
           _product_t_,
           Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>,
           A1_IMPL>>
-  operator*(const Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>& arg_0,
-            const Crtp<A1_IMPL>& arg_1)
+  operator*(const std::complex<Element_Type_t<A1_IMPL>>& arg_0, const Crtp<A1_IMPL>& arg_1)
   {
-    return {arg_0, arg_1.impl()};
-  }
-
-  // Handle expression like: T * Vector<complex<T>>
-  template <typename A1_IMPL>
-  std::enable_if_t<
-      Is_Supported_MetaExpr_Argument_v<A1_IMPL> && Is_Complex_v<Element_Type_t<A1_IMPL>>,
-      Detail::MetaExpr_BinaryOp<
-          Common_Element_Type_t<Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>, A1_IMPL>,
-          _product_t_,
-          Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>,
-          A1_IMPL>>
-  operator*(const Scalar_CRef<typename Element_Type_t<A1_IMPL>::value_type>& arg_0,
-            const Crtp<A1_IMPL>& arg_1)
-  {
-    return {arg_0, arg_1.impl()};
+    return {Scalar_CRef<std::complex<Element_Type_t<A1_IMPL>>>{arg_0}, arg_1.impl()};
   }
 
   //----------------------------------------------------------------

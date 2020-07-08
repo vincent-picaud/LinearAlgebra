@@ -39,31 +39,31 @@ namespace LinearAlgebra
   // [END_Scalar_Crtp]
 
   //////////////////////////////////////////////////////////////////
-  // Scalar_CRef
+  // Scalar
   //////////////////////////////////////////////////////////////////
   //
-  // [BEGIN_Scalar_CRef]
+  // [BEGIN_Scalar]
   template <typename ELEMENT_TYPE>
-  class Scalar_CRef;
+  class Scalar;
 
   template <typename ELEMENT_TYPE>
-  struct Crtp_Type_Traits<Scalar_CRef<ELEMENT_TYPE>>
+  struct Crtp_Type_Traits<Scalar<ELEMENT_TYPE>>
   {
     using element_type = ELEMENT_TYPE;
   };
 
   template <typename ELEMENT_TYPE>
-  class Scalar_CRef final : public Scalar_Crtp<Scalar_CRef<ELEMENT_TYPE>>
+  class Scalar : public Scalar_Crtp<Scalar<ELEMENT_TYPE>>
   {
     // avoid some recurrent errors like:
-    //    Scalar_CRef<ALPHA_IMPL>(0)
+    //    Scalar<ALPHA_IMPL>(0)
     // instead of
-    //    Scalar_CRef<Element_Type_t<ALPHA_IMPL>>(0)
+    //    Scalar<Element_Type_t<ALPHA_IMPL>>(0)
     //
     static_assert(not Is_Crtp_Interface_Of_v<Scalar_Crtp, ELEMENT_TYPE>);
 
    public:
-    using base_type    = Scalar_Crtp<Scalar_CRef<ELEMENT_TYPE>>;
+    using base_type    = Scalar_Crtp<Scalar<ELEMENT_TYPE>>;
     using element_type = typename base_type::element_type;
 
    private:
@@ -76,9 +76,9 @@ namespace LinearAlgebra
     // CAVEAT: really use ELEMENT_TYPE and not element_type which
     // prevent C++ to use automatic template deduction:
     //
-    // Scalar_CRef(std::complex<double>(3, 4)) <- would NOT work anymore
+    // Scalar(std::complex<double>(3, 4)) <- would NOT work anymore
     //
-    constexpr Scalar_CRef(const ELEMENT_TYPE& value) noexcept : _value(value) {}
+    constexpr Scalar(const ELEMENT_TYPE& value) noexcept : _value(value) {}
 
    protected:
     friend base_type;
@@ -90,19 +90,19 @@ namespace LinearAlgebra
     }
   };
 
-  static_assert(std::is_trivially_copyable_v<Scalar_CRef<double>>);
+  static_assert(std::is_trivially_copyable_v<Scalar<double>>);
 
-  // [END_Scalar_CRef]
+  // [END_Scalar]
 
   // TODO: not sure it is really usefull... comment me and check
   // complex specialization
   // -> define contruction from real part only
   // template <typename ELEMENT_TYPE>
-  // class Scalar_CRef<std::complex<ELEMENT_TYPE>> final
-  //     : public Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>
+  // class Scalar<std::complex<ELEMENT_TYPE>> final
+  //     : public Scalar_Crtp<Scalar<std::complex<ELEMENT_TYPE>>>
   // {
   //  public:
-  //   using base_type    = Scalar_Crtp<Scalar_CRef<std::complex<ELEMENT_TYPE>>>;
+  //   using base_type    = Scalar_Crtp<Scalar<std::complex<ELEMENT_TYPE>>>;
   //   using element_type = typename base_type::element_type;
 
   //  private:
@@ -112,10 +112,10 @@ namespace LinearAlgebra
   //   // CAVEAT: really use ELEMENT_TYPE and not element_type which
   //   // prevent C++ to use automatic template deduction:
   //   //
-  //   // Scalar_CRef(std::complex<double>(3, 4)) <- would NOT work anymore
+  //   // Scalar(std::complex<double>(3, 4)) <- would NOT work anymore
   //   //
-  //   constexpr Scalar_CRef(const ELEMENT_TYPE& value) noexcept : _value(value) {}
-  //   constexpr Scalar_CRef(const std::complex<ELEMENT_TYPE>& value) noexcept : _value(value) {}
+  //   constexpr Scalar(const ELEMENT_TYPE& value) noexcept : _value(value) {}
+  //   constexpr Scalar(const std::complex<ELEMENT_TYPE>& value) noexcept : _value(value) {}
 
   //  protected:
   //   friend base_type;

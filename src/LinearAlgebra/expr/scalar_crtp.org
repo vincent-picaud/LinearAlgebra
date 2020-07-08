@@ -18,7 +18,7 @@ This class is the *base* class of all wrapped scalar type
 # file:scalar_crtp.hpp::BEGIN_Scalar_Crtp
 #+Call: Extract("scalar_crtp.hpp","Scalar_Crtp")
 
-** The =Scalar_CRef= default wrapping class 
+** The =Scalar= default wrapping class 
 
-# file:scalar_crtp.hpp::BEGIN_Scalar_CRef
-#+Call: Extract("scalar_crtp.hpp","Scalar_CRef")
+# file:scalar_crtp.hpp::BEGIN_Scalar
+#+Call: Extract("scalar_crtp.hpp","Scalar")

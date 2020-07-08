@@ -12,7 +12,7 @@ TEST(V_assign_alpha, assign)
   matrix(2, 0) = 3;
 
   DEBUG_RESET_SELECTED();
-  assign(matrix, Scalar_CRef<int>(-1));
+  assign(matrix, Scalar<int>(-1));
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(matrix(0, 0), -1);

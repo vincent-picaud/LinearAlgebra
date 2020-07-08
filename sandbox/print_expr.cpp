@@ -575,13 +575,13 @@ namespace LinearAlgebra
   // ================================================================
 
   // ////////////////////////////////////////////////////////////////
-  // For Scalar_CRef, define:
+  // For Scalar, define:
   // - type_name
   // - variable_name
   // - etc...
   // - to_string
   //
-  // As overloaded operators use Scalar_CRef we cannot redefine our
+  // As overloaded operators use Scalar we cannot redefine our
   // own scalar type. By consequence we use this
   // trick:
   // - use int scalar
@@ -589,7 +589,7 @@ namespace LinearAlgebra
   ////////////////////////////////////////////////////////////////
 
   std::string
-  variable_name(const Scalar_CRef<int>& scalar)
+  variable_name(const Scalar<int>& scalar)
   {
     assert(scalar.value() > 0 and scalar.value() <= 3);
 
@@ -608,23 +608,23 @@ namespace LinearAlgebra
     }
   }
   std::string
-  template_parameter(const Scalar_CRef<int>& scalar)
+  template_parameter(const Scalar<int>& scalar)
   {
     return str_toupper(variable_name(scalar)) + "_IMPL";
   }
   std::string
-  template_declaration(const Scalar_CRef<int>& scalar)
+  template_declaration(const Scalar<int>& scalar)
   {
     return "typename " + template_parameter(scalar);
   }
   std::string
-  type_name(const Scalar_CRef<int>& scalar)
+  type_name(const Scalar<int>& scalar)
   {
     return "Scalar_Crtp<" + template_parameter(scalar) + ">&";
   }
 
   std::string
-  to_string(const Scalar_CRef<int>& scalar)
+  to_string(const Scalar<int>& scalar)
   {
     return variable_name(scalar);
   }
@@ -733,7 +733,7 @@ using namespace LinearAlgebra;
 // int
 // main()
 // {
-//   Scalar_CRef<int> alpha(1), beta(2), gamma(3);
+//   Scalar<int> alpha(1), beta(2), gamma(3);
 //
 //   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
 //   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
@@ -776,7 +776,7 @@ assign(Matrix_Crtp<M0_IMPL>& M0,
 void
 big_list()
 {
-  Scalar_CRef<int> alpha(1), beta(2), gamma(3);
+  Scalar<int> alpha(1), beta(2), gamma(3);
 
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
@@ -900,7 +900,7 @@ main()
 
   // ////////////////////////////////////////////////////////////////
   
-  Scalar_CRef<int> alpha(1), beta(2), gamma(3);
+  Scalar<int> alpha(1), beta(2), gamma(3);
 
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);

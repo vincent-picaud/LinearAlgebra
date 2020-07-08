@@ -25,20 +25,20 @@ main()
 
   x[0] = 1;
   x[1] = 2;
-  //  assign(y,  1, _identity_, M, x, _plus_, Scalar_CRef<T>(2), _lhs_);
+  //  assign(y,  1, _identity_, M, x, _plus_, Scalar<T>(2), _lhs_);
 
 #if (HAS_BLAS)
-  //assign(y,  0, _lhs_, _plus_, Scalar_CRef<T>(2), _identity_, M, x);
+  //assign(y,  0, _lhs_, _plus_, Scalar<T>(2), _identity_, M, x);
   assign(y,
          _plus_,
          _product_,
          _product_,
-         Scalar_CRef<T>(2),
+         Scalar<T>(2),
          _identity_,
          M,
          x,
          _product_,
-         Scalar_CRef<T>(0),
+         Scalar<T>(0),
          _lhs_);
 #else
   assert(0 && "Not implemented yet");

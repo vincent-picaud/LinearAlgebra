@@ -46,7 +46,7 @@ TEST(Call_Assign_From_Metaexpr, V0_assign_alpha_V0)
   EXPECT_EQ(vector[0], 40);
   //  Detail::call_assign_from_MetaExpr(vector, 2 * vector);
 
-  //  vector = Scalar_CRef(2) * vector;
+  //  vector = Scalar(2) * vector;
   vector = 2 * vector;
 
   EXPECT_EQ(vector[0], 80);

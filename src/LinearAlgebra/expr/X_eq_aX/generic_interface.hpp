@@ -124,7 +124,7 @@ namespace LinearAlgebra
   void
   assign(VMT_Crtp<X0_IMPL>& X0, const _unary_minus_t_, const VMT_Crtp<X1_IMPL>& X1)
   {
-    assign(X0.impl(), _product_, Scalar_CRef<int>(-1), X1);
+    assign(X0.impl(), _product_, Scalar<int>(-1), X1);
   }
 
   //================================================================

@@ -138,12 +138,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -170,7 +170,7 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
@@ -199,12 +199,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -228,12 +228,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -259,12 +259,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            op1,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -296,7 +296,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -330,7 +330,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -354,12 +354,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -385,12 +385,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            op1,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -422,7 +422,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -448,12 +448,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            op1,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -482,7 +482,7 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            op1,
            matrix1.impl(),
            vector1.impl(),
@@ -513,12 +513,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            op1,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -620,7 +620,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -652,7 +652,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -686,7 +686,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -720,7 +720,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -817,7 +817,7 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
@@ -851,7 +851,7 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            op1,
            matrix1.impl(),
            vector1.impl(),
@@ -920,7 +920,7 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
@@ -954,7 +954,7 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            op1,
            matrix1.impl(),
            vector1.impl(),
@@ -1021,12 +1021,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -1054,7 +1054,7 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
@@ -1084,12 +1084,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -1114,12 +1114,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -1146,12 +1146,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            op1,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -1184,7 +1184,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -1219,7 +1219,7 @@ namespace LinearAlgebra
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -1244,12 +1244,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            _identity_,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -1276,12 +1276,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            op1,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 
@@ -1308,12 +1308,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            op1,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(1),
+           Scalar<int>(1),
            vector2.impl());
   }
 
@@ -1343,7 +1343,7 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            op1,
            matrix1.impl(),
            vector1.impl(),
@@ -1375,12 +1375,12 @@ namespace LinearAlgebra
            _plus_,
            _product_,
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            op1,
            matrix1.impl(),
            vector1.impl(),
            _product_,
-           Scalar_CRef<int>(-1),
+           Scalar<int>(-1),
            vector2.impl());
   }
 

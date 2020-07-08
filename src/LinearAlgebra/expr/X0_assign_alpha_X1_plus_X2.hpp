@@ -71,9 +71,9 @@ namespace LinearAlgebra
          const VMT_Crtp<X1_IMPL>& X1,
          const VMT_Crtp<X2_IMPL>& X2)
   {
-    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
+    using Scalar_Type = Scalar<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
 
-    assign(X0.impl(), _plus_, _product_, Scalar_CRef_Type(1), X1.impl(), X2.impl());
+    assign(X0.impl(), _plus_, _product_, Scalar_Type(1), X1.impl(), X2.impl());
   }
 
   //
@@ -88,9 +88,9 @@ namespace LinearAlgebra
          const VMT_Crtp<X1_IMPL>& X1,
          const VMT_Crtp<X2_IMPL>& X2)
   {
-    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
+    using Scalar_Type = Scalar<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
 
-    assign(X0.impl(), _plus_, _product_, Scalar_CRef_Type(-1), X1.impl(), X2.impl());
+    assign(X0.impl(), _plus_, _product_, Scalar_Type(-1), X1.impl(), X2.impl());
   }
 
   //
@@ -122,9 +122,9 @@ namespace LinearAlgebra
          const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1)
   {
-    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
+    using Scalar_Type = Scalar<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
 
-    assign(X0.impl(), _plus_, _product_, Scalar_CRef_Type(-alpha.value()), X1.impl(), X2.impl());
+    assign(X0.impl(), _plus_, _product_, Scalar_Type(-alpha.value()), X1.impl(), X2.impl());
   }
 
   //
@@ -138,9 +138,9 @@ namespace LinearAlgebra
          const VMT_Crtp<X2_IMPL>& X2,
          const VMT_Crtp<X1_IMPL>& X1)
   {
-    using Scalar_CRef_Type = Scalar_CRef<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
+    using Scalar_Type = Scalar<Common_Element_Type_t<X0_IMPL, X1_IMPL, X2_IMPL>>;
 
-    assign(X0.impl(), _plus_, _product_, Scalar_CRef_Type(-1), X1.impl(), X2.impl());
+    assign(X0.impl(), _plus_, _product_, Scalar_Type(-1), X1.impl(), X2.impl());
   }
 
   //////////////////////////////////////////////////////////////////

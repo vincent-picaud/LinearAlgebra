@@ -285,7 +285,7 @@ namespace LinearAlgebra
     IMPL&
     impl_assign(const element_type& scalar)
     {
-      assign(*this, Scalar_CRef<element_type>(scalar));
+      assign(*this, Scalar<element_type>(scalar));
       return base_type::impl();
     }
 

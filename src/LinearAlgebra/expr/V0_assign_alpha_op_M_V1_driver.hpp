@@ -124,13 +124,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(1),
+           Scalar_Type(1),
            _identity_,
            matrix1.impl(),
            vector1.impl());
@@ -148,13 +148,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(1),
+           Scalar_Type(1),
            _identity_,
            _inverse_,
            matrix1.impl(),
@@ -228,13 +228,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(1),
+           Scalar_Type(1),
            op1,
            matrix1.impl(),
            vector1.impl());
@@ -256,13 +256,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(1),
+           Scalar_Type(1),
            op1,
            _inverse_,
            matrix1.impl(),
@@ -285,13 +285,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(1),
+           Scalar_Type(1),
            op1,
            _inverse_,
            matrix1.impl(),
@@ -340,13 +340,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(-1),
+           Scalar_Type(-1),
            _identity_,
            matrix1.impl(),
            vector1.impl());
@@ -365,13 +365,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(-1),
+           Scalar_Type(-1),
            _identity_,
            _inverse_,
            matrix1.impl(),
@@ -395,13 +395,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(-1),
+           Scalar_Type(-1),
            op1,
            _inverse_,
            matrix1.impl(),
@@ -425,13 +425,13 @@ namespace LinearAlgebra
          const Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Vector_Crtp<VECTOR1_IMPL>& vector1)
   {
-    using Scalar_CRef_Type =
-        Scalar_CRef<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
+    using Scalar_Type =
+        Scalar<Common_Element_Type_t<VECTOR0_IMPL, VECTOR1_IMPL, MATRIX1_IMPL>>;
 
     assign(vector0.impl(),
            _product_,
            _product_,
-           Scalar_CRef_Type(-1),
+           Scalar_Type(-1),
            op1,
            _inverse_,
            matrix1.impl(),

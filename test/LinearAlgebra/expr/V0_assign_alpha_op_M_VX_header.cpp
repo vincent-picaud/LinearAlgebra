@@ -19,7 +19,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   U = 1;
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar_CRef<double>(2), _identity_, U, _lhs_);
+  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 8);
@@ -34,7 +34,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   L = 1;
 
   DEBUG_RESET_SELECTED();
-  assign(W, _product_, _product_, Scalar_CRef<double>(2), _identity_, L, _lhs_);
+  assign(W, _product_, _product_, Scalar<double>(2), _identity_, L, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V, W);
@@ -49,7 +49,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trsv)
   U = 1;
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar_CRef<double>(2), _identity_, U, _lhs_);
+  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 8);
@@ -58,7 +58,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trsv)
   EXPECT_EQ(V[3], 2);
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar_CRef<double>(0.5), _identity_, _inverse_, U, _lhs_);
+  assign(V, _product_, _product_, Scalar<double>(0.5), _identity_, _inverse_, U, _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 1);
@@ -70,11 +70,11 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trsv)
 //
 // For these functions, gemv, symv, etc... for the moment only
 //
-// assign(V, _product_, _product_, Scalar_CRef<double>(2), _identity_, U, W);
+// assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, W);
 //
 // is implemented... the version with _lhs_ is not yet implemented
 //
-// assign(V, _product_, _product_, Scalar_CRef<double>(2), _identity_, U, _lhs_);
+// assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, _lhs_);
 //
 // HOWEVER: I do not think one must implement it (as it does not
 //          happens in expression template)
@@ -90,7 +90,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_gemv)
   U(3, 0) = 2;
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar_CRef<double>(2), _identity_, U, W);
+  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, W);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 8);
@@ -110,7 +110,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_symv)
   U(3, 0) = 2;
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar_CRef<double>(2), _identity_, U, W);
+  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, W);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 10);

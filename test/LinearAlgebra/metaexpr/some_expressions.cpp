@@ -58,11 +58,11 @@ TEST(MetaExpr_Crtp, gemv)
          _plus_,
          _product_,
          _product_,
-         Scalar_CRef<double>(4),
+         Scalar<double>(4),
          M,
          x,
          _product_,
-         Scalar_CRef<double>(2),
+         Scalar<double>(2),
          y);
 
   y = 4 * M * x + 2 * y;

@@ -28,12 +28,12 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_gemv)
          _plus_,
          _product_,
          _product_,
-         Scalar_CRef<T>(2),
+         Scalar<T>(2),
          _identity_,
          M,
          x,
          _product_,
-         Scalar_CRef<T>(0),
+         Scalar<T>(0),
          _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
@@ -69,12 +69,12 @@ TEST(V0_assign_alpha_op_M_V1_plus_beta_V0, blas_symv)
          _plus_,
          _product_,
          _product_,
-         Scalar_CRef<T>(2),
+         Scalar<T>(2),
          _identity_,
          M,
          x,
          _product_,
-         Scalar_CRef<T>(0),
+         Scalar<T>(0),
          _lhs_);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 

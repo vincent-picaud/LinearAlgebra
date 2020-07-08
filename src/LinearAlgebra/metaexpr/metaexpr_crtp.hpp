@@ -180,11 +180,14 @@ namespace LinearAlgebra
       /////////////
       //
      protected:
-      std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_0>, const ARG_0, const ARG_0&>
-          _arg_0;
-      std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_1>, const ARG_1, const ARG_1&>
-          _arg_1;
+      // std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_0>, const ARG_0, const ARG_0&>
+      //     _arg_0;
+      // std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_1>, const ARG_1, const ARG_1&>
+      //     _arg_1;
 
+      const ARG_0& _arg_0;
+      const ARG_1& _arg_1;
+      
       //////////////////
       // Constructors //
       //////////////////
@@ -259,10 +262,11 @@ namespace LinearAlgebra
       /////////////
       //
      protected:
-      std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_TYPE>,
-                         const ARG_TYPE,
-                         const ARG_TYPE&>
-          _arg;
+      // std::conditional_t<Is_Crtp_Interface_Of_v<Scalar_Crtp, ARG_TYPE>,
+      //                    const ARG_TYPE,
+      //                    const ARG_TYPE&>
+      //     _arg;
+      const ARG_TYPE& _arg;
 
       //////////////////
       // Constructors //

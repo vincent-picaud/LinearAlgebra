@@ -57,14 +57,14 @@ namespace LinearAlgebra
     as_const() const
     // [END_Vector_Crtp]
     {
-      return base_type::impl();
+      return impl();
     }
 
     // [BEGIN_Vector_Crtp]
 
     // operator=
     //
-    // *Note:* cannot lead to object slicing as we call impl_assign that 
+    // *Note:* cannot lead to object slicing as we call impl_assign that
     //         is defined *at* the final class level.
     //
     //         Also note that for user convenience (writing V1=V2,

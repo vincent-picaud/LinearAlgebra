@@ -1,7 +1,6 @@
 #pragma once
 
-#include "LinearAlgebra/dense/vmt_crtp.hpp"
-#include "LinearAlgebra/utils/element_type.hpp"
+#include "LinearAlgebra/dense/vector_crtp.hpp"
 
 // namespace LinearAlgebra
 // {
@@ -34,27 +33,70 @@
 
 namespace LinearAlgebra
 {
-  template <typename ELEMENT_TYPE>
-  class LHS;
+  template <typename VECTOR_TYPE>
+  class Vector_LHS;
 
-  template <typename ELEMENT_TYPE>
-  struct Crtp_Type_Traits<LHS<ELEMENT_TYPE>>
+  template <typename VECTOR_TYPE>
+  struct Crtp_Type_Traits<Vector_LHS<VECTOR_TYPE>>
   {
-    using element_type = ELEMENT_TYPE;
+    using element_type = typename VECTOR_TYPE::element_type;
+    using size_type    = typename VECTOR_TYPE::size_type;
   };
 
-  template <typename ELEMENT_TYPE>
-  class LHS : public VMT_Crtp<LHS<ELEMENT_TYPE>>
+  // TODO: matrix_lhs
+  //
+  template <typename VECTOR_TYPE>
+  class Vector_LHS : public Vector_Crtp<Vector_LHS<VECTOR_TYPE>>
   {
+    static_assert(Is_Crtp_Interface_Of_v<Vector_Crtp, VECTOR_TYPE>);
+
+    // ////////////////
+    // Types
+    // ////////////////
+    //
    public:
-    using base_type    = VMT_Crtp<LHS<ELEMENT_TYPE>>;
-    using element_type = typename base_type::element_type;
+    using base_type   = Vector_Crtp<Vector_LHS<VECTOR_TYPE>>;
+    using exact_type  = typename base_type::exact_type;
+    using traits_type = typename base_type::traits_type;
+
+    using element_type = typename traits_type::element_type;
+    using size_type    = typename traits_type::size_type;
+
+    // ////////////////
+    // Members
+    // ////////////////
+    //
+    const VECTOR_TYPE& _vector;
+
+    // ////////////////
+    // Constructors
+    // ////////////////
+    //
+   public:
+    Vector_LHS(const VECTOR_TYPE& vector) : _vector(vector) {}
+
+    // ////////////////
+    // Crtp Interface
+    // ////////////////
+    //
+   public:
+    size_type
+    size() const
+    {
+      return _vector.size();
+    }
+
+    const Vector_LHS&
+    as_const() const
+    {
+      return *this;
+    }
   };
 
   template <typename IMPL>
-  LHS<Element_Type_t<IMPL>>
-  f_LHS(const VMT_Crtp<IMPL>&)
+  Vector_LHS<Vector_Crtp<IMPL>>
+  lhs(const Vector_Crtp<IMPL>& vector)
   {
-    return {};
+    return {vector};
   }
 }  // namespace LinearAlgebra

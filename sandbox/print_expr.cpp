@@ -27,18 +27,18 @@ namespace LinearAlgebra
 
   // ////////////////////////////////////////////////////////////////
 
-  class LHS;
+  class _LHS_;
 
   template <>
-  struct Crtp_Type_Traits<LHS>
+  struct Crtp_Type_Traits<_LHS_>
   {
     using element_type = int;
   };
 
-  class LHS : public VMT_Crtp<LHS>
+  class _LHS_ : public VMT_Crtp<_LHS_>
   {
    public:
-    using base_type    = VMT_Crtp<LHS>;
+    using base_type    = VMT_Crtp<_LHS_>;
     using element_type = typename base_type::element_type;
   };
 
@@ -474,29 +474,29 @@ namespace LinearAlgebra
   // ================================================================
 
   std::string
-  variable_name(const LHS&)
+  variable_name(const _LHS_&)
   {
     return "";
   }
   std::string
-  template_parameter(const LHS&)
+  template_parameter(const _LHS_&)
   {
     return "";
   }
   std::string
-  template_declaration(const LHS&)
+  template_declaration(const _LHS_&)
   {
     return "";
   }
 
   std::string
-  type_name(const LHS&)
+  type_name(const _LHS_&)
   {
     return "_lhs_t_";
   }
 
   std::string
-  to_string(const LHS&)
+  to_string(const _LHS_&)
   {
     return "lhs ";
   }
@@ -905,7 +905,7 @@ main()
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
 
-  LHS lhs;
+  _LHS_ lhs;
 
   PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * lhs);
 

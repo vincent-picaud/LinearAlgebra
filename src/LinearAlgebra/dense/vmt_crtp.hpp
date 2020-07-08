@@ -32,4 +32,5 @@ namespace LinearAlgebra
     VMT_Crtp& operator=(const VMT_Crtp&) = default;
   };
   // [END_VMT]
+
 }  // namespace LinearAlgebra

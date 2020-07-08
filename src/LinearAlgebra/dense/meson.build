@@ -1,4 +1,5 @@
 LinearAlgebra_headers += [
+  'dense/lhs.hpp',
   'dense/vmt_crtp.hpp',
   'dense/vmt_crtp_fwd.hpp',
   

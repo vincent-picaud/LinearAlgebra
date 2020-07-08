@@ -1,4 +1,6 @@
 test_array = [
+  ['vmt_crtp_test','vmt_crtp_exe','vmt_crtp.cpp'],
+  
   ['vector_test','vector_exe','vector.cpp'],
   ['matrix_storage_scheme_test','matrix_storage_scheme_exe','matrix_storage_scheme.cpp'],
   ['matrix_test','matrix_exe','matrix.cpp'],

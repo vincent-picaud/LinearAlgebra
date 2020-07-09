@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-07-09 Thu 20:02 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>print_expr.cpp</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="picaud" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
+<style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">print_expr.cpp</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0ffdede">1. Important</a></li>
+</ul>
+</div>
+</div>
+
+<p>
+<a href="../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+</p>
+
+<div id="outline-container-org0ffdede" class="outline-2">
+<h2 id="org0ffdede"><span class="section-number-2">1</span> Important</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Not a very clean code, but really useful to <b>automatically</b> generate <a href="../src/LinearAlgebra/expr/assign_fallback.html#ID-284f04be-bb9d-4fb9-a02f-955a4b8a66ec"><code>assign</code> function</a> prototypes
+</p>
+
+<blockquote>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/dense/matrix_storage_mask_enum.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/dense/vector_crtp.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/dense/vmt_assignment_operator_define.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/expr/expr_tags.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/expr/scalar_crtp.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/metaexpr/call_assign_from_metaexpr.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/metaexpr/metaexpr_crtp.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/vector.hpp"</span>
+
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">&lt;iostream&gt;</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">&lt;sstream&gt;</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">&lt;string&gt;</span>
+
+<span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>
+{
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">from: https://en.cppreference.com/w/cpp/string/byte/toupper</span>
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">str_toupper</span>(<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span> <span style="color: #2e8b57;">s</span>)
+  {
+    <span style="color: #6e8b3d;">std</span>::transform(
+        s.begin(), s.end(), s.begin(), [](<span style="color: #00688b;">unsigned</span> <span style="color: #00688b;">char</span> <span style="color: #2e8b57;">c</span>) { <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">std</span>::toupper(c); }  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">correct</span>
+    );
+    <span style="color: #1c86ee;">return</span> s;
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">_LHS_</span>;
+
+  <span style="color: #1c86ee;">template</span> &lt;&gt;
+  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Crtp_Type_Traits</span>&lt;<span style="color: #00688b;">_LHS_</span>&gt;
+  {
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #00688b;">int</span>;
+  };
+
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">_LHS_</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">VMT_Crtp</span>&lt;<span style="color: #00688b;">_LHS_</span>&gt;
+  {
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>    = <span style="color: #00688b;">VMT_Crtp</span>&lt;<span style="color: #00688b;">_LHS_</span>&gt;;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::element_type;
+  };
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Minimal_Vector</span>;
+
+  <span style="color: #1c86ee;">template</span> &lt;&gt;
+  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Crtp_Type_Traits</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&gt;
+  {
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #00688b;">int</span>;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">size_type</span>    = <span style="color: #6e8b3d;">std</span>::size_t;
+  };
+
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Minimal_Vector</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&gt;
+  {
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>    = <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&gt;;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::element_type;
+
+   <span style="color: #1c86ee;">protected</span>:
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">My data</span>
+    <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">_number</span>;
+
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">explicit</span> <span style="color: #cd9b1d;">Minimal_Vector</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">number</span>) : _number(number) {}
+
+    <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span>
+    <span style="color: #cd9b1d;">number</span>() <span style="color: #1c86ee;">const</span>
+    {
+      <span style="color: #1c86ee;">return</span> _number;
+    }
+  };
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Minimal_Matrix</span>;
+
+  <span style="color: #1c86ee;">template</span> &lt;&gt;
+  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Crtp_Type_Traits</span>&lt;<span style="color: #00688b;">Minimal_Matrix</span>&gt;
+  {
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #00688b;">int</span>;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">I_size_type</span>  = <span style="color: #6e8b3d;">std</span>::size_t;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">J_size_type</span>  = <span style="color: #6e8b3d;">std</span>::size_t;
+  };
+
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Minimal_Matrix</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">Minimal_Matrix</span>&gt;
+  {
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>    = <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">Minimal_Matrix</span>&gt;;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::element_type;
+
+   <span style="color: #1c86ee;">protected</span>:
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">My data</span>
+    <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">_number</span>;
+
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">explicit</span> <span style="color: #cd9b1d;">Minimal_Matrix</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">number</span>) : _number(number) {}
+
+    <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span>
+    <span style="color: #cd9b1d;">number</span>() <span style="color: #1c86ee;">const</span>
+    {
+      <span style="color: #1c86ee;">return</span> _number;
+    }
+  };
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">We cannot use native transpose, identity etc... has we cannot</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">affect them a number...</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">That's the reason why we create ad hoc functions</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Mimic transpose, etc... + let add a number</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP</span>, <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Transpose_Like</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">Transpose_Like</span>&lt;OP, N&gt;&gt;
+  {
+  };
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                                            <span style="color: #00688b;">Transpose_Like</span>&lt;<span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Transpose, 1&gt;,
+                                            <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">transpose1</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                                            <span style="color: #00688b;">Transpose_Like</span>&lt;<span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Transpose, 2&gt;,
+                                            <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">transpose2</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">----</span>
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                                            <span style="color: #00688b;">Transpose_Like</span>&lt;<span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Identity, 1&gt;,
+                                            <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">identity1</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                                            <span style="color: #00688b;">Transpose_Like</span>&lt;<span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Identity, 2&gt;,
+                                            <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">identity2</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">----</span>
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                                            <span style="color: #00688b;">Transpose_Like</span>&lt;<span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Conjugate, 1&gt;,
+                                            <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">conjugate1</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                                            <span style="color: #00688b;">Transpose_Like</span>&lt;<span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Conjugate, 2&gt;,
+                                            <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">conjugate2</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">----</span>
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                                            <span style="color: #00688b;">Transpose_Like</span>&lt;<span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::TransConj, 1&gt;,
+                                            <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">transConj1</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                                            <span style="color: #00688b;">Transpose_Like</span>&lt;<span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::TransConj, 2&gt;,
+                                            <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">transConj2</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">We cannot use native transpose, identity etc... has we cannot</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">affect them a number...</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">That's the reason why we create ad hoc functions</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Mimic transpose, etc... + let add a number</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">OP_Like</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">OP_Like</span>&lt;N&gt;&gt;
+  {
+  };
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;, <span style="color: #00688b;">OP_Like</span>&lt;1&gt;, <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">op1</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Is_Supported_MetaExpr_Argument_v</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;,
+                   <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_UnaryOp</span>&lt;<span style="color: #00688b;">Element_Type_t</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;, <span style="color: #00688b;">OP_Like</span>&lt;2&gt;, <span style="color: #00688b;">IMPL</span>&gt;&gt;
+  <span style="color: #cd9b1d;">op2</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">arg</span>)
+  {
+    <span style="color: #1c86ee;">return</span> {arg.impl()};
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_declaration</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">For Expr_Tags types, define:</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- type_name</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- variable_name</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- to_string</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP</span>, <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Transpose_Like</span>&lt;OP, N&gt;&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"op"</span> + <span style="color: #6e8b3d;">std</span>::to_string(N);
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP</span>, <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_parameter</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Transpose_Like</span>&lt;OP, N&gt;&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP</span>, <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_declaration</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Transpose_Like</span>&lt;OP, N&gt;&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP</span>, <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Transpose_Like</span>&lt;OP, N&gt;&amp;)
+  {
+    <span style="color: #1c86ee;">switch</span> (OP)
+    {
+      <span style="color: #1c86ee;">case</span> <span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Transpose:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_transpose_t_"</span>;
+      <span style="color: #1c86ee;">case</span> <span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Identity:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_identity_t_"</span>;
+      <span style="color: #1c86ee;">case</span> <span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::TransConj:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_transConj_t_"</span>;
+      <span style="color: #1c86ee;">case</span> <span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Conjugate:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_conjugate_t_"</span>;
+
+      <span style="color: #1c86ee;">default</span>:
+        assert(0);
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"Internal error"</span>;
+    }
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP</span>, <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Transpose_Like</span>&lt;OP, N&gt;&amp;)
+  {
+    <span style="color: #1c86ee;">switch</span> (OP)
+    {
+      <span style="color: #1c86ee;">case</span> <span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Transpose:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"transpose"</span>;
+      <span style="color: #1c86ee;">case</span> <span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Identity:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"identity"</span>;
+      <span style="color: #1c86ee;">case</span> <span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::TransConj:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"transConj"</span>;
+      <span style="color: #1c86ee;">case</span> <span style="color: #6e8b3d;">Matrix_Unary_Op_Enum</span>::Conjugate:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"conjugate"</span>;
+
+      <span style="color: #1c86ee;">default</span>:
+        assert(0);
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"Internal error"</span>;
+    }
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">OP_Like</span>&lt;N&gt;&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"op"</span> + <span style="color: #6e8b3d;">std</span>::to_string(N);
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_parameter</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">OP_Like</span>&lt;N&gt;&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"OP"</span> + <span style="color: #6e8b3d;">std</span>::to_string(N);
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_declaration</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">OP_Like</span>&lt;N&gt;&amp; <span style="color: #2e8b57;">op</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">" Matrix_Unary_Op_Enum "</span> + template_parameter(op);
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">OP_Like</span>&lt;N&gt;&amp; <span style="color: #2e8b57;">op</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_matrix_unary_op_t_&lt;"</span> + template_parameter(op) + <span style="color: #8b7355;">"&gt;"</span>;
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">N</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">OP_Like</span>&lt;N&gt;&amp; <span style="color: #2e8b57;">op</span>)
+  {
+    <span style="color: #1c86ee;">return</span> variable_name(op);
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_inverse_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_inverse_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_inverse_t_"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_inverse_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"inverse"</span>;
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_unary_minus_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_unary_minus_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_unary_minus_t_"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_unary_minus_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"- "</span>;
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">std::string</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">variable_name(const _unary_plus_t_&amp;)</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">{</span>
+  <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">return "";</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">}</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">std::string</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">type_name(const _unary_plus_t_&amp;)</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">{</span>
+  <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">return "_unary_plus_t_";</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">}</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">std::string</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">to_string(const _unary_plus_t_&amp;)</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">{</span>
+  <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">return "+ ";</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">}</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_plus_t_"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #00688b;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"+"</span>;
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_minus_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_minus_t_"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_minus_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #00688b;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_minus_t_</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"-"</span>;
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_product_t_"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #00688b;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"*"</span>;
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_LHS_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_parameter</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_LHS_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_declaration</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_LHS_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">""</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_LHS_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"_lhs_t_"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_LHS_</span>&amp;)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"lhs "</span>;
+  }
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">For Minimal Vector, define:</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- type_name</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- variable_name</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- etc...</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- to_string</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"v"</span> + <span style="color: #6e8b3d;">std</span>::to_string(v.number());
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_parameter</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"V"</span> + <span style="color: #6e8b3d;">std</span>::to_string(v.number()) + <span style="color: #8b7355;">"_IMPL"</span>;
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_declaration</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"typename "</span> + template_parameter(v);
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"Vector_Crtp&lt;"</span> + template_parameter(v) + <span style="color: #8b7355;">"&gt;&amp;"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> variable_name(v);
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">For Minimal Matrix, define:</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- type_name</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- variable_name</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- etc...</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- to_string</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Matrix</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"M"</span> + <span style="color: #6e8b3d;">std</span>::to_string(v.number());
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_parameter</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Matrix</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"M"</span> + <span style="color: #6e8b3d;">std</span>::to_string(v.number()) + <span style="color: #8b7355;">"_IMPL"</span>;
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_declaration</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Matrix</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"typename "</span> + template_parameter(v);
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Matrix</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"Matrix_Crtp&lt;"</span> + template_parameter(v) + <span style="color: #8b7355;">"&gt;&amp;"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Matrix</span>&amp; <span style="color: #2e8b57;">v</span>)
+  {
+    <span style="color: #1c86ee;">return</span> variable_name(v);
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">================================================================</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">For Scalar, define:</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- type_name</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- variable_name</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- etc...</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- to_string</span>
+  <span style="color: #7f7f7f;">//</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">As overloaded operators use Scalar we cannot redefine our</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">own scalar type. By consequence we use this</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">trick:</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- use int scalar</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- 1 =&gt; alpha, 2 =&gt; beta...</span>
+  <span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">variable_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">int</span>&gt;&amp; <span style="color: #2e8b57;">scalar</span>)
+  {
+    assert(scalar.value() &gt; 0 <span style="color: #1c86ee;">and</span> scalar.value() &lt;= 3);
+
+    <span style="color: #1c86ee;">switch</span> (scalar.value())
+    {
+      <span style="color: #1c86ee;">case</span> 1:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"alpha"</span>;
+      <span style="color: #1c86ee;">case</span> 2:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"beta"</span>;
+      <span style="color: #1c86ee;">case</span> 3:
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"gamma"</span>;
+
+      <span style="color: #1c86ee;">default</span>:
+        assert(0);
+        <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"Internal error"</span>;
+    }
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_parameter</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">int</span>&gt;&amp; <span style="color: #2e8b57;">scalar</span>)
+  {
+    <span style="color: #1c86ee;">return</span> str_toupper(variable_name(scalar)) + <span style="color: #8b7355;">"_IMPL"</span>;
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">template_declaration</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">int</span>&gt;&amp; <span style="color: #2e8b57;">scalar</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"typename "</span> + template_parameter(scalar);
+  }
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">type_name</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">int</span>&gt;&amp; <span style="color: #2e8b57;">scalar</span>)
+  {
+    <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"Scalar_Crtp&lt;"</span> + template_parameter(scalar) + <span style="color: #8b7355;">"&gt;&amp;"</span>;
+  }
+
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">int</span>&gt;&amp; <span style="color: #2e8b57;">scalar</span>)
+  {
+    <span style="color: #1c86ee;">return</span> variable_name(scalar);
+  }
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">remove last n char</span>
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">remove_last_n</span>(<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span> <span style="color: #2e8b57;">s</span>, <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">n</span>)
+  {
+    <span style="color: #1c86ee;">if</span> (s.size() &gt; n)
+    {
+      <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">std</span>::string(s.begin(), s.end() - n);
+    }
+    <span style="color: #1c86ee;">return</span> {};
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">DEST_IMPL</span>, <span style="color: #1c86ee;">typename</span>... <span style="color: #00688b;">ARGS</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VMT_Crtp</span>&lt;<span style="color: #00688b;">DEST_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">dest</span>, <span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">tuple</span>&lt;<span style="color: #00688b;">ARGS</span>...&gt;&amp; <span style="color: #2e8b57;">tuple</span>)
+  {
+    <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">stringstream</span> <span style="color: #2e8b57;">buffer</span>;
+
+    <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">add_space</span> = [](<span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">auto</span>&amp; <span style="color: #2e8b57;">arg</span>) {
+      <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">to_string</span>;
+      <span style="color: #1c86ee;">return</span> to_string(arg) + <span style="color: #8b7355;">" "</span>;
+    };
+
+    <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">reverse_Polish_string</span> =
+        <span style="color: #6e8b3d;">std</span>::apply([&amp;](<span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">auto</span>&amp;... <span style="color: #2e8b57;">args</span>) { <span style="color: #1c86ee;">return</span> (add_space(args.impl()) + ...); }, tuple);
+
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">----------------</span>
+
+    <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">add_comma</span> = [](<span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">auto</span>&amp; <span style="color: #2e8b57;">arg</span>) {
+      <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span> <span style="color: #2e8b57;">r</span> = template_declaration(arg);
+      <span style="color: #1c86ee;">if</span> (<span style="color: #1c86ee;">not</span> r.empty())
+      {
+        <span style="color: #1c86ee;">return</span> r + <span style="color: #8b7355;">", "</span>;
+      }
+      <span style="color: #1c86ee;">return</span> r;
+    };
+
+    <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">template_declaration_string</span> =
+        <span style="color: #6e8b3d;">std</span>::apply([&amp;](<span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">auto</span>&amp;... <span style="color: #2e8b57;">args</span>) { <span style="color: #1c86ee;">return</span> (add_comma(args.impl()) + ...); }, tuple);
+
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">remove last ", "</span>
+    template_declaration_string = remove_last_n(template_declaration_string, 2);
+
+    <span style="color: #1c86ee;">if</span> (<span style="color: #1c86ee;">not</span> template_declaration_string.empty())
+    {
+      template_declaration_string =
+          template_declaration(dest.impl()) + <span style="color: #8b7355;">", "</span> + template_declaration_string;
+    }
+    <span style="color: #1c86ee;">else</span>
+    {
+      template_declaration_string = template_declaration(dest.impl());
+    }
+    template_declaration_string = <span style="color: #8b7355;">"template&lt;"</span> + template_declaration_string + <span style="color: #8b7355;">"&gt;"</span>;
+
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">----------------</span>
+
+    <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">argument_comma</span> = [](<span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">auto</span>&amp; <span style="color: #2e8b57;">arg</span>) {
+      <span style="color: #1c86ee;">return</span> <span style="color: #8b7355;">"const "</span> + type_name(arg) + <span style="color: #8b7355;">" "</span> + variable_name(arg) + <span style="color: #8b7355;">", "</span>;
+    };
+    <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">argument_declaration_string</span> =
+        <span style="color: #6e8b3d;">std</span>::apply([&amp;](<span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">auto</span>&amp;... <span style="color: #2e8b57;">args</span>) { <span style="color: #1c86ee;">return</span> (argument_comma(args.impl()) + ...); }, tuple);
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">remove last ", "</span>
+    argument_declaration_string = remove_last_n(argument_declaration_string, 2);
+
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">----------------</span>
+
+    buffer &lt;&lt; <span style="color: #8b7355;">"// "</span> &lt;&lt; variable_name(dest.impl()) &lt;&lt; <span style="color: #8b7355;">" = "</span> &lt;&lt; reverse_Polish_string &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl
+           &lt;&lt; <span style="color: #8b7355;">"// "</span> &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+
+    buffer &lt;&lt; template_declaration_string &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+
+    buffer &lt;&lt; <span style="color: #8b7355;">"void assign("</span> &lt;&lt; type_name(dest.impl()) + <span style="color: #8b7355;">" "</span> + variable_name(dest.impl()) &lt;&lt; <span style="color: #8b7355;">", "</span>
+           &lt;&lt; argument_declaration_string &lt;&lt; <span style="color: #8b7355;">")"</span> &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+
+    buffer &lt;&lt; <span style="color: #8b7355;">"{"</span> &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+    buffer &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+    buffer &lt;&lt; <span style="color: #8b7355;">"}"</span> &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+
+    <span style="color: #1c86ee;">return</span> buffer.str();
+  }
+
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">DEST_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">SRC_IMPL</span>&gt;
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+  <span style="color: #cd9b1d;">to_string</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VMT_Crtp</span>&lt;<span style="color: #00688b;">DEST_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">dest</span>,
+            <span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">LinearAlgebra</span>::<span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_Crtp</span>&lt;<span style="color: #00688b;">SRC_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">metaExpr</span>)
+  {
+    <span style="color: #1c86ee;">return</span> to_string(dest, from_metaexpr_to_reverse_Polish_tuple(metaExpr.impl()));
+  }
+}  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">namespace LinearAlgebra</span>
+
+<span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
+
+<span style="color: #cdad00;">#define</span> <span style="color: #cd9b1d;">PRINT_EXPR</span>(<span style="color: #2e8b57;">DEST</span>, <span style="color: #2e8b57;">EXPR</span>) \
+  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; <span style="color: #8b7355;">"//\n// "</span> #DEST &lt;&lt; <span style="color: #8b7355;">" = "</span> &lt;&lt; #EXPR &lt;&lt; <span style="color: #8b7355;">"\n"</span> &lt;&lt; to_string(DEST, EXPR);
+
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Usage example:</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">#+begin_src cpp</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">int</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">main()</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">{</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Scalar&lt;int&gt; alpha(1), beta(2), gamma(3);</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Minimal_Vector v0(0), v1(1), v2(2), v3(3);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Minimal_Matrix M0(0), M1(1), M2(2), M3(3);</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">LHS lhs;</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * lhs);</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">}</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">#+end_src</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">generates:</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">M0 = alpha * op1(M1) * op2(M2) + beta * lhs</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">M0 = + * * alpha op1 M1 op2 M2 * beta lhs</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M0_IMPL</span>,
+          <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
+          <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1</span>,
+          <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
+          <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP2</span>,
+          <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M2_IMPL</span>,
+          <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>&gt;
+<span style="color: #00688b;">void</span>
+<span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M0</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1&gt; <span style="color: #2e8b57;">op1</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP2&gt; <span style="color: #2e8b57;">op2</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M2</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_lhs_t_</span>)
+{
+}
+
+
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
+<span style="color: #00688b;">int</span>
+<span style="color: #cd9b1d;">main</span>()
+{
+  <span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">int</span>&gt; <span style="color: #2e8b57;">alpha</span>(1), <span style="color: #2e8b57;">beta</span>(2), <span style="color: #2e8b57;">gamma</span>(3);
+
+  <span style="color: #00688b;">Minimal_Vector</span> <span style="color: #2e8b57;">v0</span>(0), <span style="color: #2e8b57;">v1</span>(1), <span style="color: #2e8b57;">v2</span>(2), <span style="color: #2e8b57;">v3</span>(3);
+  <span style="color: #00688b;">Minimal_Matrix</span> <span style="color: #2e8b57;">M0</span>(0), <span style="color: #2e8b57;">M1</span>(1), <span style="color: #2e8b57;">M2</span>(2), <span style="color: #2e8b57;">M3</span>(3);
+
+  PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M3);
+
+  PRINT_EXPR(M0, alpha * M1 * M2 + beta * M3);
+}
+
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">// ////////////////////////////////////////////////////////////////</span>
+
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">void</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">big_list()</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">{</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Scalar&lt;int&gt; alpha(1), beta(2), gamma(3);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Minimal_Vector v0(0), v1(1), v2(2), v3(3);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Minimal_Matrix M0(0), M1(1), M2(2), M3(3);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "*** X = &#945;X" &lt;&lt; std::endl;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * v0);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "*** X = &#945;X + X" &lt;&lt; std::endl;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * v1 + v0);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">// attention: v2 is always with coef = 1</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">//            v1 coef is alpha</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * v1 + v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v1 + v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -v1 + v2);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 + alpha * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 - alpha * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 - v1);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">//================================================================</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "*** v0 = &#945; op(M) v1 + &#946; v0" &lt;&lt; std::endl;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v0);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "*** v0 = &#945; op(M) v1 + &#946; v2" &lt;&lt; std::endl;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "--- alias " &lt;&lt; std::endl;</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, M1 * v1 + v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, M1 * v1 + beta * v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, M1 * v1 - v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 + M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 + op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 + alpha * M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 - M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 - op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, v2 - alpha * M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, op1(M1) * v1 + v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, op1(M1) * v1 - v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * M1 * v1 + v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * M1 * v1 - v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, beta * v2 + M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, beta * v2 - M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -M1 * v1 + v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -M1 * v1 + beta * v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -M1 * v1 - v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -v2 + M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -v2 + op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -v2 + alpha * M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -v2 - M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -v2 - op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -op1(M1) * v1 + v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -op1(M1) * v1 - v2);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">//================================================================</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "*** v0 = &#945; op(M) v0" &lt;&lt; std::endl;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(M1) * v0);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(inverse(M1)) * v0);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "*** v0 = &#945; op(M) v1" &lt;&lt; std::endl;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(inverse(M1)) * v1);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "--- alias" &lt;&lt; std::endl;</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, inverse(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * inverse(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, op1(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, inverse(op1(M1)) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, op1(inverse(M1) * v1));</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * inverse(op1(M1)) * v1);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "--- alias forgotten" &lt;&lt; std::endl;</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -M1 * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -inverse(M1) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -inverse(op1(M1)) * v1);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, -op1(inverse(M1) * v1));</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "*** M0 = &#945; op1(M1) op2(M2) + &#946; M0" &lt;&lt; std::endl;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M0);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">//</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">TODO</span><span style="color: #7f7f7f;">:  M0 = &#945; op1(M1) op2(M2) + &#946; M1 + Alias</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">//</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">std::cout &lt;&lt; "*** M0 = &#945; op1(M1) op2(M1) + &#946; M0" &lt;&lt; std::endl;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(M0, alpha * op1(M1) * op2(M1) + beta * M0);</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">}</span>
+
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">int</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">main()</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">{</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">big_list();</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">return 0;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">// ////////////////////////////////////////////////////////////////</span>
+  
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Scalar&lt;int&gt; alpha(1), beta(2), gamma(3);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Minimal_Vector v0(0), v1(1), v2(2), v3(3);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Minimal_Matrix M0(0), M1(1), M2(2), M3(3);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">_LHS_ lhs;</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * lhs);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(M2, v1 + alpha * op1(M1) * v2 + beta * v3);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(M0, -(alpha * inverse(op1(M1))));</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">PRINT_EXPR(M0, M1 * op2(lhs));</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">}</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">// [END_print_expr_cpp]</span>
+</pre>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: picaud</p>
+<p class="date">Created: 2020-07-09 Thu 20:02</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

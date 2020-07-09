@@ -6,7 +6,7 @@
 <!-- 2020-07-09 Thu 20:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>vmt_crtp.hpp</title>
+<title>scalar_crtp.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -241,21 +241,40 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">vmt_crtp.hpp</h1>
+<h1 class="title">scalar_crtp.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2d4a323">1. Base class for VMT (vectors, matrices, tensors&#x2026;)</a></li>
-<li><a href="#org3d5eb58">2. Backlinks</a></li>
-<li><a href="#org2d46d65">3. 3 Backlinks</a>
+<li><a href="#org2845ca2">1. Overloading Scalar</a>
 <ul>
-<li><a href="#org69c0062">3.1. My Sitemap</a></li>
-<li><a href="#org68187d6">3.2. Contents</a></li>
-<li><a href="#org37470b2">3.3. Content</a></li>
+<li><a href="#org79f9a11">1.1. The <code>Scalar_Crtp</code> class</a></li>
+<li><a href="#org823dd4c">1.2. The <code>Scalar</code> default wrapping class</a></li>
 </ul>
 </li>
 </ul>
@@ -266,32 +285,35 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org2d4a323" class="outline-2">
-<h2 id="org2d4a323"><span class="section-number-2">1</span> Base class for VMT (vectors, matrices, tensors&#x2026;)</h2>
+<div id="outline-container-org2845ca2" class="outline-2">
+<h2 id="org2845ca2"><span class="section-number-2">1</span> Overloading Scalar</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-We define a "catch-all" base class for all our Vectors, Matrices, &#x2026; objects.
+In order to have an unified processing (like <a href="assign_fallback.html#ID-284f04be-bb9d-4fb9-a02f-955a4b8a66ec"><code>assign</code> fallback</a> by
+example), one need to wrap everything in classes inheriting.
+</p>
+
+<p>
+This wrapping is momentary, it is created as a product of overloaded
+operators like \(\alpha.V\) and is used to call <code>assign()</code> functions (see
+<a href="../metaexpr/call_assign_from_metaexpr.html#ID-60ec1564-5dfa-4af7-9243-f478ced9845f">Convert Expression Template to flat assign function</a>).
+</p>
+</div>
+
+<div id="outline-container-org79f9a11" class="outline-3">
+<h3 id="org79f9a11"><span class="section-number-3">1.1</span> The <code>Scalar_Crtp</code> class</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+This class is the <b>base</b> class of all wrapped scalar type
 </p>
 
 <blockquote>
-<p>
-Defines the Vector, Matrix, Tensor&#x2026; base class
-</p>
-
-<p>
-Its role is to unifies argument capture in interface functions
-</p>
-
 <div class="org-src-container">
 <pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">VMT_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Scalar_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Scalar_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
   {
-    <span style="color: #7f7f7f;">//////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Public Types</span>
-    <span style="color: #7f7f7f;">//////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
    <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Scalar_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;;
     <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">base_type</span>::<span style="color: #00688b;">impl</span>;
 
     <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
@@ -299,9 +321,17 @@ Its role is to unifies argument capture in interface functions
 
     <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
 
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Prevent object slicing</span>
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp;
+    <span style="color: #cd9b1d;">value</span>() <span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">noexcept</span>
+    {
+      <span style="color: #1c86ee;">return</span> <span style="color: #1c86ee;">this</span>-&gt;impl().impl_value();
+    }
+
    <span style="color: #1c86ee;">protected</span>:
-    <span style="color: #00688b;">VMT_Crtp</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VMT_Crtp</span>&amp;) = <span style="color: #1c86ee;">default</span>;
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Prevent object slicing</span>
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #cd9b1d;">Scalar_Crtp</span>() <span style="color: #1c86ee;">noexcept</span>                   = <span style="color: #1c86ee;">default</span>;
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #cd9b1d;">Scalar_Crtp</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&amp;) <span style="color: #1c86ee;">noexcept</span> = <span style="color: #1c86ee;">default</span>;
   };
 </pre>
 </div>
@@ -309,41 +339,63 @@ Its role is to unifies argument capture in interface functions
 </div>
 </div>
 
+<div id="outline-container-org823dd4c" class="outline-3">
+<h3 id="org823dd4c"><span class="section-number-3">1.2</span> The <code>Scalar</code> default wrapping class</h3>
+<div class="outline-text-3" id="text-1-2">
+<blockquote>
+<div class="org-src-container">
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ELEMENT_TYPE</span>&gt;
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Scalar</span>;
 
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ELEMENT_TYPE</span>&gt;
+  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Crtp_Type_Traits</span>&lt;<span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">ELEMENT_TYPE</span>&gt;&gt;
+  {
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = ELEMENT_TYPE;
+  };
 
-<div id="outline-container-org3d5eb58" class="outline-2">
-<h2 id="org3d5eb58"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
+  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ELEMENT_TYPE</span>&gt;
+  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Scalar</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">ELEMENT_TYPE</span>&gt;&gt;
+  {
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">avoid some recurrent errors like:</span>
+    <span style="color: #7f7f7f;">//    </span><span style="color: #7f7f7f;">Scalar&lt;ALPHA_IMPL&gt;(0)</span>
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">instead of</span>
+    <span style="color: #7f7f7f;">//    </span><span style="color: #7f7f7f;">Scalar&lt;Element_Type_t&lt;ALPHA_IMPL&gt;&gt;(0)</span>
+    <span style="color: #7f7f7f;">//</span>
+    static_assert(<span style="color: #1c86ee;">not</span> <span style="color: #00688b;">Is_Crtp_Interface_Of_v</span>&lt;Scalar_Crtp, <span style="color: #00688b;">ELEMENT_TYPE</span>&gt;);
 
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>    = <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">ELEMENT_TYPE</span>&gt;&gt;;
+    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::element_type;
 
-<div id="outline-container-org2d46d65" class="outline-2">
-<h2 id="org2d46d65"><span class="section-number-2">3</span> 3 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org69c0062" class="outline-3">
-<h3 id="org69c0062"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-<a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp.hpp</a>
-</p>
-</div>
-</div>
+   <span style="color: #1c86ee;">private</span>:
+    <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">CAVEAT</span><span style="color: #7f7f7f;">: check that this does not induce dangling reference</span>
+    <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">before this line was:</span>
+    <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">const element_type&amp; _value;</span>
+    <span style="color: #00688b;">element_type</span> <span style="color: #2e8b57;">_value</span>;
 
-<div id="outline-container-org68187d6" class="outline-3">
-<h3 id="org68187d6"><span class="section-number-3">3.2</span> <a href="../expr/index.html">Contents</a></h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-The first steps are to introduce a <a href="#org2d4a323">Base class for VMT (vectors, matrices, tensors&#x2026;)</a> and some tags
-</p>
-</div>
-</div>
+   <span style="color: #1c86ee;">public</span>:
+    <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">CAVEAT</span><span style="color: #7f7f7f;">: really use ELEMENT_TYPE and not element_type which</span>
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">prevent C++ to use automatic template deduction:</span>
+    <span style="color: #7f7f7f;">//</span>
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Scalar(std::complex&lt;double&gt;(3, 4)) &lt;- would NOT work anymore</span>
+    <span style="color: #7f7f7f;">//</span>
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #cd9b1d;">Scalar</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">ELEMENT_TYPE</span>&amp; <span style="color: #2e8b57;">value</span>) <span style="color: #1c86ee;">noexcept</span> : _value(value) {}
 
-<div id="outline-container-org37470b2" class="outline-3">
-<h3 id="org37470b2"><span class="section-number-3">3.3</span> <a href="../../index.html">Content</a></h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-<a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp</a>
-</p>
+   <span style="color: #1c86ee;">protected</span>:
+    <span style="color: #1c86ee;">friend</span> <span style="color: #00688b;">base_type</span>;
+
+    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp;
+    <span style="color: #cd9b1d;">impl_value</span>() <span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">noexcept</span>
+    {
+      <span style="color: #1c86ee;">return</span> _value;
+    }
+  };
+
+  static_assert(<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">is_trivially_copyable_v</span>&lt;<span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">double</span>&gt;&gt;);
+
+</pre>
+</div>
+</blockquote>
 </div>
 </div>
 </div>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-07 Tue 06:57 -->
+<!-- 2020-07-09 Thu 20:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>call_assign_from_metaexpr.hpp</title>
@@ -200,7 +200,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -241,6 +241,28 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
@@ -249,18 +271,19 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org06b6e23">1. Convert Expression Template to flat assign function</a>
+<li><a href="#orgc272927">1. Convert Expression Template to flat assign function</a>
 <ul>
-<li><a href="#orga9d33ca">1.1. <code>call_assign_from_MetaExpr()</code> function</a></li>
-<li><a href="#orgf770764">1.2. <code>from_metaexpr_to_reverse_Polish_tuple()</code> function</a></li>
-<li><a href="#org602f6d5">1.3. <code>call_assign_from_reverse_Polish()</code> function</a></li>
+<li><a href="#org332cb6c">1.1. <code>call_assign_from_MetaExpr()</code> function</a></li>
+<li><a href="#org3320f24">1.2. <code>from_metaexpr_to_reverse_Polish_tuple()</code> function</a></li>
+<li><a href="#orgf877612">1.3. <code>call_assign_from_reverse_Polish()</code> function</a></li>
 </ul>
 </li>
-<li><a href="#org48183f4">2. Backlinks</a></li>
-<li><a href="#org1438903">3. 4 Backlinks</a>
+<li><a href="#orga3e277a">2. Backlinks</a></li>
+<li><a href="#orgb1c2afb">3. 5 Backlinks</a>
 <ul>
-<li><a href="#org8d72258">3.1. My Sitemap</a></li>
-<li><a href="#orgebcd63b">3.2. call_assign_from_metaexpr.hpp</a></li>
+<li><a href="#org6c4c75b">3.1. My Sitemap</a></li>
+<li><a href="#org649570c">3.2. scalar_crtp.hpp</a></li>
+<li><a href="#org1108635">3.3. call_assign_from_metaexpr.hpp</a></li>
 </ul>
 </li>
 </ul>
@@ -271,8 +294,8 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org06b6e23" class="outline-2">
-<h2 id="org06b6e23"><span class="section-number-2">1</span> Convert Expression Template to flat assign function</h2>
+<div id="outline-container-orgc272927" class="outline-2">
+<h2 id="orgc272927"><span class="section-number-2">1</span> Convert Expression Template to flat assign function</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This central file provides methods to call an assign function from an
@@ -280,24 +303,24 @@ expression template.
 </p>
 
 <p>
-The entry point is the <a href="#orga9d33ca"><code>call_assign_from_MetaExpr()</code></a>.
+The entry point is the <a href="#org332cb6c"><code>call_assign_from_MetaExpr()</code></a>.
 </p>
 
 <p>
 This function converts the initial Expression Template into a reverse
 Polish expression stored into a <code>std::tuple=</code> thanks to
-<a href="#orgf770764"><code>from_metaexpr_to_reverse_Polish_tuple()</code>.</a> 
+<a href="#org3320f24"><code>from_metaexpr_to_reverse_Polish_tuple()</code>.</a> 
 </p>
 
 <p>
 From this reverse Polish expression the function
-<a href="#org602f6d5"><code>call_assign_from_reverse_Polish()</code></a> performs the final call to the
+<a href="#orgf877612"><code>call_assign_from_reverse_Polish()</code></a> performs the final call to the
 <code>assign</code> functions.
 </p>
 </div>
 
-<div id="outline-container-orga9d33ca" class="outline-3">
-<h3 id="orga9d33ca"><span class="section-number-3">1.1</span> <code>call_assign_from_MetaExpr()</code> function</h3>
+<div id="outline-container-org332cb6c" class="outline-3">
+<h3 id="org332cb6c"><span class="section-number-3">1.1</span> <code>call_assign_from_MetaExpr()</code> function</h3>
 <div class="outline-text-3" id="text-1-1">
 <blockquote>
 <p>
@@ -320,8 +343,8 @@ store the result into the <code>dest</code> argument.
 </div>
 
 
-<div id="outline-container-orgf770764" class="outline-3">
-<h3 id="orgf770764"><span class="section-number-3">1.2</span> <code>from_metaexpr_to_reverse_Polish_tuple()</code> function</h3>
+<div id="outline-container-org3320f24" class="outline-3">
+<h3 id="org3320f24"><span class="section-number-3">1.2</span> <code>from_metaexpr_to_reverse_Polish_tuple()</code> function</h3>
 <div class="outline-text-3" id="text-1-2">
 <blockquote>
 <p>
@@ -398,8 +421,8 @@ recursive call is performed from <code>arg1</code> then from <code>arg2</code>.
 </div>
 </div>
 
-<div id="outline-container-org602f6d5" class="outline-3">
-<h3 id="org602f6d5"><span class="section-number-3">1.3</span> <code>call_assign_from_reverse_Polish()</code> function</h3>
+<div id="outline-container-orgf877612" class="outline-3">
+<h3 id="orgf877612"><span class="section-number-3">1.3</span> <code>call_assign_from_reverse_Polish()</code> function</h3>
 <div class="outline-text-3" id="text-1-3">
 <blockquote>
 <p>
@@ -430,17 +453,17 @@ to perform the final call to the <b>flat</b> <code>assign</code> function.
 </div>
 </div>
 
-<div id="outline-container-org48183f4" class="outline-2">
-<h2 id="org48183f4"><span class="section-number-2">2</span> Backlinks</h2>
+<div id="outline-container-orga3e277a" class="outline-2">
+<h2 id="orga3e277a"><span class="section-number-2">2</span> Backlinks</h2>
 </div>
 
 
-<div id="outline-container-org1438903" class="outline-2">
-<h2 id="org1438903"><span class="section-number-2">3</span> 4 Backlinks</h2>
+<div id="outline-container-orgb1c2afb" class="outline-2">
+<h2 id="orgb1c2afb"><span class="section-number-2">3</span> 5 Backlinks</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org8d72258" class="outline-3">
-<h3 id="org8d72258"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
+<div id="outline-container-org6c4c75b" class="outline-3">
+<h3 id="org6c4c75b"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 <a href="src/LinearAlgebra/metaexpr/call_assign_from_metaexpr.html">call_assign_from_metaexpr.hpp</a>
@@ -448,19 +471,28 @@ to perform the final call to the <b>flat</b> <code>assign</code> function.
 </div>
 </div>
 
-<div id="outline-container-orgebcd63b" class="outline-3">
-<h3 id="orgebcd63b"><span class="section-number-3">3.2</span> <a href="call_assign_from_metaexpr.html">call_assign_from_metaexpr.hpp</a></h3>
+<div id="outline-container-org649570c" class="outline-3">
+<h3 id="org649570c"><span class="section-number-3">3.2</span> <a href="../expr/scalar_crtp.html">scalar_crtp.hpp</a></h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
-From this reverse Polish expression the function <a href="#org602f6d5"><code>call_assign_from_reverse_Polish()</code></a> performs the final call to the <code>assign</code> functions.
+This wrapping is momentary, it is created as a product of overloaded operators like \(\alpha.V\) and is used to call <code>assign()</code> functions (see <a href="#orgc272927">Convert Expression Template to flat assign function</a>).
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1108635" class="outline-3">
+<h3 id="org1108635"><span class="section-number-3">3.3</span> <a href="call_assign_from_metaexpr.html">call_assign_from_metaexpr.hpp</a></h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+From this reverse Polish expression the function <a href="#orgf877612"><code>call_assign_from_reverse_Polish()</code></a> performs the final call to the <code>assign</code> functions.
 </p>
 
 <p>
-This function converts the initial Expression Template into a reverse Polish expression stored into a <code>std::tuple=</code> thanks to <a href="#orgf770764"><code>from_metaexpr_to_reverse_Polish_tuple()</code>.</a>
+This function converts the initial Expression Template into a reverse Polish expression stored into a <code>std::tuple=</code> thanks to <a href="#org3320f24"><code>from_metaexpr_to_reverse_Polish_tuple()</code>.</a>
 </p>
 
 <p>
-The entry point is the <a href="#orga9d33ca"><code>call_assign_from_MetaExpr()</code></a>.
+The entry point is the <a href="#org332cb6c"><code>call_assign_from_MetaExpr()</code></a>.
 </p>
 </div>
 </div>
@@ -468,7 +500,7 @@ The entry point is the <a href="#orga9d33ca"><code>call_assign_from_MetaExpr()</
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-07 Tue 06:57</p>
+<p class="date">Created: 2020-07-09 Thu 20:02</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

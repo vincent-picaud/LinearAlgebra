@@ -2,16 +2,22 @@
 #+Call: Setup()
 #+Call: HomeUp()
 
-* Considered expression
+* $M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3$
+#+Index:Known Patterns!$M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3$
 
 This file includes routines realated to the computation of 
 \begin{equation*}
 M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3
 \end{equation*}
 
+# file:M_eq_aMM_bM.hpp::BEGIN_assign
+#+Call: Extract("M_eq_aMM_bM.hpp","assign")
 
 ** Alias
 
 The alias are:
+
+# file:M_eq_aMM_bM.hpp::BEGIN_assign
+#+Call: Extract("M_eq_aMM_bM.hpp","alias")
 
 

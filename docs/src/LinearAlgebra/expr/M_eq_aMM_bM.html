@@ -6,7 +6,7 @@
 <!-- 2020-07-09 Thu 20:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>vmt_crtp.hpp</title>
+<title>M_eq_aMM_bM.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -241,21 +241,39 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">vmt_crtp.hpp</h1>
+<h1 class="title">M_eq_aMM_bM.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2d4a323">1. Base class for VMT (vectors, matrices, tensors&#x2026;)</a></li>
-<li><a href="#org3d5eb58">2. Backlinks</a></li>
-<li><a href="#org2d46d65">3. 3 Backlinks</a>
+<li><a href="#orgb30d477">1. \(M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3\)</a>
 <ul>
-<li><a href="#org69c0062">3.1. My Sitemap</a></li>
-<li><a href="#org68187d6">3.2. Contents</a></li>
-<li><a href="#org37470b2">3.3. Content</a></li>
+<li><a href="#orgbdccb69">1.1. Alias</a></li>
 </ul>
 </li>
 </ul>
@@ -266,84 +284,94 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org2d4a323" class="outline-2">
-<h2 id="org2d4a323"><span class="section-number-2">1</span> Base class for VMT (vectors, matrices, tensors&#x2026;)</h2>
+<div id="outline-container-orgb30d477" class="outline-2">
+<h2 id="orgb30d477"><span class="section-number-2">1</span> \(M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3\)</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-We define a "catch-all" base class for all our Vectors, Matrices, &#x2026; objects.
+This file includes routines realated to the computation of 
 </p>
+\begin{equation*}
+M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3
+\end{equation*}
 
 <blockquote>
 <p>
-Defines the Vector, Matrix, Tensor&#x2026; base class
+<b>User interface</b>
 </p>
+\begin{equation*}
+M_0 = \alpha * op_1(M_1) * op_2(M_2) + \beta * M_3
+\end{equation*}
 
 <p>
-Its role is to unifies argument capture in interface functions
+Reverse polish:
 </p>
+\begin{equation*}
+M_0 = +\ *\ *\ \alpha\ op_1\ M_1\ op_2\ M_2\ *\ \beta\ M_3
+\end{equation*}
+
+
 
 <div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">VMT_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
-  {
-    <span style="color: #7f7f7f;">//////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Public Types</span>
-    <span style="color: #7f7f7f;">//////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;;
-    <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">base_type</span>::<span style="color: #00688b;">impl</span>;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Prevent object slicing</span>
-   <span style="color: #1c86ee;">protected</span>:
-    <span style="color: #00688b;">VMT_Crtp</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VMT_Crtp</span>&amp;) = <span style="color: #1c86ee;">default</span>;
-  };
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
+            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
+            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP2</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M2_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M3_IMPL</span>&gt;
+  <span style="color: #00688b;">void</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M0</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1&gt; <span style="color: #2e8b57;">op1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP2&gt; <span style="color: #2e8b57;">op2</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M2</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M3</span>)
 </pre>
 </div>
 </blockquote>
 </div>
-</div>
 
-
-
-<div id="outline-container-org3d5eb58" class="outline-2">
-<h2 id="org3d5eb58"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-org2d46d65" class="outline-2">
-<h2 id="org2d46d65"><span class="section-number-2">3</span> 3 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org69c0062" class="outline-3">
-<h3 id="org69c0062"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-orgbdccb69" class="outline-3">
+<h3 id="orgbdccb69"><span class="section-number-3">1.1</span> Alias</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
-<a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp.hpp</a>
+The alias are:
 </p>
-</div>
-</div>
 
-<div id="outline-container-org68187d6" class="outline-3">
-<h3 id="org68187d6"><span class="section-number-3">3.2</span> <a href="../expr/index.html">Contents</a></h3>
-<div class="outline-text-3" id="text-3-2">
+<blockquote>
 <p>
-The first steps are to introduce a <a href="#org2d4a323">Base class for VMT (vectors, matrices, tensors&#x2026;)</a> and some tags
+M0 = alpha * M1 * M2 + beta * M3
+M0 = + * * alpha M1 M2 * beta M3
 </p>
-</div>
-</div>
 
-<div id="outline-container-org37470b2" class="outline-3">
-<h3 id="org37470b2"><span class="section-number-3">3.3</span> <a href="../../index.html">Content</a></h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-<a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp</a>
-</p>
+<div class="org-src-container">
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M2_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M3_IMPL</span>&gt;
+  <span style="color: #00688b;">void</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M0</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M2</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M3</span>)
+</pre>
+</div>
+</blockquote>
 </div>
 </div>
 </div>

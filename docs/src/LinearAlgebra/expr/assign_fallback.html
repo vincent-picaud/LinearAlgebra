@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-07 Tue 06:57 -->
+<!-- 2020-07-09 Thu 20:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>assign_fallback.hpp</title>
@@ -200,7 +200,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,13 +249,15 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0ec4cbe">1. <code>assign</code> fallback</a></li>
-<li><a href="#org5bf9848">2. Backlinks</a></li>
-<li><a href="#org65d8574">3. 3 Backlinks</a>
+<li><a href="#orgcb042e0">1. <code>assign</code> fallback</a></li>
+<li><a href="#org7e0d679">2. Backlinks</a></li>
+<li><a href="#org3416f2a">3. 5 Backlinks</a>
 <ul>
-<li><a href="#org99438d1">3.1. My Sitemap</a></li>
-<li><a href="#org8d117cc">3.2. expr_tags.hpp</a></li>
-<li><a href="#org0cf2d76">3.3. Content</a></li>
+<li><a href="#org6e7709f">3.1. My Sitemap</a></li>
+<li><a href="#org8974c33">3.2. print_expr.cpp</a></li>
+<li><a href="#org7576ce1">3.3. expr_tags.hpp</a></li>
+<li><a href="#org9e6db72">3.4. scalar_crtp.hpp</a></li>
+<li><a href="#org73f56f4">3.5. Content</a></li>
 </ul>
 </li>
 </ul>
@@ -266,8 +268,8 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org0ec4cbe" class="outline-2">
-<h2 id="org0ec4cbe"><span class="section-number-2">1</span> <code>assign</code> fallback</h2>
+<div id="outline-container-orgcb042e0" class="outline-2">
+<h2 id="orgcb042e0"><span class="section-number-2">1</span> <code>assign</code> fallback</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">&lt;Fri Jun 26 2020 06:20&gt;</span></span> &lt;- <a href="expr_tags.html#ID-bd2ec7da-4692-4f83-bf16-5441b9d851f5">Motivations</a>
@@ -303,17 +305,17 @@ functions avoid to redefine such fallback for every new expression.
 
 
 
-<div id="outline-container-org5bf9848" class="outline-2">
-<h2 id="org5bf9848"><span class="section-number-2">2</span> Backlinks</h2>
+<div id="outline-container-org7e0d679" class="outline-2">
+<h2 id="org7e0d679"><span class="section-number-2">2</span> Backlinks</h2>
 </div>
 
 
-<div id="outline-container-org65d8574" class="outline-2">
-<h2 id="org65d8574"><span class="section-number-2">3</span> 3 Backlinks</h2>
+<div id="outline-container-org3416f2a" class="outline-2">
+<h2 id="org3416f2a"><span class="section-number-2">3</span> 5 Backlinks</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org99438d1" class="outline-3">
-<h3 id="org99438d1"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
+<div id="outline-container-org6e7709f" class="outline-3">
+<h3 id="org6e7709f"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 <a href="src/LinearAlgebra/expr/assign_fallback.html">assign_fallback.hpp</a>
@@ -321,18 +323,36 @@ functions avoid to redefine such fallback for every new expression.
 </div>
 </div>
 
-<div id="outline-container-org8d117cc" class="outline-3">
-<h3 id="org8d117cc"><span class="section-number-3">3.2</span> <a href="expr_tags.html">expr_tags.hpp</a></h3>
+<div id="outline-container-org8974c33" class="outline-3">
+<h3 id="org8974c33"><span class="section-number-3">3.2</span> <a href="../../../sandbox/print_expr.html">print_expr.cpp</a></h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
-In order to define <a href="#org0ec4cbe"><code>assign</code> fallback</a> all tags must be children classes of <a href="../utils/crtp.html#ID-b3bedaa5-c99d-4b5f-88a4-33c44d53be94">The <code>Crtp</code> class</a>. That is the reason why the <a href="expr_tags.html#ID-4009333e-077c-473e-bc26-6b51aff772ad"><code>Expr_Tags_Crtp</code></a> base class was introduced.
+Not a very clean code, but really useful to <b>automatically</b> generate <a href="#orgcb042e0"><code>assign</code> function</a> prototypes
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0cf2d76" class="outline-3">
-<h3 id="org0cf2d76"><span class="section-number-3">3.3</span> <a href="../../index.html">Content</a></h3>
+<div id="outline-container-org7576ce1" class="outline-3">
+<h3 id="org7576ce1"><span class="section-number-3">3.3</span> <a href="expr_tags.html">expr_tags.hpp</a></h3>
 <div class="outline-text-3" id="text-3-3">
+<p>
+In order to define <a href="#orgcb042e0"><code>assign</code> fallback</a> all tags must be children classes of <a href="../utils/crtp.html#ID-b3bedaa5-c99d-4b5f-88a4-33c44d53be94">The <code>Crtp</code> class</a>. That is the reason why the <a href="expr_tags.html#ID-4009333e-077c-473e-bc26-6b51aff772ad"><code>Expr_Tags_Crtp</code></a> base class was introduced.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e6db72" class="outline-3">
+<h3 id="org9e6db72"><span class="section-number-3">3.4</span> <a href="scalar_crtp.html">scalar_crtp.hpp</a></h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+In order to have an unified processing (like <a href="#orgcb042e0"><code>assign</code> fallback</a> by example), one need to wrap everything in classes inheriting.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org73f56f4" class="outline-3">
+<h3 id="org73f56f4"><span class="section-number-3">3.5</span> <a href="../../index.html">Content</a></h3>
+<div class="outline-text-3" id="text-3-5">
 <p>
 <a href="src/LinearAlgebra/expr/assign_fallback.html">assign_fallback</a>
 </p>
@@ -342,7 +362,7 @@ In order to define <a href="#org0ec4cbe"><code>assign</code> fallback</a> all ta
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-07 Tue 06:57</p>
+<p class="date">Created: 2020-07-09 Thu 20:02</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

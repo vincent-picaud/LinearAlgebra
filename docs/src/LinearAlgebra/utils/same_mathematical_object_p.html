@@ -6,7 +6,7 @@
 <!-- 2020-07-09 Thu 20:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>vmt_crtp.hpp</title>
+<title>same_mathematical_object_p.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -241,23 +241,38 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">vmt_crtp.hpp</h1>
+<h1 class="title">same_mathematical_object_p.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2d4a323">1. Base class for VMT (vectors, matrices, tensors&#x2026;)</a></li>
-<li><a href="#org3d5eb58">2. Backlinks</a></li>
-<li><a href="#org2d46d65">3. 3 Backlinks</a>
-<ul>
-<li><a href="#org69c0062">3.1. My Sitemap</a></li>
-<li><a href="#org68187d6">3.2. Contents</a></li>
-<li><a href="#org37470b2">3.3. Content</a></li>
-</ul>
-</li>
+<li><a href="#org4a02cea">1. The <code>same_mathematical_object_p()</code> function</a></li>
+<li><a href="#orgd7514c6">2. Units test</a></li>
 </ul>
 </div>
 </div>
@@ -266,84 +281,113 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org2d4a323" class="outline-2">
-<h2 id="org2d4a323"><span class="section-number-2">1</span> Base class for VMT (vectors, matrices, tensors&#x2026;)</h2>
+<div id="outline-container-org4a02cea" class="outline-2">
+<h2 id="org4a02cea"><span class="section-number-2">1</span> The <code>same_mathematical_object_p()</code> function</h2>
 <div class="outline-text-2" id="text-1">
-<p>
-We define a "catch-all" base class for all our Vectors, Matrices, &#x2026; objects.
-</p>
-
 <blockquote>
 <p>
-Defines the Vector, Matrix, Tensor&#x2026; base class
+Check if this two C++ objects represent the same mathematical
+object (=instance representing the same data)
 </p>
 
-<p>
-Its role is to unifies argument capture in interface functions
-</p>
+<dl class="org-dl">
+<dt>CAVEAT</dt><dd>We do not try (as before) to <b>specialize</b> this function
+for each type pairs, this would need \(O(n_\text{type}^2)\)
+specializations! This is definitely simpler, however now <b>notice</b>
+that a vector and its own view do not represent the "same
+object".</dd>
+</dl>
 
 <div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">VMT_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL_0</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL_1</span>&gt;
+  <span style="color: #1c86ee;">constexpr</span> <span style="color: #00688b;">bool</span>
+  <span style="color: #cd9b1d;">same_mathematical_object_p</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL_0</span>&gt;&amp; <span style="color: #2e8b57;">object_0</span>, <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">IMPL_1</span>&gt;&amp; <span style="color: #2e8b57;">object_1</span>) <span style="color: #1c86ee;">noexcept</span>
   {
-    <span style="color: #7f7f7f;">//////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Public Types</span>
-    <span style="color: #7f7f7f;">//////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;;
-    <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">base_type</span>::<span style="color: #00688b;">impl</span>;
+    <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">impl_same_mathematical_object_p</span>;
 
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Prevent object slicing</span>
-   <span style="color: #1c86ee;">protected</span>:
-    <span style="color: #00688b;">VMT_Crtp</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VMT_Crtp</span>&amp;) = <span style="color: #1c86ee;">default</span>;
-  };
+    <span style="color: #1c86ee;">return</span> impl_same_mathematical_object_p(object_0.impl(), object_1.impl());
+  }
 </pre>
 </div>
 </blockquote>
 </div>
 </div>
 
+<div id="outline-container-orgd7514c6" class="outline-2">
+<h2 id="orgd7514c6"><span class="section-number-2">2</span> Units test</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/utils/same_mathematical_object_p.hpp"</span>
 
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/dense/lhs.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/dense/matrix.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/dense/vector.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/dense/vector_view.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/utils/same_mathematical_object_p.hpp"</span>
 
-<div id="outline-container-org3d5eb58" class="outline-2">
-<h2 id="org3d5eb58"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">&lt;gtest/gtest.h&gt;</span>
 
+<span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
 
-<div id="outline-container-org2d46d65" class="outline-2">
-<h2 id="org2d46d65"><span class="section-number-2">3</span> 3 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org69c0062" class="outline-3">
-<h3 id="org69c0062"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-<a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp.hpp</a>
-</p>
-</div>
-</div>
+<span style="color: #cd9b1d;">TEST</span>(Same_Mathematical_Object_P, <span style="color: #00688b;">vector</span>)
+{
+  <span style="color: #00688b;">Vector</span>&lt;<span style="color: #00688b;">int</span>&gt; <span style="color: #2e8b57;">V1</span>(10);
+  <span style="color: #00688b;">Vector</span>&lt;<span style="color: #00688b;">double</span>&gt; <span style="color: #2e8b57;">V2</span>(10);
 
-<div id="outline-container-org68187d6" class="outline-3">
-<h3 id="org68187d6"><span class="section-number-3">3.2</span> <a href="../expr/index.html">Contents</a></h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-The first steps are to introduce a <a href="#org2d4a323">Base class for VMT (vectors, matrices, tensors&#x2026;)</a> and some tags
-</p>
-</div>
-</div>
+  EXPECT_TRUE(same_mathematical_object_p(V1, V1));
+  EXPECT_FALSE(same_mathematical_object_p(V1, V2));
 
-<div id="outline-container-org37470b2" class="outline-3">
-<h3 id="org37470b2"><span class="section-number-3">3.3</span> <a href="../../index.html">Content</a></h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-<a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp</a>
-</p>
+  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">V1_view</span> = create_vector_view(V1, 0, 10);
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">CAVEAT</span><span style="color: #7f7f7f;">: We simplified our =same_mathematical_object_p= routine</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">and now V and its view are *not longer* the same object.</span>
+  <span style="color: #7f7f7f;">//</span>
+  EXPECT_FALSE(same_mathematical_object_p(V1_view, V1));
+  EXPECT_FALSE(same_mathematical_object_p(V1_view, V2));
+
+  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">V1_view_2</span> = create_vector_view(V1, 5, 10);
+
+  EXPECT_FALSE(same_mathematical_object_p(V1_view_2, V1));
+  EXPECT_FALSE(same_mathematical_object_p(V1_view_2, V2));
+}
+
+<span style="color: #cd9b1d;">TEST</span>(Same_Mathematical_Object_P, matrix)
+{
+  <span style="color: #00688b;">Matrix</span>&lt;<span style="color: #00688b;">int</span>&gt; <span style="color: #2e8b57;">V1</span>(10, 4);
+  <span style="color: #00688b;">Matrix</span>&lt;<span style="color: #00688b;">double</span>&gt; <span style="color: #2e8b57;">V2</span>(10, 4);
+
+  EXPECT_TRUE(same_mathematical_object_p(V1, V1));
+  EXPECT_FALSE(same_mathematical_object_p(V1, V2));
+}
+
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">With LHS</span>
+<span style="color: #7f7f7f;">//</span>
+<span style="color: #cd9b1d;">TEST</span>(Same_Mathematical_Object_P, vector_lhs)
+{
+  <span style="color: #00688b;">Vector</span>&lt;<span style="color: #00688b;">int</span>&gt; <span style="color: #2e8b57;">V1</span>(4), <span style="color: #2e8b57;">V2</span>(4);
+  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">LHS_V1</span> = lhs(V1);
+  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">LHS_V2</span> = lhs(V2);
+
+  EXPECT_TRUE(same_mathematical_object_p(V1, LHS_V1));
+  EXPECT_FALSE(same_mathematical_object_p(V2, LHS_V1));
+  EXPECT_TRUE(same_mathematical_object_p(LHS_V1, V1));
+  EXPECT_TRUE(same_mathematical_object_p(LHS_V1, LHS_V1));
+  EXPECT_FALSE(same_mathematical_object_p(LHS_V1, LHS_V2));
+}
+
+<span style="color: #cd9b1d;">TEST</span>(Same_Mathematical_Object_P, matrix_lhs)
+{
+  <span style="color: #00688b;">Matrix</span>&lt;<span style="color: #00688b;">int</span>&gt; <span style="color: #2e8b57;">M1</span>(10, 4), <span style="color: #2e8b57;">M2</span>(10, 4);
+  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">LHS_M1</span> = lhs(M1);
+  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">LHS_M2</span> = lhs(M2);
+
+  EXPECT_TRUE(same_mathematical_object_p(M1, LHS_M1));
+  EXPECT_FALSE(same_mathematical_object_p(M2, LHS_M1));
+  EXPECT_TRUE(same_mathematical_object_p(LHS_M1, M1));
+  EXPECT_TRUE(same_mathematical_object_p(LHS_M1, LHS_M1));
+  EXPECT_FALSE(same_mathematical_object_p(LHS_M1, LHS_M2));
+}
+</pre>
 </div>
 </div>
 </div>

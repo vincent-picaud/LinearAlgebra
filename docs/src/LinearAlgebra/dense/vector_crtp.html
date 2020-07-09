@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-07 Tue 06:57 -->
+<!-- 2020-07-09 Thu 20:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>vector_crtp.hpp</title>
@@ -200,7 +200,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,21 +249,21 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb57cde1">1. Vector interfaces</a>
+<li><a href="#org2728e7e">1. Vector interfaces</a>
 <ul>
-<li><a href="#orgf438f8b">1.1. The <code>Vector_Crtp</code> class</a></li>
-<li><a href="#orgccc275d">1.2. The <code>Dense_Vector_Crtp</code> class</a>
+<li><a href="#org2e22aab">1.1. The <code>Vector_Crtp</code> class</a></li>
+<li><a href="#orgc700d81">1.2. The <code>Dense_Vector_Crtp</code> class</a>
 <ul>
-<li><a href="#orgf9f9615">1.2.1. Implementation</a></li>
+<li><a href="#orgcb4483d">1.2.1. Implementation</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgf5bca06">2. Backlinks</a></li>
-<li><a href="#org8e08c8d">3. 2 Backlinks</a>
+<li><a href="#org3729254">2. Backlinks</a></li>
+<li><a href="#orgcd7f550">3. 2 Backlinks</a>
 <ul>
-<li><a href="#org093d9b5">3.1. call_assign_demo.cpp</a></li>
-<li><a href="#orgab01754">3.2. My Sitemap</a></li>
+<li><a href="#orgad5fef7">3.1. how_to_new_vector.cpp</a></li>
+<li><a href="#org2b927dc">3.2. My Sitemap</a></li>
 </ul>
 </li>
 </ul>
@@ -274,16 +274,16 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-orgb57cde1" class="outline-2">
-<h2 id="orgb57cde1"><span class="section-number-2">1</span> Vector interfaces</h2>
+<div id="outline-container-org2728e7e" class="outline-2">
+<h2 id="org2728e7e"><span class="section-number-2">1</span> Vector interfaces</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This file defines vector interfaces 
 </p>
 </div>
 
-<div id="outline-container-orgf438f8b" class="outline-3">
-<h3 id="orgf438f8b"><span class="section-number-3">1.1</span> The <code>Vector_Crtp</code> class</h3>
+<div id="outline-container-org2e22aab" class="outline-3">
+<h3 id="org2e22aab"><span class="section-number-3">1.1</span> The <code>Vector_Crtp</code> class</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 This Crtp interface defines the <code>Vector_Crtp</code> interface. This
@@ -327,19 +327,17 @@ Minimal requirements for any <code>Vector</code> class.
      <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Returns const refe;rece</span>
      <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">IMPL</span>&amp;
      <span style="color: #cd9b1d;">as_const</span>() <span style="color: #1c86ee;">const</span>
-</pre>
-</div>
 
-<p>
-operator=
-</p>
-
-<p>
-<b>Note:</b> cannot lead to object slicing if impl_assign is
-	is defined <b>at</b> the final class level.
-</p>
-<div class="org-src-container">
-<pre class="src src-cpp">     VMT_ASSIGNMENT_OPERATOR(Vector_Crtp);
+     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">operator=</span>
+     <span style="color: #7f7f7f;">//</span>
+     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">*Note:* cannot lead to object slicing as we call impl_assign that</span>
+     <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">is defined *at* the final class level.</span>
+     <span style="color: #7f7f7f;">//</span>
+     <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">Also note that for user convenience (writing V1=V2,</span>
+     <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">with V1 type being Vector_Crtp&lt;IMPL&gt;) this op=</span>
+     <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">declaration have to be public.</span>
+     <span style="color: #7f7f7f;">//</span>
+     <span style="color: #00688b;">VMT_ASSIGNMENT_OPERATOR</span>(<span style="color: #2e8b57;">Vector_Crtp</span>);
    };
 </pre>
 </div>
@@ -351,8 +349,8 @@ See: <a href="vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-122
 </div>
 </div>
 
-<div id="outline-container-orgccc275d" class="outline-3">
-<h3 id="orgccc275d"><span class="section-number-3">1.2</span> The <code>Dense_Vector_Crtp</code> class</h3>
+<div id="outline-container-orgc700d81" class="outline-3">
+<h3 id="orgc700d81"><span class="section-number-3">1.2</span> The <code>Dense_Vector_Crtp</code> class</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 This Crtp interface defines the <code>Dense_Vector_Crtp</code> interface. This
@@ -523,8 +521,8 @@ See: <a href="vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-122
 </p>
 </div>
 
-<div id="outline-container-orgf9f9615" class="outline-4">
-<h4 id="orgf9f9615"><span class="section-number-4">1.2.1</span> Implementation</h4>
+<div id="outline-container-orgcb4483d" class="outline-4">
+<h4 id="orgcb4483d"><span class="section-number-4">1.2.1</span> Implementation</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 See: 
@@ -538,26 +536,26 @@ See:
 </div>
 
 
-<div id="outline-container-orgf5bca06" class="outline-2">
-<h2 id="orgf5bca06"><span class="section-number-2">2</span> Backlinks</h2>
+<div id="outline-container-org3729254" class="outline-2">
+<h2 id="org3729254"><span class="section-number-2">2</span> Backlinks</h2>
 </div>
 
 
-<div id="outline-container-org8e08c8d" class="outline-2">
-<h2 id="org8e08c8d"><span class="section-number-2">3</span> 2 Backlinks</h2>
+<div id="outline-container-orgcd7f550" class="outline-2">
+<h2 id="orgcd7f550"><span class="section-number-2">3</span> 2 Backlinks</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org093d9b5" class="outline-3">
-<h3 id="org093d9b5"><span class="section-number-3">3.1</span> <a href="../../../examples/call_assign_demo.html">call_assign_demo.cpp</a></h3>
+<div id="outline-container-orgad5fef7" class="outline-3">
+<h3 id="orgad5fef7"><span class="section-number-3">3.1</span> <a href="../../../examples/how_to_new_vector_type.html">how_to_new_vector.cpp</a></h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-The minimal vector interface is <a href="#orgf438f8b">The <code>Vector_Crtp</code> class</a>. We also illustrate how the <a href="vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a> must be used. The code is as follows:
+The minimal vector interface is <a href="#org2e22aab">The <code>Vector_Crtp</code> class</a>. We also illustrate how the <a href="vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a> must be used. The code is as follows:
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgab01754" class="outline-3">
-<h3 id="orgab01754"><span class="section-number-3">3.2</span> <a href="../../../index.html">My Sitemap</a></h3>
+<div id="outline-container-org2b927dc" class="outline-3">
+<h3 id="org2b927dc"><span class="section-number-3">3.2</span> <a href="../../../index.html">My Sitemap</a></h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 <a href="src/LinearAlgebra/dense/vector_crtp.html">vector_crtp.hpp</a>
@@ -568,7 +566,7 @@ The minimal vector interface is <a href="#orgf438f8b">The <code>Vector_Crtp</cod
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-07 Tue 06:57</p>
+<p class="date">Created: 2020-07-09 Thu 20:02</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

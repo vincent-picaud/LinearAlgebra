@@ -783,6 +783,8 @@ main()
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
 
   PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M3);
+
+  PRINT_EXPR(M0, alpha * M1 * M2 + beta * M3);
 }
 
 // // ////////////////////////////////////////////////////////////////

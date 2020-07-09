@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-07 Tue 06:57 -->
+<!-- 2020-07-09 Thu 20:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>LinearAlgebra</title>
@@ -200,7 +200,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -247,12 +247,28 @@ for the JavaScript code in this tag.
 <h1 class="title">LinearAlgebra</h1>
 
 
-<div id="outline-container-org7196de6" class="outline-2">
-<h2 id="org7196de6"><span class="section-number-2">1</span> My Sitemap</h2>
+<div id="outline-container-org292c94d" class="outline-2">
+<h2 id="org292c94d"><span class="section-number-2">1</span> My Sitemap</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="theindex.html">Index</a></li>
 <li><a href="README.html">A small C++ linear algebra library</a></li>
+<li>sandbox
+<ul class="org-ul">
+<li><a href="sandbox/print_expr.html">print_expr.cpp</a></li>
+</ul></li>
+<li>examples
+<ul class="org-ul">
+<li><a href="examples/how_to_new_vector_type.html">how_to_new_vector_type.cpp</a></li>
+<li><a href="examples/matrix_view.html">Matrix view</a></li>
+</ul></li>
+<li>misc
+<ul class="org-ul">
+<li><a href="misc/journal.html">Journal</a></li>
+<li><a href="misc/todo_old.html">Reminder &amp; TODO list</a></li>
+<li><a href="misc/www_links.html">External web links</a></li>
+<li><a href="misc/todo.html">TODO list</a></li>
+</ul></li>
 <li>src
 <ul class="org-ul">
 <li><a href="src/index.html">Content</a></li>
@@ -265,39 +281,30 @@ for the JavaScript code in this tag.
 <li><a href="src/LinearAlgebra/metaexpr/call_assign_from_metaexpr.html">call_assign_from_metaexpr.hpp</a></li>
 <li><a href="src/LinearAlgebra/metaexpr/metaexpr.html">metaexpr.hpp</a></li>
 </ul></li>
-<li>utils
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/utils/crtp.html">crtp.hpp</a></li>
-</ul></li>
 <li>expr
 <ul class="org-ul">
-<li><a href="src/LinearAlgebra/expr/assign_fallback.html">assign_fallback.hpp</a></li>
-<li><a href="src/LinearAlgebra/expr/expr_tags.html">expr_tags.hpp</a></li>
+<li><a href="src/LinearAlgebra/expr/M_eq_aMM_bM.html">M_eq_aMM_bM.hpp</a></li>
+<li><a href="src/LinearAlgebra/expr/scalar_crtp.html">scalar_crtp.hpp</a></li>
 <li><a href="src/LinearAlgebra/expr/index.html">Contents</a></li>
+<li><a href="src/LinearAlgebra/expr/expr_tags.html">expr_tags.hpp</a></li>
+<li><a href="src/LinearAlgebra/expr/assign_fallback.html">assign_fallback.hpp</a></li>
+</ul></li>
+<li>utils
+<ul class="org-ul">
+<li><a href="src/LinearAlgebra/utils/same_mathematical_object_p.html">same_mathematical_object_p.hpp</a></li>
+<li><a href="src/LinearAlgebra/utils/crtp.html">crtp.hpp</a></li>
 </ul></li>
 <li>dense
 <ul class="org-ul">
+<li><a href="src/LinearAlgebra/dense/lhs.html">lhs.hpp</a></li>
 <li><a href="src/LinearAlgebra/dense/vmt_assignment_operator_define.html">vmt_assignment_operator_define.hpp</a></li>
 <li><a href="src/LinearAlgebra/dense/vector_crtp.html">vector_crtp.hpp</a></li>
 <li><a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp.hpp</a></li>
-<li><a href="src/LinearAlgebra/dense/vector.html">vector.hpp</a></li>
 <li><a href="src/LinearAlgebra/dense/matrix.html">matrix.hpp</a></li>
+<li><a href="src/LinearAlgebra/dense/vector.html">vector.hpp</a></li>
 <li><a href="src/LinearAlgebra/dense/README.html"><code>LinearAlgebra/dense/</code></a></li>
 </ul></li>
 </ul></li>
-</ul></li>
-<li>misc
-<ul class="org-ul">
-<li><a href="misc/www_links.html">External web links</a></li>
-<li><a href="misc/todo.html">TODO list</a></li>
-<li><a href="misc/todo_old.html">Reminder &amp; TODO list</a></li>
-<li><a href="misc/journal.html">Journal</a></li>
-</ul></li>
-<li>examples
-<ul class="org-ul">
-<li><a href="examples/how_to_new_vector_type.html">how_to_new_vector_type.cpp</a></li>
-<li><a href="examples/call_assign_demo.html">call_assign_demo.cpp</a></li>
-<li><a href="examples/matrix_view.html">Matrix view</a></li>
 </ul></li>
 </ul>
 </div>
@@ -305,7 +312,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-07 Tue 06:57</p>
+<p class="date">Created: 2020-07-09 Thu 20:02</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

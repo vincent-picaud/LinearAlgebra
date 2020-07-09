@@ -1,7 +1,8 @@
 #include "LinearAlgebra/expr/M_eq_aMM_bM.hpp"
 
 // #include "LinearAlgebra/expr/dimension.hpp"
-#include "LinearAlgebra/dense/matrix.hpp"
+// #include "LinearAlgebra/dense/matrix.hpp"
+#include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/expr/expr_tags.hpp"
 // #include "LinearAlgebra/dense/vector.hpp"
 
@@ -12,7 +13,20 @@ TEST(M_aMM_bM, Gemm_with_lhs)
 {
   Matrix<double> M(5, 5);
 
-  // assign(M, _plus_, _product_, _product_, 1, _identity_, M, _transpose_, M, _product_, 2, _lhs_);
+  assign(M,
+         _plus_,
+         _product_,
+         _product_,
+         Scalar<int>(1),
+         _identity_,
+         M,
+         _transpose_,
+         M,
+         _product_,
+         Scalar<int>(2),
+         M);
+
+  M = 1 * M * M + 2 * M;
 }
 
 // TEST(M_aMM_bM, Symmetric_rank_1)

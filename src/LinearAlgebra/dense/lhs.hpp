@@ -1,8 +1,8 @@
 // [[file:lhs.org]]
 #pragma once
 
-#include "LinearAlgebra/dense/matrix_crtp.hpp"
-#include "LinearAlgebra/dense/vector_crtp.hpp"
+#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
 
 namespace LinearAlgebra
 {
@@ -35,6 +35,8 @@ namespace LinearAlgebra
     using exact_type  = typename base_type::exact_type;
     using traits_type = typename base_type::traits_type;
 
+    using wrapped_type = typename VECTOR_TYPE::exact_type;
+
     using element_type = typename traits_type::element_type;
     using size_type    = typename traits_type::size_type;
 
@@ -50,6 +52,12 @@ namespace LinearAlgebra
     //
    public:
     Vector_LHS(const VECTOR_TYPE& vector) : _vector(vector) {}
+
+    const wrapped_type&
+    wrapped() const
+    {
+      return _vector;
+    }
 
     // Cannot be copied
     Vector_LHS& operator=(const Vector_LHS& vector) = delete;
@@ -76,10 +84,10 @@ namespace LinearAlgebra
   // Returns a lhs Vector object
   //
   template <typename IMPL>
-  Vector_LHS<Vector_Crtp<IMPL>>
+  Vector_LHS<IMPL>
   lhs(const Vector_Crtp<IMPL>& vector)
   {
-    return {vector};
+    return {vector.impl()};
   }
   // [END_lhs]
 
@@ -113,6 +121,8 @@ namespace LinearAlgebra
     using exact_type  = typename base_type::exact_type;
     using traits_type = typename base_type::traits_type;
 
+    using wrapped_type = typename MATRIX_TYPE::exact_type;
+    
     using element_type = typename traits_type::element_type;
     using I_size_type  = typename traits_type::I_size_type;
     using J_size_type  = typename traits_type::J_size_type;
@@ -121,7 +131,7 @@ namespace LinearAlgebra
     // Members
     // ////////////////
     //
-    const MATRIX_TYPE& _matrix;
+    const wrapped_type& _matrix;
 
     // ////////////////
     // Constructors
@@ -129,6 +139,12 @@ namespace LinearAlgebra
     //
    public:
     Matrix_LHS(const MATRIX_TYPE& matrix) : _matrix(matrix) {}
+
+    const wrapped_type&
+    wrapped() const
+    {
+      return _matrix;
+    }
 
     // Cannot be copied
     Matrix_LHS& operator=(const Matrix_LHS& matrix) = delete;
@@ -160,10 +176,10 @@ namespace LinearAlgebra
   // Returns a lhs Matrix object
   //
   template <typename IMPL>
-  Matrix_LHS<Matrix_Crtp<IMPL>>
+  Matrix_LHS<IMPL>
   lhs(const Matrix_Crtp<IMPL>& matrix)
   {
-    return {matrix};
+    return {matrix.impl()};
   }
   // [END_lhs]
 

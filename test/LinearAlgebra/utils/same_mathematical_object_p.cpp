@@ -1,10 +1,10 @@
 #include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
-#include "LinearAlgebra/dense/vector_view.hpp"
 
-#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
-
+#include "LinearAlgebra/dense/lhs.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
+#include "LinearAlgebra/dense/vector_view.hpp"
+#include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 
 #include <gtest/gtest.h>
 
@@ -41,10 +41,30 @@ TEST(Same_Mathematical_Object_P, matrix)
   EXPECT_FALSE(same_mathematical_object_p(V1, V2));
 }
 
-TEST(Same_Mathematical_Object_P, matrix_vector)
+// With LHS
+//
+TEST(Same_Mathematical_Object_P, vector_lhs)
 {
-  Matrix<int> M1(10, 4);
-  Vector<int> V1(10);
+  Vector<int> V1(4), V2(4);
+  auto LHS_V1 = lhs(V1);
+  auto LHS_V2 = lhs(V2);
 
-  EXPECT_FALSE(same_mathematical_object_p(M1, V1));
+  EXPECT_TRUE(same_mathematical_object_p(V1, LHS_V1));
+  EXPECT_FALSE(same_mathematical_object_p(V2, LHS_V1));
+  EXPECT_TRUE(same_mathematical_object_p(LHS_V1, V1));
+  EXPECT_TRUE(same_mathematical_object_p(LHS_V1, LHS_V1));
+  EXPECT_FALSE(same_mathematical_object_p(LHS_V1, LHS_V2));
+}
+
+TEST(Same_Mathematical_Object_P, matrix_lhs)
+{
+  Matrix<int> M1(10, 4), M2(10, 4);
+  auto LHS_M1 = lhs(M1);
+  auto LHS_M2 = lhs(M2);
+
+  EXPECT_TRUE(same_mathematical_object_p(M1, LHS_M1));
+  EXPECT_FALSE(same_mathematical_object_p(M2, LHS_M1));
+  EXPECT_TRUE(same_mathematical_object_p(LHS_M1, M1));
+  EXPECT_TRUE(same_mathematical_object_p(LHS_M1, LHS_M1));
+  EXPECT_FALSE(same_mathematical_object_p(LHS_M1, LHS_M2));
 }

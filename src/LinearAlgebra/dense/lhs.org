@@ -1,0 +1,64 @@
+#+Title: lhs.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Motivation
+
+This file define =XXX_LHS= like classes that are useful to declar left hand side. By example:
+
+#+begin_src cpp :eval never
+V = V + a * W
+#+end_src
+
+can be (por must be, if you care about performance) rewritten as:
+#+begin_src cpp :eval never
+V = lhs(V) + a * W
+#+end_src
+
+- Note :: it would have been better to be able to write something like
+#+begin_src cpp :eval never
+V = lhs + a * W
+#+end_src
+however that's not possible as we use =V= information like =size= and
+=element_type= to construct the =Vector_LHS= class
+
+* Implementation
+
+** The =lhs()= function                                                  :User:
+#+Index:Function!lhs
+
+This is the function the user must use. It returns a [[id:a3688737-7c97-4f22-8221-d00af7247898][The =Vector_LHS=]]
+or [[id:a3688737-7c97-4f22-8221-d00af7247898][The =Matrix_LHS=]].
+
+# file:lhs.hpp::BEGIN_lhs
+#+Call: Extract("lhs.hpp","lhs")
+
+*** Usage example
+
+A blas like expression
+
+\begin{equation*}
+M=\alpha M_1 M_2 + \beta M
+\end{equation*}
+
+must be written as:
+
+#+begin_src cpp :eval never
+M = a * M1 * M2+ b * rhs(M)
+#+end_src
+
+** The =Vector_LHS=                                                       :Dev:
+   :PROPERTIES:
+   :ID:       a3688737-7c97-4f22-8221-d00af7247898
+   :END:
+
+# file:lhs.hpp::BEGIN_Vector_LHS
+#+Call: Extract("lhs.hpp","Vector_LHS")
+
+** The =Matrix_LHS=                                                       :Dev:
+   :PROPERTIES:
+   :ID:       a3688737-7c97-4f22-8221-d00af7247898
+   :END:
+
+# file:lhs.hpp::BEGIN_Matrix_LHS
+#+Call: Extract("lhs.hpp","Matrix_LHS")

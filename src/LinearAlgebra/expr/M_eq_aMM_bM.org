@@ -1,0 +1,17 @@
+#+Title: M_eq_aMM_bM.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Considered expression
+
+This file includes routines realated to the computation of 
+\begin{equation*}
+M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3
+\end{equation*}
+
+
+** Alias
+
+The alias are:
+
+

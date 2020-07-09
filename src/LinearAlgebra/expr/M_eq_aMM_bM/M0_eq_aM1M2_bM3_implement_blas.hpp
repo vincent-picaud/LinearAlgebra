@@ -56,6 +56,39 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
 
+  template <typename ALPHA_IMPL,
+            typename BETA_IMPL,
+            typename MATRIX0_IMPL,
+            typename MATRIX1_IMPL,
+            typename MATRIX2_IMPL>
+  auto
+  assign(const Expr_Selector<Expr_Selector_Enum::Blas>& selected,
+         Dense_Matrix_Crtp<MATRIX0_IMPL>& matrix0,
+         const _plus_t_,
+         const _product_t_,
+         const _product_t_,
+         const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _identity_t_,
+         const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+         const _transpose_t_,
+         const Dense_Matrix_Crtp<MATRIX2_IMPL>& matrix2,
+         const _product_t_,
+         const Scalar_Crtp<BETA_IMPL>& beta,
+         const Matrix_LHS<MATRIX0_IMPL>& matrix3)
+      -> std::enable_if_t<
+          Is_Symmetric_Matrix_v<MATRIX0_IMPL> and Is_Full_Matrix_v<MATRIX1_IMPL> and
+          Is_Full_Matrix_v<MATRIX2_IMPL> and
+          Always_True_v<decltype(Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0))>>
+
+  {
+    assert(same_mathematical_object_p(matrix0.impl(), matrix3.impl()));
+    assert(same_mathematical_object_p(matrix1.impl(), matrix2.impl()));
+
+    Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0);
+
+    DEBUG_SET_SELECTED(selected);
+  }
+
   ////// syrk ////
   //
   // M0 := α.M1^t.M1 + β.M0

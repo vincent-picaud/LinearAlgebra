@@ -1,4 +1,4 @@
-#include "LinearAlgebra/expr/M_eq_aMM_bM_matrix.hpp"
+#include "LinearAlgebra/expr/M_eq_aMM_bM.hpp"
 
 // #include "LinearAlgebra/expr/dimension.hpp"
 #include "LinearAlgebra/dense/matrix.hpp"

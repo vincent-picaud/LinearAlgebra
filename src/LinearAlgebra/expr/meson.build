@@ -55,7 +55,7 @@ LinearAlgebra_headers += [
   'expr/expr_debug.hpp',
 
 
-  'expr/M_eq_aMM_bM_matrix.hpp', # specialization for dense default matrix
+  'expr/M_eq_aMM_bM.hpp', # specialization for dense default matrix
 
   # scalar_ref introduction
   'expr/scalar_crtp.hpp',     # required to make assign_fallback possible

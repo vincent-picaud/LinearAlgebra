@@ -771,148 +771,162 @@ assign(Matrix_Crtp<M0_IMPL>& M0,
        const _lhs_t_)
 {
 }
+
+
 // ////////////////////////////////////////////////////////////////
-
-void
-big_list()
-{
-  Scalar<int> alpha(1), beta(2), gamma(3);
-
-  Minimal_Vector v0(0), v1(1), v2(2), v3(3);
-  Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
-
-  std::cout << "*** X = αX" << std::endl;
-
-  PRINT_EXPR(v0, alpha * v1);
-  PRINT_EXPR(v0, alpha * v0);
-
-  std::cout << "*** X = αX + X" << std::endl;
-
-  PRINT_EXPR(v0, alpha * v1 + v0);
-
-  // attention: v2 is always with coef = 1
-  //            v1 coef is alpha
-  PRINT_EXPR(v0, alpha * v1 + v2);
-  PRINT_EXPR(v0, v1 + v2);
-  PRINT_EXPR(v0, -v1 + v2);
-
-  PRINT_EXPR(v0, v2 + alpha * v1);
-  PRINT_EXPR(v0, v2 - alpha * v1);
-  PRINT_EXPR(v0, v2 - v1);
-
-  //================================================================
-
-  std::cout << "*** v0 = α op(M) v1 + β v0" << std::endl;
-
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v0);
-
-  std::cout << "*** v0 = α op(M) v1 + β v2" << std::endl;
-
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
-  std::cout << "--- alias " << std::endl;
-  PRINT_EXPR(v0, M1 * v1 + v2);
-  PRINT_EXPR(v0, M1 * v1 + beta * v2);
-  PRINT_EXPR(v0, M1 * v1 - v2);
-  PRINT_EXPR(v0, v2 + M1 * v1);
-  PRINT_EXPR(v0, v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, v2 - M1 * v1);
-  PRINT_EXPR(v0, v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, v2 - alpha * M1 * v1);
-  PRINT_EXPR(v0, op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, op1(M1) * v1 - v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 + v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 - v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);
-  PRINT_EXPR(v0, beta * v2 + M1 * v1);
-  PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 - M1 * v1);
-  PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, -M1 * v1 + v2);
-  PRINT_EXPR(v0, -M1 * v1 + beta * v2);
-  PRINT_EXPR(v0, -M1 * v1 - v2);
-  PRINT_EXPR(v0, -v2 + M1 * v1);
-  PRINT_EXPR(v0, -v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, -v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, -v2 - M1 * v1);
-  PRINT_EXPR(v0, -v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, -op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, -op1(M1) * v1 - v2);
-
-  //================================================================
-
-  std::cout << "*** v0 = α op(M) v0" << std::endl;
-
-  PRINT_EXPR(v0, alpha * op1(M1) * v0);
-  PRINT_EXPR(v0, alpha * op1(inverse(M1)) * v0);
-
-  std::cout << "*** v0 = α op(M) v1" << std::endl;
-
-  PRINT_EXPR(v0, alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, alpha * op1(inverse(M1)) * v1);
-
-  std::cout << "--- alias" << std::endl;
-  PRINT_EXPR(v0, M1 * v1);
-  PRINT_EXPR(v0, inverse(M1) * v1);
-  PRINT_EXPR(v0, alpha * M1 * v1);
-  PRINT_EXPR(v0, alpha * inverse(M1) * v1);
-  PRINT_EXPR(v0, op1(M1) * v1);
-  PRINT_EXPR(v0, inverse(op1(M1)) * v1);
-  PRINT_EXPR(v0, op1(inverse(M1) * v1));
-  PRINT_EXPR(v0, alpha * inverse(op1(M1)) * v1);
-
-  std::cout << "--- alias forgotten" << std::endl;
-  PRINT_EXPR(v0, -M1 * v1);
-  PRINT_EXPR(v0, -inverse(M1) * v1);
-  PRINT_EXPR(v0, -inverse(op1(M1)) * v1);
-  PRINT_EXPR(v0, -op1(inverse(M1) * v1));
-
-  std::cout << "*** M0 = α op1(M1) op2(M2) + β M0" << std::endl;
-
-  PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M0);
-
-  //
-  // TODO:  M0 = α op1(M1) op2(M2) + β M1 + Alias
-  //
-
-  std::cout << "*** M0 = α op1(M1) op2(M1) + β M0" << std::endl;
-
-  PRINT_EXPR(M0, alpha * op1(M1) * op2(M1) + beta * M0);
-}
-
 int
 main()
 {
-  big_list();
-  return 0;
-
-  // ////////////////////////////////////////////////////////////////
-  
   Scalar<int> alpha(1), beta(2), gamma(3);
 
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
 
-  _LHS_ lhs;
-
-  PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * lhs);
-
-  PRINT_EXPR(M2, v1 + alpha * op1(M1) * v2 + beta * v3);
-
-  PRINT_EXPR(M0, -(alpha * inverse(op1(M1))));
-
-  PRINT_EXPR(M0, M1 * op2(lhs));
+  PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M3);
 }
-// [END_print_expr_cpp]
+
+// // ////////////////////////////////////////////////////////////////
+
+// void
+// big_list()
+// {
+//   Scalar<int> alpha(1), beta(2), gamma(3);
+
+//   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
+//   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
+
+//   std::cout << "*** X = αX" << std::endl;
+
+//   PRINT_EXPR(v0, alpha * v1);
+//   PRINT_EXPR(v0, alpha * v0);
+
+//   std::cout << "*** X = αX + X" << std::endl;
+
+//   PRINT_EXPR(v0, alpha * v1 + v0);
+
+//   // attention: v2 is always with coef = 1
+//   //            v1 coef is alpha
+//   PRINT_EXPR(v0, alpha * v1 + v2);
+//   PRINT_EXPR(v0, v1 + v2);
+//   PRINT_EXPR(v0, -v1 + v2);
+
+//   PRINT_EXPR(v0, v2 + alpha * v1);
+//   PRINT_EXPR(v0, v2 - alpha * v1);
+//   PRINT_EXPR(v0, v2 - v1);
+
+//   //================================================================
+
+//   std::cout << "*** v0 = α op(M) v1 + β v0" << std::endl;
+
+//   PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v0);
+
+//   std::cout << "*** v0 = α op(M) v1 + β v2" << std::endl;
+
+//   PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
+//   std::cout << "--- alias " << std::endl;
+//   PRINT_EXPR(v0, M1 * v1 + v2);
+//   PRINT_EXPR(v0, M1 * v1 + beta * v2);
+//   PRINT_EXPR(v0, M1 * v1 - v2);
+//   PRINT_EXPR(v0, v2 + M1 * v1);
+//   PRINT_EXPR(v0, v2 + op1(M1) * v1);
+//   PRINT_EXPR(v0, v2 + alpha * M1 * v1);
+//   PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);
+//   PRINT_EXPR(v0, v2 - M1 * v1);
+//   PRINT_EXPR(v0, v2 - op1(M1) * v1);
+//   PRINT_EXPR(v0, v2 - alpha * M1 * v1);
+//   PRINT_EXPR(v0, op1(M1) * v1 + v2);
+//   PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);
+//   PRINT_EXPR(v0, op1(M1) * v1 - v2);
+//   PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);
+//   PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);
+//   PRINT_EXPR(v0, alpha * M1 * v1 + v2);
+//   PRINT_EXPR(v0, alpha * M1 * v1 - v2);
+//   PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);
+//   PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);
+//   PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
+//   PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);
+//   PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);
+//   PRINT_EXPR(v0, beta * v2 + M1 * v1);
+//   PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);
+//   PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);
+//   PRINT_EXPR(v0, beta * v2 - M1 * v1);
+//   PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);
+//   PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);
+//   PRINT_EXPR(v0, -M1 * v1 + v2);
+//   PRINT_EXPR(v0, -M1 * v1 + beta * v2);
+//   PRINT_EXPR(v0, -M1 * v1 - v2);
+//   PRINT_EXPR(v0, -v2 + M1 * v1);
+//   PRINT_EXPR(v0, -v2 + op1(M1) * v1);
+//   PRINT_EXPR(v0, -v2 + alpha * M1 * v1);
+//   PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);
+//   PRINT_EXPR(v0, -v2 - M1 * v1);
+//   PRINT_EXPR(v0, -v2 - op1(M1) * v1);
+//   PRINT_EXPR(v0, -op1(M1) * v1 + v2);
+//   PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);
+//   PRINT_EXPR(v0, -op1(M1) * v1 - v2);
+
+//   //================================================================
+
+//   std::cout << "*** v0 = α op(M) v0" << std::endl;
+
+//   PRINT_EXPR(v0, alpha * op1(M1) * v0);
+//   PRINT_EXPR(v0, alpha * op1(inverse(M1)) * v0);
+
+//   std::cout << "*** v0 = α op(M) v1" << std::endl;
+
+//   PRINT_EXPR(v0, alpha * op1(M1) * v1);
+//   PRINT_EXPR(v0, alpha * op1(inverse(M1)) * v1);
+
+//   std::cout << "--- alias" << std::endl;
+//   PRINT_EXPR(v0, M1 * v1);
+//   PRINT_EXPR(v0, inverse(M1) * v1);
+//   PRINT_EXPR(v0, alpha * M1 * v1);
+//   PRINT_EXPR(v0, alpha * inverse(M1) * v1);
+//   PRINT_EXPR(v0, op1(M1) * v1);
+//   PRINT_EXPR(v0, inverse(op1(M1)) * v1);
+//   PRINT_EXPR(v0, op1(inverse(M1) * v1));
+//   PRINT_EXPR(v0, alpha * inverse(op1(M1)) * v1);
+
+//   std::cout << "--- alias forgotten" << std::endl;
+//   PRINT_EXPR(v0, -M1 * v1);
+//   PRINT_EXPR(v0, -inverse(M1) * v1);
+//   PRINT_EXPR(v0, -inverse(op1(M1)) * v1);
+//   PRINT_EXPR(v0, -op1(inverse(M1) * v1));
+
+//   std::cout << "*** M0 = α op1(M1) op2(M2) + β M0" << std::endl;
+
+//   PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M0);
+
+//   //
+//   // TODO:  M0 = α op1(M1) op2(M2) + β M1 + Alias
+//   //
+
+//   std::cout << "*** M0 = α op1(M1) op2(M1) + β M0" << std::endl;
+
+//   PRINT_EXPR(M0, alpha * op1(M1) * op2(M1) + beta * M0);
+// }
+
+// int
+// main()
+// {
+//   big_list();
+//   return 0;
+
+//   // ////////////////////////////////////////////////////////////////
+  
+//   Scalar<int> alpha(1), beta(2), gamma(3);
+
+//   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
+//   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
+
+//   _LHS_ lhs;
+
+//   PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * lhs);
+
+//   PRINT_EXPR(M2, v1 + alpha * op1(M1) * v2 + beta * v3);
+
+//   PRINT_EXPR(M0, -(alpha * inverse(op1(M1))));
+
+//   PRINT_EXPR(M0, M1 * op2(lhs));
+// }
+// // [END_print_expr_cpp]

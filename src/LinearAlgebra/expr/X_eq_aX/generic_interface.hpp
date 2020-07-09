@@ -21,6 +21,7 @@
 #include "LinearAlgebra/expr/expr.hpp"
 #include "LinearAlgebra/expr/expr_selector.hpp"
 #include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
+#include "LinearAlgebra/dense/vmt_crtp.hpp"
 
 namespace LinearAlgebra
 {

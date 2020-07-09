@@ -2,7 +2,7 @@
 //
 #pragma once
 
-#include "LinearAlgebra/expr/M_eq_aMM_bM_matrix.hpp"
+#include "LinearAlgebra/expr/M_eq_aMM_bM.hpp"
 #include "LinearAlgebra/expr/X_eq_aX_matrix.hpp"
 #include "LinearAlgebra/expr/expr.hpp"
 

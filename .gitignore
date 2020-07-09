@@ -20,3 +20,4 @@ subprojects/packagecache/
 /sandbox/**/*.html
 /*.html
 /org-roam.db
+build_release/

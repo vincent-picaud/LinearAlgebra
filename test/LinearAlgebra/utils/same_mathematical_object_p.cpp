@@ -20,7 +20,10 @@ TEST(Same_Mathematical_Object_P, vector)
 
   auto V1_view = create_vector_view(V1, 0, 10);
 
-  EXPECT_TRUE(same_mathematical_object_p(V1_view, V1));
+  // CAVEAT: We simplified our =same_mathematical_object_p= routine
+  // and now V and its view are *not longer* the same object.
+  //
+  EXPECT_FALSE(same_mathematical_object_p(V1_view, V1));
   EXPECT_FALSE(same_mathematical_object_p(V1_view, V2));
 
   auto V1_view_2 = create_vector_view(V1, 5, 10);

@@ -1,0 +1,13 @@
+#+Title: same_mathematical_object_p.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* The =same_mathematical_object_p()= function
+#+Index:Function!same_mathematical_object_p
+
+# file:same_mathematical_object_p.hpp::BEGIN_same_mathematical_object_p
+#+Call: Extract("same_mathematical_object_p.hpp","same_mathematical_object_p")
+
+* Units test
+
+#+Include: "/home/picaud/GitHub/LinearAlgebra/test/LinearAlgebra/utils/same_mathematical_object_p.cpp" src cpp

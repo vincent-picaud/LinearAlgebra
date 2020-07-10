@@ -1,0 +1,19 @@
+#+Title: v_eq_aMv_bv.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* $M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3$
+#+Index:Known Patterns!$M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3$
+
+# file:v_eq_aMv_bv.hpp::BEGIN_assign
+#+Call: Extract("v_eq_aMv_bv.hpp","assign")
+
+* Alias
+
+# file:v_eq_aMv_bv.hpp::BEGIN_assign
+#+Call: Extract("v_eq_aMv_bv.hpp","alias")
+
+* Unit test
+
+  #+Include: "../../../test/LinearAlgebra/expr/v_eq_aMv_bv.cpp" src cpp
+

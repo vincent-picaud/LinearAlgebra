@@ -16,8 +16,10 @@ test_array = [
   'V0_assign_alpha_op_M_V1_plus_beta_V0',
 
   'V0_assign_alpha_op_M_VX_header',
-  
+
+  # new implementation 
   'M_eq_aMM_bM',
+  'v_eq_aMv_bv',
 ]
 
 foreach test : test_array

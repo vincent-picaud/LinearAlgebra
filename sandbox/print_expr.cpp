@@ -696,8 +696,8 @@ namespace LinearAlgebra
 
     // ----------------
 
-    buffer << "// " << variable_name(dest.impl()) << " = " << reverse_Polish_string << std::endl
-           << "// " << std::endl;
+    // buffer << "// " << variable_name(dest.impl()) << " = " << reverse_Polish_string << std::endl;
+    buffer << "// " << std::endl;
 
     buffer << template_declaration_string << std::endl;
 
@@ -720,10 +720,69 @@ namespace LinearAlgebra
   }
 }  // namespace LinearAlgebra
 
+// string: search/replace
+void
+replaceAll(std::string& data, const std::string& toSearch, const std::string& replaceStr)
+{
+  // Get the first occurrence
+  size_t pos = data.find(toSearch);
+  // Repeat till end is reached
+  while (pos != std::string::npos)
+  {
+    // Replace this occurrence of Sub String
+    data.replace(pos, toSearch.size(), replaceStr);
+    // Get the next occurrence from the current position
+    pos = data.find(toSearch, pos + replaceStr.size());
+  }
+}
+
+// super naive
+std::string
+to_latex(std::string str)
+{
+  replaceAll(str, "alpha", "\\alpha");
+  replaceAll(str, "beta", "\\beta");
+  replaceAll(str, "gamma", "\\gamma");
+
+  replaceAll(str, "* ", "");
+
+  replaceAll(str, "inverse", "\\text{inv}");
+
+  replaceAll(str, "op0", "\\text{op}_0");
+  replaceAll(str, "op1", "\\text{op}_1");
+  replaceAll(str, "op2", "\\text{op}_2");
+
+  replaceAll(str, "M0", "M_0");
+  replaceAll(str, "M1", "M_1");
+  replaceAll(str, "M2", "M_2");
+  replaceAll(str, "M3", "M_3");
+  replaceAll(str, "M4", "M_4");
+
+  replaceAll(str, "V0", "V_0");
+  replaceAll(str, "V1", "V_1");
+  replaceAll(str, "V2", "V_2");
+  replaceAll(str, "V3", "V_3");
+  replaceAll(str, "V4", "V_4");
+
+  return str;
+}
+
+std::string
+to_latex_with_comment(const std::string& str)
+{
+  std::string to_return;
+
+  to_return += "// \\begin{equation*}\n";
+  to_return += "// " + to_latex(str) + "\n";
+  to_return += "// \\end{equation*}\n";
+
+  return to_return;
+}
+
 using namespace LinearAlgebra;
 
 #define PRINT_EXPR(DEST, EXPR) \
-  std::cout << "//\n// " #DEST << " = " << #EXPR << "\n" << to_string(DEST, EXPR);
+  std::cout << to_latex_with_comment(#DEST + std::string(" = ") + #EXPR) << to_string(DEST, EXPR);
 
 // ////////////////////////////////////////////////////////////////
 //
@@ -772,7 +831,6 @@ assign(Matrix_Crtp<M0_IMPL>& M0,
 {
 }
 
-
 // ////////////////////////////////////////////////////////////////
 int
 main()
@@ -784,7 +842,7 @@ main()
 
   PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M3);
 
-  PRINT_EXPR(M0, alpha * M1 * M2 + beta * M3);
+  PRINT_EXPR(M0, alpha * M1 * inverse(M2) + beta * M3);
 }
 
 // // ////////////////////////////////////////////////////////////////
@@ -915,7 +973,7 @@ main()
 //   return 0;
 
 //   // ////////////////////////////////////////////////////////////////
-  
+
 //   Scalar<int> alpha(1), beta(2), gamma(3);
 
 //   Minimal_Vector v0(0), v1(1), v2(2), v3(3);

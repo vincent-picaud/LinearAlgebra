@@ -6,7 +6,7 @@
 <!-- 2020-07-10 Fri 19:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>expr_tags.hpp</title>
+<title>v_eq_aMv_bv.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -266,28 +266,14 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">expr_tags.hpp</h1>
+<h1 class="title">v_eq_aMv_bv.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb0a694f">1. Motivations</a></li>
-<li><a href="#orgdbec1b2">2. The <code>Expr_Tags_Crtp</code> base class</a>
-<ul>
-<li><a href="#orgaa677e8">2.1. Tags</a></li>
-<li><a href="#org83d06d4">2.2. Operator unary etc&#x2026;</a></li>
-</ul>
-</li>
-<li><a href="#orgba59818">3. Backlinks</a></li>
-<li><a href="#org8aedb40">4. 5 Backlinks</a>
-<ul>
-<li><a href="#org8acfb03">4.1. My Sitemap</a></li>
-<li><a href="#org0b4d462">4.2. assign_fallback.hpp</a></li>
-<li><a href="#org5dc7842">4.3. expr_tags.hpp</a></li>
-<li><a href="#orgd21c114">4.4. crtp.hpp</a></li>
-<li><a href="#orgf82850c">4.5. Content</a></li>
-</ul>
-</li>
+<li><a href="#org95eaa26">1. \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</a></li>
+<li><a href="#org8a9bfa7">2. Alias</a></li>
+<li><a href="#org4d819fd">3. Unit test</a></li>
 </ul>
 </div>
 </div>
@@ -296,193 +282,136 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-orgb0a694f" class="outline-2">
-<h2 id="orgb0a694f"><span class="section-number-2">1</span> Motivations</h2>
+<div id="outline-container-org95eaa26" class="outline-2">
+<h2 id="org95eaa26"><span class="section-number-2">1</span> \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</h2>
 <div class="outline-text-2" id="text-1">
-<p>
-Define some tags to encode expressions like
-</p>
+<blockquote>
 \begin{equation*}
-  V=\alpha M W + \beta V
+v_0 = \alpha \text{op}_1(M_1) v_1 + \beta v_0
 \end{equation*}
-<p>
-which are translated into:
-</p>
+
 <div class="org-src-container">
-<pre class="src src-cpp"> assign(<span style="color: #00688b;">Vector_Crtp</span>&lt;VECTOR0_IMPL&gt;&amp; <span style="color: #2e8b57;">vector0</span>,
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
+            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V2_IMPL</span>&gt;
+  <span style="color: #00688b;">void</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v0</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;ALPHA_IMPL&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1_ENUM&gt; <span style="color: #2e8b57;">op1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;MATRIX1_IMPL&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;VECTOR1_IMPL&gt;&amp; <span style="color: #2e8b57;">vector1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1&gt; <span style="color: #2e8b57;">op1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v1</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;BETA_IMPL&gt;&amp; <span style="color: #2e8b57;">beta</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;VECTOR2_IMPL&gt;&amp; <span style="color: #2e8b57;">vector2</span>);
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v2</span>)
 </pre>
 </div>
-
-<p>
-In order to define <a href="assign_fallback.html#ID-284f04be-bb9d-4fb9-a02f-955a4b8a66ec"><code>assign</code> fallback</a> all tags must be children classes
-of <a href="../utils/crtp.html#ID-b3bedaa5-c99d-4b5f-88a4-33c44d53be94">The <code>Crtp</code> class</a>. That is the reason why the <a href="#orgdbec1b2"><code>Expr_Tags_Crtp</code></a> base
-class was introduced.
-</p>
+</blockquote>
 </div>
 </div>
 
-
-<div id="outline-container-orgdbec1b2" class="outline-2">
-<h2 id="orgdbec1b2"><span class="section-number-2">2</span> The <code>Expr_Tags_Crtp</code> base class</h2>
+<div id="outline-container-org8a9bfa7" class="outline-2">
+<h2 id="org8a9bfa7"><span class="section-number-2">2</span> Alias</h2>
 <div class="outline-text-2" id="text-2">
 <blockquote>
-<p>
-Crtp base class used by:
-</p>
-<ul class="org-ul">
-<li>tags</li>
-<li>operator unary, binary</li>
-</ul>
+nil</blockquote>
+</div>
+</div>
 
+<div id="outline-container-org4d819fd" class="outline-2">
+<h2 id="org4d819fd"><span class="section-number-2">3</span> Unit test</h2>
+<div class="outline-text-2" id="text-3">
 <div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-    <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Expr_Tags_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Expr_Tags_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
-    {
-    };
+<pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/matrix.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/vector.hpp"</span>
+
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">&lt;gtest/gtest.h&gt;</span>
+
+<span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
+
+<span style="color: #cd9b1d;">TEST</span>(v_eq_aMv_bv, blas_gemv)
+{
+  <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">T</span> = <span style="color: #00688b;">double</span>;
+
+  <span style="color: #00688b;">Tiny_Matrix</span>&lt;<span style="color: #00688b;">T</span>, 3, 2&gt; <span style="color: #2e8b57;">M</span>;
+  <span style="color: #00688b;">Vector</span>&lt;<span style="color: #00688b;">T</span>&gt; <span style="color: #2e8b57;">y</span>(3);
+  <span style="color: #00688b;">Tiny_Vector</span>&lt;<span style="color: #00688b;">T</span>, 2&gt; <span style="color: #2e8b57;">x</span>;
+
+  M(0, 0) = 1;
+  M(0, 1) = 0;
+  M(1, 0) = 0;
+  M(1, 1) = 1;
+  M(2, 0) = 1;
+  M(2, 1) = 1;
+
+  x[0] = 1;
+  x[1] = 2;
+
+  DEBUG_RESET_SELECTED();
+  assign(y,
+         _plus_,
+         _product_,
+         _product_,
+         Scalar&lt;<span style="color: #00688b;">T</span>&gt;(2),
+         _identity_,
+         M,
+         x,
+         _product_,
+         Scalar&lt;<span style="color: #00688b;">T</span>&gt;(0),
+         y);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), <span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas);
+
+  EXPECT_EQ(y[0], 2 * x[0]);
+  EXPECT_EQ(y[1], 2 * x[1]);
+  EXPECT_EQ(y[2], 2 * (x[0] + x[1]));
+}
+
+<span style="color: #cd9b1d;">TEST</span>(v_eq_aMv_bv, blas_symv)
+{
+  <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">T</span> = <span style="color: #00688b;">double</span>;
+
+  <span style="color: #00688b;">Tiny_Symmetric_Matrix</span>&lt;<span style="color: #00688b;">T</span>, 3&gt; <span style="color: #2e8b57;">M</span>;
+  <span style="color: #00688b;">Vector</span>&lt;<span style="color: #00688b;">T</span>&gt; <span style="color: #2e8b57;">y</span>(3);
+  <span style="color: #00688b;">Tiny_Vector</span>&lt;<span style="color: #00688b;">T</span>, 3&gt; <span style="color: #2e8b57;">x</span>;
+
+  M(0, 0) = 1;
+  <span style="color: #7f7f7f;">//  </span><span style="color: #7f7f7f;">M(0, 1) = 0;</span>
+  M(1, 0) = 0;
+  M(1, 1) = 1;
+
+  M(2, 0) = 1;
+  M(2, 1) = 1;
+  M(2, 2) = 1;
+
+  x[0] = 1;
+  x[1] = 2;
+
+  <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">y_cpy_as_int</span> = similar(<span style="color: #00688b;">Type_v</span>&lt;<span style="color: #00688b;">int</span>&gt;, y);
+
+  DEBUG_RESET_SELECTED();
+  assign(y,
+         _plus_,
+         _product_,
+         _product_,
+         Scalar&lt;<span style="color: #00688b;">T</span>&gt;(2),
+         _identity_,
+         M,
+         x,
+         _product_,
+         Scalar&lt;<span style="color: #00688b;">T</span>&gt;(0),
+         y);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), <span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas);
+
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">y_cpy_as_int = 2 * transpose(M) * x + 0 * y_cpy_as_int;</span>
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">EXPECT_EQ(y, y_cpy_as_int);</span>
+}
 </pre>
-</div>
-</blockquote>
-</div>
-
-<div id="outline-container-orgaa677e8" class="outline-3">
-<h3 id="orgaa677e8"><span class="section-number-3">2.1</span> Tags</h3>
-<div class="outline-text-3" id="text-2-1">
-<blockquote>
-<p>
-Tags used to notify operations (plus, product&#x2026;)
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_plus_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_plus_t_</span>&gt;
-    {
-    };
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_plus_</span> = _plus_t_();
-
-    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_minus_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_minus_t_</span>&gt;
-    {
-    };
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_minus_</span> = _minus_t_();
-
-    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_unary_minus_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_unary_minus_t_</span>&gt;
-    {
-    };
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_unary_minus_</span> = _unary_minus_t_();
-
-    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_product_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_product_t_</span>&gt;
-    {
-    };
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_product_</span> = _product_t_();
-
-    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_inverse_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_inverse_t_</span>&gt;
-    {
-    };
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_inverse_</span> = _inverse_t_();
-
-    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_assign_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_assign_t_</span>&gt;
-    {
-    };
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_assign_</span> = _assign_t_();
-
-</pre>
-</div>
-
-<p>
-Tags used to notify argument
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_lhs_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_lhs_t_</span>&gt;
-    {
-    };
-    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_rhs_1_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_rhs_1_t_</span>&gt;
-    {
-    };
-    <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">_rhs_2_t_</span> <span style="color: #1c86ee;">final</span> : <span style="color: #00688b;">Expr_Tags_Crtp</span>&lt;<span style="color: #00688b;">_rhs_2_t_</span>&gt;
-    {
-    };
-
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_lhs_</span>   = _lhs_t_();
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_rhs_1_</span> = _rhs_1_t_();
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">auto</span> <span style="color: #2e8b57;">_rhs_2_</span> = _rhs_2_t_();
-
-</pre>
-</div>
-</blockquote>
-</div>
-</div>
-
-
-<div id="outline-container-org83d06d4" class="outline-3">
-<h3 id="org83d06d4"><span class="section-number-3">2.2</span> Operator unary etc&#x2026;</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
--&gt; file metaexpr/metaexpr_crtp.hpp
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgba59818" class="outline-2">
-<h2 id="orgba59818"><span class="section-number-2">3</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-org8aedb40" class="outline-2">
-<h2 id="org8aedb40"><span class="section-number-2">4</span> 5 Backlinks</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-org8acfb03" class="outline-3">
-<h3 id="org8acfb03"><span class="section-number-3">4.1</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-4-1">
-<p>
-<a href="src/LinearAlgebra/expr/expr_tags.html">expr_tags.hpp</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org0b4d462" class="outline-3">
-<h3 id="org0b4d462"><span class="section-number-3">4.2</span> <a href="assign_fallback.html">assign_fallback.hpp</a></h3>
-<div class="outline-text-3" id="text-4-2">
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri Jun 26 2020 06:20&gt;</span></span> &lt;- <a href="#orgb0a694f">Motivations</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org5dc7842" class="outline-3">
-<h3 id="org5dc7842"><span class="section-number-3">4.3</span> <a href="expr_tags.html">expr_tags.hpp</a></h3>
-<div class="outline-text-3" id="text-4-3">
-<p>
-In order to define <a href="assign_fallback.html#ID-284f04be-bb9d-4fb9-a02f-955a4b8a66ec"><code>assign</code> fallback</a> all tags must be children classes of <a href="../utils/crtp.html#ID-b3bedaa5-c99d-4b5f-88a4-33c44d53be94">The <code>Crtp</code> class</a>. That is the reason why the <a href="#orgdbec1b2"><code>Expr_Tags_Crtp</code></a> base class was introduced.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgd21c114" class="outline-3">
-<h3 id="orgd21c114"><span class="section-number-3">4.4</span> <a href="../utils/crtp.html">crtp.hpp</a></h3>
-<div class="outline-text-3" id="text-4-4">
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri Jun 26 2020 06:28&gt;</span></span> &lt;- <a href="#orgb0a694f">Motivations</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgf82850c" class="outline-3">
-<h3 id="orgf82850c"><span class="section-number-3">4.5</span> <a href="../../index.html">Content</a></h3>
-<div class="outline-text-3" id="text-4-5">
-<p>
-<a href="src/LinearAlgebra/expr/expr_tags.html">expr_tags</a>
-</p>
 </div>
 </div>
 </div>

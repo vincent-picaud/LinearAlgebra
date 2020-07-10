@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-10 Fri 17:43 -->
+<!-- 2020-07-10 Fri 19:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>M_eq_aMM_bM.hpp</title>
@@ -271,11 +271,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge3cb790">1. \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</a>
-<ul>
-<li><a href="#orgbdccb69">1.1. Alias</a></li>
-</ul>
-</li>
+<li><a href="#orge3cb790">1. \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</a></li>
+<li><a href="#orgbdccb69">2. Alias</a></li>
+<li><a href="#org296ac2c">3. Unit test</a></li>
 </ul>
 </div>
 </div>
@@ -318,10 +316,11 @@ M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3
 </div>
 </blockquote>
 </div>
+</div>
 
-<div id="outline-container-orgbdccb69" class="outline-3">
-<h3 id="orgbdccb69"><span class="section-number-3">1.1</span> Alias</h3>
-<div class="outline-text-3" id="text-1-1">
+<div id="outline-container-orgbdccb69" class="outline-2">
+<h2 id="orgbdccb69"><span class="section-number-2">2</span> Alias</h2>
+<div class="outline-text-2" id="text-2">
 <blockquote>
 \begin{equation*}
 M_0 = \alpha M_1 M_2 + \beta M_3
@@ -350,11 +349,66 @@ M_0 = \alpha M_1 M_2 + \beta M_3
 </blockquote>
 </div>
 </div>
+
+<div id="outline-container-org296ac2c" class="outline-2">
+<h2 id="org296ac2c"><span class="section-number-2">3</span> Unit test</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/matrix.hpp"</span>
+
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/expr/M_eq_aMM_bM.hpp"</span>
+
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">&lt;gtest/gtest.h&gt;</span>
+
+<span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
+<span style="color: #cd9b1d;">TEST</span>(M_aMM_bM, Gemm_with_lhs)
+{
+  <span style="color: #00688b;">Matrix</span>&lt;<span style="color: #00688b;">double</span>&gt; <span style="color: #2e8b57;">M0</span>(5, 5);
+  <span style="color: #00688b;">Matrix</span>&lt;<span style="color: #00688b;">double</span>&gt; <span style="color: #2e8b57;">M1</span>(5, 5);
+  <span style="color: #00688b;">Matrix</span>&lt;<span style="color: #00688b;">double</span>&gt; <span style="color: #2e8b57;">M2</span>(5, 5);
+
+  assign(M0,
+         _plus_,
+         _product_,
+         _product_,
+         Scalar&lt;<span style="color: #00688b;">int</span>&gt;(1),
+         _identity_,
+         M1,
+         _transpose_,
+         M2,
+         _product_,
+         Scalar&lt;<span style="color: #00688b;">int</span>&gt;(2),
+         M0);
+
+  <span style="color: #7f7f7f;">//  </span><span style="color: #7f7f7f;">M = 1 * M1 * M2 + 2 * M;</span>
+}
+
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">TEST(M_aMM_bM, Symmetric_rank_1)</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">{</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Symmetric_Matrix&lt;double&gt; symM(5, 5);</span>
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Matrix&lt;double&gt; M(5, 5);</span>
+
+<span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">assign(symM,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">_plus_,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">_product_,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">_product_,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">1,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">_identity_,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">M,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">_transpose_,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">_rhs_1_,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">_product_,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">2,</span>
+<span style="color: #7f7f7f;">//          </span><span style="color: #7f7f7f;">_lhs_);</span>
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">}</span>
+</pre>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-10 Fri 17:43</p>
+<p class="date">Created: 2020-07-10 Fri 19:43</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

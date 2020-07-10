@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-10 Fri 17:43 -->
+<!-- 2020-07-10 Fri 19:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>print_expr.cpp</title>
@@ -1025,11 +1025,11 @@ Not a very clean code, but really useful to <b>automatically</b> generate <a hre
   replaceAll(str, <span style="color: #8b7355;">"M3"</span>, <span style="color: #8b7355;">"M_3"</span>);
   replaceAll(str, <span style="color: #8b7355;">"M4"</span>, <span style="color: #8b7355;">"M_4"</span>);
 
-  replaceAll(str, <span style="color: #8b7355;">"V0"</span>, <span style="color: #8b7355;">"V_0"</span>);
-  replaceAll(str, <span style="color: #8b7355;">"V1"</span>, <span style="color: #8b7355;">"V_1"</span>);
-  replaceAll(str, <span style="color: #8b7355;">"V2"</span>, <span style="color: #8b7355;">"V_2"</span>);
-  replaceAll(str, <span style="color: #8b7355;">"V3"</span>, <span style="color: #8b7355;">"V_3"</span>);
-  replaceAll(str, <span style="color: #8b7355;">"V4"</span>, <span style="color: #8b7355;">"V_4"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"v0"</span>, <span style="color: #8b7355;">"v_0"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"v1"</span>, <span style="color: #8b7355;">"v_1"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"v2"</span>, <span style="color: #8b7355;">"v_2"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"v3"</span>, <span style="color: #8b7355;">"v_3"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"v4"</span>, <span style="color: #8b7355;">"v_4"</span>);
 
   <span style="color: #1c86ee;">return</span> str;
 }
@@ -1107,9 +1107,48 @@ Not a very clean code, but really useful to <b>automatically</b> generate <a hre
   <span style="color: #00688b;">Minimal_Vector</span> <span style="color: #2e8b57;">v0</span>(0), <span style="color: #2e8b57;">v1</span>(1), <span style="color: #2e8b57;">v2</span>(2), <span style="color: #2e8b57;">v3</span>(3);
   <span style="color: #00688b;">Minimal_Matrix</span> <span style="color: #2e8b57;">M0</span>(0), <span style="color: #2e8b57;">M1</span>(1), <span style="color: #2e8b57;">M2</span>(2), <span style="color: #2e8b57;">M3</span>(3);
 
-  PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M3);
+  PRINT_EXPR(v0, M1 * v1 + v2);
+  PRINT_EXPR(v0, M1 * v1 + beta * v2);
+  PRINT_EXPR(v0, M1 * v1 - v2);
+  PRINT_EXPR(v0, v2 + M1 * v1);
+  PRINT_EXPR(v0, v2 + op1(M1) * v1);
+  PRINT_EXPR(v0, v2 + alpha * M1 * v1);
+  PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);
+  PRINT_EXPR(v0, v2 - M1 * v1);
+  PRINT_EXPR(v0, v2 - op1(M1) * v1);
+  PRINT_EXPR(v0, v2 - alpha * M1 * v1);
+  PRINT_EXPR(v0, op1(M1) * v1 + v2);
+  PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);
+  PRINT_EXPR(v0, op1(M1) * v1 - v2);
+  PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);
+  PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);
+  PRINT_EXPR(v0, alpha * M1 * v1 + v2);
+  PRINT_EXPR(v0, alpha * M1 * v1 - v2);
+  PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);
+  PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);
+  PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
+  PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);
+  PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);
+  PRINT_EXPR(v0, beta * v2 + M1 * v1);
+  PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);
+  PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);
+  PRINT_EXPR(v0, beta * v2 - M1 * v1);
+  PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);
+  PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);
+  PRINT_EXPR(v0, -M1 * v1 + v2);
+  PRINT_EXPR(v0, -M1 * v1 + beta * v2);
+  PRINT_EXPR(v0, -M1 * v1 - v2);
+  PRINT_EXPR(v0, -v2 + M1 * v1);
+  PRINT_EXPR(v0, -v2 + op1(M1) * v1);
+  PRINT_EXPR(v0, -v2 + alpha * M1 * v1);
+  PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);
+  PRINT_EXPR(v0, -v2 - M1 * v1);
+  PRINT_EXPR(v0, -v2 - op1(M1) * v1);
+  PRINT_EXPR(v0, -op1(M1) * v1 + v2);
+  PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);
+  PRINT_EXPR(v0, -op1(M1) * v1 - v2);
 
-  PRINT_EXPR(M0, alpha * M1 * M2 + beta * M3);
+  <span style="color: #7f7f7f;">//     </span><span style="color: #7f7f7f;">PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v0);</span>
 }
 
 <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">// ////////////////////////////////////////////////////////////////</span>
@@ -1265,7 +1304,7 @@ Not a very clean code, but really useful to <b>automatically</b> generate <a hre
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-10 Fri 17:43</p>
+<p class="date">Created: 2020-07-10 Fri 19:43</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

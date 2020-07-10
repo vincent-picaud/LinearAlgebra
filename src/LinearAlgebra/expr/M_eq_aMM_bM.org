@@ -2,22 +2,18 @@
 #+Call: Setup()
 #+Call: HomeUp()
 
-* $M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3$
-#+Index:Known Patterns!$M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3$
-
-This file includes routines realated to the computation of 
-\begin{equation*}
-M_0=\alpha op_1(M_1) op_2(M_2) + \beta M_3
-\end{equation*}
+* $M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3$
+#+Index:Known Patterns!$M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3$
 
 # file:M_eq_aMM_bM.hpp::BEGIN_assign
 #+Call: Extract("M_eq_aMM_bM.hpp","assign")
 
-** Alias
-
-The alias are:
+* Alias
 
 # file:M_eq_aMM_bM.hpp::BEGIN_assign
 #+Call: Extract("M_eq_aMM_bM.hpp","alias")
 
+* Unit test
+
+  #+Include: "../../../test/LinearAlgebra/expr/M_eq_aMM_bM.cpp" src cpp
 

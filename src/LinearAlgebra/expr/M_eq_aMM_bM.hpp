@@ -1,3 +1,4 @@
+// [[file:M_eq_aMM_bM.org]]
 #pragma once
 
 #include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
@@ -9,17 +10,10 @@
 namespace LinearAlgebra
 {
   // [BEGIN_assign]
-  // *User interface*
+  //
   // \begin{equation*}
-  // M_0 = \alpha * op_1(M_1) * op_2(M_2) + \beta * M_3
+  // M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3
   // \end{equation*}
-  //
-  // Reverse polish:
-  // \begin{equation*}
-  // M_0 = +\ *\ *\ \alpha\ op_1\ M_1\ op_2\ M_2\ *\ \beta\ M_3
-  // \end{equation*}
-  //
-  //
   //
   template <typename M0_IMPL,
             typename ALPHA_IMPL,

@@ -7,22 +7,24 @@
 using namespace LinearAlgebra;
 TEST(M_aMM_bM, Gemm_with_lhs)
 {
-  Matrix<double> M(5, 5);
+  Matrix<double> M0(5, 5);
+  Matrix<double> M1(5, 5);
+  Matrix<double> M2(5, 5);
 
-  assign(M,
+  assign(M0,
          _plus_,
          _product_,
          _product_,
          Scalar<int>(1),
          _identity_,
-         M,
+         M1,
          _transpose_,
-         M,
+         M2,
          _product_,
          Scalar<int>(2),
-         M);
+         M0);
 
-  M = 1 * M * M + 2 * M;
+  //  M = 1 * M1 * M2 + 2 * M;
 }
 
 // TEST(M_aMM_bM, Symmetric_rank_1)

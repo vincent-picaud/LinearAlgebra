@@ -58,6 +58,8 @@ namespace LinearAlgebra
       assign(matrix0, matrix3);
     }
 
+    assert(are_not_aliased_p(matrix0.impl(), matrix1.impl()));
+
     Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0);
 
     DEBUG_SET_SELECTED(selected);
@@ -142,6 +144,8 @@ namespace LinearAlgebra
       assign(matrix0, matrix3);
     }
 
+    assert(are_not_aliased_p(matrix0.impl(), matrix1.impl()));
+
     Blas::syrk_AtA(alpha.value(), matrix1, beta.value(), matrix0);
 
     DEBUG_SET_SELECTED(selected);
@@ -178,7 +182,7 @@ namespace LinearAlgebra
          const _product_t_,
          const Scalar_Crtp<BETA_IMPL>& beta,
          const Dense_Matrix_Crtp<MATRIX3_IMPL>& matrix3)
-   // [END_gemm]
+      // [END_gemm]
       -> std::enable_if_t<Is_Full_Matrix_v<MATRIX0_IMPL> and Is_Full_Matrix_v<MATRIX3_IMPL> and
                           Is_Full_Matrix_v<MATRIX1_IMPL> and Is_Full_Matrix_v<MATRIX2_IMPL> and
                           Always_True_v<decltype(assign(matrix0, matrix3))> and
@@ -190,6 +194,9 @@ namespace LinearAlgebra
     {
       assign(matrix0, matrix3);
     }
+
+    assert(are_not_aliased_p(matrix0.impl(), matrix1.impl()) and
+           are_not_aliased_p(matrix0.impl(), matrix2.impl()));
 
     Blas::gemm(alpha.value(), op1, matrix1, op2, matrix2, beta.value(), matrix0);
 

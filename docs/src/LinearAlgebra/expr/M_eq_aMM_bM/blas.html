@@ -6,7 +6,7 @@
 <!-- 2020-07-10 Fri 17:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>M_eq_aMM_bM.hpp</title>
+<title>blas.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -266,14 +266,15 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">M_eq_aMM_bM.hpp</h1>
+<h1 class="title">blas.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge3cb790">1. \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</a>
+<li><a href="#org42b81f5">1. Provided wrappings</a>
 <ul>
-<li><a href="#orgbdccb69">1.1. Alias</a></li>
+<li><a href="#org7b84f3b">1.1. <code>syrk</code></a></li>
+<li><a href="#orgfa044e4">1.2. <code>gemm</code></a></li>
 </ul>
 </li>
 </ul>
@@ -281,70 +282,136 @@ for the JavaScript code in this tag.
 </div>
 
 <p>
-<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+<a href="../../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-orge3cb790" class="outline-2">
-<h2 id="orge3cb790"><span class="section-number-2">1</span> \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</h2>
+<div id="outline-container-org42b81f5" class="outline-2">
+<h2 id="org42b81f5"><span class="section-number-2">1</span> Provided wrappings</h2>
 <div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org7b84f3b" class="outline-3">
+<h3 id="org7b84f3b"><span class="section-number-3">1.1</span> <code>syrk</code></h3>
+<div class="outline-text-3" id="text-1-1">
 <blockquote>
+<p>
+Compute:
+</p>
 \begin{equation*}
-M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3
+M_0 = \alpha M_1\text{transpose}(M_2) + \beta M_3
 \end{equation*}
+<p>
+where:
+</p>
+<ul class="org-ul">
+<li>\(M_1, M_2\) : dense matrices</li>
+<li>\(M_0, M_3\) : dense symmetric matrices</li>
+</ul>
 
 <div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M0_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
-            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
-            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP2</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M2_IMPL</span>,
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
             <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M3_IMPL</span>&gt;
-  <span style="color: #00688b;">void</span>
-  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M0</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX2_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX3_IMPL</span>&gt;
+  <span style="color: #1c86ee;">auto</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt;&amp; <span style="color: #2e8b57;">selected</span>,
+         <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix0</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1&gt; <span style="color: #2e8b57;">op1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP2&gt; <span style="color: #2e8b57;">op2</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M2</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_identity_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_transpose_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix2</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M3</span>)
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix3</span>)
+</pre>
+</div>
+
+<p>
+Compute:
+</p>
+\begin{equation*}
+M_0 = \alpha \text{transpose}(M_1)M_2 + \beta M_3
+\end{equation*}
+<p>
+where:
+</p>
+<ul class="org-ul">
+<li>\(M_1, M_2\) : dense matrices</li>
+<li>\(M_0, M_3\) : dense symmetric matrices</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX2_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX3_IMPL</span>&gt;
+  <span style="color: #1c86ee;">auto</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt;&amp; <span style="color: #2e8b57;">selected</span>,
+         <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix0</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_transpose_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_identity_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix2</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix3</span>)
 </pre>
 </div>
 </blockquote>
 </div>
+</div>
 
-<div id="outline-container-orgbdccb69" class="outline-3">
-<h3 id="orgbdccb69"><span class="section-number-3">1.1</span> Alias</h3>
-<div class="outline-text-3" id="text-1-1">
+<div id="outline-container-orgfa044e4" class="outline-3">
+<h3 id="orgfa044e4"><span class="section-number-3">1.2</span> <code>gemm</code></h3>
+<div class="outline-text-3" id="text-1-2">
 <blockquote>
+<p>
+Compute:
+</p>
 \begin{equation*}
-M_0 = \alpha M_1 M_2 + \beta M_3
+  M_0 = \alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3
 \end{equation*}
+<p>
+where:
+</p>
+<ul class="org-ul">
+<li>\(M_0, M_1, M_2, M_3\) : dense matrices</li>
+</ul>
 
 <div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M0_IMPL</span>,
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1_ENUM</span>,
+            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP2_ENUM</span>,
             <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M2_IMPL</span>,
             <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M3_IMPL</span>&gt;
-  <span style="color: #00688b;">void</span>
-  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M0</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX2_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX3_IMPL</span>&gt;
+  <span style="color: #1c86ee;">auto</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt;&amp; <span style="color: #2e8b57;">selected</span>,
+         <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix0</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M2</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1_ENUM&gt; <span style="color: #2e8b57;">op1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP2_ENUM&gt; <span style="color: #2e8b57;">op2</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix2</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M3</span>)
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix3</span>)
 </pre>
 </div>
 </blockquote>

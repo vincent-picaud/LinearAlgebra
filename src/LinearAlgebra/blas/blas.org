@@ -1,0 +1,38 @@
+#+Title: blas.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Blas support
+
+This is a "high level" of Blas wrapping status
+
+** Macro =HAS_BLAS=
+#+Index:Macro:HAS_BLAS
+
+This macro is important as it allows to know if this library is
+compilated with Blas support. It is defined the =blas_config.hpp= file.
+
+- Usage example ::
+#+begin_src cpp :eval never
+,#ifdef BLAS_DEBUG
+// ...
+,#endif
+#+end_src
+
+** Wrapping status
+
+For Blas subroutine lists, see:
+- http://www.icl.utk.edu/~mgates3/docs/lapack.html
+- http://www.icl.utk.edu/~mgates3/docs/lapack-proto.html
+
+*** Level 1
+ # file:subroutines_dense.hpp::BEGIN_level_1
+ #+Call: Extract("subroutines_dense.hpp","level_1")
+
+*** Level 2
+ # file:subroutines_dense.hpp::BEGIN_level_2
+ #+Call: Extract("subroutines_dense.hpp","level_2")
+
+*** Level 3
+ # file:subroutines_dense.hpp::BEGIN_level_3
+ #+Call: Extract("subroutines_dense.hpp","level_3")

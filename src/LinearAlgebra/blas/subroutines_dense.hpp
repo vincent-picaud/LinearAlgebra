@@ -29,10 +29,8 @@
 
 namespace LinearAlgebra::Blas
 {
-  /////////////
-  // Level 1 //
-  /////////////
-  //
+  // [BEGIN_level_1]
+  // #+begin_example
   //                            dim scalar vector   vector   scalars              5-element prefixes
   //
   // - [ ] : SUBROUTINE _ROTG (                                      A, B, C, S )          S, D
@@ -50,6 +48,9 @@ namespace LinearAlgebra::Blas
   // - [ ] : FUNCTION   _NRM2 ( N,         X, INCX )                                       S, D, SC, DZ
   // - [ ] : FUNCTION   _ASUM ( N,         X, INCX )                                       S, D, SC, DZ
   // - [ ] : FUNCTION   I_AMAX( N,         X, INCX )                                       S, D, C, Z
+  //
+  // #+end_example
+  // [END_level_1]
 
   //==== copy ====
   //
@@ -74,9 +75,9 @@ namespace LinearAlgebra::Blas
     Blas::scal(V.size(), alpha, V.data(), V.increment());
   }
 
-  /////////////
-  // Level 2 //
-  /////////////
+  // [BEGIN_level_2]
+  // #+begin_example
+  //
   //                 options            dim   b-width scalar matrix  vector   scalar vector   prefixes
   //
   // - [ ] : _GEMV (        TRANS,      M, N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D, C, Z
@@ -108,6 +109,9 @@ namespace LinearAlgebra::Blas
   // - [ ] : _SYR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, A, LDA ) S, D
   // - [ ] : _SPR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, AP )     S, D
   // - [ ] :
+  //
+  // #+end_example
+  // [END_level_2]
 
   //==== trmv ====
   //
@@ -302,9 +306,8 @@ namespace LinearAlgebra::Blas
          Y.increment());
   }
 
-  /////////////
-  // Level 3 //
-  /////////////
+  // [BEGIN_level_3]
+  // #+begin_example
   //
   //                 options                          dim      scalar matrix  matrix  scalar matrix  prefixes
   //
@@ -317,6 +320,9 @@ namespace LinearAlgebra::Blas
   // - [ ] : _HER2K(       UPLO, TRANS,                  N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) C, Z
   // - [ ] : _TRMM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
   // - [ ] : _TRSM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
+  //
+  // #+end_example
+  // [END_level_3]
 
   //==== syrk ====
   //
@@ -395,14 +401,15 @@ namespace LinearAlgebra::Blas
 
   //==== gemm ====
   //
-  template <Matrix_Unary_Op_Enum OP1,
-            Matrix_Unary_Op_Enum OP2,
-            typename A_IMPL,
-            typename B_IMPL,
-            typename C_IMPL,
-            //
-            typename ENABLED_1_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP1>>,
-            typename ENABLED_2_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP2>>>
+  template <
+      Matrix_Unary_Op_Enum OP1,
+      Matrix_Unary_Op_Enum OP2,
+      typename A_IMPL,
+      typename B_IMPL,
+      typename C_IMPL,
+      //
+      typename ENABLED_1_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP1>>,
+      typename ENABLED_2_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP2>>>
   auto
   gemm(const Element_Type_t<C_IMPL>& alpha,
        const _matrix_unary_op_t_<OP1> op1,

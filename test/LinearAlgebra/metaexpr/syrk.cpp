@@ -1,8 +1,7 @@
-
-#include "LinearAlgebra/dense/matrix_fwd.hpp"
-#include "LinearAlgebra/expr/M_eq_aMM_bM.hpp"
 #include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/vector.hpp"
+
+#include "LinearAlgebra/expr/M_eq_aMM_bM.hpp"
 
 #include <gtest/gtest.h>
 
@@ -55,16 +54,16 @@ TEST(Syrk, Gemm)
 
   EXPECT_EQ(C_AAt(1, 1), 2 * AAt(1, 1) + 3);
 
-  //================ with LHS
+  // //================ with LHS
 
-  C_AAt = 1;
+  // C_AAt = 1;
 
-  C_AAt = 2 * identity(A) * transpose(A) + 3 * lhs(C_AAt);
+  // C_AAt = 2 * identity(A) * transpose(A) + 3 * lhs(C_AAt);
 
-  EXPECT_EQ(C_AAt(0, 0), 2 * AAt(0, 0) + 3);
-  EXPECT_EQ(C_AAt(1, 0), 2 * AAt(1, 0) + 3);
+  // EXPECT_EQ(C_AAt(0, 0), 2 * AAt(0, 0) + 3);
+  // EXPECT_EQ(C_AAt(1, 0), 2 * AAt(1, 0) + 3);
 
-  EXPECT_EQ(C_AAt(1, 1), 2 * AAt(1, 1) + 3);
+  // EXPECT_EQ(C_AAt(1, 1), 2 * AAt(1, 1) + 3);
 
   //====
 

@@ -1,7 +1,10 @@
 #pragma once
 
-#include "LinearAlgebra/expr/M_eq_aMM_bM/M0_eq_aM1M2_bM3_implement_blas.hpp"
-#include "LinearAlgebra/expr/M_eq_aMM_bM/M0_eq_aM1M2_bM3_interface.hpp"
+#include "LinearAlgebra/dense/matrix_crtp_fwd.hpp"
+#include "LinearAlgebra/dense/vector_crtp_fwd.hpp"
+#include "LinearAlgebra/expr/expr.hpp"
+
+#include "LinearAlgebra/expr/M_eq_aMM_bM/blas.hpp"
 
 namespace LinearAlgebra
 {
@@ -68,8 +71,9 @@ namespace LinearAlgebra
 
   // [BEGIN_alias]
   //
-  // M0 = alpha * M1 * M2 + beta * M3
-  // M0 = + * * alpha M1 M2 * beta M3
+  // \begin{equation*}
+  // M_0 = \alpha M_1 M_2 + \beta M_3
+  // \end{equation*}
   //
   template <typename M0_IMPL,
             typename ALPHA_IMPL,

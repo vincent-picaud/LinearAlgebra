@@ -6,7 +6,7 @@
 <!-- 2020-07-10 Fri 13:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TODO list</title>
+<title>blas.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,15 +244,21 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">TODO list</h1>
+<h1 class="title">blas.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org83f02fd">1. Backlinks</a></li>
-<li><a href="#org22dab75">2. 1 Backlinks</a>
+<li><a href="#org3c07ddc">1. Blas support</a>
 <ul>
-<li><a href="#org9a0ab0d">2.1. My Sitemap</a></li>
+<li><a href="#org5284469">1.1. Macro <code>HAS_BLAS</code></a></li>
+<li><a href="#org91d7113">1.2. Wrapping status</a>
+<ul>
+<li><a href="#org368778e">1.2.1. Level 1</a></li>
+<li><a href="#orgc0f22b3">1.2.2. Level 2</a></li>
+<li><a href="#orgb4f3054">1.2.3. Level 3</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -260,24 +266,141 @@ for the JavaScript code in this tag.
 </div>
 
 <p>
-<a href="../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org83f02fd" class="outline-2">
-<h2 id="org83f02fd"><span class="section-number-2">1</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-org22dab75" class="outline-2">
-<h2 id="org22dab75"><span class="section-number-2">2</span> 1 Backlinks</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org9a0ab0d" class="outline-3">
-<h3 id="org9a0ab0d"><span class="section-number-3">2.1</span> <a href="../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-org3c07ddc" class="outline-2">
+<h2 id="org3c07ddc"><span class="section-number-2">1</span> Blas support</h2>
+<div class="outline-text-2" id="text-1">
 <p>
-<a href="misc/todo.html">TODO list</a>
+This is a "high level" of Blas wrapping status
 </p>
+</div>
+
+<div id="outline-container-org5284469" class="outline-3">
+<h3 id="org5284469"><span class="section-number-3">1.1</span> Macro <code>HAS_BLAS</code></h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+This macro is important as it allows to know if this library is
+compilated with Blas support. It is defined the <code>blas_config.hpp</code> file.
+</p>
+
+<dl class="org-dl">
+<dt>Usage example</dt><dd></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-cpp">,#ifdef BLAS_DEBUG
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">...</span>
+,#endif
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org91d7113" class="outline-3">
+<h3 id="org91d7113"><span class="section-number-3">1.2</span> Wrapping status</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+For Blas subroutine lists, see:
+</p>
+<ul class="org-ul">
+<li><a href="http://www.icl.utk.edu/~mgates3/docs/lapack.html">http://www.icl.utk.edu/~mgates3/docs/lapack.html</a></li>
+<li><a href="http://www.icl.utk.edu/~mgates3/docs/lapack-proto.html">http://www.icl.utk.edu/~mgates3/docs/lapack-proto.html</a></li>
+</ul>
+</div>
+
+<div id="outline-container-org368778e" class="outline-4">
+<h4 id="org368778e"><span class="section-number-4">1.2.1</span> Level 1</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<blockquote>
+<pre class="example">
+			     dim scalar vector   vector   scalars              5-element prefixes
+
+  - [ ] : SUBROUTINE _ROTG (                                      A, B, C, S )          S, D
+  - [ ] : SUBROUTINE _ROTMG(                              D1, D2, A, B,        PARAM )  S, D
+  - [ ] : SUBROUTINE _ROT  ( N,         X, INCX, Y, INCY,               C, S )          S, D
+  - [ ] : SUBROUTINE _ROTM ( N,         X, INCX, Y, INCY,                      PARAM )  S, D
+  - [ ] : SUBROUTINE _SWAP ( N,         X, INCX, Y, INCY )                              S, D, C, Z
+  - [X] : SUBROUTINE _SCAL ( N,  ALPHA, X, INCX )                                       S, D, C, Z, CS, ZD
+  - [X] : SUBROUTINE _COPY ( N,         X, INCX, Y, INCY )                              S, D, C, Z
+  - [ ] : SUBROUTINE _AXPY ( N,  ALPHA, X, INCX, Y, INCY )                              S, D, C, Z
+  - [ ] : FUNCTION   _DOT  ( N,         X, INCX, Y, INCY )                              S, D, DS
+  - [ ] : FUNCTION   _DOTU ( N,         X, INCX, Y, INCY )                              C, Z
+  - [ ] : FUNCTION   _DOTC ( N,         X, INCX, Y, INCY )                              C, Z
+  - [ ] : FUNCTION   __DOT ( N,  ALPHA, X, INCX, Y, INCY )                              SDS
+  - [ ] : FUNCTION   _NRM2 ( N,         X, INCX )                                       S, D, SC, DZ
+  - [ ] : FUNCTION   _ASUM ( N,         X, INCX )                                       S, D, SC, DZ
+  - [ ] : FUNCTION   I_AMAX( N,         X, INCX )                                       S, D, C, Z
+
+</pre>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orgc0f22b3" class="outline-4">
+<h4 id="orgc0f22b3"><span class="section-number-4">1.2.2</span> Level 2</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<blockquote>
+<pre class="example">
+
+		  options            dim   b-width scalar matrix  vector   scalar vector   prefixes
+
+  - [ ] : _GEMV (        TRANS,      M, N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D, C, Z
+  - [ ] : _GBMV (        TRANS,      M, N, KL, KU, ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D, C, Z
+  - [ ] : _HEMV ( UPLO,                 N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) C, Z
+  - [ ] : _HBMV ( UPLO,                 N, K,      ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) C, Z
+  - [ ] : _HPMV ( UPLO,                 N,         ALPHA, AP,     X, INCX, BETA,  Y, INCY ) C, Z
+  - [X] : _SYMV ( UPLO,                 N,         ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D
+  - [ ] : _SBMV ( UPLO,                 N, K,      ALPHA, A, LDA, X, INCX, BETA,  Y, INCY ) S, D
+  - [ ] : _SPMV ( UPLO,                 N,         ALPHA, AP,     X, INCX, BETA,  Y, INCY ) S, D
+  - [X] : _TRMV ( UPLO, TRANS, DIAG,    N,                A, LDA, X, INCX )                 S, D, C, Z
+  - [ ] : _TBMV ( UPLO, TRANS, DIAG,    N, K,             A, LDA, X, INCX )                 S, D, C, Z
+  - [ ] : _TPMV ( UPLO, TRANS, DIAG,    N,                AP,     X, INCX )                 S, D, C, Z
+  - [X] : _TRSV ( UPLO, TRANS, DIAG,    N,                A, LDA, X, INCX )                 S, D, C, Z
+  - [ ] : _TBSV ( UPLO, TRANS, DIAG,    N, K,             A, LDA, X, INCX )                 S, D, C, Z
+  - [ ] : _TPSV ( UPLO, TRANS, DIAG,    N,                AP,     X, INCX )                 S, D, C, Z
+
+  - [ ] :         options            dim   scalar vector   vector   matrix  prefixes
+
+  - [ ] : _GER  (                    M, N, ALPHA, X, INCX, Y, INCY, A, LDA ) S, D
+  - [ ] : _GERU (                    M, N, ALPHA, X, INCX, Y, INCY, A, LDA ) C, Z
+  - [ ] : _GERC (                    M, N, ALPHA, X, INCX, Y, INCY, A, LDA ) C, Z
+  - [ ] : _HER  ( UPLO,                 N, ALPHA, X, INCX,          A, LDA ) C, Z
+  - [ ] : _HPR  ( UPLO,                 N, ALPHA, X, INCX,          AP )     C, Z
+  - [ ] : _HER2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, A, LDA ) C, Z
+  - [ ] : _HPR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, AP )     C, Z
+  - [ ] : _SYR  ( UPLO,                 N, ALPHA, X, INCX,          A, LDA ) S, D
+  - [ ] : _SPR  ( UPLO,                 N, ALPHA, X, INCX,          AP )     S, D
+  - [ ] : _SYR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, A, LDA ) S, D
+  - [ ] : _SPR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, AP )     S, D
+  - [ ] :
+
+</pre>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orgb4f3054" class="outline-4">
+<h4 id="orgb4f3054"><span class="section-number-4">1.2.3</span> Level 3</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<blockquote>
+<pre class="example">
+
+		  options                          dim      scalar matrix  matrix  scalar matrix  prefixes
+
+  - [X] : _GEMM (             TRANSA, TRANSB,      M, N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
+  - [ ] : _SYMM ( SIDE, UPLO,                      M, N,    ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
+  - [ ] : _HEMM ( SIDE, UPLO,                      M, N,    ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) C, Z
+  - [X] : _SYRK (       UPLO, TRANS,                  N, K, ALPHA, A, LDA,         BETA,  C, LDC ) S, D, C, Z
+  - [ ] : _HERK (       UPLO, TRANS,                  N, K, ALPHA, A, LDA,         BETA,  C, LDC ) C, Z
+  - [ ] : _SYR2K(       UPLO, TRANS,                  N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) S, D, C, Z
+  - [ ] : _HER2K(       UPLO, TRANS,                  N, K, ALPHA, A, LDA, B, LDB, BETA,  C, LDC ) C, Z
+  - [ ] : _TRMM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
+  - [ ] : _TRSM ( SIDE, UPLO, TRANSA,        DIAG, M, N,    ALPHA, A, LDA, B, LDB )                S, D, C, Z
+
+</pre>
+</blockquote>
+</div>
 </div>
 </div>
 </div>

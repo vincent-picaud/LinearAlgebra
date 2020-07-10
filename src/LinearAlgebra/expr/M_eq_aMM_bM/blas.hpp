@@ -1,6 +1,8 @@
+// [[file:blas.org]]
+#if defined(HAS_BLAS) and defined(HAS_MATRIX) and defined(HAS_VECTOR)
+
 #pragma once
 
-#include "LinearAlgebra/expr/M_eq_aMM_bM/M0_eq_aM1M2_bM3_interface.hpp"
 #include "LinearAlgebra/expr/copy_matrix.hpp"
 
 #include "LinearAlgebra/blas/blas.hpp"
@@ -9,13 +11,17 @@
 #include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 #include "LinearAlgebra/utils/sfinae_vmt_helpers.hpp"
 
-#if (HAS_BLAS)
-
 namespace LinearAlgebra
 {
-  ////// syrk ////
+  // [BEGIN_syrk]
   //
-  // M0 := α.M1.M1^t + β.M0
+  // Compute:
+  // \begin{equation*}
+  // M_0 = \alpha M_1\text{transpose}(M_2) + \beta M_3
+  // \end{equation*}
+  // where:
+  // - $M_1, M_2$ : dense matrices
+  // - $M_0, M_3$ : dense symmetric matrices
   //
   template <typename ALPHA_IMPL,
             typename BETA_IMPL,
@@ -37,6 +43,7 @@ namespace LinearAlgebra
          const _product_t_,
          const Scalar_Crtp<BETA_IMPL>& beta,
          const Dense_Matrix_Crtp<MATRIX3_IMPL>& matrix3)
+      // [END_syrk]
       -> std::enable_if_t<
           Is_Symmetric_Matrix_v<MATRIX0_IMPL> and Is_Symmetric_Matrix_v<MATRIX3_IMPL> and
           Is_Full_Matrix_v<MATRIX1_IMPL> and Is_Full_Matrix_v<MATRIX2_IMPL> and
@@ -56,42 +63,49 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
 
-  template <typename ALPHA_IMPL,
-            typename BETA_IMPL,
-            typename MATRIX0_IMPL,
-            typename MATRIX1_IMPL,
-            typename MATRIX2_IMPL>
-  auto
-  assign(const Expr_Selector<Expr_Selector_Enum::Blas>& selected,
-         Dense_Matrix_Crtp<MATRIX0_IMPL>& matrix0,
-         const _plus_t_,
-         const _product_t_,
-         const _product_t_,
-         const Scalar_Crtp<ALPHA_IMPL>& alpha,
-         const _identity_t_,
-         const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
-         const _transpose_t_,
-         const Dense_Matrix_Crtp<MATRIX2_IMPL>& matrix2,
-         const _product_t_,
-         const Scalar_Crtp<BETA_IMPL>& beta,
-         const Matrix_LHS<MATRIX0_IMPL>& matrix3)
-      -> std::enable_if_t<
-          Is_Symmetric_Matrix_v<MATRIX0_IMPL> and Is_Full_Matrix_v<MATRIX1_IMPL> and
-          Is_Full_Matrix_v<MATRIX2_IMPL> and
-          Always_True_v<decltype(Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0))>>
+  // template <typename ALPHA_IMPL,
+  //           typename BETA_IMPL,
+  //           typename MATRIX0_IMPL,
+  //           typename MATRIX1_IMPL,
+  //           typename MATRIX2_IMPL>
+  // auto
+  // assign(const Expr_Selector<Expr_Selector_Enum::Blas>& selected,
+  //        Dense_Matrix_Crtp<MATRIX0_IMPL>& matrix0,
+  //        const _plus_t_,
+  //        const _product_t_,
+  //        const _product_t_,
+  //        const Scalar_Crtp<ALPHA_IMPL>& alpha,
+  //        const _identity_t_,
+  //        const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
+  //        const _transpose_t_,
+  //        const Dense_Matrix_Crtp<MATRIX2_IMPL>& matrix2,
+  //        const _product_t_,
+  //        const Scalar_Crtp<BETA_IMPL>& beta,
+  //        const Matrix_LHS<MATRIX0_IMPL>& matrix3)
 
-  {
-    assert(same_mathematical_object_p(matrix0.impl(), matrix3.impl()));
-    assert(same_mathematical_object_p(matrix1.impl(), matrix2.impl()));
+  //     -> std::enable_if_t<
+  //         Is_Symmetric_Matrix_v<MATRIX0_IMPL> and Is_Full_Matrix_v<MATRIX1_IMPL> and
+  //         Is_Full_Matrix_v<MATRIX2_IMPL> and
+  //         Always_True_v<decltype(Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0))>>
 
-    Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0);
+  // {
+  //   assert(same_mathematical_object_p(matrix0.impl(), matrix3.impl()));
+  //   assert(same_mathematical_object_p(matrix1.impl(), matrix2.impl()));
 
-    DEBUG_SET_SELECTED(selected);
-  }
+  //   Blas::syrk_AAt(alpha.value(), matrix1, beta.value(), matrix0);
 
-  ////// syrk ////
+  //   DEBUG_SET_SELECTED(selected);
+  // }
+
+  // [BEGIN_syrk]
   //
-  // M0 := α.M1^t.M1 + β.M0
+  // Compute:
+  // \begin{equation*}
+  // M_0 = \alpha \text{transpose}(M_1)M_2 + \beta M_3
+  // \end{equation*}
+  // where:
+  // - $M_1, M_2$ : dense matrices
+  // - $M_0, M_3$ : dense symmetric matrices
   //
   template <typename ALPHA_IMPL,
             typename BETA_IMPL,
@@ -113,6 +127,7 @@ namespace LinearAlgebra
          const _product_t_,
          const Scalar_Crtp<BETA_IMPL>& beta,
          const Dense_Matrix_Crtp<MATRIX3_IMPL>& matrix3)
+      // [END_syrk]
       -> std::enable_if_t<
           Is_Symmetric_Matrix_v<MATRIX0_IMPL> and Is_Symmetric_Matrix_v<MATRIX3_IMPL> and
           Is_Full_Matrix_v<MATRIX1_IMPL> and Is_Full_Matrix_v<MATRIX2_IMPL> and
@@ -132,7 +147,14 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
 
-  ////// gemm ////
+  // [BEGIN_gemm]
+  //
+  // Compute:
+  // \begin{equation*}
+  //   M_0 = \alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3
+  // \end{equation*}
+  // where:
+  // - $M_0, M_1, M_2, M_3$ : dense matrices
   //
   template <Matrix_Unary_Op_Enum OP1_ENUM,
             Matrix_Unary_Op_Enum OP2_ENUM,
@@ -156,6 +178,7 @@ namespace LinearAlgebra
          const _product_t_,
          const Scalar_Crtp<BETA_IMPL>& beta,
          const Dense_Matrix_Crtp<MATRIX3_IMPL>& matrix3)
+   // [END_gemm]
       -> std::enable_if_t<Is_Full_Matrix_v<MATRIX0_IMPL> and Is_Full_Matrix_v<MATRIX3_IMPL> and
                           Is_Full_Matrix_v<MATRIX1_IMPL> and Is_Full_Matrix_v<MATRIX2_IMPL> and
                           Always_True_v<decltype(assign(matrix0, matrix3))> and
@@ -175,4 +198,4 @@ namespace LinearAlgebra
 
 }  // namespace LinearAlgebra
 
-#endif  // HAS_BLAS
+#endif

@@ -842,7 +842,7 @@ main()
 
   PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M3);
 
-  PRINT_EXPR(M0, alpha * M1 * inverse(M2) + beta * M3);
+  PRINT_EXPR(M0, alpha * M1 * M2 + beta * M3);
 }
 
 // // ////////////////////////////////////////////////////////////////

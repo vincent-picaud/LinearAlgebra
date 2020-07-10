@@ -1,0 +1,15 @@
+#+Title: blas.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Provided wrappings
+
+** =syrk=
+
+# file:blas.hpp::BEGIN_syrk
+#+Call: Extract("blas.hpp","syrk")
+
+** =gemm=
+
+# file:blas.hpp::BEGIN_gemm
+#+Call: Extract("blas.hpp","gemm")

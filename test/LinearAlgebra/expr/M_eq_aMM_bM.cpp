@@ -1,10 +1,6 @@
-#include "LinearAlgebra/expr/M_eq_aMM_bM.hpp"
-
-// #include "LinearAlgebra/expr/dimension.hpp"
-// #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/matrix.hpp"
-#include "LinearAlgebra/expr/expr_tags.hpp"
-// #include "LinearAlgebra/dense/vector.hpp"
+
+#include "LinearAlgebra/expr/M_eq_aMM_bM.hpp"
 
 #include <gtest/gtest.h>
 

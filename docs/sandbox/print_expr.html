@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-09 Thu 20:02 -->
+<!-- 2020-07-10 Fri 13:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>print_expr.cpp</title>
@@ -963,8 +963,8 @@ Not a very clean code, but really useful to <b>automatically</b> generate <a hre
 
     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">----------------</span>
 
-    buffer &lt;&lt; <span style="color: #8b7355;">"// "</span> &lt;&lt; variable_name(dest.impl()) &lt;&lt; <span style="color: #8b7355;">" = "</span> &lt;&lt; reverse_Polish_string &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl
-           &lt;&lt; <span style="color: #8b7355;">"// "</span> &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">buffer &lt;&lt; "// " &lt;&lt; variable_name(dest.impl()) &lt;&lt; " = " &lt;&lt; reverse_Polish_string &lt;&lt; std::endl;</span>
+    buffer &lt;&lt; <span style="color: #8b7355;">"// "</span> &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
 
     buffer &lt;&lt; template_declaration_string &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
 
@@ -987,10 +987,69 @@ Not a very clean code, but really useful to <b>automatically</b> generate <a hre
   }
 }  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">namespace LinearAlgebra</span>
 
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">string: search/replace</span>
+<span style="color: #00688b;">void</span>
+<span style="color: #cd9b1d;">replaceAll</span>(<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>&amp; <span style="color: #2e8b57;">data</span>, <span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>&amp; <span style="color: #2e8b57;">toSearch</span>, <span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>&amp; <span style="color: #2e8b57;">replaceStr</span>)
+{
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Get the first occurrence</span>
+  <span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">pos</span> = data.find(toSearch);
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Repeat till end is reached</span>
+  <span style="color: #1c86ee;">while</span> (pos != <span style="color: #6e8b3d;">std</span>::<span style="color: #6e8b3d;">string</span>::npos)
+  {
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Replace this occurrence of Sub String</span>
+    data.replace(pos, toSearch.size(), replaceStr);
+    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Get the next occurrence from the current position</span>
+    pos = data.find(toSearch, pos + replaceStr.size());
+  }
+}
+
+<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">super naive</span>
+<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+<span style="color: #cd9b1d;">to_latex</span>(<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span> <span style="color: #2e8b57;">str</span>)
+{
+  replaceAll(str, <span style="color: #8b7355;">"alpha"</span>, <span style="color: #8b7355;">"\\alpha"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"beta"</span>, <span style="color: #8b7355;">"\\beta"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"gamma"</span>, <span style="color: #8b7355;">"\\gamma"</span>);
+
+  replaceAll(str, <span style="color: #8b7355;">"* "</span>, <span style="color: #8b7355;">""</span>);
+
+  replaceAll(str, <span style="color: #8b7355;">"inverse"</span>, <span style="color: #8b7355;">"\\text{inv}"</span>);
+
+  replaceAll(str, <span style="color: #8b7355;">"op0"</span>, <span style="color: #8b7355;">"\\text{op}_0"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"op1"</span>, <span style="color: #8b7355;">"\\text{op}_1"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"op2"</span>, <span style="color: #8b7355;">"\\text{op}_2"</span>);
+
+  replaceAll(str, <span style="color: #8b7355;">"M0"</span>, <span style="color: #8b7355;">"M_0"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"M1"</span>, <span style="color: #8b7355;">"M_1"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"M2"</span>, <span style="color: #8b7355;">"M_2"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"M3"</span>, <span style="color: #8b7355;">"M_3"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"M4"</span>, <span style="color: #8b7355;">"M_4"</span>);
+
+  replaceAll(str, <span style="color: #8b7355;">"V0"</span>, <span style="color: #8b7355;">"V_0"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"V1"</span>, <span style="color: #8b7355;">"V_1"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"V2"</span>, <span style="color: #8b7355;">"V_2"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"V3"</span>, <span style="color: #8b7355;">"V_3"</span>);
+  replaceAll(str, <span style="color: #8b7355;">"V4"</span>, <span style="color: #8b7355;">"V_4"</span>);
+
+  <span style="color: #1c86ee;">return</span> str;
+}
+
+<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>
+<span style="color: #cd9b1d;">to_latex_with_comment</span>(<span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span>&amp; <span style="color: #2e8b57;">str</span>)
+{
+  <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">string</span> <span style="color: #2e8b57;">to_return</span>;
+
+  to_return += <span style="color: #8b7355;">"// \\begin{equation*}\n"</span>;
+  to_return += <span style="color: #8b7355;">"// "</span> + to_latex(str) + <span style="color: #8b7355;">"\n"</span>;
+  to_return += <span style="color: #8b7355;">"// \\end{equation*}\n"</span>;
+
+  <span style="color: #1c86ee;">return</span> to_return;
+}
+
 <span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
 
 <span style="color: #cdad00;">#define</span> <span style="color: #cd9b1d;">PRINT_EXPR</span>(<span style="color: #2e8b57;">DEST</span>, <span style="color: #2e8b57;">EXPR</span>) \
-  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; <span style="color: #8b7355;">"//\n// "</span> #DEST &lt;&lt; <span style="color: #8b7355;">" = "</span> &lt;&lt; #EXPR &lt;&lt; <span style="color: #8b7355;">"\n"</span> &lt;&lt; to_string(DEST, EXPR);
+  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; to_latex_with_comment(#DEST + <span style="color: #6e8b3d;">std</span>::string(<span style="color: #8b7355;">" = "</span>) + #EXPR) &lt;&lt; to_string(DEST, EXPR);
 
 <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
 <span style="color: #7f7f7f;">//</span>
@@ -1038,7 +1097,6 @@ Not a very clean code, but really useful to <b>automatically</b> generate <a hre
        <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_lhs_t_</span>)
 {
 }
-
 
 <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////////////////////////////////////////////////////</span>
 <span style="color: #00688b;">int</span>
@@ -1182,7 +1240,7 @@ Not a very clean code, but really useful to <b>automatically</b> generate <a hre
 <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">return 0;</span>
 
 <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">// ////////////////////////////////////////////////////////////////</span>
-  
+
 <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Scalar&lt;int&gt; alpha(1), beta(2), gamma(3);</span>
 
 <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">Minimal_Vector v0(0), v1(1), v2(2), v3(3);</span>
@@ -1207,7 +1265,7 @@ Not a very clean code, but really useful to <b>automatically</b> generate <a hre
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-09 Thu 20:02</p>
+<p class="date">Created: 2020-07-10 Fri 13:35</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,6 +1,8 @@
 // file:vector.org 
 #pragma once
 
+#define HAS_VECTOR
+
 #include <type_traits>
 
 #include "LinearAlgebra/dense/memory_chunk.hpp"

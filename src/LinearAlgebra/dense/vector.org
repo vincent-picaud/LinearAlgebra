@@ -6,6 +6,10 @@
 
 This class defines our default dense vector types. There are 3 classes
 
+** =HAS_VECTOR= macro
+#+Index:Macro!HAS_VECTOR
+Defined once =vector.hpp= has been included.
+
 ** =Default_Vector=
 #+Index:Class!Default_Vector
 

@@ -6,6 +6,10 @@
 
 This class defines our default dense matrix types. There are 3 classes
 
+** =HAS_MATRIX= macro
+#+Index:Macro!HAS_MATRIX
+Defined once =matrix.hpp= has been included.
+
 ** =Default_Matrix=
 #+Index:Class!Default_Matrix
 

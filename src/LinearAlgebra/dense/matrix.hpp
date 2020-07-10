@@ -2,6 +2,8 @@
 // TODO: for hermitian matrices, check that diagonal is real
 #pragma once
 
+#define HAS_MATRIX
+
 #include "LinearAlgebra/dense/matrix_crtp.hpp"
 #include "LinearAlgebra/dense/matrix_fwd.hpp"
 #include "LinearAlgebra/dense/matrix_special_structure_enum.hpp"

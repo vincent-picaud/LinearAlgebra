@@ -758,11 +758,11 @@ to_latex(std::string str)
   replaceAll(str, "M3", "M_3");
   replaceAll(str, "M4", "M_4");
 
-  replaceAll(str, "V0", "V_0");
-  replaceAll(str, "V1", "V_1");
-  replaceAll(str, "V2", "V_2");
-  replaceAll(str, "V3", "V_3");
-  replaceAll(str, "V4", "V_4");
+  replaceAll(str, "v0", "v_0");
+  replaceAll(str, "v1", "v_1");
+  replaceAll(str, "v2", "v_2");
+  replaceAll(str, "v3", "v_3");
+  replaceAll(str, "v4", "v_4");
 
   return str;
 }
@@ -840,9 +840,48 @@ main()
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
 
-  PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * M3);
+  PRINT_EXPR(v0, M1 * v1 + v2);
+  PRINT_EXPR(v0, M1 * v1 + beta * v2);
+  PRINT_EXPR(v0, M1 * v1 - v2);
+  PRINT_EXPR(v0, v2 + M1 * v1);
+  PRINT_EXPR(v0, v2 + op1(M1) * v1);
+  PRINT_EXPR(v0, v2 + alpha * M1 * v1);
+  PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);
+  PRINT_EXPR(v0, v2 - M1 * v1);
+  PRINT_EXPR(v0, v2 - op1(M1) * v1);
+  PRINT_EXPR(v0, v2 - alpha * M1 * v1);
+  PRINT_EXPR(v0, op1(M1) * v1 + v2);
+  PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);
+  PRINT_EXPR(v0, op1(M1) * v1 - v2);
+  PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);
+  PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);
+  PRINT_EXPR(v0, alpha * M1 * v1 + v2);
+  PRINT_EXPR(v0, alpha * M1 * v1 - v2);
+  PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);
+  PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);
+  PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
+  PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);
+  PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);
+  PRINT_EXPR(v0, beta * v2 + M1 * v1);
+  PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);
+  PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);
+  PRINT_EXPR(v0, beta * v2 - M1 * v1);
+  PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);
+  PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);
+  PRINT_EXPR(v0, -M1 * v1 + v2);
+  PRINT_EXPR(v0, -M1 * v1 + beta * v2);
+  PRINT_EXPR(v0, -M1 * v1 - v2);
+  PRINT_EXPR(v0, -v2 + M1 * v1);
+  PRINT_EXPR(v0, -v2 + op1(M1) * v1);
+  PRINT_EXPR(v0, -v2 + alpha * M1 * v1);
+  PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);
+  PRINT_EXPR(v0, -v2 - M1 * v1);
+  PRINT_EXPR(v0, -v2 - op1(M1) * v1);
+  PRINT_EXPR(v0, -op1(M1) * v1 + v2);
+  PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);
+  PRINT_EXPR(v0, -op1(M1) * v1 - v2);
 
-  PRINT_EXPR(M0, alpha * M1 * M2 + beta * M3);
+  //     PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v0);
 }
 
 // // ////////////////////////////////////////////////////////////////

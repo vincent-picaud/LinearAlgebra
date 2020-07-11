@@ -12,6 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <type_traits>
 
 namespace LinearAlgebra
 {
@@ -121,6 +122,19 @@ namespace LinearAlgebra
   {
   };
 
+  // ----
+
+  template <typename T>
+  struct Is_Transpose_Like : std::false_type
+  {
+  };
+  template <Matrix_Unary_Op_Enum OP, std::size_t N>
+  struct Is_Transpose_Like<Transpose_Like<OP, N>> : std::true_type
+  {
+  };
+
+  // ----
+
   template <typename IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<IMPL>,
                    Detail::MetaExpr_UnaryOp<Element_Type_t<IMPL>,
@@ -217,6 +231,19 @@ namespace LinearAlgebra
   struct OP_Like : Expr_Tags_Crtp<OP_Like<N>>
   {
   };
+
+  // ----
+
+  template <typename T>
+  struct Is_OP_Like : std::false_type
+  {
+  };
+  template <std::size_t N>
+  struct Is_OP_Like<OP_Like<N>> : std::true_type
+  {
+  };
+
+  // ----
 
   template <typename IMPL>
   std::enable_if_t<Is_Supported_MetaExpr_Argument_v<IMPL>,
@@ -785,53 +812,89 @@ using namespace LinearAlgebra;
   std::cout << to_latex_with_comment(#DEST + std::string(" = ") + #EXPR) << to_string(DEST, EXPR);
 
 // ////////////////////////////////////////////////////////////////
-//
-// Usage example:
-//
-// #+begin_src cpp
-// int
-// main()
-// {
-//   Scalar<int> alpha(1), beta(2), gamma(3);
-//
-//   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
-//   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
-//
-//   LHS lhs;
-//
-//   PRINT_EXPR(M0, alpha * op1(M1) * op2(M2) + beta * lhs);
-// }
-// #+end_src
-//
-// generates:
-//
-// M0 = alpha * op1(M1) * op2(M2) + beta * lhs
-// M0 = + * * alpha op1 M1 op2 M2 * beta lhs
-//
-template <typename M0_IMPL,
-          typename ALPHA_IMPL,
-          Matrix_Unary_Op_Enum OP1,
-          typename M1_IMPL,
-          Matrix_Unary_Op_Enum OP2,
-          typename M2_IMPL,
-          typename BETA_IMPL>
-void
-assign(Matrix_Crtp<M0_IMPL>& M0,
-       const _plus_t_,
-       const _product_t_,
-       const _product_t_,
-       const Scalar_Crtp<ALPHA_IMPL>& alpha,
-       const _matrix_unary_op_t_<OP1> op1,
-       const Matrix_Crtp<M1_IMPL>& M1,
-       const _matrix_unary_op_t_<OP2> op2,
-       const Matrix_Crtp<M2_IMPL>& M2,
-       const _product_t_,
-       const Scalar_Crtp<BETA_IMPL>& beta,
-       const _lhs_t_)
-{
-}
 
-// ////////////////////////////////////////////////////////////////
+namespace LinearAlgebra::Detail
+{
+  // A offset for item value (to avoid "special" numerical value as 0, 1)
+  //
+  constexpr int offset_component = 10;
+
+  // Print test
+  //
+  std::string
+  print_test(const Minimal_Matrix& M)
+  {
+    return std::to_string(offset_component + M.number());
+  }
+
+  std::string
+  print_test(const Minimal_Vector& v)
+  {
+    return std::to_string(offset_component + v.number());
+  }
+
+  std::string
+  print_test(const Scalar<int>& scalar)
+  {
+    return std::to_string(offset_component + scalar.value());
+  }
+  template <typename IMPL>
+  std::string
+  print_test(const MetaExpr_UnaryOp_Crtp<IMPL>& unary_op)
+  {
+    using op_type = typename IMPL::operator_type;
+
+    // As for test we work 1x1 matrixn no need to take into account
+    // transpose like operator
+    if constexpr (Is_Transpose_Like<op_type>::value or Is_OP_Like<op_type>::value)
+    {
+      return print_test(unary_op.arg());
+    }
+    else if constexpr (std::is_same_v<_unary_minus_t_, op_type>)
+    {
+      return "- ( " + print_test(unary_op.arg()) + " )";
+    }
+    else
+    {
+      std::cerr << __PRETTY_FUNCTION__;
+      assert(0);
+      return "";
+    }
+  }
+
+  template <typename IMPL>
+  std::string
+  print_test(const MetaExpr_BinaryOp_Crtp<IMPL>& binary_op)
+  {
+    using op_type = typename IMPL::operator_type;
+
+    if constexpr (std::is_same_v<_product_t_, op_type>)
+    {
+      return "( " + print_test(binary_op.arg_0()) + " ) * ( " + print_test(binary_op.arg_1()) +
+             " )";
+    }
+    else if constexpr (std::is_same_v<_plus_t_, op_type>)
+    {
+      return "( " + print_test(binary_op.arg_0()) + " ) + ( " + print_test(binary_op.arg_1()) +
+             " )";
+    }
+    else if constexpr (std::is_same_v<_minus_t_, op_type>)
+    {
+      return "( " + print_test(binary_op.arg_0()) + " ) - ( " + print_test(binary_op.arg_1()) +
+             " )";
+    }
+    else
+    {
+      assert(0);
+    }
+  }
+}  // namespace LinearAlgebra::Detail
+
+#define PRINT_TEST(DEST, EXPR)                             \
+  std::cout << "\n" << #DEST << " = " << #EXPR << ";\n";   \
+  std::cout << "EXPECT_DOUBLE_EQ(*" << #DEST << ".data()," \
+            << LinearAlgebra::Detail::print_test(EXPR) << ");\n";
+
 int
 main()
 {
@@ -840,46 +903,52 @@ main()
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
 
-  PRINT_EXPR(v0, M1 * v1 + v2);
   PRINT_EXPR(v0, M1 * v1 + beta * v2);
   PRINT_EXPR(v0, M1 * v1 - v2);
-  PRINT_EXPR(v0, v2 + M1 * v1);
-  PRINT_EXPR(v0, v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, v2 - M1 * v1);
-  PRINT_EXPR(v0, v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, v2 - alpha * M1 * v1);
-  PRINT_EXPR(v0, op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, op1(M1) * v1 - v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 + v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 - v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);
-  PRINT_EXPR(v0, beta * v2 + M1 * v1);
-  PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 - M1 * v1);
-  PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, -M1 * v1 + v2);
-  PRINT_EXPR(v0, -M1 * v1 + beta * v2);
-  PRINT_EXPR(v0, -M1 * v1 - v2);
-  PRINT_EXPR(v0, -v2 + M1 * v1);
-  PRINT_EXPR(v0, -v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, -v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, -v2 - M1 * v1);
-  PRINT_EXPR(v0, -v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, -op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, -op1(M1) * v1 - v2);
+
+  PRINT_TEST(v0, M1 * v1 + beta * v2);
+  PRINT_TEST(v0, M1 * v1 - v2);
+
+  //---------------
+  // PRINT_EXPR(v0, M1 * v1 + beta * v2);
+  // PRINT_EXPR(v0, M1 * v1 - v2);
+  // PRINT_EXPR(v0, v2 + M1 * v1);
+  // PRINT_EXPR(v0, v2 + op1(M1) * v1);
+  // PRINT_EXPR(v0, v2 + alpha * M1 * v1);
+  // PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);
+  // PRINT_EXPR(v0, v2 - M1 * v1);
+  // PRINT_EXPR(v0, v2 - op1(M1) * v1);
+  // PRINT_EXPR(v0, v2 - alpha * M1 * v1);
+  // PRINT_EXPR(v0, op1(M1) * v1 + v2);
+  // PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);
+  // PRINT_EXPR(v0, op1(M1) * v1 - v2);
+  // PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);
+  // PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);
+  // PRINT_EXPR(v0, alpha * M1 * v1 + v2);
+  // PRINT_EXPR(v0, alpha * M1 * v1 - v2);
+  // PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);
+  // PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);
+  // PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
+  // PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);
+  // PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);
+  // PRINT_EXPR(v0, beta * v2 + M1 * v1);
+  // PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);
+  // PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);
+  // PRINT_EXPR(v0, beta * v2 - M1 * v1);
+  // PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);
+  // PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);
+  // PRINT_EXPR(v0, -M1 * v1 + v2);
+  // PRINT_EXPR(v0, -M1 * v1 + beta * v2);
+  // PRINT_EXPR(v0, -M1 * v1 - v2);
+  // PRINT_EXPR(v0, -v2 + M1 * v1);
+  // PRINT_EXPR(v0, -v2 + op1(M1) * v1);
+  // PRINT_EXPR(v0, -v2 + alpha * M1 * v1);
+  // PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);
+  // PRINT_EXPR(v0, -v2 - M1 * v1);
+  // PRINT_EXPR(v0, -v2 - op1(M1) * v1);
+  // PRINT_EXPR(v0, -op1(M1) * v1 + v2);
+  // PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);
+  // PRINT_EXPR(v0, -op1(M1) * v1 - v2);
 
   //     PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v0);
 }

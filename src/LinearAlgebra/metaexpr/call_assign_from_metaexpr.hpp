@@ -1,6 +1,4 @@
-// [[file:call_assign_from_metaexpr.org][file:~/GitHub/LinearAlgebra/src/LinearAlgebra/metaexpr/call_assign_from_metaexpr.org]]
-// Call assign from metaexpr
-//
+// [[file:call_assign_from_metaexpr.org]]
 #pragma once
 
 #include "LinearAlgebra/dense/vmt_crtp_fwd.hpp"

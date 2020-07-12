@@ -618,15 +618,15 @@ namespace LinearAlgebra
   std::string
   variable_name(const Scalar<int>& scalar)
   {
-    assert(scalar.value() > 0 and scalar.value() <= 3);
+    assert(scalar.value() >= 0 and scalar.value() < 3);
 
     switch (scalar.value())
     {
-      case 1:
+      case 0:
         return "alpha";
-      case 2:
+      case 1:
         return "beta";
-      case 3:
+      case 2:
         return "gamma";
 
       default:
@@ -898,7 +898,7 @@ namespace LinearAlgebra::Detail
 int
 main()
 {
-  Scalar<int> alpha(1), beta(2), gamma(3);
+  Scalar<int> alpha(0), beta(1), gamma(2);
 
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);

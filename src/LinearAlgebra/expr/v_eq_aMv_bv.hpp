@@ -108,6 +108,30 @@ namespace LinearAlgebra
            Scalar<int>{-1},
            v2);
   }
+  // [BEGIN_alias]
+  // \begin{equation*} v_0 = M_1 v_1 + v_2 \end{equation*}
+  // [END_alias]
+  template <typename V0_IMPL, typename M1_IMPL, typename V1_IMPL, typename V2_IMPL>
+  void
+  assign(Vector_Crtp<V0_IMPL>& v0,
+         const _plus_t_,
+         const _product_t_,
+         const Matrix_Crtp<M1_IMPL>& M1,
+         const Vector_Crtp<V1_IMPL>& v1,
+         const Vector_Crtp<V2_IMPL>& v2)
+  {
+    assign(v0,
+           _plus_,
+           _product_,
+           _product_,
+           Scalar<int>{1},
+           _identity_,
+           M1,
+           v1,
+           _product_,
+           Scalar<int>{1},
+           v2);
+  }
 
   // [BEGIN_alias]
   // \begin{equation*} v_0 = v_2 + M_1 v_1 \end{equation*}

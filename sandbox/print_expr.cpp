@@ -919,6 +919,7 @@ main()
   // PRINT_EXPR(v0, M1 * v1 + beta * v2);
   // PRINT_EXPR(v0, M1 * v1 - v2);
 
+  PRINT_EXPR(v0, M1 * v1 + v2);
   PRINT_EXPR(v0, v2 + M1 * v1);
   PRINT_EXPR(v0, v2 + op1(M1) * v1);
   PRINT_EXPR(v0, v2 + alpha * M1 * v1);
@@ -962,6 +963,7 @@ main()
   // PRINT_TEST(v0, M1 * v1 + beta * v2);
   // PRINT_TEST(v0, M1 * v1 - v2);
 
+  PRINT_TEST(v0, M1 * v1 + v2);
   PRINT_TEST(v0, v2 + M1 * v1);
   PRINT_TEST(v0, v2 + op1(M1) * v1);
   PRINT_TEST(v0, v2 + alpha * M1 * v1);

@@ -69,23 +69,23 @@ TEST(v_eq_aMv_bv, blas_symv)
 //
 TEST(v_eq_aMv_bv, alias)
 {
-  double alpha = 10;
-  double beta  = 11;
-  double gamma = 12;
+  [[maybe_unused]] double alpha = 1 / 10.;
+  [[maybe_unused]] double beta  = 2 / 10.;
+  [[maybe_unused]] double gamma = 3 / 10.;
 
-  Tiny_Vector<double, 1> v0, v1, v2;
-  v0 = 10;
-  v1 = 11;
-  v2 = 12;
+  [[maybe_unused]] Tiny_Vector<double, 1> v0, v1, v2;
+  v0 = 1 / 100.;
+  v1 = 2 / 100.;
+  v2 = 3 / 100.;
 
-  Tiny_Matrix<double, 1, 1> M0, M1, M2;
-  M0 = 10;
-  M1 = 11;
-  M2 = 12;
+  [[maybe_unused]] Tiny_Matrix<double, 1, 1> M0, M1, M2;
+  M0 = 1 / 1000.;
+  M1 = 2 / 1000.;
+  M2 = 3 / 1000.;
 
   v0 = M1 * v1 + beta * v2;
-  EXPECT_DOUBLE_EQ(*v0.data(), ((11) * (11)) + ((11) * (12)));
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.002000) * (0.020000)) + ((0.200000) * (0.030000)));
 
   v0 = M1 * v1 - v2;
-  EXPECT_DOUBLE_EQ(*v0.data(), ((11) * (11)) - (12));
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.002000) * (0.020000)) - (0.030000));
 }

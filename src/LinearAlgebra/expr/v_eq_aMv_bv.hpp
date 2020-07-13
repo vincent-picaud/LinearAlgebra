@@ -61,6 +61,47 @@ namespace LinearAlgebra
   // ////////////////////////////////////////////////////////////////
   // Alias
   // ////////////////////////////////////////////////////////////////
+  //
+  // PRINT_EXPR(v0, M1 * v1 + beta * v2);
+  // PRINT_EXPR(v0, M1 * v1 - v2);
+  // PRINT_EXPR(v0, M1 * v1 + v2);
+  // PRINT_EXPR(v0, v2 + M1 * v1);
+  // PRINT_EXPR(v0, v2 + op1(M1) * v1);
+  // PRINT_EXPR(v0, v2 + alpha * M1 * v1);
+  // PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);
+  // PRINT_EXPR(v0, v2 - M1 * v1);
+  // PRINT_EXPR(v0, v2 - op1(M1) * v1);
+  // PRINT_EXPR(v0, v2 - alpha * M1 * v1);
+  // PRINT_EXPR(v0, op1(M1) * v1 + v2);
+  // PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);
+  // PRINT_EXPR(v0, op1(M1) * v1 - v2);
+  // PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);
+  // PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);
+  // PRINT_EXPR(v0, alpha * M1 * v1 + v2);
+  // PRINT_EXPR(v0, alpha * M1 * v1 - v2);
+  // PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);
+  // PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);
+  // PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
+  // PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);
+  // PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);
+  // PRINT_EXPR(v0, beta * v2 + M1 * v1);
+  // PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);
+  // PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);
+  // PRINT_EXPR(v0, beta * v2 - M1 * v1);
+  // PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);
+  // PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);
+  // PRINT_EXPR(v0, -M1 * v1 + v2);
+  // PRINT_EXPR(v0, -M1 * v1 + beta * v2);
+  // PRINT_EXPR(v0, -M1 * v1 - v2);
+  // PRINT_EXPR(v0, -v2 + M1 * v1);
+  // PRINT_EXPR(v0, -v2 + op1(M1) * v1);
+  // PRINT_EXPR(v0, -v2 + alpha * M1 * v1);
+  // PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);
+  // PRINT_EXPR(v0, -v2 - M1 * v1);
+  // PRINT_EXPR(v0, -v2 - op1(M1) * v1);
+  // PRINT_EXPR(v0, -op1(M1) * v1 + v2);
+  // PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);
+  // PRINT_EXPR(v0, -op1(M1) * v1 - v2);
 
   // [BEGIN_alias]
   // \begin{equation*} v_0 = M_1 v_1 + \beta v_2 \end{equation*}

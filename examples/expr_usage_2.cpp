@@ -39,7 +39,7 @@ main()
          x,
          _product_,
          Scalar<T>(0),
-         _lhs_);
+         y);
 #else
   assert(0 && "Not implemented yet");
 #endif

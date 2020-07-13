@@ -38,12 +38,6 @@ LinearAlgebra_headers += [
   'expr/V0_assign_alpha_V1_plus_V2.hpp',
   'expr/M0_assign_alpha_M1_plus_M2.hpp',
 
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_header.hpp',
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_V0_driver.hpp', # todo: add alias
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_V2_driver.hpp', 
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_blas.hpp', # todo: add hermitian etc
-  'expr/V0_assign_alpha_op_M_V1_plus_beta_VX_generic.hpp', # todo: to debug 
-
   'expr/V0_assign_alpha_op_M_VX_header.hpp',
   'expr/V0_assign_alpha_op_M_V0_driver.hpp',
   'expr/V0_assign_alpha_op_M_V1_driver.hpp',
@@ -53,7 +47,6 @@ LinearAlgebra_headers += [
   'expr/matrix_expr.hpp', # main header: include all expr
 
   'expr/expr_debug.hpp',
-
 
   'expr/M_eq_aMM_bM.hpp', # specialization for dense default matrix
   'expr/v_eq_aMv_bv.hpp', # specialization for dense default matrix

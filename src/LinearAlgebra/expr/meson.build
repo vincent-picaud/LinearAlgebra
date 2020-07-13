@@ -56,6 +56,7 @@ LinearAlgebra_headers += [
 
 
   'expr/M_eq_aMM_bM.hpp', # specialization for dense default matrix
+  'expr/v_eq_aMv_bv.hpp', # specialization for dense default matrix
 
   # scalar_ref introduction
   'expr/scalar_crtp.hpp',     # required to make assign_fallback possible
@@ -68,3 +69,4 @@ LinearAlgebra_sources += [
 ]
 
 subdir('M_eq_aMM_bM')
+subdir('v_eq_aMv_bv')

@@ -1,6 +1,9 @@
+
 #include "LinearAlgebra/dense/vector_fwd.hpp"
 #include "LinearAlgebra/matrix.hpp"
 #include "LinearAlgebra/vector.hpp"
+
+#include "LinearAlgebra/expr/v_eq_aMv_bv.hpp"
 
 #include <gtest/gtest.h>
 
@@ -88,4 +91,116 @@ TEST(v_eq_aMv_bv, alias)
 
   v0 = M1 * v1 - v2;
   EXPECT_DOUBLE_EQ(*v0.data(), ((0.002000) * (0.020000)) - (0.030000));
+
+  v0 = v2 + alpha * M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (0.030000) + (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = v2 + alpha * transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (0.030000) + (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = v2 - M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (0.030000) - ((0.002000) * (0.020000)));
+
+  v0 = v2 - transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (0.030000) - ((0.002000) * (0.020000)));
+
+  v0 = v2 - alpha * M1 * v1; // X
+  EXPECT_DOUBLE_EQ(*v0.data(), (0.030000) - (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = transpose(M1) * v1 + v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.002000) * (0.020000)) + (0.030000));
+
+  v0 = transpose(M1) * v1 + beta * v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.002000) * (0.020000)) + ((0.200000) * (0.030000)));
+
+  v0 = transpose(M1) * v1 - v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.002000) * (0.020000)) - (0.030000));
+
+  v0 = alpha * M1 * v1 + beta * v2;
+  EXPECT_DOUBLE_EQ(*v0.data(),
+                   (((0.100000) * (0.002000)) * (0.020000)) + ((0.200000) * (0.030000)));
+
+  v0 = alpha * M1 * v1 - beta * v2;
+  EXPECT_DOUBLE_EQ(*v0.data(),
+                   (((0.100000) * (0.002000)) * (0.020000)) - ((0.200000) * (0.030000)));
+
+  v0 = alpha * M1 * v1 + v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), (((0.100000) * (0.002000)) * (0.020000)) + (0.030000));
+
+  v0 = alpha * M1 * v1 - v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), (((0.100000) * (0.002000)) * (0.020000)) - (0.030000));
+
+  v0 = alpha * transpose(M1) * v1 + v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), (((0.100000) * (0.002000)) * (0.020000)) + (0.030000));
+
+  v0 = alpha * transpose(M1) * v1 - v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), (((0.100000) * (0.002000)) * (0.020000)) - (0.030000));
+
+  v0 = alpha * transpose(M1) * v1 + beta * v2;
+  EXPECT_DOUBLE_EQ(*v0.data(),
+                   (((0.100000) * (0.002000)) * (0.020000)) + ((0.200000) * (0.030000)));
+
+  v0 = beta * v2 + alpha * M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(),
+                   ((0.200000) * (0.030000)) + (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = beta * v2 - alpha * M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(),
+                   ((0.200000) * (0.030000)) - (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = beta * v2 + M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.200000) * (0.030000)) + ((0.002000) * (0.020000)));
+
+  v0 = beta * v2 + transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.200000) * (0.030000)) + ((0.002000) * (0.020000)));
+
+  v0 = beta * v2 + alpha * transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), // 
+                   ((0.200000) * (0.030000)) + (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = beta * v2 - M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.200000) * (0.030000)) - ((0.002000) * (0.020000)));
+
+  v0 = beta * v2 - transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.200000) * (0.030000)) - ((0.002000) * (0.020000)));
+
+  v0 = beta * v2 - alpha * transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(),
+                   ((0.200000) * (0.030000)) - (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = -M1 * v1 + v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((-(0.002000)) * (0.020000)) + (0.030000));
+
+  v0 = -M1 * v1 + beta * v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((-(0.002000)) * (0.020000)) + ((0.200000) * (0.030000)));
+
+  v0 = -M1 * v1 - v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((-(0.002000)) * (0.020000)) - (0.030000));
+
+  v0 = -v2 + M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (-(0.030000)) + ((0.002000) * (0.020000)));
+
+  v0 = -v2 + transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (-(0.030000)) + ((0.002000) * (0.020000)));
+
+  v0 = -v2 + alpha * M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (-(0.030000)) + (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = -v2 + alpha * transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (-(0.030000)) + (((0.100000) * (0.002000)) * (0.020000)));
+
+  v0 = -v2 - M1 * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (-(0.030000)) - ((0.002000) * (0.020000)));
+
+  v0 = -v2 - transpose(M1) * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (-(0.030000)) - ((0.002000) * (0.020000)));
+
+  v0 = -transpose(M1) * v1 + v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((-(0.002000)) * (0.020000)) + (0.030000));
+
+  v0 = -transpose(M1) * v1 + beta * v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((-(0.002000)) * (0.020000)) + ((0.200000) * (0.030000)));
+
+  v0 = -transpose(M1) * v1 - v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((-(0.002000)) * (0.020000)) - (0.030000));
 }

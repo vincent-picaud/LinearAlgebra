@@ -1,3 +1,4 @@
+#error deprecated
 //
 // Header to include, compute V = α op(M) V + β V
 //

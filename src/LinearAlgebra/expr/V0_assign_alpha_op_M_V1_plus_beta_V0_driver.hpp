@@ -1,3 +1,4 @@
+#error deprecated
 //
 // V0 = α op(M) V1 + β V0
 //

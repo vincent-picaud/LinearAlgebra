@@ -1,12 +1,11 @@
 // [[file:blas.org]]
-#if defined(HAS_BLAS) and defined(HAS_MATRIX) and defined(HAS_VECTOR)
-
 #pragma once
 
-#include "LinearAlgebra/expr/copy_vector.hpp"
-
 #include "LinearAlgebra/blas/blas.hpp"
-#include "LinearAlgebra/blas/subroutines_dense.hpp"
+
+#ifdef HAS_BLAS
+
+#include "LinearAlgebra/expr/copy_vector.hpp"
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 
@@ -43,7 +42,7 @@ namespace LinearAlgebra
          const Dense_Vector_Crtp<VECTOR2_IMPL>& vector2)
       // [END_gemv]
       -> std::enable_if_t<Always_True_v<
-          decltype(Blas::gemv(alpha.value(), op1, matrix1, vector1, beta.value(), vector2))>>
+          decltype(Blas::gemv(alpha.value(), op1, matrix1, vector1, beta.value(), vector0))>>
   {
     if (not same_mathematical_object_p(vector0.impl(), vector2.impl()))
     {
@@ -88,7 +87,7 @@ namespace LinearAlgebra
          const Dense_Vector_Crtp<VECTOR2_IMPL>& vector2)
       // [END_symv]
       -> std::enable_if_t<Always_True_v<
-          decltype(Blas::symv(alpha.value(), op1, matrix1, vector1, beta.value(), vector2))>>
+          decltype(Blas::symv(alpha.value(), op1, matrix1, vector1, beta.value(), vector0))>>
   {
     if (not same_mathematical_object_p(vector0.impl(), vector2.impl()))
     {
@@ -102,3 +101,7 @@ namespace LinearAlgebra
     DEBUG_SET_SELECTED(selected);
   }
 }  // namespace LinearAlgebra
+
+#elif
+#error debug
+#endif

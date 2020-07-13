@@ -1,3 +1,4 @@
+#error deprecated
 //
 // Blas gemv, symv... routines for
 //

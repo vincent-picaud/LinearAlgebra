@@ -798,7 +798,8 @@ std::string
 to_latex_with_comment(const std::string& str)
 {
   std::string to_return;
-
+  to_return += "// [DOC]\n";
+  to_return += "// \n";
   to_return += "// \\begin{equation*}\n";
   to_return += "// " + to_latex(str) + "\n";
   to_return += "// \\end{equation*}\n";
@@ -917,6 +918,7 @@ main()
 
   // PRINT_EXPR(v0, M1 * v1 + beta * v2);
   // PRINT_EXPR(v0, M1 * v1 - v2);
+
   PRINT_EXPR(v0, v2 + M1 * v1);
   PRINT_EXPR(v0, v2 + op1(M1) * v1);
   PRINT_EXPR(v0, v2 + alpha * M1 * v1);
@@ -957,8 +959,8 @@ main()
 
   // ---------------- UTEST ----------------
 
-  PRINT_TEST(v0, M1 * v1 + beta * v2);
-  PRINT_TEST(v0, M1 * v1 - v2);
+  // PRINT_TEST(v0, M1 * v1 + beta * v2);
+  // PRINT_TEST(v0, M1 * v1 - v2);
 
   PRINT_TEST(v0, v2 + M1 * v1);
   PRINT_TEST(v0, v2 + op1(M1) * v1);

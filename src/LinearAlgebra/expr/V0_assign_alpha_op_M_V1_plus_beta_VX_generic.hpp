@@ -1,3 +1,4 @@
+#error deprecated
 //
 // Generic for: V0 = α op(M) V1 + β VX
 //

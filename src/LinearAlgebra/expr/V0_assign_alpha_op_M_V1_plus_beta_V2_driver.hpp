@@ -1,3 +1,5 @@
+#error deprecated
+
 //
 // The role of this file is to reduce expression to this form
 //

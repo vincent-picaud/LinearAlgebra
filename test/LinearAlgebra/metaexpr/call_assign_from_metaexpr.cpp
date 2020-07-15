@@ -1,5 +1,4 @@
-#include "LinearAlgebra/expr/X_eq_aX_matrix.hpp"
-#include "LinearAlgebra/expr/X_eq_aX_vector.hpp"
+#include "LinearAlgebra/expr/X_eq_aX.hpp"
 
 #include "LinearAlgebra/metaexpr/call_assign_from_metaexpr.hpp"
 

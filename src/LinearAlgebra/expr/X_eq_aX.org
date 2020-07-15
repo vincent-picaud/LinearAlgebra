@@ -1,4 +1,4 @@
-#+Title: X_eq_neg_X.hpp
+#+Title: X_eq_aX.hpp
 #+Call: Setup()
 #+Call: HomeUp()
 
@@ -6,10 +6,10 @@
 #+Index:Known Patterns!\( X_0 = \alpha X_1 \)
 
 # file:v_eq_aMv_bv.hpp::BEGIN_assign
-#+Call: Extract("X_eq_neg_X.hpp","assign")
+#+Call: Extract("X_eq_aX.hpp","assign")
 
 * Unit tests
 
-  #+Include: "../../../test/LinearAlgebra/expr/X_eq_neg_X.cpp" src cpp
+  #+Include: "../../../test/LinearAlgebra/expr/X_eq_aX.cpp" src cpp
 
 

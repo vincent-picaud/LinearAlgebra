@@ -36,6 +36,15 @@ LinearAlgebra_headers += [
   'expr/X_eq_neg_X/generic.hpp', 
 
   # ================================================================
+  # X_eq_neg_X
+  # ================================================================
+  #
+  'expr/X_eq_aX.hpp', 
+  'expr/X_eq_aX/generic.hpp', 
+  'expr/X_eq_aX/vector.hpp', 
+  'expr/X_eq_aX/matrix.hpp', 
+
+  # ================================================================
   # M_eq_aMM_bM
   # ================================================================
   #
@@ -74,18 +83,7 @@ LinearAlgebra_headers += [
   'expr/X_eq_alpha/generic_interface.hpp', 
   'expr/X_eq_alpha/vector_impl.hpp', 
   'expr/X_eq_alpha/matrix_impl.hpp', 
-
-
-  # to update! (use copy as model)
-  # 'expr/X0_assign_alpha_X0.hpp', 
-  # 'expr/V0_assign_alpha_V0.hpp', 
-  # 'expr/M0_assign_alpha_M0.hpp',
-  'expr/X_eq_aX_vector.hpp', 
-  'expr/X_eq_aX_matrix.hpp', 
-  'expr/X_eq_aX/generic_interface.hpp', 
-  'expr/X_eq_aX/vector_impl.hpp', 
-  'expr/X_eq_aX/matrix_impl.hpp', 
-
+ 
   # to update! (use copy as model)
   'expr/X0_assign_alpha_X1_plus_X0.hpp', 
   'expr/V0_assign_alpha_V1_plus_V0.hpp', 

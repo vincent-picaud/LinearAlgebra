@@ -1,5 +1,4 @@
-#include "LinearAlgebra/expr/X_eq_aX_matrix.hpp"
-#include "LinearAlgebra/expr/X_eq_aX_vector.hpp"
+#include "LinearAlgebra/expr/X_eq_aX.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
@@ -13,9 +12,9 @@ using namespace LinearAlgebra;
 //////////////////////////////////////////////////////////////////
 //
 
-TEST(X0_Eq_AX0, vector)
+TEST(X0_Eq_AX0, vector_blas)
 {
-  Tiny_Vector<int, 3> v;
+  Vector<float> v(3);
   v[0] = 1;
   v[1] = 2;
   v[2] = 3;
@@ -25,8 +24,8 @@ TEST(X0_Eq_AX0, vector)
   EXPECT_EQ(v[2], 3);
 
   DEBUG_RESET_SELECTED();
-  assign(v, _product_, Scalar(3), _lhs_);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
+  assign(v, _product_, Scalar(3), v);
+  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(v[0], 3 * 1);
   EXPECT_EQ(v[1], 3 * 2);
@@ -45,7 +44,7 @@ TEST(X0_Eq_AX0, matrix)
   EXPECT_EQ(v(2, 0), 3);
 
   DEBUG_RESET_SELECTED();
-  assign(v, _product_, Scalar(3), _lhs_);
+  assign(v, _product_, Scalar(3), v);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Static);
 
   EXPECT_EQ(v(0, 0), 3 * 1);
@@ -129,18 +128,18 @@ TEST(X0_Eq_AX1, matrix)
   EXPECT_EQ(w(2, 0), 3 * 3 * 3);
 }
 
-TEST(X0_Eq_AX1, unary_minus)
-{
-  Vector<double> v(3), w(3);
-  v[0] = 1;
-  v[1] = 2;
-  v[2] = 3;
+// TEST(X0_Eq_AX1, unary_minus)
+// {
+//   Vector<double> v(3), w(3);
+//   v[0] = 1;
+//   v[1] = 2;
+//   v[2] = 3;
 
-  DEBUG_RESET_SELECTED();
-  assign(w, _unary_minus_, w);
-  DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
-                  (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
-}
+//   DEBUG_RESET_SELECTED();
+//   assign(w, _unary_minus_, w);
+//   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(),
+//                   (HAS_BLAS ? Expr_Selector_Enum::Blas : Expr_Selector_Enum::Generic));
+// }
 
 TEST(X0_Eq_AX1, double_use_blas)
 {

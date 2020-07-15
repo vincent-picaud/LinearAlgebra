@@ -4,7 +4,8 @@
 
 #include "LinearAlgebra/scalar_functions/dist_2_vector.hpp"
 
-#include "LinearAlgebra/expr/V0_assign_alpha_op_M_VX_blas.hpp"
+#include "LinearAlgebra/expr/v_eq_aMv.hpp"
+#include "LinearAlgebra/expr/v_eq_a_inv_Mv.hpp"
 
 #include <gtest/gtest.h>
 

@@ -1,4 +1,7 @@
-#include "LinearAlgebra/expr/V0_assign_alpha_op_M_VX_header.hpp"
+#include "LinearAlgebra/expr/v_eq_aMv.hpp"
+#include "LinearAlgebra/expr/v_eq_a_inv_Mv.hpp"
+
+//#include "LinearAlgebra/expr/V0_assign_alpha_op_M_VX_header.hpp"
 
 #include "LinearAlgebra/expr/expr_debug.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr.hpp"
@@ -20,7 +23,7 @@ TEST(metaExpr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   U = 1;
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, _lhs_);
+  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, V);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 8);

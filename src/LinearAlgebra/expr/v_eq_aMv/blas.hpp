@@ -115,3 +115,5 @@ namespace LinearAlgebra
   // [END_trmv]
 
 }  // namespace LinearAlgebra
+
+#endif

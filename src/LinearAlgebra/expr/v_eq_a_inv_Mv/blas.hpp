@@ -6,6 +6,7 @@
 #ifdef HAS_BLAS
 
 #include "LinearAlgebra/dense/memory_chunk_aliasing_p.hpp"
+#include "LinearAlgebra/expr/copy_vector.hpp"
 #include "LinearAlgebra/expr/X_eq_aX_vector.hpp"
 #include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 
@@ -27,6 +28,7 @@ namespace LinearAlgebra
          const _product_t_,
          const _product_t_,
          const Scalar_Crtp<ALPHA_IMPL>& alpha,
+         const _inverse_t_,
          const _matrix_unary_op_t_<OP1_ENUM> op1,
          const Dense_Matrix_Crtp<MATRIX1_IMPL>& matrix1,
          const Dense_Vector_Crtp<VECTOR1_IMPL>& vector1)
@@ -42,7 +44,6 @@ namespace LinearAlgebra
     }
 
     assert(are_not_aliased_p(vector0, matrix1));
-    assert(same_mathematical_object_p(vector0, vector1));
 
     Blas::scal(alpha.value(), vector0);
     Blas::trsv(op1, matrix1, vector0);
@@ -52,3 +53,5 @@ namespace LinearAlgebra
   // [END_trsv]
 
 }  // namespace LinearAlgebra
+
+#endif

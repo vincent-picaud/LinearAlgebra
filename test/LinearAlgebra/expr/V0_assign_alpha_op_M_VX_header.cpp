@@ -1,4 +1,5 @@
-#include "LinearAlgebra/expr/V0_assign_alpha_op_M_VX_header.hpp"
+#include "LinearAlgebra/expr/v_eq_aMv.hpp"
+#include "LinearAlgebra/expr/v_eq_a_inv_Mv.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/matrix_fwd.hpp"
@@ -19,7 +20,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   U = 1;
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, _lhs_);
+  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, V);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 8);
@@ -34,7 +35,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trmv)
   L = 1;
 
   DEBUG_RESET_SELECTED();
-  assign(W, _product_, _product_, Scalar<double>(2), _identity_, L, _lhs_);
+  assign(W, _product_, _product_, Scalar<double>(2), _identity_, L, W);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V, W);
@@ -49,7 +50,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trsv)
   U = 1;
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, _lhs_);
+  assign(V, _product_, _product_, Scalar<double>(2), _identity_, U, V);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 8);
@@ -58,7 +59,7 @@ TEST(expr_V0_assign_alpha_op_M_VX_header, blas_trsv)
   EXPECT_EQ(V[3], 2);
 
   DEBUG_RESET_SELECTED();
-  assign(V, _product_, _product_, Scalar<double>(0.5), _identity_, _inverse_, U, _lhs_);
+  assign(V, _product_, _product_, Scalar<double>(0.5), _identity_, _inverse_, U, V);
   DEBUG_EXPECT_EQ(DEBUG_GET_SELECTED(), Expr_Selector_Enum::Blas);
 
   EXPECT_EQ(V[0], 1);

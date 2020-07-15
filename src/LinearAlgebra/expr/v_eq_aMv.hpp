@@ -38,8 +38,8 @@ namespace LinearAlgebra
 
     assign(Expr_Selector<>(),
            v0.impl(),
-           _product_t_,
-           _product_t_,
+           _product_,
+           _product_,
            alpha.impl(),
            op1,
            M1.impl(),
@@ -71,7 +71,7 @@ namespace LinearAlgebra
          const Matrix_Crtp<M1_IMPL>& M1,
          const Vector_Crtp<V1_IMPL>& v1)
   {
-    assign(v0, _product_t_, _product_t_, Scalar<int>{-1}, _identity_, M1, v1);
+    assign(v0, _product_, _product_, Scalar<int>{-1}, _identity_, M1, v1);
   }
   // [BEGIN_alias]
   // \begin{equation*}
@@ -87,7 +87,7 @@ namespace LinearAlgebra
          const Matrix_Crtp<M1_IMPL>& M1,
          const Vector_Crtp<V1_IMPL>& v1)
   {
-    assign(v0, _product_t_, _product_t_, Scalar<int>{-1}, op1, M1, v1);
+    assign(v0, _product_, _product_, Scalar<int>{-1}, op1, M1, v1);
   }
   // [BEGIN_alias]
   // \begin{equation*}
@@ -101,7 +101,7 @@ namespace LinearAlgebra
          const Matrix_Crtp<M1_IMPL>& M1,
          const Vector_Crtp<V1_IMPL>& v1)
   {
-    assign(v0, _product_t_, _product_t_, Scalar<int>{1}, _identity_, M1, v1);
+    assign(v0, _product_, _product_, Scalar<int>{1}, _identity_, M1, v1);
   }
   // [BEGIN_alias]
   // \begin{equation*}
@@ -117,7 +117,7 @@ namespace LinearAlgebra
          const Matrix_Crtp<M1_IMPL>& M1,
          const Vector_Crtp<V1_IMPL>& v1)
   {
-    assign(v0, _product_t_, _product_t_, alpha, _identity_, M1, v1);
+    assign(v0, _product_, _product_, alpha, _identity_, M1, v1);
   }
   // [BEGIN_alias]
   // \begin{equation*}
@@ -132,25 +132,7 @@ namespace LinearAlgebra
          const Matrix_Crtp<M1_IMPL>& M1,
          const Vector_Crtp<V1_IMPL>& v1)
   {
-    assign(v0, _product_t_, _product_t_, Scalar<int>{1}, op1, M1, v1);
+    assign(v0, _product_, _product_, Scalar<int>{1}, op1, M1, v1);
   }
-
-  // v0 = alpha * op1(M1) * v1;
-  // EXPECT_DOUBLE_EQ(*v0.data(),( ( 0.100000 ) * ( 0.002000 ) ) * ( 0.020000 ));
-
-  // v0 = -M1 * v1;
-  // EXPECT_DOUBLE_EQ(*v0.data(),( - ( 0.002000 ) ) * ( 0.020000 ));
-
-  // v0 = -op1(M1) * v1;
-  // EXPECT_DOUBLE_EQ(*v0.data(),( - ( 0.002000 ) ) * ( 0.020000 ));
-
-  // v0 = M1 * v1;
-  // EXPECT_DOUBLE_EQ(*v0.data(),( 0.002000 ) * ( 0.020000 ));
-
-  // v0 = alpha * M1 * v1;
-  // EXPECT_DOUBLE_EQ(*v0.data(),( ( 0.100000 ) * ( 0.002000 ) ) * ( 0.020000 ));
-
-  // v0 = op1(M1) * v1;
-  // EXPECT_DOUBLE_EQ(*v0.data(),( 0.002000 ) * ( 0.020000 ));
 
 }  // namespace LinearAlgebra

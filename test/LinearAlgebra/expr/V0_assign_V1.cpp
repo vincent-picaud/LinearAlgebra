@@ -1,4 +1,4 @@
-#include "LinearAlgebra/expr/copy_vector.hpp"
+#include "LinearAlgebra/expr/copy.hpp"
 
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/dense/vector_view.hpp"

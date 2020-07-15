@@ -6,7 +6,7 @@
 #include "LinearAlgebra/dense/vector_fwd.hpp"
 #include "LinearAlgebra/dense/vmt_crtp.hpp"
 #include "LinearAlgebra/expr/X_eq_alpha_vector.hpp"
-#include "LinearAlgebra/expr/copy_vector.hpp"
+#include "LinearAlgebra/expr/copy.hpp"
 #include "LinearAlgebra/expr/scalar_crtp.hpp"
 #include "LinearAlgebra/metaexpr/metaexpr_crtp_fwd.hpp"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LinearAlgebra/expr/copy/generic_interface.hpp"
+#include "LinearAlgebra/expr/copy.hpp"
 
 //#include "LinearAlgebra/blas/blas.hpp"
 #include "LinearAlgebra/dense/matrix_fill.hpp"

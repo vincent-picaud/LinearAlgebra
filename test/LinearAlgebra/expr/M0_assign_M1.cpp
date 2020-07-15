@@ -1,4 +1,4 @@
-#include "LinearAlgebra/expr/copy_matrix.hpp"
+#include "LinearAlgebra/expr/copy.hpp"
 
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/matrix_view.hpp"

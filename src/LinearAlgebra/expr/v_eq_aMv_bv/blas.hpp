@@ -5,7 +5,7 @@
 
 #ifdef HAS_BLAS
 
-#include "LinearAlgebra/expr/copy_vector.hpp"
+#include "LinearAlgebra/expr/copy.hpp"
 #include "LinearAlgebra/utils/always.hpp"
 #include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 

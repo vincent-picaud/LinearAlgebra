@@ -6,7 +6,7 @@
 #ifdef HAS_BLAS
 
 #include "LinearAlgebra/dense/memory_chunk_aliasing_p.hpp"
-#include "LinearAlgebra/expr/copy_vector.hpp"
+#include "LinearAlgebra/expr/copy.hpp"
 #include "LinearAlgebra/expr/X_eq_aX_vector.hpp"
 #include "LinearAlgebra/utils/same_mathematical_object_p.hpp"
 

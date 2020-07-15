@@ -1,9 +1,9 @@
 // [[file:blas.org]]
-#if defined(HAS_BLAS) and defined(HAS_MATRIX) and defined(HAS_VECTOR)
+#if defined(HAS_BLAS)
 
 #pragma once
 
-#include "LinearAlgebra/expr/copy_matrix.hpp"
+#include "LinearAlgebra/expr/copy.hpp"
 
 #include "LinearAlgebra/blas/blas.hpp"
 #include "LinearAlgebra/blas/subroutines_dense.hpp"

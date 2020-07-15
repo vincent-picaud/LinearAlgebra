@@ -6,7 +6,7 @@
 // Involved subroutines
 //
 #include "LinearAlgebra/expr/X_eq_alpha_matrix.hpp"
-#include "LinearAlgebra/expr/copy_matrix.hpp"
+#include "LinearAlgebra/expr/copy.hpp"
 
 #include "LinearAlgebra/dense/matrix_fill.hpp"
 #include "LinearAlgebra/dense/matrix_transform.hpp"

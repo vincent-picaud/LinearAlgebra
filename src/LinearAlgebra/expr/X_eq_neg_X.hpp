@@ -2,6 +2,7 @@
 #pragma once
 
 #include "LinearAlgebra/expr/X_eq_neg_X/vector.hpp"
+#include "LinearAlgebra/expr/X_eq_neg_X/matrix.hpp"
 
 #include "LinearAlgebra/expr/expr.hpp"
 

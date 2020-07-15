@@ -32,6 +32,7 @@ LinearAlgebra_headers += [
   #
   'expr/X_eq_neg_X.hpp', 
   'expr/X_eq_neg_X/vector.hpp', 
+  'expr/X_eq_neg_X/matrix.hpp', 
   'expr/X_eq_neg_X/generic.hpp', 
 
   # ================================================================

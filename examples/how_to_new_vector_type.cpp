@@ -12,7 +12,7 @@
 // For =assign()= function one needs to include *each individual*
 // expressions. *It is not enough:* to simply include
 // ="LinearAlgebra/expr/expr.hpp"= .
-#include "LinearAlgebra/expr/V0_assign_alpha_V1_plus_V2.hpp"
+#include "LinearAlgebra/expr/X0_eq_aX1_X2.hpp"
 #include "LinearAlgebra/expr/X_eq_aX.hpp"
 // [END_expr_include_caveat]
 
@@ -210,7 +210,7 @@ main()
   //
   // std::cout << U << std::endl;
 
-  U = V + W;
+  U = V + 2*W;
 
   std::cout << U << std::endl;
 

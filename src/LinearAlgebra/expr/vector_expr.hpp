@@ -6,5 +6,4 @@
 
 #include "LinearAlgebra/expr/X_eq_aX.hpp"
 
-#include "LinearAlgebra/expr/V0_assign_alpha_V1_plus_V0.hpp"
-#include "LinearAlgebra/expr/V0_assign_alpha_V1_plus_V2.hpp"
+#include "LinearAlgebra/expr/X0_eq_aX1_X2.hpp"

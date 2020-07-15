@@ -23,6 +23,8 @@ test_array = [
 
   # TODO 'v_eq_aMv',
   'v_eq_a_inv_Mv',
+
+  'X_eq_neg_X'
 ]
 
 foreach test : test_array

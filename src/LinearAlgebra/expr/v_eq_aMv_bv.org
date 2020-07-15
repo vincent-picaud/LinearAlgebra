@@ -2,7 +2,7 @@
 #+Call: Setup()
 #+Call: HomeUp()
 
-* $v_0 = \alpha \text{op}_1(M_1) v_1 + \beta v_0$ !
+* $v_0 = \alpha \text{op}_1(M_1) v_1 + \beta v_0$ 
 #+Index:Known Patterns!$v_0 = \alpha \text{op}_1(M_1) v_1 + \beta v_0$
 
 # file:v_eq_aMv_bv.hpp::BEGIN_assign

@@ -908,14 +908,18 @@ main()
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
 
-  // PRINT_EXPR(v0, alpha * inverse(op1(M1)) * v1);
+  PRINT_EXPR(v0, alpha * v1 + v2)
+
+  PRINT_EXPR(v0, -v1 + v2)
+  PRINT_EXPR(v0, v2 - v1)
+  PRINT_EXPR(v0, v2 + v1)
 
   // PRINT_EXPR(v0, -inverse(M1) * v1);
   // PRINT_EXPR(v0, -inverse(op1(M1)) * v1);
   // PRINT_EXPR(v0, inverse(M1) * v1);
   // PRINT_EXPR(v0, alpha * inverse(M1) * v1);
   // PRINT_EXPR(v0, inverse(op1(M1)) * v1);
-  // 
+  //
   // PRINT_EXPR(v0, alpha * op1(inverse(M1)) * v1);
   // PRINT_EXPR(v0, -op1(inverse(M1)) * v1);
   // PRINT_EXPR(v0, op1(inverse(M1)) * v1);

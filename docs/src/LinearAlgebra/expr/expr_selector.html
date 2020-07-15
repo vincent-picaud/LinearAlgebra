@@ -6,7 +6,7 @@
 <!-- 2020-07-15 Wed 16:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Contents</title>
+<title>expr_selector.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,21 +244,21 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Contents</h1>
+<h1 class="title">expr_selector.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgea18485">1. The <code>LinearAlgebra/expr/</code> directory</a></li>
-<li><a href="#orgf31d6d8">2. Design</a>
+<li><a href="#orge2b94e6">1. Motivation</a>
 <ul>
-<li><a href="#org038f90b">2.1. </a></li>
+<li><a href="#org3338f27">1.1. The <code>Expr_Selector_Enum</code> enum</a></li>
+<li><a href="#org4c053e7">1.2. The <code>Expr_Selector</code> class</a></li>
 </ul>
 </li>
-<li><a href="#org2095c4e">3. Backlinks</a></li>
-<li><a href="#org5d26bb9">4. 1 Backlinks</a>
+<li><a href="#org9b67b97">2. Backlinks</a></li>
+<li><a href="#org1518549">3. 1 Backlinks</a>
 <ul>
-<li><a href="#org5423727">4.1. My Sitemap</a></li>
+<li><a href="#org8fac87a">3.1. expr_selector.hpp</a></li>
 </ul>
 </li>
 </ul>
@@ -269,83 +269,162 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<ul class="org-ul">
-<li><a href=".//assign_fallback.html">assign_fallback</a></li>
-<li><a href=".//expr_selector.html">expr_selector</a></li>
-<li><a href=".//expr_tags.html">expr_tags</a></li>
-<li>M_eq_aMM_bM/
-<ul class="org-ul">
-<li><a href=".//M_eq_aMM_bM/blas.html">blas</a></li>
-</ul></li>
-<li><a href=".//M_eq_aMM_bM.html">M_eq_aMM_bM</a></li>
-<li><a href=".//scalar_crtp.html">scalar_crtp</a></li>
-<li>v_eq_a_inv_Mv/
-<ul class="org-ul">
-<li><a href=".//v_eq_a_inv_Mv/blas.html">blas</a></li>
-</ul></li>
-<li><a href=".//v_eq_a_inv_Mv.html">v_eq_a_inv_Mv</a></li>
-<li>v_eq_aMv/
-<ul class="org-ul">
-<li><a href=".//v_eq_aMv/blas.html">blas</a></li>
-</ul></li>
-<li>v_eq_aMv_bv/
-<ul class="org-ul">
-<li><a href=".//v_eq_aMv_bv/blas.html">blas</a></li>
-</ul></li>
-<li><a href=".//v_eq_aMv_bv.html">v_eq_aMv_bv</a></li>
-<li><a href=".//v_eq_aMv.html">v_eq_aMv</a></li>
-<li><a href=".//X_eq_neg_X.html">X_eq_neg_X</a></li>
-</ul>
-
-<div id="outline-container-orgea18485" class="outline-2">
-<h2 id="orgea18485"><span class="section-number-2">1</span> The <code>LinearAlgebra/expr/</code> directory&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Dev">Dev</span></span></h2>
+<div id="outline-container-orge2b94e6" class="outline-2">
+<h2 id="orge2b94e6"><span class="section-number-2">1</span> Motivation</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-This directory define low-level API to call computational subroutines. By "low-level" we means that calls are performed by flat function calls
+<a href="#org4c053e7">The <code>Expr_Selector</code> class</a> allows to induce an <b>order of preference</b> when
+selecting the computational subroutines.
+</p>
+
+<dl class="org-dl">
+<dt>Toy example</dt><dd></dd>
+</dl>
+
+<p>
+Let's assume that we have:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-cpp">assign(V, V, _plus_ 2, W);
+<pre class="src src-cpp"><span style="color: #1c86ee;">enum</span> <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Expr_Selector_Enum</span> : <span style="color: #00688b;">int</span>
+  {
+   <span style="color: #2e8b57;">Generic</span>,
+   <span style="color: #2e8b57;">Blas</span>,
+  };
+
+<span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Expr_Selector_Enum</span> <span style="color: #2e8b57;">EXPR_ORDER</span>&gt;
+<span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Expr_Selector</span>;
+
+<span style="color: #1c86ee;">template</span> &lt;&gt;
+<span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt; : <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Generic&gt;
+{
+};
+
+<span style="color: #1c86ee;">template</span> &lt;&gt;
+<span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Generic&gt; 
+{
+};
 </pre>
 </div>
 
 <p>
-and not by an expression template mechanism that would allow us to write:
+If we write
 </p>
+
 <div class="org-src-container">
-<pre class="src src-cpp">V = V + 2 * W;
+<pre class="src src-cpp"><span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V0_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V1_IMPL</span>&gt;
+<span style="color: #00688b;">void</span>
+<span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Generic&gt; <span style="color: #2e8b57;">selected</span>,
+       <span style="color: #00688b;">Vector_Crtp</span>&lt;X0_TYPE&gt;&amp; <span style="color: #2e8b57;">v0</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;X1_TYPE&gt;&amp; <span style="color: #2e8b57;">v1</span>)
+{
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">call generic implementation</span>
+}
+<span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V0_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V1_IMPL</span>&gt;
+<span style="color: #1c86ee;">auto</span>
+<span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt; <span style="color: #2e8b57;">selected</span>,
+       <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v0</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v1</span>)
+  -&gt; <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::copy(v0.impl(), v1.impl()))&gt;&gt;
+
+{
+  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">call Blas::copy()</span>
+}
 </pre>
 </div>
 
 <p>
-The first steps are to introduce a <a href="../dense/vmt_crtp.html#ID-5e5dd322-57cf-4297-b1e2-ccf147f4adc3">Base class for VMT (vectors, matrices, tensors&#x2026;)</a> and some tags
+and define the <code>copy()</code> user function as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V0_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V1_IMPL</span>&gt;
+<span style="color: #00688b;">void</span>
+<span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Vector_Crtp</span>&lt;X0_TYPE&gt;&amp; <span style="color: #2e8b57;">v0</span>,
+       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;X1_TYPE&gt;&amp; <span style="color: #2e8b57;">v1</span>)
+{
+  assign(Expr_Selector&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt;(),v0,v1);
+}
+</pre>
+</div>
+
+<p>
+then a call to <code>assign(v0,v1)</code> will first check if a <code>Blas</code> implementation
+is available. If not it will branch to the generic implementation.
+</p>
+
+<dl class="org-dl">
+<dt>Note</dt><dd>to make it work, only the <code>selected</code> argument type must be modified between two specializations:</dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;Expr_Selector_Enum::???&gt; <span style="color: #2e8b57;">selected</span>
+</pre>
+</div>
+
+<p>
+This file generalizes this idea.
 </p>
 </div>
+
+<div id="outline-container-org3338f27" class="outline-3">
+<h3 id="org3338f27"><span class="section-number-3">1.1</span> The <code>Expr_Selector_Enum</code> enum&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Dev">Dev</span></span></h3>
+<div class="outline-text-3" id="text-1-1">
+<blockquote>
+<div class="org-src-container">
+<pre class="src src-cpp">     <span style="color: #1c86ee;">enum</span> <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Expr_Selector_Enum</span> : <span style="color: #00688b;">int</span>
+     {
+       <span style="color: #2e8b57;">Undefined</span>,
+       <span style="color: #2e8b57;">Generic</span>,
+       <span style="color: #2e8b57;">Blas</span>,
+       <span style="color: #2e8b57;">Static</span>,
+       <span style="color: #2e8b57;">END</span>
+     };
+</pre>
+</div>
+</blockquote>
+</div>
 </div>
 
-<div id="outline-container-orgf31d6d8" class="outline-2">
-<h2 id="orgf31d6d8"><span class="section-number-2">2</span> Design</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-org4c053e7" class="outline-3">
+<h3 id="org4c053e7"><span class="section-number-3">1.2</span> The <code>Expr_Selector</code> class&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Dev">Dev</span></span></h3>
+<div class="outline-text-3" id="text-1-2">
+<blockquote>
+<div class="org-src-container">
+<pre class="src src-cpp">     <span style="color: #1c86ee;">template</span> &lt;<span style="color: #00688b;">Expr_Selector_Enum</span> <span style="color: #2e8b57;">EXPR_ORDER</span> = <span style="color: #6e8b3d;">Expr_Selector_Enum</span>::END&gt;
+     <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Expr_Selector</span>
+         : <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #1c86ee;">static_cast</span>&lt;Expr_Selector_Enum&gt;(
+               <span style="color: #1c86ee;">static_cast</span>&lt;<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">underlying_type_t</span>&lt;<span style="color: #00688b;">Expr_Selector_Enum</span>&gt;&gt;(EXPR_ORDER) - 1)&gt;
+     {
+       <span style="color: #1c86ee;">static</span> <span style="color: #1c86ee;">constexpr</span> <span style="color: #00688b;">Expr_Selector_Enum</span> <span style="color: #2e8b57;">value</span> = EXPR_ORDER;
+       <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">operator</span> <span style="color: #00688b;">Expr_Selector_Enum</span>() <span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">noexcept</span> { <span style="color: #1c86ee;">return</span> value; }
+     };
+     <span style="color: #1c86ee;">template</span> &lt;&gt;
+     <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Undefined&gt;
+     {
+       <span style="color: #1c86ee;">static</span> <span style="color: #1c86ee;">constexpr</span> <span style="color: #00688b;">Expr_Selector_Enum</span> <span style="color: #2e8b57;">value</span> = <span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Undefined;
+       <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">operator</span> <span style="color: #00688b;">Expr_Selector_Enum</span>() <span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">noexcept</span> { <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Undefined; }
+     };
+</pre>
 </div>
-<div id="outline-container-org038f90b" class="outline-3">
-<h3 id="org038f90b"><span class="section-number-3">2.1</span> </h3>
+</blockquote>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org2095c4e" class="outline-2">
-<h2 id="org2095c4e"><span class="section-number-2">3</span> Backlinks</h2>
+<div id="outline-container-org9b67b97" class="outline-2">
+<h2 id="org9b67b97"><span class="section-number-2">2</span> Backlinks</h2>
 </div>
 
 
-<div id="outline-container-org5d26bb9" class="outline-2">
-<h2 id="org5d26bb9"><span class="section-number-2">4</span> 1 Backlinks</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-org1518549" class="outline-2">
+<h2 id="org1518549"><span class="section-number-2">3</span> 1 Backlinks</h2>
+<div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org5423727" class="outline-3">
-<h3 id="org5423727"><span class="section-number-3">4.1</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-org8fac87a" class="outline-3">
+<h3 id="org8fac87a"><span class="section-number-3">3.1</span> <a href="expr_selector.html">expr_selector.hpp</a></h3>
+<div class="outline-text-3" id="text-3-1">
 <p>
-<a href="src/LinearAlgebra/expr/index.html">Contents</a>
+<a href="#org4c053e7">The <code>Expr_Selector</code> class</a> allows to induce an <b>order of preference</b> when   selecting the computational subroutines.
 </p>
 </div>
 </div>

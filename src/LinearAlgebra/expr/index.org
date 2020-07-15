@@ -14,7 +14,7 @@ orgTree.sh -I index.org -P "*.org"
 This directory define low-level API to call computational subroutines. By "low-level" we means that calls are performed by flat function calls
 
 #+begin_src cpp
-assign(V, _lhs_, _plus_ 2, W);
+assign(V, V, _plus_ 2, W);
 #+end_src
 
 and not by an expression template mechanism that would allow us to write:
@@ -24,3 +24,6 @@ V = V + 2 * W;
 
 The first steps are to introduce a [[id:5e5dd322-57cf-4297-b1e2-ccf147f4adc3][Base class for VMT (vectors, matrices, tensors...)]] and some tags
 
+* Design
+
+** 

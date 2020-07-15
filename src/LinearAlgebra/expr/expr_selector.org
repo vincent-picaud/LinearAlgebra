@@ -1,0 +1,91 @@
+#+Title: expr_selector.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Motivation
+
+  [[id:77f4e3e6-a212-47ee-8d13-f15d98ffb311][The =Expr_Selector= class]] allows to induce an *order of preference* when
+  selecting the computational subroutines.
+
+  - Toy example ::
+
+  Let's assume that we have:
+
+  #+begin_src cpp :eval never
+enum class Expr_Selector_Enum : int
+  {
+   Generic,
+   Blas,
+  };
+
+template <Expr_Selector_Enum EXPR_ORDER>
+struct Expr_Selector;
+
+template <>
+struct Expr_Selector<Expr_Selector_Enum::Blas> : Expr_Selector<Expr_Selector_Enum::Generic>
+{
+};
+
+template <>
+struct Expr_Selector<Expr_Selector_Enum::Generic> 
+{
+};
+  #+end_src
+
+  If we write
+
+  #+begin_src cpp :eval never
+template <typename V0_IMPL, typename V1_IMPL>
+void
+assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
+       Vector_Crtp<X0_TYPE>& v0,
+       const Vector_Crtp<X1_TYPE>& v1)
+{
+  // call generic implementation
+}
+template <typename V0_IMPL, typename V1_IMPL>
+auto
+assign(const Expr_Selector<Expr_Selector_Enum::Blas> selected,
+       Vector_Crtp<V0_IMPL>& v0,
+       const Vector_Crtp<V1_IMPL>& v1)
+  -> std::enable_if_t<Always_True_v<decltype(Blas::copy(v0.impl(), v1.impl()))>>
+
+{
+  // call Blas::copy()
+}
+  #+end_src
+
+  and define the =copy()= user function as follows:
+
+  #+begin_src cpp :eval never
+template <typename V0_IMPL, typename V1_IMPL>
+void
+assign(Vector_Crtp<X0_TYPE>& v0,
+       const Vector_Crtp<X1_TYPE>& v1)
+{
+  assign(Expr_Selector<Expr_Selector_Enum::Blas>(),v0,v1);
+}
+  #+end_src
+
+  then a call to =assign(v0,v1)= will first check if a =Blas= implementation
+  is available. If not it will branch to the generic implementation.
+
+  - Note :: to make it work, only the =selected= argument type must be modified between two specializations:
+  #+begin_src cpp :eval never
+const Expr_Selector<Expr_Selector_Enum::???> selected
+  #+end_src
+
+  This file generalizes this idea.
+
+** The =Expr_Selector_Enum= enum                                          :Dev:
+
+   # file:expr_selector.hpp::BEGIN_enum
+   #+Call: Extract("expr_selector.hpp","enum")
+
+** The =Expr_Selector= class                                              :Dev:
+   :PROPERTIES:
+   :ID:       77f4e3e6-a212-47ee-8d13-f15d98ffb311
+   :END:
+
+   # file:expr_selector.hpp::BEGIN_class
+   #+Call: Extract("expr_selector.hpp","class")

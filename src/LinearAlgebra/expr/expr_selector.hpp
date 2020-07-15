@@ -30,6 +30,7 @@
 
 namespace LinearAlgebra
 {
+  // [BEGIN_enum]
   enum class Expr_Selector_Enum : int
   {
     Undefined,
@@ -38,7 +39,9 @@ namespace LinearAlgebra
     Static,
     END
   };
-
+ // [END_enum]
+  
+  // [BEGIN_class]
   template <Expr_Selector_Enum EXPR_ORDER = Expr_Selector_Enum::END>
   struct Expr_Selector
       : Expr_Selector<static_cast<Expr_Selector_Enum>(
@@ -53,4 +56,5 @@ namespace LinearAlgebra
     static constexpr Expr_Selector_Enum value = Expr_Selector_Enum::Undefined;
     constexpr operator Expr_Selector_Enum() const noexcept { return Expr_Selector_Enum::Undefined; }
   };
+  // [END_class]
 }

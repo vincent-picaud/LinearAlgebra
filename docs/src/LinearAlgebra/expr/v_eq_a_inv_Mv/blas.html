@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:53 -->
+<!-- 2020-07-15 Wed 10:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Library (meson build)</title>
+<title>blas.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -193,6 +193,8 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
+<style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -242,74 +244,76 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Library (meson build)</h1>
+<h1 class="title">blas.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org88eb3c4">1. The meson file</a></li>
-<li><a href="#org4bb53a0">2. Backlinks</a></li>
-<li><a href="#orgadf69b9">3. 2 Backlinks</a>
+<li><a href="#orgcd77839">1. Provided wrappings</a>
 <ul>
-<li><a href="#org5d7e66a">3.1. My Sitemap</a></li>
-<li><a href="#org9869bb2">3.2. Content</a></li>
+<li><a href="#orgb612bda">1.1. <code>trsv</code></a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org88eb3c4" class="outline-2">
-<h2 id="org88eb3c4"><span class="section-number-2">1</span> The meson file</h2>
+<p>
+<a href="../../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+</p>
+
+<div id="outline-container-orgcd77839" class="outline-2">
+<h2 id="orgcd77839"><span class="section-number-2">1</span> Provided wrappings</h2>
 <div class="outline-text-2" id="text-1">
-<p>
-The meson file is 
-</p>
+</div>
+<div id="outline-container-orgb612bda" class="outline-3">
+<h3 id="orgb612bda"><span class="section-number-3">1.1</span> <code>trsv</code></h3>
+<div class="outline-text-3" id="text-1-1">
+<blockquote>
 <div class="org-src-container">
-<pre class="src src-sh">cat ./meson.build
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
+            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1_ENUM</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX1_IMPL</span>&gt;
+  <span style="color: #1c86ee;">auto</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt; <span style="color: #2e8b57;">selected</span>,
+         <span style="color: #00688b;">Dense_Vector_Crtp</span>&lt;<span style="color: #00688b;">VECTOR0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector0</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1_ENUM&gt; <span style="color: #2e8b57;">op1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Vector_Crtp</span>&lt;<span style="color: #00688b;">VECTOR1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector1</span>)
+      -&gt; <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::copy(vector1, vector0))&gt; <span style="color: #1c86ee;">and</span>
+                          <span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::scal(alpha.value(), vector0))&gt; <span style="color: #1c86ee;">and</span>
+                          <span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::trsv(op1, matrix1, vector0))&gt;&gt;
+  {
+    assert(matrix1.I_size() == matrix1.J_size());  <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">TODO</span><span style="color: #7f7f7f;">: extend to the rectangular case</span>
+
+    <span style="color: #1c86ee;">if</span> (<span style="color: #1c86ee;">not</span> same_mathematical_object_p(vector0, vector1))
+    {
+      <span style="color: #6e8b3d;">Blas</span>::copy(vector1, vector0);
+    }
+
+    assert(are_not_aliased_p(vector0, matrix1));
+    assert(same_mathematical_object_p(vector0, vector1));
+
+    <span style="color: #6e8b3d;">Blas</span>::scal(alpha.value(), vector0);
+    <span style="color: #6e8b3d;">Blas</span>::trsv(op1, matrix1, vector0);
+
+    DEBUG_SET_SELECTED(selected);
+  }
 </pre>
 </div>
-
-<div class="org-src-container">
-<pre class="src src-meson"><span style="color: #2e8b57;">inc</span> = <span style="color: #cd6600;">include_directories</span>(<span style="color: #8b7355;">'.'</span>)
-
-<span style="color: #cd6600;">subdir</span>(<span style="color: #8b7355;">'LinearAlgebra'</span>)
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org4bb53a0" class="outline-2">
-<h2 id="org4bb53a0"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-orgadf69b9" class="outline-2">
-<h2 id="orgadf69b9"><span class="section-number-2">3</span> 2 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org5d7e66a" class="outline-3">
-<h3 id="org5d7e66a"><span class="section-number-3">3.1</span> <a href="../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-<a href="src/README.html">Library (meson build)</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9869bb2" class="outline-3">
-<h3 id="org9869bb2"><span class="section-number-3">3.2</span> <a href="index.html">Content</a></h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-<a href="src/README.html">README</a>
-</p>
+</blockquote>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:53</p>
+<p class="date">Created: 2020-07-15 Wed 10:54</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

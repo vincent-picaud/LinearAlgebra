@@ -1,14 +1,11 @@
 #include "LinearAlgebra/expr/v_eq_aMv.hpp"
 #include "LinearAlgebra/expr/v_eq_a_inv_Mv.hpp"
 
-//#include "LinearAlgebra/expr/V0_assign_alpha_op_M_VX_header.hpp"
-
-#include "LinearAlgebra/expr/expr_debug.hpp"
-#include "LinearAlgebra/metaexpr/metaexpr.hpp"
-
 #include "LinearAlgebra/dense/matrix.hpp"
 #include "LinearAlgebra/dense/vector.hpp"
 #include "LinearAlgebra/dense/vector_comparison_operators.hpp"
+#include "LinearAlgebra/expr/expr_debug.hpp"
+#include "LinearAlgebra/metaexpr/metaexpr.hpp"
 
 #include <gtest/gtest.h>
 

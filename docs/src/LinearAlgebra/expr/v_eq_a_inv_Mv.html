@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:53 -->
+<!-- 2020-07-15 Wed 10:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Library (meson build)</title>
+<title>v_eq_a_inv_Mv.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -193,6 +193,8 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
+<style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -239,77 +241,91 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">Library (meson build)</h1>
+<h1 class="title">v_eq_a_inv_Mv.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org88eb3c4">1. The meson file</a></li>
-<li><a href="#org4bb53a0">2. Backlinks</a></li>
-<li><a href="#orgadf69b9">3. 2 Backlinks</a>
-<ul>
-<li><a href="#org5d7e66a">3.1. My Sitemap</a></li>
-<li><a href="#org9869bb2">3.2. Content</a></li>
-</ul>
-</li>
+<li><a href="#org07ffa21">1. \(v_0 = \alpha \text{inv}(\text{op}_1(M_1)) v_1\)</a></li>
+<li><a href="#orgbf61bbc">2. Alias</a></li>
+<li><a href="#orgdfa77a9">3. Unit test</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org88eb3c4" class="outline-2">
-<h2 id="org88eb3c4"><span class="section-number-2">1</span> The meson file</h2>
+<p>
+<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
+</p>
+
+<div id="outline-container-org07ffa21" class="outline-2">
+<h2 id="org07ffa21"><span class="section-number-2">1</span> \(v_0 = \alpha \text{inv}(\text{op}_1(M_1)) v_1\)</h2>
 <div class="outline-text-2" id="text-1">
-<p>
-The meson file is 
-</p>
-<div class="org-src-container">
-<pre class="src src-sh">cat ./meson.build
-</pre>
-</div>
+<blockquote>
+\begin{equation*}
+v_0 = \alpha \text{inv}(\text{op}_1(M_1)) v_1
+\end{equation*}
 
 <div class="org-src-container">
-<pre class="src src-meson"><span style="color: #2e8b57;">inc</span> = <span style="color: #cd6600;">include_directories</span>(<span style="color: #8b7355;">'.'</span>)
-
-<span style="color: #cd6600;">subdir</span>(<span style="color: #8b7355;">'LinearAlgebra'</span>)
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
+            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V1_IMPL</span>&gt;
+  <span style="color: #00688b;">void</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v0</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_inverse_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1&gt; <span style="color: #2e8b57;">op1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v1</span>)
 </pre>
 </div>
+</blockquote>
 </div>
 </div>
 
-<div id="outline-container-org4bb53a0" class="outline-2">
-<h2 id="org4bb53a0"><span class="section-number-2">2</span> Backlinks</h2>
+<div id="outline-container-orgbf61bbc" class="outline-2">
+<h2 id="orgbf61bbc"><span class="section-number-2">2</span> Alias</h2>
+<div class="outline-text-2" id="text-2">
+</div>
 </div>
 
-
-<div id="outline-container-orgadf69b9" class="outline-2">
-<h2 id="orgadf69b9"><span class="section-number-2">3</span> 2 Backlinks</h2>
+<div id="outline-container-orgdfa77a9" class="outline-2">
+<h2 id="orgdfa77a9"><span class="section-number-2">3</span> Unit test</h2>
 <div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org5d7e66a" class="outline-3">
-<h3 id="org5d7e66a"><span class="section-number-3">3.1</span> <a href="../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-<a href="src/README.html">Library (meson build)</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9869bb2" class="outline-3">
-<h3 id="org9869bb2"><span class="section-number-3">3.2</span> <a href="index.html">Content</a></h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-<a href="src/README.html">README</a>
-</p>
-</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:53</p>
+<p class="date">Created: 2020-07-15 Wed 10:54</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

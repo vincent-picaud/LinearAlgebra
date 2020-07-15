@@ -20,6 +20,9 @@ test_array = [
   # new implementation 
   'M_eq_aMM_bM',
   'v_eq_aMv_bv',
+
+  # TODO 'v_eq_aMv',
+  'v_eq_a_inv_Mv',
 ]
 
 foreach test : test_array

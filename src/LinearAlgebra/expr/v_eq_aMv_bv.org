@@ -2,8 +2,8 @@
 #+Call: Setup()
 #+Call: HomeUp()
 
-* $M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3$
-#+Index:Known Patterns!$M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3$
+* $v_0 = \alpha \text{op}_1(M_1) v_1 + \beta v_0$ !
+#+Index:Known Patterns!$v_0 = \alpha \text{op}_1(M_1) v_1 + \beta v_0$
 
 # file:v_eq_aMv_bv.hpp::BEGIN_assign
 #+Call: Extract("v_eq_aMv_bv.hpp","assign")

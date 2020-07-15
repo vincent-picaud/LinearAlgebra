@@ -1,0 +1,23 @@
+#+Title: blas.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* Provided wrappings
+
+** =gemv=
+
+# file:blas.hpp::BEGIN_gemv
+#+Call: Extract("blas.hpp","gemv")
+
+
+** =symv=
+
+# file:blas.hpp::BEGIN_symv
+#+Call: Extract("blas.hpp","symv")
+
+
+** =trmv=
+
+# file:blas.hpp::BEGIN_trmv
+#+Call: Extract("blas.hpp","trmv")
+

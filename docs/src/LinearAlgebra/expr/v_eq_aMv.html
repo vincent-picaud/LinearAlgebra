@@ -6,7 +6,7 @@
 <!-- 2020-07-13 Mon 20:07 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Index</title>
+<title>v_eq_aMv.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -266,129 +266,76 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Index</h1>
+<h1 class="title">v_eq_aMv.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org81c059c">1. C</a></li>
-<li><a href="#org1c739bf">2. F</a></li>
-<li><a href="#org0361000">3. K</a></li>
-<li><a href="#orgf7d20f6">4. M</a></li>
-<li><a href="#org7f38dab">5. V</a></li>
-<li><a href="#org7cc131e">6. Backlinks</a></li>
-<li><a href="#org3c1fe1c">7. 1 Backlinks</a>
-<ul>
-<li><a href="#orgc8c4a54">7.1. My Sitemap</a></li>
-</ul>
-</li>
+<li><a href="#org9d68bb1">1. \(v_0 = \alpha \text{op}_1(M_1) v_1\)</a></li>
+<li><a href="#org22ca830">2. Alias</a></li>
+<li><a href="#org71ef0b7">3. Unit test</a></li>
 </ul>
 </div>
 </div>
 
 <p>
-<a href="index.html"><b>HOME</b></a> 
+<a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-
-<div id="outline-container-org81c059c" class="outline-2">
-<h2 id="org81c059c"><span class="section-number-2">1</span> C</h2>
+<div id="outline-container-org9d68bb1" class="outline-2">
+<h2 id="org9d68bb1"><span class="section-number-2">1</span> \(v_0 = \alpha \text{op}_1(M_1) v_1\)</h2>
 <div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li>Class
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/utils/crtp.html#ID-b3bedaa5-c99d-4b5f-88a4-33c44d53be94">Crtp</a></li>
-<li><a href="src/LinearAlgebra/dense/matrix.html#orga94e36c">Default_Matrix</a></li>
-<li><a href="src/LinearAlgebra/dense/matrix.html#org37e6fdc">Default_Matrix_Const_View</a></li>
-<li><a href="src/LinearAlgebra/dense/matrix.html#org20565b0">Default_Matrix_View</a></li>
-<li><a href="src/LinearAlgebra/dense/vector.html#orgb65ea94">Default_Vector</a></li>
-<li><a href="src/LinearAlgebra/dense/vector.html#org6e0d4a1">Default_Vector_Const_View</a></li>
-<li><a href="src/LinearAlgebra/dense/vector.html#org8cd4a88">Default_Vector_View</a></li>
-<li><a href="src/LinearAlgebra/dense/vector_crtp.html#ID-de8a0a1f-0ae5-495d-a839-a7a5d1199091">Dense_Vector_Crtp</a></li>
-<li><a href="src/LinearAlgebra/dense/vector_crtp.html#ID-3664b3fc-f74a-410c-8025-a2b2f7051b8e">Vector_Crtp</a></li>
-</ul></li>
-</ul>
+<blockquote>
+\begin{equation*}
+v_0 = \alpha \text{op}_1(M_1) v_1
+\end{equation*}
+
+<div class="org-src-container">
+<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V0_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
+            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
+            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">V1_IMPL</span>&gt;
+  <span style="color: #00688b;">void</span>
+  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v0</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1&gt; <span style="color: #2e8b57;">op1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
+         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">V1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">v1</span>)
+</pre>
+</div>
+</blockquote>
 </div>
 </div>
-<div id="outline-container-org1c739bf" class="outline-2">
-<h2 id="org1c739bf"><span class="section-number-2">2</span> F</h2>
+
+<div id="outline-container-org22ca830" class="outline-2">
+<h2 id="org22ca830"><span class="section-number-2">2</span> Alias</h2>
 <div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li>Function
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/expr/assign_fallback.html#ID-284f04be-bb9d-4fb9-a02f-955a4b8a66ec">assign (fallback)</a></li>
-<li>Detail
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/metaexpr/call_assign_from_metaexpr.html#ID-824fa948-a765-4710-9de5-2e9c3b721c34">call_assign_from_MetaExpr</a></li>
-<li><a href="src/LinearAlgebra/metaexpr/call_assign_from_metaexpr.html#ID-18ce5b28-8e55-479c-ad49-f2f76236a382">call_assign_from_reverse_Polish</a></li>
-<li><a href="src/LinearAlgebra/metaexpr/call_assign_from_metaexpr.html#ID-4b799fee-f3c9-4735-9f2d-1914dfee14fb">from_metaexpr_to_reverse_Polish_tuple</a></li>
-</ul></li>
-<li><a href="src/LinearAlgebra/dense/lhs.html#orgcb0b16a">lhs</a></li>
-<li><a href="src/LinearAlgebra/utils/same_mathematical_object_p.html#org420a316">same_mathematical_object_p</a></li>
-</ul></li>
-</ul>
+<blockquote>
+\begin{equation*}
+v_0 = -M_1 v_1
+\end{equation*}
+\begin{equation*}
+v_0 = -\text{op}_1(M_1) v_1
+\end{equation*}
+\begin{equation*}
+v_0 = M_1 v_1
+\end{equation*}
+\begin{equation*}
+v_0 = \alpha M_1 v_1
+\end{equation*}
+\begin{equation*}
+v_0 = \text{op}_1(M_1) v_1
+\end{equation*}
+</blockquote>
 </div>
 </div>
-<div id="outline-container-org0361000" class="outline-2">
-<h2 id="org0361000"><span class="section-number-2">3</span> K</h2>
+
+<div id="outline-container-org71ef0b7" class="outline-2">
+<h2 id="org71ef0b7"><span class="section-number-2">3</span> Unit test</h2>
 <div class="outline-text-2" id="text-3">
-<ul class="org-ul">
-<li>Known Patterns
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/expr/M_eq_aMM_bM.html#org1631c07">\(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</a></li>
-<li><a href="src/LinearAlgebra/expr/v_eq_aMv_bv.html#orgcf11192">\(v_0 = \alpha \text{op}_1(M_1) v_1 + \beta v_0\)</a></li>
-<li><a href="src/LinearAlgebra/expr/v_eq_aMv.html#org9d68bb1">\(v_0 = \alpha \text{op}_1(M_1) v_1\)</a></li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgf7d20f6" class="outline-2">
-<h2 id="orgf7d20f6"><span class="section-number-2">4</span> M</h2>
-<div class="outline-text-2" id="text-4">
-<ul class="org-ul">
-<li>Macro
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/dense/vmt_assignment_operator_define.html#org9dfde4f">DELETE_VMT_ASSIGNMENT_OPERATOR</a></li>
-<li><a href="src/LinearAlgebra/dense/matrix.html#org0cc668b">HAS_MATRIX</a></li>
-<li><a href="src/LinearAlgebra/dense/vector.html#orgc62ebbe">HAS_VECTOR</a></li>
-<li><a href="src/LinearAlgebra/dense/vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">VMT_ASSIGNMENT_OPERATOR</a></li>
-</ul></li>
-<li>Matrix
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/dense/README.html#org08687a1">Matrix_Hierarchy</a></li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org7f38dab" class="outline-2">
-<h2 id="org7f38dab"><span class="section-number-2">5</span> V</h2>
-<div class="outline-text-2" id="text-5">
-<ul class="org-ul">
-<li>Vector
-<ul class="org-ul">
-<li><a href="src/LinearAlgebra/dense/README.html#ID-32e3648d-7757-47a8-b934-f640c47b4dc0">get_size()</a></li>
-<li><a href="src/LinearAlgebra/dense/README.html#ID-37ca8895-814e-4808-882f-fff1bde88bcc">Vector_Hierarchy</a></li>
-</ul></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org7cc131e" class="outline-2">
-<h2 id="org7cc131e"><span class="section-number-2">6</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-org3c1fe1c" class="outline-2">
-<h2 id="org3c1fe1c"><span class="section-number-2">7</span> 1 Backlinks</h2>
-<div class="outline-text-2" id="text-7">
-</div>
-<div id="outline-container-orgc8c4a54" class="outline-3">
-<h3 id="orgc8c4a54"><span class="section-number-3">7.1</span> <a href="index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-7-1">
-<p>
-<a href="theindex.html">Index</a>
-</p>
-</div>
 </div>
 </div>
 </div>

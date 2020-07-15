@@ -1,0 +1,19 @@
+#+Title: v_eq_a_inv_Mv.hpp
+#+Call: Setup()
+#+Call: HomeUp()
+
+* $v_0 = \alpha \text{inv}(\text{op}_1(M_1)) v_1$
+#+Index:Known Patterns!$v_0 = \alpha \text{inv}(\text{op}_1(M_1)) v_1$
+
+# file:v_eq_a_inv_Mv.hpp::BEGIN_assign
+#+Call: Extract("v_eq_a_inv_Mv.hpp","assign")
+
+* Alias
+
+# file:v_eq_a_inv_Mv.hpp::BEGIN_assign
+#+Call: Extract("v_eq_a_inv_Mv.hpp","alias")
+
+* Unit test
+
+  # +Include: "../../../test/LinearAlgebra/expr/v_eq_a_inv_Mv.cpp" src cpp
+

@@ -855,6 +855,10 @@ namespace LinearAlgebra::Detail
     {
       return "- ( " + print_test(unary_op.arg()) + " )";
     }
+    else if constexpr (std::is_same_v<_inverse_t_, op_type>)
+    {
+      return "1. / ( " + print_test(unary_op.arg()) + " )";
+    }
     else
     {
       std::cerr << __PRETTY_FUNCTION__;
@@ -904,103 +908,23 @@ main()
   Minimal_Vector v0(0), v1(1), v2(2), v3(3);
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
 
-  //     PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v0);
+  PRINT_EXPR(v0, alpha * inverse(op1(M1)) * v1);
 
-  // ================ Alias ================
-  // Example:
-  // PRINT_EXPR(v0, M1 * v1 + beta * v2);
-  // PRINT_EXPR(v0, M1 * v1 - v2);
-  //
-  // PRINT_TEST(v0, M1 * v1 + beta * v2);
-  // PRINT_TEST(v0, M1 * v1 - v2);
+  PRINT_EXPR(v0, -inverse(M1) * v1);
+  PRINT_EXPR(v0, -inverse(op1(M1)) * v1);
+  PRINT_EXPR(v0, inverse(M1) * v1);
+  PRINT_EXPR(v0, alpha * inverse(M1) * v1);
+  PRINT_EXPR(v0, inverse(op1(M1)) * v1);
 
-  // ---------------- UTEST ----------------
+  // ////////////////////////////////////////////////////////////////
 
-  // PRINT_EXPR(v0, M1 * v1 + beta * v2);
-  // PRINT_EXPR(v0, M1 * v1 - v2);
+  PRINT_TEST(v0, alpha * inverse(op1(M1)) * v1);
 
-  PRINT_EXPR(v0, M1 * v1 + v2);
-  PRINT_EXPR(v0, v2 + M1 * v1);
-  PRINT_EXPR(v0, v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, v2 - M1 * v1);
-  PRINT_EXPR(v0, v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, v2 - alpha * M1 * v1);
-  PRINT_EXPR(v0, op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, op1(M1) * v1 - v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 + beta * v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 - beta * v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 + v2);
-  PRINT_EXPR(v0, alpha * M1 * v1 - v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 - v2);
-  PRINT_EXPR(v0, alpha * op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, beta * v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, beta * v2 - alpha * M1 * v1);
-  PRINT_EXPR(v0, beta * v2 + M1 * v1);
-  PRINT_EXPR(v0, beta * v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 - M1 * v1);
-  PRINT_EXPR(v0, beta * v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, beta * v2 - alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, -M1 * v1 + v2);
-  PRINT_EXPR(v0, -M1 * v1 + beta * v2);
-  PRINT_EXPR(v0, -M1 * v1 - v2);
-  PRINT_EXPR(v0, -v2 + M1 * v1);
-  PRINT_EXPR(v0, -v2 + op1(M1) * v1);
-  PRINT_EXPR(v0, -v2 + alpha * M1 * v1);
-  PRINT_EXPR(v0, -v2 + alpha * op1(M1) * v1);
-  PRINT_EXPR(v0, -v2 - M1 * v1);
-  PRINT_EXPR(v0, -v2 - op1(M1) * v1);
-  PRINT_EXPR(v0, -op1(M1) * v1 + v2);
-  PRINT_EXPR(v0, -op1(M1) * v1 + beta * v2);
-  PRINT_EXPR(v0, -op1(M1) * v1 - v2);
-
-  // ---------------- UTEST ----------------
-
-  // PRINT_TEST(v0, M1 * v1 + beta * v2);
-  // PRINT_TEST(v0, M1 * v1 - v2);
-
-  PRINT_TEST(v0, M1 * v1 + v2);
-  PRINT_TEST(v0, v2 + M1 * v1);
-  PRINT_TEST(v0, v2 + op1(M1) * v1);
-  PRINT_TEST(v0, v2 + alpha * M1 * v1);
-  PRINT_TEST(v0, v2 + alpha * op1(M1) * v1);
-  PRINT_TEST(v0, v2 - M1 * v1);
-  PRINT_TEST(v0, v2 - op1(M1) * v1);
-  PRINT_TEST(v0, v2 - alpha * M1 * v1);
-  PRINT_TEST(v0, op1(M1) * v1 + v2);
-  PRINT_TEST(v0, op1(M1) * v1 + beta * v2);
-  PRINT_TEST(v0, op1(M1) * v1 - v2);
-  PRINT_TEST(v0, alpha * M1 * v1 + beta * v2);
-  PRINT_TEST(v0, alpha * M1 * v1 - beta * v2);
-  PRINT_TEST(v0, alpha * M1 * v1 + v2);
-  PRINT_TEST(v0, alpha * M1 * v1 - v2);
-  PRINT_TEST(v0, alpha * op1(M1) * v1 + v2);
-  PRINT_TEST(v0, alpha * op1(M1) * v1 - v2);
-  PRINT_TEST(v0, alpha * op1(M1) * v1 + beta * v2);
-  PRINT_TEST(v0, beta * v2 + alpha * M1 * v1);
-  PRINT_TEST(v0, beta * v2 - alpha * M1 * v1);
-  PRINT_TEST(v0, beta * v2 + M1 * v1);
-  PRINT_TEST(v0, beta * v2 + op1(M1) * v1);
-  PRINT_TEST(v0, beta * v2 + alpha * op1(M1) * v1);
-  PRINT_TEST(v0, beta * v2 - M1 * v1);
-  PRINT_TEST(v0, beta * v2 - op1(M1) * v1);
-  PRINT_TEST(v0, beta * v2 - alpha * op1(M1) * v1);
-  PRINT_TEST(v0, -M1 * v1 + v2);
-  PRINT_TEST(v0, -M1 * v1 + beta * v2);
-  PRINT_TEST(v0, -M1 * v1 - v2);
-  PRINT_TEST(v0, -v2 + M1 * v1);
-  PRINT_TEST(v0, -v2 + op1(M1) * v1);
-  PRINT_TEST(v0, -v2 + alpha * M1 * v1);
-  PRINT_TEST(v0, -v2 + alpha * op1(M1) * v1);
-  PRINT_TEST(v0, -v2 - M1 * v1);
-  PRINT_TEST(v0, -v2 - op1(M1) * v1);
-  PRINT_TEST(v0, -op1(M1) * v1 + v2);
-  PRINT_TEST(v0, -op1(M1) * v1 + beta * v2);
-  PRINT_TEST(v0, -op1(M1) * v1 - v2);
+  PRINT_TEST(v0, -inverse(M1) * v1);
+  PRINT_TEST(v0, -inverse(op1(M1)) * v1);
+  PRINT_TEST(v0, inverse(M1) * v1);
+  PRINT_TEST(v0, alpha * inverse(M1) * v1);
+  PRINT_TEST(v0, inverse(op1(M1)) * v1);
 }
 
 // // ////////////////////////////////////////////////////////////////

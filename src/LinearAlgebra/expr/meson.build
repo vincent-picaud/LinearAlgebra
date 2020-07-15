@@ -93,16 +93,6 @@ LinearAlgebra_headers += [
   'expr/X_eq_alpha/generic_interface.hpp', 
   'expr/X_eq_alpha/vector_impl.hpp', 
   'expr/X_eq_alpha/matrix_impl.hpp', 
- 
-  # to update! (use copy as model)
-  'expr/X0_assign_alpha_X1_plus_X0.hpp', 
-  'expr/V0_assign_alpha_V1_plus_V0.hpp', 
-  'expr/M0_assign_alpha_M1_plus_M0.hpp',
-
-  # to update! (use copy as model)
-  'expr/X0_assign_alpha_X1_plus_X2.hpp',
-  'expr/V0_assign_alpha_V1_plus_V2.hpp',
-  'expr/M0_assign_alpha_M1_plus_M2.hpp',
 ]
 
 LinearAlgebra_sources += [

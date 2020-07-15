@@ -23,6 +23,7 @@ LinearAlgebra_headers += [
   # ================================================================
   #
   'expr/copy.hpp', 
+  'expr/copy/generic.hpp', 
   'expr/copy/vector.hpp', 
   'expr/copy/matrix.hpp', 
 

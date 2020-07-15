@@ -1,8 +1,7 @@
 #pragma once
 
 #include "LinearAlgebra/dense/matrix_fill.hpp"
-#include "LinearAlgebra/expr/expr.hpp"
-#include "LinearAlgebra/utils/has_static_dimension.hpp"
+#include "LinearAlgebra/expr/copy/generic.hpp"
 
 namespace LinearAlgebra
 {
@@ -10,15 +9,16 @@ namespace LinearAlgebra
   //  Generic Implementation
   // ////////////////////////////////////////////////////////////////
   //
-  template <typename M0_IMPL, typename M1_IMPL>
-  void
+  template <typename V0_IMPL, typename V1_IMPL>
+  auto
   assign(const Expr_Selector<Expr_Selector_Enum::Generic> selected,
-         Dense_Matrix_Crtp<M0_IMPL>& M0,
-         const Dense_Matrix_Crtp<M1_IMPL>& M1)
+         Matrix_Crtp<V0_IMPL>& v0,
+         const Matrix_Crtp<V1_IMPL>& v1)
+      -> std::enable_if_t<Always_True_v<decltype(Detail::generic_copy(v0.impl(), v1.impl()))>>
   {
-    assert(dimension_predicate(M0.impl()) == dimension_predicate(M1.impl()));
+    assert(dimension_predicate(v0.impl()) == dimension_predicate(v1.impl()));
 
-    fill([](const auto X1_component) { return X1_component; }, M0.impl(), M1.impl());
+    Detail::generic_copy(v0.impl(), v1.impl());
 
     DEBUG_SET_SELECTED(selected);
   }
@@ -39,15 +39,14 @@ namespace LinearAlgebra
   //
   // Role: skip Blas when dimension are static
   //
-  template <typename M0_IMPL, typename M1_IMPL>
-  std::enable_if_t<Any_Has_Static_Dimension_v<M0_IMPL, M1_IMPL>>
+  template <typename V0_IMPL, typename V1_IMPL>
+  std::enable_if_t<Any_Has_Static_Dimension_v<V0_IMPL, V1_IMPL>>
   assign(const Expr_Selector<Expr_Selector_Enum::Static> selected,
-         Dense_Matrix_Crtp<M0_IMPL>& M0,
-         const Dense_Matrix_Crtp<M1_IMPL>& M1)
+         Matrix_Crtp<V0_IMPL>& v0,
+         const Matrix_Crtp<V1_IMPL>& v1)
   {
-    assign(Expr_Selector<Expr_Selector_Enum::Generic>{}, M0, M1);
+    assign(Expr_Selector<Expr_Selector_Enum::Generic>{}, v0, v1);
 
     DEBUG_SET_SELECTED(selected);
   }
-
 }  // namespace LinearAlgebra

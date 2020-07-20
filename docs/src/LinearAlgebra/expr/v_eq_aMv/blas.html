@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:54 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>blas.hpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,11 +236,11 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga248fcf">1. Provided wrappings</a>
+<li><a href="#orge9ad818">1. Provided wrappings</a>
 <ul>
-<li><a href="#orgd91e83c">1.1. <code>gemv</code></a></li>
-<li><a href="#org6d64626">1.2. <code>symv</code></a></li>
-<li><a href="#org42367a0">1.3. <code>trmv</code></a></li>
+<li><a href="#orgf56c321">1.1. <code>gemv</code></a></li>
+<li><a href="#org4b5b069">1.2. <code>symv</code></a></li>
+<li><a href="#org03091c8">1.3. <code>trmv</code></a></li>
 </ul>
 </li>
 </ul>
@@ -264,131 +251,34 @@ for the JavaScript code in this tag.
 <a href="../../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-orga248fcf" class="outline-2">
-<h2 id="orga248fcf"><span class="section-number-2">1</span> Provided wrappings</h2>
+<div id="outline-container-orge9ad818" class="outline-2">
+<h2 id="orge9ad818"><span class="section-number-2">1</span> Provided wrappings</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgd91e83c" class="outline-3">
-<h3 id="orgd91e83c"><span class="section-number-3">1.1</span> <code>gemv</code></h3>
+<div id="outline-container-orgf56c321" class="outline-3">
+<h3 id="orgf56c321"><span class="section-number-3">1.1</span> <code>gemv</code></h3>
 <div class="outline-text-3" id="text-1-1">
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
-            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1_ENUM</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR0_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR1_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX1_IMPL</span>&gt;
-  <span style="color: #1c86ee;">auto</span>
-  <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt; <span style="color: #2e8b57;">selected</span>,
-         <span style="color: #00688b;">Dense_Vector_Crtp</span>&lt;<span style="color: #00688b;">VECTOR0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector0</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1_ENUM&gt; <span style="color: #2e8b57;">op1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Vector_Crtp</span>&lt;<span style="color: #00688b;">VECTOR1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector1</span>)
-      -&gt; <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;
-          <span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::gemv(alpha.value(), op1, matrix1, vector1, 0, vector0))&gt;&gt;
-  {
-    assert(are_not_aliased_p(vector0, matrix1));
-    assert(are_not_aliased_p(vector0, vector1));
-
-    <span style="color: #6e8b3d;">Blas</span>::gemv(alpha.value(), op1, matrix1, vector1, 0, vector0);
-
-    DEBUG_SET_SELECTED(selected);
-  }
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
 
-<div id="outline-container-org6d64626" class="outline-3">
-<h3 id="org6d64626"><span class="section-number-3">1.2</span> <code>symv</code></h3>
+<div id="outline-container-org4b5b069" class="outline-3">
+<h3 id="org4b5b069"><span class="section-number-3">1.2</span> <code>symv</code></h3>
 <div class="outline-text-3" id="text-1-2">
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
-            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1_ENUM</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR0_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR1_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX1_IMPL</span>&gt;
-  <span style="color: #1c86ee;">auto</span>
-  <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt; <span style="color: #2e8b57;">selected</span>,
-         <span style="color: #00688b;">Dense_Vector_Crtp</span>&lt;<span style="color: #00688b;">VECTOR0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector0</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1_ENUM&gt; <span style="color: #2e8b57;">op1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Vector_Crtp</span>&lt;<span style="color: #00688b;">VECTOR1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector1</span>)
-      -&gt; <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;
-          <span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::symv(alpha.value(), op1, matrix1, vector1, 0, vector0))&gt;&gt;
-  {
-    assert(are_not_aliased_p(vector0, matrix1));
-    assert(are_not_aliased_p(vector0, vector1));
-
-    <span style="color: #6e8b3d;">Blas</span>::symv(alpha.value(), op1, matrix1, vector1, 0, vector0);
-
-    DEBUG_SET_SELECTED(selected);
-  }
-
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
 
-<div id="outline-container-org42367a0" class="outline-3">
-<h3 id="org42367a0"><span class="section-number-3">1.3</span> <code>trmv</code></h3>
+<div id="outline-container-org03091c8" class="outline-3">
+<h3 id="org03091c8"><span class="section-number-3">1.3</span> <code>trmv</code></h3>
 <div class="outline-text-3" id="text-1-3">
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
-            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1_ENUM</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR0_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR1_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX1_IMPL</span>&gt;
-  <span style="color: #1c86ee;">auto</span>
-  <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Blas&gt; <span style="color: #2e8b57;">selected</span>,
-         <span style="color: #00688b;">Dense_Vector_Crtp</span>&lt;<span style="color: #00688b;">VECTOR0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector0</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1_ENUM&gt; <span style="color: #2e8b57;">op1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Matrix_Crtp</span>&lt;<span style="color: #00688b;">MATRIX1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Vector_Crtp</span>&lt;<span style="color: #00688b;">VECTOR1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector1</span>)
-      -&gt; <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::copy(vector1, vector0))&gt; <span style="color: #1c86ee;">and</span>
-                          <span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::scal(alpha.value(), vector0))&gt; <span style="color: #1c86ee;">and</span>
-                          <span style="color: #00688b;">Always_True_v</span>&lt;<span style="color: #1c86ee;">decltype</span>(<span style="color: #6e8b3d;">Blas</span>::trmv(op1, matrix1, vector0))&gt;&gt;
-  {
-    assert(matrix1.I_size() == matrix1.J_size());  <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">TODO</span><span style="color: #7f7f7f;">: extend to the rectangular case</span>
-
-    <span style="color: #1c86ee;">if</span> (<span style="color: #1c86ee;">not</span> same_mathematical_object_p(vector0, vector1))
-    {
-      <span style="color: #6e8b3d;">Blas</span>::copy(vector1, vector0);
-    }
-
-    assert(are_not_aliased_p(vector0, matrix1));
-    assert(same_mathematical_object_p(vector0, vector1));
-
-    <span style="color: #6e8b3d;">Blas</span>::scal(alpha.value(), vector0);
-    <span style="color: #6e8b3d;">Blas</span>::trmv(op1, matrix1, vector0);
-
-    DEBUG_SET_SELECTED(selected);
-  }
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:54</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

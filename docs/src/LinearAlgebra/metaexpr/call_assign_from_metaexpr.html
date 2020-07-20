@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:54 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>call_assign_from_metaexpr.hpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -241,28 +228,6 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
-
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
-</script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
@@ -271,19 +236,11 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc272927">1. Convert Expression Template to flat assign function</a>
+<li><a href="#org9eacc13">1. Convert Expression Template to flat assign function</a>
 <ul>
-<li><a href="#org332cb6c">1.1. <code>call_assign_from_MetaExpr()</code> function</a></li>
-<li><a href="#org3320f24">1.2. <code>from_metaexpr_to_reverse_Polish_tuple()</code> function</a></li>
-<li><a href="#orgf877612">1.3. <code>call_assign_from_reverse_Polish()</code> function</a></li>
-</ul>
-</li>
-<li><a href="#orga3e277a">2. Backlinks</a></li>
-<li><a href="#orgb1c2afb">3. 5 Backlinks</a>
-<ul>
-<li><a href="#org6c4c75b">3.1. My Sitemap</a></li>
-<li><a href="#org649570c">3.2. scalar_crtp.hpp</a></li>
-<li><a href="#org1108635">3.3. call_assign_from_metaexpr.hpp</a></li>
+<li><a href="#org468e6cc">1.1. <code>call_assign_from_MetaExpr()</code> function</a></li>
+<li><a href="#org7a55bbc">1.2. <code>from_metaexpr_to_reverse_Polish_tuple()</code> function</a></li>
+<li><a href="#orgf71b906">1.3. <code>call_assign_from_reverse_Polish()</code> function</a></li>
 </ul>
 </li>
 </ul>
@@ -294,8 +251,8 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-orgc272927" class="outline-2">
-<h2 id="orgc272927"><span class="section-number-2">1</span> Convert Expression Template to flat assign function</h2>
+<div id="outline-container-org9eacc13" class="outline-2">
+<h2 id="org9eacc13"><a id="ID-60ec1564-5dfa-4af7-9243-f478ced9845f"></a><span class="section-number-2">1</span> Convert Expression Template to flat assign function</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This central file provides methods to call an assign function from an
@@ -303,204 +260,45 @@ expression template.
 </p>
 
 <p>
-The entry point is the <a href="#org332cb6c"><code>call_assign_from_MetaExpr()</code></a>.
+The entry point is the <a href="#org468e6cc"><code>call_assign_from_MetaExpr()</code></a>.
 </p>
 
 <p>
 This function converts the initial Expression Template into a reverse
 Polish expression stored into a <code>std::tuple=</code> thanks to
-<a href="#org3320f24"><code>from_metaexpr_to_reverse_Polish_tuple()</code>.</a> 
+<a href="#org7a55bbc"><code>from_metaexpr_to_reverse_Polish_tuple()</code>.</a> 
 </p>
 
 <p>
 From this reverse Polish expression the function
-<a href="#orgf877612"><code>call_assign_from_reverse_Polish()</code></a> performs the final call to the
+<a href="#orgf71b906"><code>call_assign_from_reverse_Polish()</code></a> performs the final call to the
 <code>assign</code> functions.
 </p>
 </div>
 
-<div id="outline-container-org332cb6c" class="outline-3">
-<h3 id="org332cb6c"><span class="section-number-3">1.1</span> <code>call_assign_from_MetaExpr()</code> function</h3>
+<div id="outline-container-org468e6cc" class="outline-3">
+<h3 id="org468e6cc"><a id="ID-824fa948-a765-4710-9de5-2e9c3b721c34"></a><span class="section-number-3">1.1</span> <code>call_assign_from_MetaExpr()</code> function</h3>
 <div class="outline-text-3" id="text-1-1">
-<blockquote>
-<p>
-This function is called to compute (lazy) Expression Template and
-store the result into the <code>dest</code> argument.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">DEST_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">SRC_IMPL</span>&gt;
-    <span style="color: #1c86ee;">static</span> <span style="color: #1c86ee;">inline</span> <span style="color: #1c86ee;">auto</span>
-    <span style="color: #cd9b1d;">call_assign_from_MetaExpr</span>(<span style="color: #00688b;">VMT_Crtp</span>&lt;<span style="color: #00688b;">DEST_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">dest</span>, <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">MetaExpr_Crtp</span>&lt;<span style="color: #00688b;">SRC_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">metaExpr</span>)
-    {
-      <span style="color: #1c86ee;">return</span> call_assign_from_reverse_Polish(
-          dest.impl(), from_metaexpr_to_reverse_Polish_tuple(metaExpr.impl()));
-    }
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
 
-<div id="outline-container-org3320f24" class="outline-3">
-<h3 id="org3320f24"><span class="section-number-3">1.2</span> <code>from_metaexpr_to_reverse_Polish_tuple()</code> function</h3>
+<div id="outline-container-org7a55bbc" class="outline-3">
+<h3 id="org7a55bbc"><a id="ID-4b799fee-f3c9-4735-9f2d-1914dfee14fb"></a><span class="section-number-3">1.2</span> <code>from_metaexpr_to_reverse_Polish_tuple()</code> function</h3>
 <div class="outline-text-3" id="text-1-2">
-<blockquote>
-<p>
-These functions convert an
-<a href="metaexpr_crtp.hpp"><code>MetaExpr</code></a> expression into a
-reverse Polish expression (stored into a <code>std::tuple</code>) using a
-<b>recursive</b> approach.
-</p>
-
-<p>
-<b>final node</b>
-</p>
-
-<p>
-Every object that does not inherit from <code>MetaExpr_Crtp</code> is
-considered as a final node. The recursion is stopped.
-</p>
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T</span>&gt;
-    <span style="color: #1c86ee;">static</span> <span style="color: #1c86ee;">inline</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">enable_if_t</span>&lt;<span style="color: #1c86ee;">not</span> <span style="color: #6e8b3d;">Is_Crtp_Interface_Of</span>&lt;MetaExpr_Crtp, <span style="color: #00688b;">T</span>&gt;::value,
-                                   <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">tuple</span>&lt;<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">T</span>&amp;&gt;&gt;
-    <span style="color: #cd9b1d;">from_metaexpr_to_reverse_Polish_tuple</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">T</span>&amp; <span style="color: #2e8b57;">t</span>) <span style="color: #1c86ee;">noexcept</span>
-    {
-      <span style="color: #1c86ee;">return</span> {t};
-    }
-
-</pre>
-</div>
-
-<p>
-<b>UnaryOP</b>
-</p>
-
-<p>
-Unary operators are expanded as <code>unary_op, arg</code>, where a
-recursive call is performed from <code>arg</code>.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-    <span style="color: #1c86ee;">static</span> <span style="color: #1c86ee;">inline</span> <span style="color: #1c86ee;">auto</span>
-    <span style="color: #cd9b1d;">from_metaexpr_to_reverse_Polish_tuple</span>(
-        <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">MetaExpr_UnaryOp_Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">expression_tree</span>) <span style="color: #1c86ee;">noexcept</span>
-    {
-      <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">std</span>::tuple_cat(<span style="color: #6e8b3d;">std</span>::make_tuple(<span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">IMPL</span>::<span style="color: #00688b;">operator_type</span>()),
-                            from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg()));
-    }
-
-</pre>
-</div>
-
-<p>
-<b>BinaryOp</b>
-</p>
-
-<p>
-Binary operators are expanded as <code>binary_op, arg1, arg2</code>, where a
-recursive call is performed from <code>arg1</code> then from <code>arg2</code>.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-    <span style="color: #1c86ee;">static</span> <span style="color: #1c86ee;">inline</span> <span style="color: #1c86ee;">auto</span>
-    <span style="color: #cd9b1d;">from_metaexpr_to_reverse_Polish_tuple</span>(
-        <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">MetaExpr_BinaryOp_Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">expression_tree</span>) <span style="color: #1c86ee;">noexcept</span>
-    {
-      <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">std</span>::tuple_cat(<span style="color: #6e8b3d;">std</span>::make_tuple(<span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">IMPL</span>::<span style="color: #00688b;">operator_type</span>()),
-                            from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_0()),
-                            from_metaexpr_to_reverse_Polish_tuple(expression_tree.arg_1()));
-    }
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
-<div id="outline-container-orgf877612" class="outline-3">
-<h3 id="orgf877612"><span class="section-number-3">1.3</span> <code>call_assign_from_reverse_Polish()</code> function</h3>
+<div id="outline-container-orgf71b906" class="outline-3">
+<h3 id="orgf71b906"><a id="ID-18ce5b28-8e55-479c-ad49-f2f76236a382"></a><span class="section-number-3">1.3</span> <code>call_assign_from_reverse_Polish()</code> function</h3>
 <div class="outline-text-3" id="text-1-3">
-<blockquote>
-<p>
-Given a reverse Polish expression stored in the <code>args_as_tuple</code>
-argument, we extand all the arguments and call the <code>.impl()</code> method
-to perform the final call to the <b>flat</b> <code>assign</code> function.
-</p>
-
-<p>
-<b>Note:</b> this is possible (calling <code>.impl()</code>) as everything
-	(scalar, operator, vectors etc&#x2026;) inherit from Crtp!
-	And this was our motivation to do so (we have
-	introduced XXX and XXX for this reason).
-</p>
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">DEST_IMPL</span>, <span style="color: #1c86ee;">typename</span>... <span style="color: #00688b;">ARGS</span>&gt;
-    <span style="color: #1c86ee;">static</span> <span style="color: #1c86ee;">inline</span> <span style="color: #1c86ee;">auto</span>
-    <span style="color: #cd9b1d;">call_assign_from_reverse_Polish</span>(<span style="color: #00688b;">VMT_Crtp</span>&lt;<span style="color: #00688b;">DEST_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">dest</span>,
-                                    <span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">tuple</span>&lt;<span style="color: #00688b;">ARGS</span>...&gt;&amp; <span style="color: #2e8b57;">args_as_tuple</span>)
-    {
-      <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">std</span>::apply([&amp;](<span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">auto</span>&amp;... <span style="color: #2e8b57;">args</span>) { <span style="color: #1c86ee;">return</span> assign(dest.impl(), args.impl()...); },
-                        args_as_tuple);
-    }
-</pre>
-</div>
-</blockquote>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orga3e277a" class="outline-2">
-<h2 id="orga3e277a"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-orgb1c2afb" class="outline-2">
-<h2 id="orgb1c2afb"><span class="section-number-2">3</span> 5 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org6c4c75b" class="outline-3">
-<h3 id="org6c4c75b"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-<a href="src/LinearAlgebra/metaexpr/call_assign_from_metaexpr.html">call_assign_from_metaexpr.hpp</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org649570c" class="outline-3">
-<h3 id="org649570c"><span class="section-number-3">3.2</span> <a href="../expr/scalar_crtp.html">scalar_crtp.hpp</a></h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-This wrapping is momentary, it is created as a product of overloaded operators like \(\alpha.V\) and is used to call <code>assign()</code> functions (see <a href="#orgc272927">Convert Expression Template to flat assign function</a>).
-</p>
-</div>
-</div>
-
-<div id="outline-container-org1108635" class="outline-3">
-<h3 id="org1108635"><span class="section-number-3">3.3</span> <a href="call_assign_from_metaexpr.html">call_assign_from_metaexpr.hpp</a></h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-From this reverse Polish expression the function <a href="#orgf877612"><code>call_assign_from_reverse_Polish()</code></a> performs the final call to the <code>assign</code> functions.
-</p>
-
-<p>
-This function converts the initial Expression Template into a reverse Polish expression stored into a <code>std::tuple=</code> thanks to <a href="#org3320f24"><code>from_metaexpr_to_reverse_Polish_tuple()</code>.</a>
-</p>
-
-<p>
-The entry point is the <a href="#org332cb6c"><code>call_assign_from_MetaExpr()</code></a>.
-</p>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:54</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -6,7 +6,7 @@
 <!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>assign_fallback.hpp</title>
+<title>X0_eq_aX1_X2.hpp</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -228,15 +228,39 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">assign_fallback.hpp</h1>
+<h1 class="title">X0_eq_aX1_X2.hpp</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org08b179b">1. <code>assign</code> fallback</a></li>
+<li><a href="#org41daa0f">1. $\( v_0 = \alpha v_1 + v_2 \)</a></li>
+<li><a href="#org9a575ce">2. Alias</a></li>
+<li><a href="#org311bea1">3. Unit test</a></li>
 </ul>
 </div>
 </div>
@@ -245,16 +269,60 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org08b179b" class="outline-2">
-<h2 id="org08b179b"><a id="ID-284f04be-bb9d-4fb9-a02f-955a4b8a66ec"></a><span class="section-number-2">1</span> <code>assign</code> fallback</h2>
+<div id="outline-container-org41daa0f" class="outline-2">
+<h2 id="org41daa0f"><span class="section-number-2">1</span> $\( v_0 = \alpha v_1 + v_2 \)</h2>
 <div class="outline-text-2" id="text-1">
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri Jun 26 2020 06:20&gt;</span></span> &lt;- <a href="expr_tags.html#ID-bd2ec7da-4692-4f83-bf16-5441b9d851f5">Motivations</a>
-</p>
-<p>
-Defines a default fallback when expression is not defined. These
-functions avoid to redefine such fallback for every new expression.
-</p>
+</div>
+</div>
+
+<div id="outline-container-org9a575ce" class="outline-2">
+<h2 id="org9a575ce"><span class="section-number-2">2</span> Alias</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+</div>
+
+<div id="outline-container-org311bea1" class="outline-2">
+<h2 id="org311bea1"><span class="section-number-2">3</span> Unit test</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/dense/vector_fwd.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/matrix.hpp"</span>
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/vector.hpp"</span>
+
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/expr/X0_eq_aX1_X2.hpp"</span>
+
+<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">&lt;gtest/gtest.h&gt;</span>
+
+<span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
+
+<span style="color: #cd9b1d;">TEST</span>(X0_eq_aX1_X2, alias_vector) <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">no need to check matrix (same</span>
+                                 <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">routines)</span>
+{
+  [[maybe_unused]] <span style="color: #00688b;">double</span> alpha = 1 / 10.;
+  [[maybe_unused]] <span style="color: #00688b;">double</span> beta  = 2 / 10.;
+  [[maybe_unused]] <span style="color: #00688b;">double</span> gamma = 3 / 10.;
+
+  [[maybe_unused]] <span style="color: #00688b;">Tiny_Vector</span>&lt;<span style="color: #00688b;">double</span>, 1&gt; v0, v1, v2;
+  v0 = 1 / 100.;
+  v1 = 2 / 100.;
+  v2 = 3 / 100.;
+
+  [[maybe_unused]] <span style="color: #00688b;">Tiny_Lower_Triangular_Matrix</span>&lt;<span style="color: #00688b;">double</span>, 1, 1&gt; M0, M1, M2;
+  M0 = 1 / 1000.;
+  M1 = 2 / 1000.;
+  M2 = 3 / 1000.;
+
+  v0 = alpha * v1 + v2;
+  EXPECT_DOUBLE_EQ(*v0.data(), ((0.100000) * (0.020000)) + (0.030000));
+
+  v0 = v2 + alpha * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (0.030000) + ((0.100000) * (0.020000)));
+
+  v0 = v2 - alpha * v1;
+  EXPECT_DOUBLE_EQ(*v0.data(), (0.030000) - ((0.100000) * (0.020000)));
+}
+</pre>
+</div>
 </div>
 </div>
 </div>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:54 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>A small C++ linear algebra library</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,58 +236,51 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org1bdbbf0">1. What is it?</a></li>
-<li><a href="#org2ddb575">2. Examples</a>
+<li><a href="#org1a0e2ed">1. What is it?</a></li>
+<li><a href="#orgf7ddaf9">2. Examples</a>
 <ul>
-<li><a href="#org96b51aa">2.1. Vector construction</a>
+<li><a href="#orgb278a5c">2.1. Vector construction</a>
 <ul>
-<li><a href="#orgc45609c">2.1.1. Some extra "constructors"</a></li>
+<li><a href="#org7d06568">2.1.1. Some extra "constructors"</a></li>
 </ul>
 </li>
-<li><a href="#org5485a88">2.2. View from lower/upper bounds</a></li>
-<li><a href="#orgfce19f1">2.3. Matrix views</a></li>
-<li><a href="#org285a1e1">2.4. Creating your own matrix type specialization</a></li>
-<li><a href="#orgb3fc6e1">2.5. <span class="todo TODO">TODO</span> Generic View</a></li>
-<li><a href="#org0b310f8">2.6. Conjugate gradients</a></li>
-<li><a href="#org517f57e">2.7. Direct call to Lapack</a></li>
+<li><a href="#org4187a60">2.2. View from lower/upper bounds</a></li>
+<li><a href="#org746856d">2.3. Matrix views</a></li>
+<li><a href="#org6622706">2.4. Creating your own matrix type specialization</a></li>
+<li><a href="#org6600370">2.5. <span class="todo TODO">TODO</span> Generic View</a></li>
+<li><a href="#org4610cd4">2.6. Conjugate gradients</a></li>
+<li><a href="#orga0cc5a5">2.7. Direct call to Lapack</a></li>
 </ul>
 </li>
-<li><a href="#org3d2a599">3. Doc (Under construction)</a>
+<li><a href="#orgb7d682a">3. Doc (Under construction)</a>
 <ul>
-<li><a href="#org5eb407f">3.1. Types</a>
+<li><a href="#org1c19691">3.1. Types</a>
 <ul>
-<li><a href="#orgb9595b5">3.1.1. Matrix types</a></li>
+<li><a href="#orgc62a4b4">3.1.1. Matrix types</a></li>
 </ul>
 </li>
-<li><a href="#org9cd4947">3.2. Meta-Programming</a>
+<li><a href="#org14574a9">3.2. Meta-Programming</a>
 <ul>
-<li><a href="#orge1f7837">3.2.1. Some size utils</a></li>
-<li><a href="#orgfee180d">3.2.2. Some generic matrix type predicates</a></li>
+<li><a href="#orgc3077af">3.2.1. Some size utils</a></li>
+<li><a href="#org954ade9">3.2.2. Some generic matrix type predicates</a></li>
 </ul>
 </li>
-<li><a href="#org2fd15ff">3.3. Functions</a>
+<li><a href="#org1d5d887">3.3. Functions</a>
 <ul>
-<li><a href="#org94cf074">3.3.1. Aliasing</a></li>
-<li><a href="#orgad84f72">3.3.2. Same mathematical object</a></li>
-<li><a href="#org7cfe653">3.3.3. Similar</a></li>
-<li><a href="#org94d8558">3.3.4. Copy</a></li>
-<li><a href="#org6b1d2e0">3.3.5. lower/upper bound</a></li>
+<li><a href="#org7c36b46">3.3.1. Aliasing</a></li>
+<li><a href="#org381e2a6">3.3.2. Same mathematical object</a></li>
+<li><a href="#orga1d6344">3.3.3. Similar</a></li>
+<li><a href="#orgcc6bb79">3.3.4. Copy</a></li>
+<li><a href="#org2b27d05">3.3.5. lower/upper bound</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org232b7ef">4. FAQ</a>
+<li><a href="#org5c310ea">4. FAQ</a>
 <ul>
-<li><a href="#org12abd95">4.1. Resizable vector/matrix ?</a></li>
-<li><a href="#org88404c1">4.2. Expression Template</a></li>
-<li><a href="#org8dfca9e">4.3. Tiny objects &amp; intrinsics</a></li>
-</ul>
-</li>
-<li><a href="#orgb256cb8">5. Backlinks</a></li>
-<li><a href="#org4307afe">6. 8 Backlinks</a>
-<ul>
-<li><a href="#orgdbb7312">6.1. A small C++ linear algebra library</a></li>
-<li><a href="#org81eee9d">6.2. My Sitemap</a></li>
+<li><a href="#org4be03e6">4.1. Resizable vector/matrix ?</a></li>
+<li><a href="#org0b6c96b">4.2. Expression Template</a></li>
+<li><a href="#orgea6fa12">4.3. Tiny objects &amp; intrinsics</a></li>
 </ul>
 </li>
 </ul>
@@ -311,8 +291,8 @@ for the JavaScript code in this tag.
 <a href="index.html"><b>HOME</b></a> 
 </p>
 
-<div id="outline-container-org1bdbbf0" class="outline-2">
-<h2 id="org1bdbbf0"><span class="section-number-2">1</span> What is it?</h2>
+<div id="outline-container-org1a0e2ed" class="outline-2">
+<h2 id="org1a0e2ed"><span class="section-number-2">1</span> What is it?</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This is a light weight Linear Algebra C++17 library I am currently developing for my own stuff.
@@ -333,16 +313,16 @@ The goals are:
 </div>
 </div>
 
-<div id="outline-container-org2ddb575" class="outline-2">
-<h2 id="org2ddb575"><span class="section-number-2">2</span> Examples</h2>
+<div id="outline-container-orgf7ddaf9" class="outline-2">
+<h2 id="orgf7ddaf9"><span class="section-number-2">2</span> Examples</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org96b51aa" class="outline-3">
-<h3 id="org96b51aa"><span class="section-number-3">2.1</span> Vector construction</h3>
+<div id="outline-container-orgb278a5c" class="outline-3">
+<h3 id="orgb278a5c"><span class="section-number-3">2.1</span> Vector construction</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-orgc45609c" class="outline-4">
-<h4 id="orgc45609c"><span class="section-number-4">2.1.1</span> Some extra "constructors"</h4>
+<div id="outline-container-org7d06568" class="outline-4">
+<h4 id="org7d06568"><span class="section-number-4">2.1.1</span> Some extra "constructors"</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 As this contructions is only available for "storable" vectors and not
@@ -422,11 +402,11 @@ prints:
 </div>
 </div>
 
-<div id="outline-container-org5485a88" class="outline-3">
-<h3 id="org5485a88"><span class="section-number-3">2.2</span> View from lower/upper bounds</h3>
+<div id="outline-container-org4187a60" class="outline-3">
+<h3 id="org4187a60"><a id="ID-907674bf-2cae-4a34-8061-b5039240e93b"></a><span class="section-number-3">2.2</span> View from lower/upper bounds</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri May  8 2020 12:03&gt;</span></span> &lt;- <a href="#org6b1d2e0">lower/upper bound</a>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri May  8 2020 12:03&gt;</span></span> &lt;- <a href="#org2b27d05">lower/upper bound</a>
 </p>
 
 <div class="org-src-container">
@@ -489,8 +469,8 @@ prints:
 </div>
 </div>
 
-<div id="outline-container-orgfce19f1" class="outline-3">
-<h3 id="orgfce19f1"><span class="section-number-3">2.3</span> Matrix views</h3>
+<div id="outline-container-org746856d" class="outline-3">
+<h3 id="org746856d"><span class="section-number-3">2.3</span> Matrix views</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">[BEGIN_matrix_view]</span>
@@ -573,8 +553,8 @@ submatrix   3:
 </div>
 
 
-<div id="outline-container-org285a1e1" class="outline-3">
-<h3 id="org285a1e1"><span class="section-number-3">2.4</span> Creating your own matrix type specialization</h3>
+<div id="outline-container-org6622706" class="outline-3">
+<h3 id="org6622706"><span class="section-number-3">2.4</span> Creating your own matrix type specialization</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 You can define your own matrix type specialization:
@@ -638,8 +618,8 @@ static_assert(Has_Static_Capacity_v&lt;<span style="color: #00688b;">Tiny_Vector
 </div>
 </div>
 
-<div id="outline-container-orgb3fc6e1" class="outline-3">
-<h3 id="orgb3fc6e1"><span class="section-number-3">2.5</span> <span class="todo TODO">TODO</span> Generic View</h3>
+<div id="outline-container-org6600370" class="outline-3">
+<h3 id="org6600370"><span class="section-number-3">2.5</span> <span class="todo TODO">TODO</span> Generic View</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 Easier interfacing with non generic code (.cpp files etc&#x2026;).
@@ -650,8 +630,8 @@ Easier interfacing with non generic code (.cpp files etc&#x2026;).
 </div>
 </div>
 
-<div id="outline-container-org0b310f8" class="outline-3">
-<h3 id="org0b310f8"><span class="section-number-3">2.6</span> Conjugate gradients</h3>
+<div id="outline-container-org4610cd4" class="outline-3">
+<h3 id="org4610cd4"><span class="section-number-3">2.6</span> Conjugate gradients</h3>
 <div class="outline-text-3" id="text-2-6">
 <p>
 This is only for demo purpose as a real implementation makes more sense with sparse matrices + a preconditioner.
@@ -778,8 +758,8 @@ true
 </div>
 </div>
 
-<div id="outline-container-org517f57e" class="outline-3">
-<h3 id="org517f57e"><span class="section-number-3">2.7</span> Direct call to Lapack</h3>
+<div id="outline-container-orga0cc5a5" class="outline-3">
+<h3 id="orga0cc5a5"><span class="section-number-3">2.7</span> Direct call to Lapack</h3>
 <div class="outline-text-3" id="text-2-7">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/lapack/lapack.hpp"</span>
@@ -875,16 +855,16 @@ v such that w=M.v :
 </div>
 </div>
 
-<div id="outline-container-org3d2a599" class="outline-2">
-<h2 id="org3d2a599"><span class="section-number-2">3</span> Doc (Under construction)</h2>
+<div id="outline-container-orgb7d682a" class="outline-2">
+<h2 id="orgb7d682a"><span class="section-number-2">3</span> Doc (Under construction)</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org5eb407f" class="outline-3">
-<h3 id="org5eb407f"><span class="section-number-3">3.1</span> Types</h3>
+<div id="outline-container-org1c19691" class="outline-3">
+<h3 id="org1c19691"><span class="section-number-3">3.1</span> Types</h3>
 <div class="outline-text-3" id="text-3-1">
 </div>
-<div id="outline-container-orgb9595b5" class="outline-4">
-<h4 id="orgb9595b5"><span class="section-number-4">3.1.1</span> Matrix types</h4>
+<div id="outline-container-orgc62a4b4" class="outline-4">
+<h4 id="orgc62a4b4"><span class="section-number-4">3.1.1</span> Matrix types</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 For the moment I only have defined <code>dense</code> matrices (BLAS compatible with column major order):
@@ -933,7 +913,7 @@ prints
 		X               X               X               X               X               X               X
 		0               X               X               X               X               X               X
 		0               0               X               X               X               X               X
-		0               0               0               X               X               X               X
+		0               0    -6.63669e-18               X               X               X               X
 </pre>
 
 <p>
@@ -1043,12 +1023,12 @@ are stored and not owned).
 </div>
 </div>
 
-<div id="outline-container-org9cd4947" class="outline-3">
-<h3 id="org9cd4947"><span class="section-number-3">3.2</span> Meta-Programming</h3>
+<div id="outline-container-org14574a9" class="outline-3">
+<h3 id="org14574a9"><span class="section-number-3">3.2</span> Meta-Programming</h3>
 <div class="outline-text-3" id="text-3-2">
 </div>
-<div id="outline-container-orge1f7837" class="outline-4">
-<h4 id="orge1f7837"><span class="section-number-4">3.2.1</span> Some size utils</h4>
+<div id="outline-container-orgc3077af" class="outline-4">
+<h4 id="orgc3077af"><span class="section-number-4">3.2.1</span> Some size utils</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
 <b>File</b>: <a href="src/LinearAlgebra/utils/size_utils.hpp">file:LinearAlgebra/utils/size_utils.hpp</a>
@@ -1141,8 +1121,8 @@ CAVEAT: it does not check if all sizes are equal!
 </div>
 </div>
 
-<div id="outline-container-orgfee180d" class="outline-4">
-<h4 id="orgfee180d"><span class="section-number-4">3.2.2</span> Some generic matrix type predicates</h4>
+<div id="outline-container-org954ade9" class="outline-4">
+<h4 id="org954ade9"><span class="section-number-4">3.2.2</span> Some generic matrix type predicates</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <p>
 <b>File:</b> <a href="src/LinearAlgebra/utils/sfinae_vmt_helpers.hpp">LinearAlgebra/utils/sfinae_vmt_helpers.hpp</a>
@@ -1208,15 +1188,15 @@ static_assert(<span style="color: #00688b;">Is_Lower_Matrix_Storage_v</span>&lt;
 </div>
 </div>
 
-<div id="outline-container-org2fd15ff" class="outline-3">
-<h3 id="org2fd15ff"><span class="section-number-3">3.3</span> Functions</h3>
+<div id="outline-container-org1d5d887" class="outline-3">
+<h3 id="org1d5d887"><span class="section-number-3">3.3</span> Functions</h3>
 <div class="outline-text-3" id="text-3-3">
 </div>
-<div id="outline-container-org94cf074" class="outline-4">
-<h4 id="org94cf074"><span class="section-number-4">3.3.1</span> Aliasing</h4>
+<div id="outline-container-org7c36b46" class="outline-4">
+<h4 id="org7c36b46"><a id="ID-7207062d-f90b-4646-a5f0-dd692083176f"></a><span class="section-number-4">3.3.1</span> Aliasing</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Sat Apr 25 2020 16:39&gt;</span></span> &lt;- <a href="#orgad84f72">Same mathematical object</a>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;Sat Apr 25 2020 16:39&gt;</span></span> &lt;- <a href="#org381e2a6">Same mathematical object</a>
 </p>
 
 <p>
@@ -1240,13 +1220,13 @@ the reason why we also have this function:
 </div>
 
 <p>
-Also see: <a href="#orgad84f72">Same mathematical object</a>
+Also see: <a href="#org381e2a6">Same mathematical object</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgad84f72" class="outline-4">
-<h4 id="orgad84f72"><span class="section-number-4">3.3.2</span> Same mathematical object</h4>
+<div id="outline-container-org381e2a6" class="outline-4">
+<h4 id="org381e2a6"><a id="ID-4a5f5853-bb5d-4935-abd0-3996a3d62a4e"></a><span class="section-number-4">3.3.2</span> Same mathematical object</h4>
 <div class="outline-text-4" id="text-3-3-2">
 <p>
 A predicate that checks if two objects represent <b>exactly</b> the same
@@ -1268,16 +1248,16 @@ This is possible, think to a matrix and its view.
 
 <p>
 <b>Note:</b> according to the definition, two identical mathematical objects
-are trivially <a href="#org94cf074">Aliased</a>.
+are trivially <a href="#org7c36b46">Aliased</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org7cfe653" class="outline-4">
-<h4 id="org7cfe653"><span class="section-number-4">3.3.3</span> Similar</h4>
+<div id="outline-container-orga1d6344" class="outline-4">
+<h4 id="orga1d6344"><a id="ID-5afec5bb-bd6c-4173-b513-3b49cef5005a"></a><span class="section-number-4">3.3.3</span> Similar</h4>
 <div class="outline-text-4" id="text-3-3-3">
 <p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri Apr 24 2020 12:50&gt;</span></span> &lt;- <a href="#org94d8558">Copy</a>
+<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri Apr 24 2020 12:50&gt;</span></span> &lt;- <a href="#orgcc6bb79">Copy</a>
 </p>
 
 <p>
@@ -1300,11 +1280,11 @@ a variant is to change type:
 </div>
 </div>
 
-<div id="outline-container-org94d8558" class="outline-4">
-<h4 id="org94d8558"><span class="section-number-4">3.3.4</span> Copy</h4>
+<div id="outline-container-orgcc6bb79" class="outline-4">
+<h4 id="orgcc6bb79"><a id="ID-07b3fa16-4842-4bf2-9893-7d6626813c9b"></a><span class="section-number-4">3.3.4</span> Copy</h4>
 <div class="outline-text-4" id="text-3-3-4">
 <p>
-Like <a href="#org7cfe653">Similar</a> but also performs a copy of the element
+Like <a href="#orga1d6344">Similar</a> but also performs a copy of the element
 </p>
 
 <div class="org-src-container">
@@ -1315,8 +1295,8 @@ Like <a href="#org7cfe653">Similar</a> but also performs a copy of the element
 </div>
 </div>
 
-<div id="outline-container-org6b1d2e0" class="outline-4">
-<h4 id="org6b1d2e0"><span class="section-number-4">3.3.5</span> lower/upper bound</h4>
+<div id="outline-container-org2b27d05" class="outline-4">
+<h4 id="org2b27d05"><a id="ID-3ba0b7cf-95c2-436e-a90c-11e751898497"></a><span class="section-number-4">3.3.5</span> lower/upper bound</h4>
 <div class="outline-text-4" id="text-3-3-5">
 <p>
 These functions mimic <code>std::lower_bound</code>, <code>std::upper_bound</code> but work with indices.
@@ -1340,7 +1320,7 @@ These functions mimic <code>std::lower_bound</code>, <code>std::upper_bound</cod
 </div>
 
 <p>
-They can be used to create view, see <a href="#org5485a88">View from lower/upper bounds</a>
+They can be used to create view, see <a href="#org4187a60">View from lower/upper bounds</a>
 </p>
 </div>
 </div>
@@ -1348,12 +1328,12 @@ They can be used to create view, see <a href="#org5485a88">View from lower/upper
 </div>
 
 
-<div id="outline-container-org232b7ef" class="outline-2">
-<h2 id="org232b7ef"><span class="section-number-2">4</span> FAQ</h2>
+<div id="outline-container-org5c310ea" class="outline-2">
+<h2 id="org5c310ea"><span class="section-number-2">4</span> FAQ</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org12abd95" class="outline-3">
-<h3 id="org12abd95"><span class="section-number-3">4.1</span> Resizable vector/matrix ?</h3>
+<div id="outline-container-org4be03e6" class="outline-3">
+<h3 id="org4be03e6"><span class="section-number-3">4.1</span> Resizable vector/matrix ?</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 In general vectors or matrices <b>cannot be resized</b>. 
@@ -1368,8 +1348,8 @@ implement some generic routines.
 </div>
 </div>
 
-<div id="outline-container-org88404c1" class="outline-3">
-<h3 id="org88404c1"><span class="section-number-3">4.2</span> Expression Template</h3>
+<div id="outline-container-org0b6c96b" class="outline-3">
+<h3 id="org0b6c96b"><span class="section-number-3">4.2</span> Expression Template</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 Only a reduced number of expressions are supported (TODO: list
@@ -1422,8 +1402,8 @@ can be computed by calling:
 </div>
 
 
-<div id="outline-container-org8dfca9e" class="outline-3">
-<h3 id="org8dfca9e"><span class="section-number-3">4.3</span> Tiny objects &amp; intrinsics</h3>
+<div id="outline-container-orgea6fa12" class="outline-3">
+<h3 id="orgea6fa12"><span class="section-number-3">4.3</span> Tiny objects &amp; intrinsics</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 For the moment I have not introduced all the machinery that "manually"
@@ -1435,62 +1415,10 @@ libs do a great job here.
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgb256cb8" class="outline-2">
-<h2 id="orgb256cb8"><span class="section-number-2">5</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-org4307afe" class="outline-2">
-<h2 id="org4307afe"><span class="section-number-2">6</span> 8 Backlinks</h2>
-<div class="outline-text-2" id="text-6">
-</div>
-<div id="outline-container-orgdbb7312" class="outline-3">
-<h3 id="orgdbb7312"><span class="section-number-3">6.1</span> <a href="README.html">A small C++ linear algebra library</a></h3>
-<div class="outline-text-3" id="text-6-1">
-<p>
-They can be used to create view, see <a href="#org5485a88">View from lower/upper bounds</a>
-</p>
-
-<p>
-Like <a href="#org7cfe653">Similar</a> but also performs a copy of the element
-</p>
-
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri Apr 24 2020 12:50&gt;</span></span> &lt;- <a href="#org94d8558">Copy</a>
-</p>
-
-<p>
-are trivially <a href="#org94cf074">Aliased</a>.
-</p>
-
-<p>
-Also see: <a href="#orgad84f72">Same mathematical object</a>
-</p>
-
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Sat Apr 25 2020 16:39&gt;</span></span> &lt;- <a href="#orgad84f72">Same mathematical object</a>
-</p>
-
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">&lt;Fri May  8 2020 12:03&gt;</span></span> &lt;- <a href="#org6b1d2e0">lower/upper bound</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org81eee9d" class="outline-3">
-<h3 id="org81eee9d"><span class="section-number-3">6.2</span> <a href="index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-6-2">
-<p>
-<a href="README.html">A small C++ linear algebra library</a>
-</p>
-</div>
-</div>
-</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:54</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:54 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>scalar_crtp.hpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -271,10 +258,10 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2845ca2">1. Overloading Scalar</a>
+<li><a href="#orgd52ac8f">1. Overloading Scalar</a>
 <ul>
-<li><a href="#org79f9a11">1.1. The <code>Scalar_Crtp</code> class</a></li>
-<li><a href="#org823dd4c">1.2. The <code>Scalar</code> default wrapping class</a></li>
+<li><a href="#orga539341">1.1. The <code>Scalar_Crtp</code> class</a></li>
+<li><a href="#orgc408e1e">1.2. The <code>Scalar</code> default wrapping class</a></li>
 </ul>
 </li>
 </ul>
@@ -285,8 +272,8 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org2845ca2" class="outline-2">
-<h2 id="org2845ca2"><span class="section-number-2">1</span> Overloading Scalar</h2>
+<div id="outline-container-orgd52ac8f" class="outline-2">
+<h2 id="orgd52ac8f"><span class="section-number-2">1</span> Overloading Scalar</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In order to have an unified processing (like <a href="assign_fallback.html#ID-284f04be-bb9d-4fb9-a02f-955a4b8a66ec"><code>assign</code> fallback</a> by
@@ -300,109 +287,25 @@ operators like \(\alpha.V\) and is used to call <code>assign()</code> functions 
 </p>
 </div>
 
-<div id="outline-container-org79f9a11" class="outline-3">
-<h3 id="org79f9a11"><span class="section-number-3">1.1</span> The <code>Scalar_Crtp</code> class</h3>
+<div id="outline-container-orga539341" class="outline-3">
+<h3 id="orga539341"><span class="section-number-3">1.1</span> The <code>Scalar_Crtp</code> class</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 This class is the <b>base</b> class of all wrapped scalar type
 </p>
-
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Scalar_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Scalar_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
-  {
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Scalar_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;;
-    <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">base_type</span>::<span style="color: #00688b;">impl</span>;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
-
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp;
-    <span style="color: #cd9b1d;">value</span>() <span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">noexcept</span>
-    {
-      <span style="color: #1c86ee;">return</span> <span style="color: #1c86ee;">this</span>-&gt;impl().impl_value();
-    }
-
-   <span style="color: #1c86ee;">protected</span>:
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Prevent object slicing</span>
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #cd9b1d;">Scalar_Crtp</span>() <span style="color: #1c86ee;">noexcept</span>                   = <span style="color: #1c86ee;">default</span>;
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #cd9b1d;">Scalar_Crtp</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&amp;) <span style="color: #1c86ee;">noexcept</span> = <span style="color: #1c86ee;">default</span>;
-  };
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
-<div id="outline-container-org823dd4c" class="outline-3">
-<h3 id="org823dd4c"><span class="section-number-3">1.2</span> The <code>Scalar</code> default wrapping class</h3>
+<div id="outline-container-orgc408e1e" class="outline-3">
+<h3 id="orgc408e1e"><span class="section-number-3">1.2</span> The <code>Scalar</code> default wrapping class</h3>
 <div class="outline-text-3" id="text-1-2">
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ELEMENT_TYPE</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Scalar</span>;
-
-  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ELEMENT_TYPE</span>&gt;
-  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Crtp_Type_Traits</span>&lt;<span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">ELEMENT_TYPE</span>&gt;&gt;
-  {
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = ELEMENT_TYPE;
-  };
-
-  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ELEMENT_TYPE</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Scalar</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">ELEMENT_TYPE</span>&gt;&gt;
-  {
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">avoid some recurrent errors like:</span>
-    <span style="color: #7f7f7f;">//    </span><span style="color: #7f7f7f;">Scalar&lt;ALPHA_IMPL&gt;(0)</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">instead of</span>
-    <span style="color: #7f7f7f;">//    </span><span style="color: #7f7f7f;">Scalar&lt;Element_Type_t&lt;ALPHA_IMPL&gt;&gt;(0)</span>
-    <span style="color: #7f7f7f;">//</span>
-    static_assert(<span style="color: #1c86ee;">not</span> <span style="color: #00688b;">Is_Crtp_Interface_Of_v</span>&lt;Scalar_Crtp, <span style="color: #00688b;">ELEMENT_TYPE</span>&gt;);
-
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>    = <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">ELEMENT_TYPE</span>&gt;&gt;;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::element_type;
-
-   <span style="color: #1c86ee;">private</span>:
-    <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">CAVEAT</span><span style="color: #7f7f7f;">: check that this does not induce dangling reference</span>
-    <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">before this line was:</span>
-    <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">const element_type&amp; _value;</span>
-    <span style="color: #00688b;">element_type</span> <span style="color: #2e8b57;">_value</span>;
-
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">CAVEAT</span><span style="color: #7f7f7f;">: really use ELEMENT_TYPE and not element_type which</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">prevent C++ to use automatic template deduction:</span>
-    <span style="color: #7f7f7f;">//</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Scalar(std::complex&lt;double&gt;(3, 4)) &lt;- would NOT work anymore</span>
-    <span style="color: #7f7f7f;">//</span>
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #cd9b1d;">Scalar</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">ELEMENT_TYPE</span>&amp; <span style="color: #2e8b57;">value</span>) <span style="color: #1c86ee;">noexcept</span> : _value(value) {}
-
-   <span style="color: #1c86ee;">protected</span>:
-    <span style="color: #1c86ee;">friend</span> <span style="color: #00688b;">base_type</span>;
-
-    <span style="color: #1c86ee;">constexpr</span> <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp;
-    <span style="color: #cd9b1d;">impl_value</span>() <span style="color: #1c86ee;">const</span> <span style="color: #1c86ee;">noexcept</span>
-    {
-      <span style="color: #1c86ee;">return</span> _value;
-    }
-  };
-
-  static_assert(<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">is_trivially_copyable_v</span>&lt;<span style="color: #00688b;">Scalar</span>&lt;<span style="color: #00688b;">double</span>&gt;&gt;);
-
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:54</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

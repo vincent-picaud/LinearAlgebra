@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:53 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>lhs.hpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -271,16 +258,16 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgdb78176">1. Motivation</a></li>
-<li><a href="#orgd0af920">2. Implementation</a>
+<li><a href="#org05cf0e0">1. Motivation</a></li>
+<li><a href="#org54a0006">2. Implementation</a>
 <ul>
-<li><a href="#org096c466">2.1. The <code>lhs()</code> function</a>
+<li><a href="#org61d6966">2.1. The <code>lhs()</code> function</a>
 <ul>
-<li><a href="#orgce2e7b1">2.1.1. Usage example</a></li>
+<li><a href="#org1a0cd32">2.1.1. Usage example</a></li>
 </ul>
 </li>
-<li><a href="#orgecfe18b">2.2. The <code>Vector_LHS</code></a></li>
-<li><a href="#orge1da603">2.3. The <code>Matrix_LHS</code></a></li>
+<li><a href="#orgd8c1b77">2.2. The <code>Vector_LHS</code></a></li>
+<li><a href="#org1731264">2.3. The <code>Matrix_LHS</code></a></li>
 </ul>
 </li>
 </ul>
@@ -291,8 +278,8 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-orgdb78176" class="outline-2">
-<h2 id="orgdb78176"><span class="section-number-2">1</span> Motivation</h2>
+<div id="outline-container-org05cf0e0" class="outline-2">
+<h2 id="org05cf0e0"><span class="section-number-2">1</span> Motivation</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This file define <code>XXX_LHS</code> like classes that are useful to declar left hand side. By example:
@@ -325,51 +312,21 @@ however that's not possible as we use <code>V</code> information like <code>size
 </div>
 </div>
 
-<div id="outline-container-orgd0af920" class="outline-2">
-<h2 id="orgd0af920"><span class="section-number-2">2</span> Implementation</h2>
+<div id="outline-container-org54a0006" class="outline-2">
+<h2 id="org54a0006"><span class="section-number-2">2</span> Implementation</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org096c466" class="outline-3">
-<h3 id="org096c466"><span class="section-number-3">2.1</span> The <code>lhs()</code> function&#xa0;&#xa0;&#xa0;<span class="tag"><span class="User">User</span></span></h3>
+<div id="outline-container-org61d6966" class="outline-3">
+<h3 id="org61d6966"><span class="section-number-3">2.1</span> The <code>lhs()</code> function&#xa0;&#xa0;&#xa0;<span class="tag"><span class="User">User</span></span></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-This is the function the user must use. It returns a <a href="#orgecfe18b">The <code>Vector_LHS</code></a>
-or <a href="#orgecfe18b">The <code>Matrix_LHS</code></a>.
+This is the function the user must use. It returns a <a href="#orgd8c1b77">The <code>Vector_LHS</code></a>
+or <a href="#orgd8c1b77">The <code>Matrix_LHS</code></a>.
 </p>
-
-<blockquote>
-<p>
-Returns a lhs Vector object
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #00688b;">Vector_LHS</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #cd9b1d;">lhs</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">vector</span>)
-  {
-    <span style="color: #1c86ee;">return</span> {vector.impl()};
-  }
-</pre>
 </div>
 
-<p>
-Returns a lhs Matrix object
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #00688b;">Matrix_LHS</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #cd9b1d;">lhs</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">IMPL</span>&gt;&amp; <span style="color: #2e8b57;">matrix</span>)
-  {
-    <span style="color: #1c86ee;">return</span> {matrix.impl()};
-  }
-</pre>
-</div>
-</blockquote>
-</div>
-
-<div id="outline-container-orgce2e7b1" class="outline-4">
-<h4 id="orgce2e7b1"><span class="section-number-4">2.1.1</span> Usage example</h4>
+<div id="outline-container-org1a0cd32" class="outline-4">
+<h4 id="org1a0cd32"><span class="section-number-4">2.1.1</span> Usage example</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 A blas like expression
@@ -391,115 +348,22 @@ must be written as:
 </div>
 </div>
 
-<div id="outline-container-orgecfe18b" class="outline-3">
-<h3 id="orgecfe18b"><span class="section-number-3">2.2</span> The <code>Vector_LHS</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Dev">Dev</span></span></h3>
+<div id="outline-container-orgd8c1b77" class="outline-3">
+<h3 id="orgd8c1b77"><a id="ID-a3688737-7c97-4f22-8221-d00af7247898"></a><span class="section-number-3">2.2</span> The <code>Vector_LHS</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Dev">Dev</span></span></h3>
 <div class="outline-text-3" id="text-2-2">
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">VECTOR_TYPE</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Vector_LHS</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">Vector_LHS</span>&lt;<span style="color: #00688b;">VECTOR_TYPE</span>&gt;&gt;
-  {
-    static_assert(Is_Crtp_Interface_Of_v&lt;Vector_Crtp, VECTOR_TYPE&gt;);
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Types</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>   = <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">Vector_LHS</span>&lt;<span style="color: #00688b;">VECTOR_TYPE</span>&gt;&gt;;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">wrapped_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">VECTOR_TYPE</span>::exact_type;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">size_type</span>    = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::size_type;
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Members</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-    <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VECTOR_TYPE</span>&amp; <span style="color: #2e8b57;">_vector</span>;
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Constructors</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #cd9b1d;">Vector_LHS</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VECTOR_TYPE</span>&amp; <span style="color: #2e8b57;">vector</span>) : _vector(vector) {}
-
-    <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">wrapped_type</span>&amp;
-    <span style="color: #cd9b1d;">wrapped</span>() <span style="color: #1c86ee;">const</span>
-    {
-      <span style="color: #1c86ee;">return</span> _vector;
-    }
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Cannot be copied</span>
-    <span style="color: #00688b;">Vector_LHS</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Vector_LHS</span>&amp; <span style="color: #2e8b57;">vector</span>) = <span style="color: #1c86ee;">delete</span>;
-  };
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
-<div id="outline-container-orge1da603" class="outline-3">
-<h3 id="orge1da603"><span class="section-number-3">2.3</span> The <code>Matrix_LHS</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Dev">Dev</span></span></h3>
+<div id="outline-container-org1731264" class="outline-3">
+<h3 id="org1731264"><a id="ID-a3688737-7c97-4f22-8221-d00af7247898"></a><span class="section-number-3">2.3</span> The <code>Matrix_LHS</code>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="Dev">Dev</span></span></h3>
 <div class="outline-text-3" id="text-2-3">
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">MATRIX_TYPE</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Matrix_LHS</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">Matrix_LHS</span>&lt;<span style="color: #00688b;">MATRIX_TYPE</span>&gt;&gt;
-  {
-    static_assert(Is_Crtp_Interface_Of_v&lt;Matrix_Crtp, MATRIX_TYPE&gt;);
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Types</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>   = <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">Matrix_LHS</span>&lt;<span style="color: #00688b;">MATRIX_TYPE</span>&gt;&gt;;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">wrapped_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">MATRIX_TYPE</span>::exact_type;
-    
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">I_size_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::I_size_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">J_size_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::J_size_type;
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Members</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-    <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">wrapped_type</span>&amp; <span style="color: #2e8b57;">_matrix</span>;
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Constructors</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #cd9b1d;">Matrix_LHS</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">MATRIX_TYPE</span>&amp; <span style="color: #2e8b57;">matrix</span>) : _matrix(matrix) {}
-
-    <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">wrapped_type</span>&amp;
-    <span style="color: #cd9b1d;">wrapped</span>() <span style="color: #1c86ee;">const</span>
-    {
-      <span style="color: #1c86ee;">return</span> _matrix;
-    }
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Cannot be copied</span>
-    <span style="color: #00688b;">Matrix_LHS</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_LHS</span>&amp; <span style="color: #2e8b57;">matrix</span>) = <span style="color: #1c86ee;">delete</span>;
-  };
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:53</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

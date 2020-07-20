@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:53 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>vmt_crtp.hpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,15 +236,7 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2d4a323">1. Base class for VMT (vectors, matrices, tensors&#x2026;)</a></li>
-<li><a href="#org3d5eb58">2. Backlinks</a></li>
-<li><a href="#org2d46d65">3. 3 Backlinks</a>
-<ul>
-<li><a href="#org69c0062">3.1. My Sitemap</a></li>
-<li><a href="#org68187d6">3.2. Contents</a></li>
-<li><a href="#org37470b2">3.3. Content</a></li>
-</ul>
-</li>
+<li><a href="#org675013a">1. Base class for VMT (vectors, matrices, tensors&#x2026;)</a></li>
 </ul>
 </div>
 </div>
@@ -266,91 +245,18 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org2d4a323" class="outline-2">
-<h2 id="org2d4a323"><span class="section-number-2">1</span> Base class for VMT (vectors, matrices, tensors&#x2026;)</h2>
+<div id="outline-container-org675013a" class="outline-2">
+<h2 id="org675013a"><a id="ID-5e5dd322-57cf-4297-b1e2-ccf147f4adc3"></a><span class="section-number-2">1</span> Base class for VMT (vectors, matrices, tensors&#x2026;)</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 We define a "catch-all" base class for all our Vectors, Matrices, &#x2026; objects.
 </p>
-
-<blockquote>
-<p>
-Defines the Vector, Matrix, Tensor&#x2026; base class
-</p>
-
-<p>
-Its role is to unifies argument capture in interface functions
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">VMT_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;
-  {
-    <span style="color: #7f7f7f;">//////////////////</span>
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Public Types</span>
-    <span style="color: #7f7f7f;">//////////////////</span>
-    <span style="color: #7f7f7f;">//</span>
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">VMT_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Crtp&gt;;
-    <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">base_type</span>::<span style="color: #00688b;">impl</span>;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
-
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Prevent object slicing</span>
-   <span style="color: #1c86ee;">protected</span>:
-    <span style="color: #00688b;">VMT_Crtp</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">VMT_Crtp</span>&amp;) = <span style="color: #1c86ee;">default</span>;
-  };
-</pre>
-</div>
-</blockquote>
-</div>
-</div>
-
-
-
-<div id="outline-container-org3d5eb58" class="outline-2">
-<h2 id="org3d5eb58"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-org2d46d65" class="outline-2">
-<h2 id="org2d46d65"><span class="section-number-2">3</span> 3 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org69c0062" class="outline-3">
-<h3 id="org69c0062"><span class="section-number-3">3.1</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-<a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp.hpp</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org68187d6" class="outline-3">
-<h3 id="org68187d6"><span class="section-number-3">3.2</span> <a href="../expr/index.html">Contents</a></h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-The first steps are to introduce a <a href="#org2d4a323">Base class for VMT (vectors, matrices, tensors&#x2026;)</a> and some tags
-</p>
-</div>
-</div>
-
-<div id="outline-container-org37470b2" class="outline-3">
-<h3 id="org37470b2"><span class="section-number-3">3.3</span> <a href="../../index.html">Content</a></h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-<a href="src/LinearAlgebra/dense/vmt_crtp.html">vmt_crtp</a>
-</p>
-</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:53</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

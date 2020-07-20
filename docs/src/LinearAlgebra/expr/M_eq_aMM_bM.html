@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 16:20 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>M_eq_aMM_bM.hpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -271,9 +258,9 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge3cb790">1. \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</a></li>
-<li><a href="#orgbdccb69">2. Alias</a></li>
-<li><a href="#org296ac2c">3. Unit test</a></li>
+<li><a href="#org5a3556d">1. \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</a></li>
+<li><a href="#orgea03aa1">2. Alias</a></li>
+<li><a href="#orgebb55cc">3. Unit test</a></li>
 </ul>
 </div>
 </div>
@@ -282,76 +269,20 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-orge3cb790" class="outline-2">
-<h2 id="orge3cb790"><span class="section-number-2">1</span> \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</h2>
+<div id="outline-container-org5a3556d" class="outline-2">
+<h2 id="org5a3556d"><span class="section-number-2">1</span> \(M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3\)</h2>
 <div class="outline-text-2" id="text-1">
-<blockquote>
-\begin{equation*}
-M_0=\alpha \text{op}_1(M_1) \text{op}_2(M_2) + \beta M_3
-\end{equation*}
-
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M0_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
-            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP1</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
-            <span style="color: #00688b;">Matrix_Unary_Op_Enum</span> <span style="color: #2e8b57;">OP2</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M2_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M3_IMPL</span>&gt;
-  <span style="color: #00688b;">void</span>
-  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M0</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP1&gt; <span style="color: #2e8b57;">op1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_matrix_unary_op_t_</span>&lt;OP2&gt; <span style="color: #2e8b57;">op2</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M2</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M3</span>)
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
-<div id="outline-container-orgbdccb69" class="outline-2">
-<h2 id="orgbdccb69"><span class="section-number-2">2</span> Alias</h2>
+<div id="outline-container-orgea03aa1" class="outline-2">
+<h2 id="orgea03aa1"><span class="section-number-2">2</span> Alias</h2>
 <div class="outline-text-2" id="text-2">
-<blockquote>
-\begin{equation*}
-M_0 = \alpha M_1 M_2 + \beta M_3
-\end{equation*}
-
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M0_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M1_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M2_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">BETA_IMPL</span>,
-            <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">M3_IMPL</span>&gt;
-  <span style="color: #00688b;">void</span>
-  <span style="color: #cd9b1d;">assign</span>(<span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M0</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M1</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M2</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">BETA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">beta</span>,
-         <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Matrix_Crtp</span>&lt;<span style="color: #00688b;">M3_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">M3</span>)
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
-<div id="outline-container-org296ac2c" class="outline-2">
-<h2 id="org296ac2c"><span class="section-number-2">3</span> Unit test</h2>
+<div id="outline-container-orgebb55cc" class="outline-2">
+<h2 id="orgebb55cc"><span class="section-number-2">3</span> Unit test</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/matrix.hpp"</span>
@@ -408,7 +339,7 @@ M_0 = \alpha M_1 M_2 + \beta M_3
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 16:20</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

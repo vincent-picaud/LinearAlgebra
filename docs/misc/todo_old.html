@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:54 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Reminder &amp; TODO list</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -198,7 +185,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -269,40 +256,34 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8999989">1. Things todo <code>[4/8]</code></a></li>
-<li><a href="#org7ec720a">2. Some Reminders</a></li>
-<li><a href="#orgd311af4">3. Meson &amp; external dependency (here slate/blaspp)</a>
+<li><a href="#org918b0c0">1. Things todo <code>[4/8]</code></a></li>
+<li><a href="#org132ea82">2. Some Reminders</a></li>
+<li><a href="#orgf790a54">3. Meson &amp; external dependency (here slate/blaspp)</a>
 <ul>
-<li><a href="#org82337ea">3.1. subproject</a>
+<li><a href="#org387ea9f">3.1. subproject</a>
 <ul>
-<li><a href="#org85a1c3a">3.1.1. <code>/meson.build</code></a></li>
-<li><a href="#org609c880">3.1.2. <code>/src/LinerarAlgebra/meson.build</code></a></li>
-<li><a href="#org6461690">3.1.3. <code>/subproject/blaspp.wrap</code></a></li>
-<li><a href="#orga098965">3.1.4. <code>/examples/meson.build</code></a></li>
+<li><a href="#orgfa96606">3.1.1. <code>/meson.build</code></a></li>
+<li><a href="#org8416143">3.1.2. <code>/src/LinerarAlgebra/meson.build</code></a></li>
+<li><a href="#orgd91b7b6">3.1.3. <code>/subproject/blaspp.wrap</code></a></li>
+<li><a href="#org6913226">3.1.4. <code>/examples/meson.build</code></a></li>
 </ul>
 </li>
-<li><a href="#org09f3552">3.2. External dependency</a>
+<li><a href="#org68a76aa">3.2. External dependency</a>
 <ul>
-<li><a href="#org1c44e59">3.2.1. <code>/meson.build/</code></a></li>
-<li><a href="#orgbcdaf6f">3.2.2. <code>/src/LinearAlgebra/meson.build</code></a></li>
-<li><a href="#orgf160b1a">3.2.3. <code>/example/meson.build</code></a></li>
-<li><a href="#org5b29052">3.2.4. <code>/subproject/</code></a></li>
+<li><a href="#org0dad846">3.2.1. <code>/meson.build/</code></a></li>
+<li><a href="#orgb071ba8">3.2.2. <code>/src/LinearAlgebra/meson.build</code></a></li>
+<li><a href="#org8f58682">3.2.3. <code>/example/meson.build</code></a></li>
+<li><a href="#org1e26ce5">3.2.4. <code>/subproject/</code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#org5b960bc">4. Backlinks</a></li>
-<li><a href="#org632b065">5. 1 Backlinks</a>
-<ul>
-<li><a href="#orgfe24aac">5.1. My Sitemap</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org8999989" class="outline-2">
-<h2 id="org8999989"><span class="section-number-2">1</span> Things todo <code>[4/8]</code></h2>
+<div id="outline-container-org918b0c0" class="outline-2">
+<h2 id="org918b0c0"><span class="section-number-2">1</span> Things todo <code>[4/8]</code></h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> Note taken on <span class="timestamp-wrapper"><span class="timestamp">&lt;Tue Apr 21 2020 11:17&gt;</span></span> <br />
@@ -374,8 +355,8 @@ Check the todo list works!</li>
 </div>
 </div>
 
-<div id="outline-container-org7ec720a" class="outline-2">
-<h2 id="org7ec720a"><span class="section-number-2">2</span> Some Reminders</h2>
+<div id="outline-container-org132ea82" class="outline-2">
+<h2 id="org132ea82"><span class="section-number-2">2</span> Some Reminders</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><p>
@@ -750,8 +731,8 @@ To prevent object slicing it is important to define this kind of stuff
 </div>
 </div>
 
-<div id="outline-container-orgd311af4" class="outline-2">
-<h2 id="orgd311af4"><span class="section-number-2">3</span> Meson &amp; external dependency (here slate/blaspp)</h2>
+<div id="outline-container-orgf790a54" class="outline-2">
+<h2 id="orgf790a54"><span class="section-number-2">3</span> Meson &amp; external dependency (here slate/blaspp)</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Two solutions:
@@ -762,16 +743,16 @@ Two solutions:
 </ul>
 </div>
 
-<div id="outline-container-org82337ea" class="outline-3">
-<h3 id="org82337ea"><span class="section-number-3">3.1</span> subproject</h3>
+<div id="outline-container-org387ea9f" class="outline-3">
+<h3 id="org387ea9f"><span class="section-number-3">3.1</span> subproject</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 This worked, but certainly need some cleaning
 </p>
 </div>
 
-<div id="outline-container-org85a1c3a" class="outline-4">
-<h4 id="org85a1c3a"><span class="section-number-4">3.1.1</span> <code>/meson.build</code></h4>
+<div id="outline-container-orgfa96606" class="outline-4">
+<h4 id="orgfa96606"><span class="section-number-4">3.1.1</span> <code>/meson.build</code></h4>
 <div class="outline-text-4" id="text-3-1-1">
 <pre class="example">
 project('LinearAlgebra', 'cpp',
@@ -808,8 +789,8 @@ subdir('examples')
 </div>
 </div>
 
-<div id="outline-container-org609c880" class="outline-4">
-<h4 id="org609c880"><span class="section-number-4">3.1.2</span> <code>/src/LinerarAlgebra/meson.build</code></h4>
+<div id="outline-container-org8416143" class="outline-4">
+<h4 id="org8416143"><span class="section-number-4">3.1.2</span> <code>/src/LinerarAlgebra/meson.build</code></h4>
 <div class="outline-text-4" id="text-3-1-2">
 <pre class="example">
 LinearAlgebra_headers = [ ... ]
@@ -831,8 +812,8 @@ install_headers(LinearAlgebra_headers, subdir : 'LinearAlgebra')
 </div>
 </div>
 
-<div id="outline-container-org6461690" class="outline-4">
-<h4 id="org6461690"><span class="section-number-4">3.1.3</span> <code>/subproject/blaspp.wrap</code></h4>
+<div id="outline-container-orgd91b7b6" class="outline-4">
+<h4 id="orgd91b7b6"><span class="section-number-4">3.1.3</span> <code>/subproject/blaspp.wrap</code></h4>
 <div class="outline-text-4" id="text-3-1-3">
 <pre class="example">
 # See: https://github.com/mesonbuild/meson/tree/master/manual%20tests/6%20hg%20wrap
@@ -845,8 +826,8 @@ revision=tip
 </div>
 </div>
 
-<div id="outline-container-orga098965" class="outline-4">
-<h4 id="orga098965"><span class="section-number-4">3.1.4</span> <code>/examples/meson.build</code></h4>
+<div id="outline-container-org6913226" class="outline-4">
+<h4 id="org6913226"><span class="section-number-4">3.1.4</span> <code>/examples/meson.build</code></h4>
 <div class="outline-text-4" id="text-3-1-4">
 <pre class="example">
 #include "blas.hh"
@@ -874,8 +855,8 @@ executable('blaspp_example',
 </div>
 </div>
 
-<div id="outline-container-org09f3552" class="outline-3">
-<h3 id="org09f3552"><span class="section-number-3">3.2</span> External dependency</h3>
+<div id="outline-container-org68a76aa" class="outline-3">
+<h3 id="org68a76aa"><span class="section-number-3">3.2</span> External dependency</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 This worked, but certainly need some cleaning.
@@ -928,8 +909,8 @@ always modify these paths in the root meson.build file (in
 </div>
 
 
-<div id="outline-container-org1c44e59" class="outline-4">
-<h4 id="org1c44e59"><span class="section-number-4">3.2.1</span> <code>/meson.build/</code></h4>
+<div id="outline-container-org0dad846" class="outline-4">
+<h4 id="org0dad846"><span class="section-number-4">3.2.1</span> <code>/meson.build/</code></h4>
 <div class="outline-text-4" id="text-3-2-1">
 <pre class="example">
 project('LinearAlgebra', 'cpp',
@@ -958,8 +939,8 @@ subdir('examples')
 </div>
 </div>
 
-<div id="outline-container-orgbcdaf6f" class="outline-4">
-<h4 id="orgbcdaf6f"><span class="section-number-4">3.2.2</span> <code>/src/LinearAlgebra/meson.build</code></h4>
+<div id="outline-container-orgb071ba8" class="outline-4">
+<h4 id="orgb071ba8"><span class="section-number-4">3.2.2</span> <code>/src/LinearAlgebra/meson.build</code></h4>
 <div class="outline-text-4" id="text-3-2-2">
 <pre class="example">
 LinearAlgebra_headers = [...]
@@ -981,8 +962,8 @@ install_headers(LinearAlgebra_headers, subdir : 'LinearAlgebra')
 </div>
 </div>
 
-<div id="outline-container-orgf160b1a" class="outline-4">
-<h4 id="orgf160b1a"><span class="section-number-4">3.2.3</span> <code>/example/meson.build</code></h4>
+<div id="outline-container-org8f58682" class="outline-4">
+<h4 id="org8f58682"><span class="section-number-4">3.2.3</span> <code>/example/meson.build</code></h4>
 <div class="outline-text-4" id="text-3-2-3">
 <pre class="example">
 executable('test_blaspp',
@@ -994,8 +975,8 @@ executable('test_blaspp',
 </div>
 </div>
 
-<div id="outline-container-org5b29052" class="outline-4">
-<h4 id="org5b29052"><span class="section-number-4">3.2.4</span> <code>/subproject/</code></h4>
+<div id="outline-container-org1e26ce5" class="outline-4">
+<h4 id="org1e26ce5"><span class="section-number-4">3.2.4</span> <code>/subproject/</code></h4>
 <div class="outline-text-4" id="text-3-2-4">
 <p>
 There is nothing related to blas (appart gtest)
@@ -1004,29 +985,10 @@ There is nothing related to blas (appart gtest)
 </div>
 </div>
 </div>
-
-<div id="outline-container-org5b960bc" class="outline-2">
-<h2 id="org5b960bc"><span class="section-number-2">4</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-org632b065" class="outline-2">
-<h2 id="org632b065"><span class="section-number-2">5</span> 1 Backlinks</h2>
-<div class="outline-text-2" id="text-5">
-</div>
-<div id="outline-container-orgfe24aac" class="outline-3">
-<h3 id="orgfe24aac"><span class="section-number-3">5.1</span> <a href="../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-5-1">
-<p>
-<a href="misc/todo_old.html">Reminder &amp; TODO list</a>
-</p>
-</div>
-</div>
-</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:54</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

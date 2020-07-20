@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:54 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>vmt_assignment_operator_define.hpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,18 +236,10 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4546cba">1. Macro helper for assigment operators</a>
+<li><a href="#org0f1ba87">1. Macro helper for assigment operators</a>
 <ul>
-<li><a href="#org633f579">1.1. The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a></li>
-<li><a href="#org54cff38">1.2. The <code>DELETE_VMT_ASSIGNMENT_OPERATOR</code> macro</a></li>
-</ul>
-</li>
-<li><a href="#orga2b16eb">2. Backlinks</a></li>
-<li><a href="#orgef5d9cc">3. 4 Backlinks</a>
-<ul>
-<li><a href="#orgb1e8f4b">3.1. how_to_new_vector.cpp</a></li>
-<li><a href="#org2677463">3.2. My Sitemap</a></li>
-<li><a href="#org4969361">3.3. vector_crtp.hpp</a></li>
+<li><a href="#org6e94569">1.1. The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a></li>
+<li><a href="#org7590b61">1.2. The <code>DELETE_VMT_ASSIGNMENT_OPERATOR</code> macro</a></li>
 </ul>
 </li>
 </ul>
@@ -271,8 +250,8 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org4546cba" class="outline-2">
-<h2 id="org4546cba"><span class="section-number-2">1</span> Macro helper for assigment operators</h2>
+<div id="outline-container-org0f1ba87" class="outline-2">
+<h2 id="org0f1ba87"><span class="section-number-2">1</span> Macro helper for assigment operators</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This macro define a template for <code>operator=</code> that must be <b>repeated over
@@ -313,95 +292,17 @@ is remplaced by
 </div>
 </div>
 
-<div id="outline-container-org633f579" class="outline-3">
-<h3 id="org633f579"><span class="section-number-3">1.1</span> The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</h3>
+<div id="outline-container-org6e94569" class="outline-3">
+<h3 id="org6e94569"><a id="ID-344fb456-2763-4895-bd5d-1221a04cf927"></a><span class="section-number-3">1.1</span> The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</h3>
 <div class="outline-text-3" id="text-1-1">
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #cdad00;"> #define</span> <span style="color: #cd9b1d;">VMT_ASSIGNMENT_OPERATOR</span>(<span style="color: #2e8b57;">THIS_TYPE</span>)                                               \
-   <span style="color: #7f7f7f;">/* </span><span style="color: #7f7f7f;">Meta expression etc... */</span>                                                           \
-   <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">OTHER_IMPL</span>&gt;                                                         \
-   <span style="color: #00688b;">THIS_TYPE</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #2e8b57;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">OTHER_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">other</span>)                                    \
-   {                                                                                      \
-     <span style="color: #1c86ee;">return</span> <span style="color: #1c86ee;">this</span>-&gt;impl_assign(other.impl());                                              \
-   }                                                                                      \
-                                                                                          \
-   <span style="color: #7f7f7f;">/* </span><span style="color: #7f7f7f;">Scalar */</span>                                                                           \
-   <span style="color: #00688b;">THIS_TYPE</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #2e8b57;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp; <span style="color: #2e8b57;">scalar</span>) { <span style="color: #1c86ee;">return</span> <span style="color: #1c86ee;">this</span>-&gt;impl_assign(scalar); } \
-                                                                                          \
-   <span style="color: #7f7f7f;">/* </span><span style="color: #7f7f7f;">Be sure that we have a deep copy semantic, even for view */</span>                         \
-   <span style="color: #00688b;">THIS_TYPE</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #2e8b57;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">THIS_TYPE</span>&amp; <span style="color: #2e8b57;">other</span>) { <span style="color: #1c86ee;">return</span> <span style="color: #1c86ee;">this</span>-&gt;impl().impl_assign(other); }
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
-<div id="outline-container-org54cff38" class="outline-3">
-<h3 id="org54cff38"><span class="section-number-3">1.2</span> The <code>DELETE_VMT_ASSIGNMENT_OPERATOR</code> macro</h3>
+<div id="outline-container-org7590b61" class="outline-3">
+<h3 id="org7590b61"><span class="section-number-3">1.2</span> The <code>DELETE_VMT_ASSIGNMENT_OPERATOR</code> macro</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Delete <code>operator=</code> to provide more readable error messages
-</p>
-
-<blockquote>
-<p>
-Better error messages
-</p>
-<div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #cdad00;"> #define</span> <span style="color: #cd9b1d;">DELETE_VMT_ASSIGNMENT_OPERATOR</span>(<span style="color: #2e8b57;">THIS_TYPE</span>)                \
-   <span style="color: #7f7f7f;">/* </span><span style="color: #7f7f7f;">Meta expression etc... */</span>                                   \
-   <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">OTHER_IMPL</span>&gt;                                 \
-   <span style="color: #00688b;">THIS_TYPE</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #2e8b57;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Crtp</span>&lt;<span style="color: #00688b;">OTHER_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">other</span>) = <span style="color: #1c86ee;">delete</span>;  \
-   <span style="color: #7f7f7f;">/* </span><span style="color: #7f7f7f;">Scalar */</span>                                                   \
-   <span style="color: #00688b;">THIS_TYPE</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #2e8b57;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp; <span style="color: #2e8b57;">scalar</span>) = <span style="color: #1c86ee;">delete</span>;     \
-   <span style="color: #7f7f7f;">/* </span><span style="color: #7f7f7f;">Be sure that we have a deep copy semantic, even for view */</span> \
-   <span style="color: #00688b;">THIS_TYPE</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #2e8b57;">=</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">THIS_TYPE</span>&amp; <span style="color: #2e8b57;">other</span>) = <span style="color: #1c86ee;">delete</span>;
-</pre>
-</div>
-</blockquote>
-</div>
-</div>
-</div>
-
-
-
-<div id="outline-container-orga2b16eb" class="outline-2">
-<h2 id="orga2b16eb"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-orgef5d9cc" class="outline-2">
-<h2 id="orgef5d9cc"><span class="section-number-2">3</span> 4 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-orgb1e8f4b" class="outline-3">
-<h3 id="orgb1e8f4b"><span class="section-number-3">3.1</span> <a href="../../../examples/how_to_new_vector_type.html">how_to_new_vector.cpp</a></h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-The minimal vector interface is <a href="vector_crtp.html#ID-3664b3fc-f74a-410c-8025-a2b2f7051b8e">The <code>Vector_Crtp</code> class</a>. We also illustrate how the <a href="#org633f579">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a> must be used. The code is as follows:
-</p>
-</div>
-</div>
-
-<div id="outline-container-org2677463" class="outline-3">
-<h3 id="org2677463"><span class="section-number-3">3.2</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-<a href="src/LinearAlgebra/dense/vmt_assignment_operator_define.html">vmt_assignment_operator_define.hpp</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-org4969361" class="outline-3">
-<h3 id="org4969361"><span class="section-number-3">3.3</span> <a href="vector_crtp.html">vector_crtp.hpp</a></h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-See: <a href="#org633f579">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a>
-</p>
-
-<p>
-See: <a href="#org633f579">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a>
 </p>
 </div>
 </div>
@@ -409,7 +310,7 @@ See: <a href="#org633f579">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:54</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

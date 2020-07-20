@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:53 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>how_to_new_vector_type.cpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,14 +236,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org114430e">1. How to define a new vector type</a></li>
-<li><a href="#orgf859a7a">2. How to define associated <code>assign()</code> functions</a>
+<li><a href="#orgd9b4220">1. How to define a new vector type</a></li>
+<li><a href="#orgbc16d32">2. How to define associated <code>assign()</code> functions</a>
 <ul>
-<li><a href="#org3b90ea0">2.1. <span class="todo TODO">TODO</span> Prodividing <code>fill()</code> method specialization</a></li>
-<li><a href="#org79f587a">2.2. Redefining the full set of <code>assign()</code> functions</a></li>
+<li><a href="#org5714818">2.1. <span class="todo TODO">TODO</span> Prodividing <code>fill()</code> method specialization</a></li>
+<li><a href="#org7b79748">2.2. Redefining the full set of <code>assign()</code> functions</a></li>
 </ul>
 </li>
-<li><a href="#org40294ab">3. <code>main()</code> function</a></li>
+<li><a href="#org7d6f1ee">3. <code>main()</code> function</a></li>
 </ul>
 </div>
 </div>
@@ -265,300 +252,49 @@ for the JavaScript code in this tag.
 <a href="../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org114430e" class="outline-2">
-<h2 id="org114430e"><span class="section-number-2">1</span> How to define a new vector type</h2>
+<div id="outline-container-orgd9b4220" class="outline-2">
+<h2 id="orgd9b4220"><span class="section-number-2">1</span> How to define a new vector type</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The minimal vector interface is <a href="../src/LinearAlgebra/dense/vector_crtp.html#ID-3664b3fc-f74a-410c-8025-a2b2f7051b8e">The <code>Vector_Crtp</code> class</a>. We also
 illustrate how the <a href="../src/LinearAlgebra/dense/vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a> must be used. The
 code is as follows:
 </p>
-
-<blockquote>
-<p>
-You must start by defining the required types by specializing
-<code>Crtp_Type_Traits</code>.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Minimal_Vector</span>;
-
-  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T</span>&gt;
-  <span style="color: #1c86ee;">struct</span> <span style="color: #00688b;">Crtp_Type_Traits</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&gt;
-  {
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = T;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">size_type</span>    = <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">integral_constant</span>&lt;<span style="color: #6e8b3d;">std</span>::size_t, 2&gt;;
-  };
-
-</pre>
-</div>
-
-<p>
-Then define the vector class
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">  <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T</span>&gt;
-  <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Minimal_Vector</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&gt;
-  {
-   <span style="color: #1c86ee;">public</span>:
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span>    = <span style="color: #00688b;">Vector_Crtp</span>&lt;<span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T</span>&gt;&gt;;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::element_type;
-    <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">size_type</span>    = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::size_type;
-
-   <span style="color: #1c86ee;">protected</span>:
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">My data</span>
-    <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">array</span>&lt;<span style="color: #00688b;">T</span>, <span style="color: #6e8b3d;">size_type</span>::value&gt; <span style="color: #2e8b57;">_data</span>;
-
-   <span style="color: #1c86ee;">public</span>:
-</pre>
-</div>
-
-<p>
-The most basic form of vector, <code>Vector_Crtp</code> does not impose
-the existence of <code>operator[]</code>, by consequence you must provide
-a way to access to data:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">array</span>&lt;T, <span style="color: #6e8b3d;">size_type</span>::value&gt;&amp;
-    <span style="color: #cd9b1d;">data</span>()
-    {
-      <span style="color: #1c86ee;">return</span> _data;
-    }
-    <span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">array</span>&lt;T, <span style="color: #6e8b3d;">size_type</span>::value&gt;&amp;
-    <span style="color: #cd9b1d;">data</span>() <span style="color: #1c86ee;">const</span>
-    {
-      <span style="color: #1c86ee;">return</span> _data;
-    }
-
-</pre>
-</div>
-
-<p>
-Provides <code>operator=</code>
-</p>
-
-<p>
-Must be followed by impl_assign
-implementation (see protected: section)
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">    VMT_ASSIGNMENT_OPERATOR(Minimal_Vector);
-
-</pre>
-</div>
-
-<p>
-This section groups the methods (impl_XXX) you must overwrite.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">   <span style="color: #1c86ee;">protected</span>:
-    <span style="color: #1c86ee;">friend</span> <span style="color: #00688b;">base_type</span>;
-
-    <span style="color: #00688b;">size_type</span>
-    <span style="color: #cd9b1d;">impl_size</span>() <span style="color: #1c86ee;">const</span>
-    {
-      <span style="color: #1c86ee;">return</span> {};
-    }
-
-    <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&amp;
-    <span style="color: #cd9b1d;">impl_as_const</span>() <span style="color: #1c86ee;">const</span>
-    {
-      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
-    }
-
-    <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">VMT_ASSIGNMENT_OPERATOR most basic implementation</span>
-    <span style="color: #7f7f7f;">//</span>
-    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">EXPR_IMPL</span>&gt;
-    <span style="color: #00688b;">Minimal_Vector</span>&lt;T&gt;&amp;
-    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #6e8b3d;">Detail</span>::<span style="color: #00688b;">MetaExpr_Crtp</span>&lt;<span style="color: #00688b;">EXPR_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">metaExpr</span>)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Expression Template</span>
-    {
-      <span style="color: #6e8b3d;">Detail</span>::call_assign_from_MetaExpr(*<span style="color: #1c86ee;">this</span>, metaExpr);
-      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
-    }
-
-    <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">T_OTHER</span>&gt;
-    <span style="color: #00688b;">Minimal_Vector</span>&lt;T&gt;&amp;
-    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">T_OTHER</span>&gt;&amp; <span style="color: #2e8b57;">other</span>)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Compatible Vector</span>
-    {
-      _data[0] = other._data[0];
-      _data[1] = other._data[1];
-
-      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
-    }
-
-    <span style="color: #00688b;">Minimal_Vector</span>&lt;T&gt;&amp;
-    <span style="color: #cd9b1d;">impl_assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp; <span style="color: #2e8b57;">alpha</span>)  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Compatible Scalar</span>
-    {
-      _data[0] = alpha;
-      _data[1] = alpha;
-
-      <span style="color: #1c86ee;">return</span> *<span style="color: #1c86ee;">this</span>;
-    }
-
-</pre>
-</div>
-
-<p>
-Defines out to print vector
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">    <span style="color: #1c86ee;">friend</span> <span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">ostream</span>&amp;
-    <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">&lt;&lt;</span>(<span style="color: #6e8b3d;">std</span>::<span style="color: #00688b;">ostream</span>&amp; <span style="color: #2e8b57;">out</span>, <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&lt;T&gt;&amp; <span style="color: #2e8b57;">to_print</span>)
-    {
-      out &lt;&lt; <span style="color: #8b7355;">"["</span> &lt;&lt; to_print._data[0] &lt;&lt; <span style="color: #8b7355;">", "</span> &lt;&lt; to_print._data[1] &lt;&lt; <span style="color: #8b7355;">"]"</span>;
-      <span style="color: #1c86ee;">return</span> out;
-    }
-  };
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 
-<div id="outline-container-orgf859a7a" class="outline-2">
-<h2 id="orgf859a7a"><span class="section-number-2">2</span> How to define associated <code>assign()</code> functions</h2>
+<div id="outline-container-orgbc16d32" class="outline-2">
+<h2 id="orgbc16d32"><span class="section-number-2">2</span> How to define associated <code>assign()</code> functions</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 There is two approaches
 </p>
 <ul class="org-ul">
-<li><a href="#org3b90ea0">Prodividing <code>fill()</code> method specialization</a></li>
-<li><a href="#org79f587a">Redefining the full set of <code>assign()</code> functions</a></li>
+<li><a href="#org5714818">Prodividing <code>fill()</code> method specialization</a></li>
+<li><a href="#org7b79748">Redefining the full set of <code>assign()</code> functions</a></li>
 </ul>
 
 <p>
 For both cases you must take care of includes:
 </p>
-
-<blockquote>
-<p>
-These are the required includes.
-</p>
-
-<p>
-For Expression Templates, one needs:
-</p>
-<div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/metaexpr/metaexpr.hpp"</span>
-
-<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">For =assign()= function one needs to include *each individual*</span>
-<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">expressions. *It is not enough:* to simply include</span>
-<span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">="LinearAlgebra/expr/expr.hpp"= .</span>
-<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/expr/V0_assign_alpha_V1_plus_V2.hpp"</span>
-<span style="color: #cdad00;">#include</span> <span style="color: #8b7355;">"LinearAlgebra/expr/X_eq_aX_vector.hpp"</span>
-</pre>
-</div>
-</blockquote>
 </div>
 
-<div id="outline-container-org3b90ea0" class="outline-3">
-<h3 id="org3b90ea0"><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> Prodividing <code>fill()</code> method specialization</h3>
+<div id="outline-container-org5714818" class="outline-3">
+<h3 id="org5714818"><a id="ID-cb1c696e-8020-41a2-8b96-c7f5481076a9"></a><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> Prodividing <code>fill()</code> method specialization</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
 </div>
 
-<div id="outline-container-org79f587a" class="outline-3">
-<h3 id="org79f587a"><span class="section-number-3">2.2</span> Redefining the full set of <code>assign()</code> functions</h3>
+<div id="outline-container-org7b79748" class="outline-3">
+<h3 id="org7b79748"><a id="ID-52626492-6952-44fb-92e4-f0d66d3378ce"></a><span class="section-number-3">2.2</span> Redefining the full set of <code>assign()</code> functions</h3>
 <div class="outline-text-3" id="text-2-2">
-<blockquote>
-<p>
-If no generic <code>fill()</code>, <code>transform()</code>, &#x2026;  functions are
-provided&#x2026; you must specialize each assign functions
-</p>
-
-<p>
-CAVEAT: as both branches X2 or <span class="underline">lhs</span> are tested in a dynamic way,
-one must provide a <b>compilable</b> implementations for both versions
-(otherwise you have a compile time error)
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">   <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">X0_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">X1_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">X2_IMPL</span>&gt;
-   <span style="color: #00688b;">void</span>
-   <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Static&gt; <span style="color: #2e8b57;">selected</span>,
-          <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">X0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">X0</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">X1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">X1</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">X2_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">X2</span>)
-
-   {
-     X0.data()[0] = alpha.value() * X1.data()[0] + X2.data()[0];
-     X0.data()[1] = alpha.value() * X1.data()[1] + X2.data()[1];
-
-     DEBUG_SET_SELECTED(selected);
-   }
-   <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">ALPHA_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">X0_IMPL</span>, <span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">X1_IMPL</span>&gt;
-   <span style="color: #00688b;">void</span>
-   <span style="color: #cd9b1d;">assign</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Expr_Selector</span>&lt;<span style="color: #6e8b3d;">Expr_Selector_Enum</span>::Static&gt; <span style="color: #2e8b57;">selected</span>,
-          <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">X0_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">X0</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_plus_t_</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_product_t_</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Scalar_Crtp</span>&lt;<span style="color: #00688b;">ALPHA_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">alpha</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">X1_IMPL</span>&gt;&amp; <span style="color: #2e8b57;">X1</span>,
-          <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">_lhs_t_</span>)
-
-   {
-     X0.data()[0] = alpha.value() * X1.data()[0] + X0.data()[0];
-     X0.data()[1] = alpha.value() * X1.data()[1] + X0.data()[1];
-
-     DEBUG_SET_SELECTED(selected);
-   }
-</pre>
-</div>
-</blockquote>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org40294ab" class="outline-2">
-<h2 id="org40294ab"><span class="section-number-2">3</span> <code>main()</code> function</h2>
+<div id="outline-container-org7d6f1ee" class="outline-2">
+<h2 id="org7d6f1ee"><span class="section-number-2">3</span> <code>main()</code> function</h2>
 <div class="outline-text-2" id="text-3">
-<blockquote>
-<div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #1c86ee;">using</span> <span style="color: #1c86ee;">namespace</span> <span style="color: #6e8b3d;">LinearAlgebra</span>;
-
-<span style="color: #00688b;">int</span>
-<span style="color: #cd9b1d;">main</span>()
-{
-  <span style="color: #00688b;">Minimal_Vector</span>&lt;<span style="color: #00688b;">int</span>&gt; <span style="color: #2e8b57;">U</span>, <span style="color: #2e8b57;">V</span>, <span style="color: #2e8b57;">W</span>;
-
-  U = 1;
-  V = 2;
-  W = 3;
-
-  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; U &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
-
-  <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">TODO</span><span style="color: #7f7f7f;">: after having cleaned V=&#945;W</span>
-  <span style="color: #7f7f7f;">//</span>
-  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- must remove all tests like &#945;==1 etc... which add extra</span>
-  <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">complexity and are incompatible with AutoDiff for instance.</span>
-  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- must modify generic interface Dense_Vector_Crtp -&gt; Vector_Crtp</span>
-  <span style="color: #7f7f7f;">//   </span><span style="color: #7f7f7f;">in order to let us use a generic fill method.</span>
-  <span style="color: #7f7f7f;">//</span>
-  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">U = 3 * V;</span>
-  <span style="color: #7f7f7f;">//</span>
-  <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">std::cout &lt;&lt; U &lt;&lt; std::endl;</span>
-
-  U = V + W;
-
-  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; U &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
-
-  U = W;
-
-  <span style="color: #6e8b3d;">std</span>::cout &lt;&lt; U &lt;&lt; <span style="color: #6e8b3d;">std</span>::endl;
-}
-</pre>
-</div>
-</blockquote>
-
 <p>
 prints:
 </p>
@@ -573,7 +309,7 @@ prints:
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:53</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

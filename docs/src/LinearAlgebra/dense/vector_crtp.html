@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-07-15 Wed 10:54 -->
+<!-- 2020-07-17 Fri 08:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>vector_crtp.hpp</title>
@@ -161,19 +161,6 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -200,7 +187,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -249,21 +236,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org2728e7e">1. Vector interfaces</a>
+<li><a href="#org786a8d4">1. Vector interfaces</a>
 <ul>
-<li><a href="#org2e22aab">1.1. The <code>Vector_Crtp</code> class</a></li>
-<li><a href="#orgc700d81">1.2. The <code>Dense_Vector_Crtp</code> class</a>
+<li><a href="#org4e84a4c">1.1. The <code>Vector_Crtp</code> class</a></li>
+<li><a href="#org465a5e0">1.2. The <code>Dense_Vector_Crtp</code> class</a>
 <ul>
-<li><a href="#orgcb4483d">1.2.1. Implementation</a></li>
+<li><a href="#org6456642">1.2.1. Implementation</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#org3729254">2. Backlinks</a></li>
-<li><a href="#orgcd7f550">3. 2 Backlinks</a>
-<ul>
-<li><a href="#orgad5fef7">3.1. how_to_new_vector.cpp</a></li>
-<li><a href="#org2b927dc">3.2. My Sitemap</a></li>
 </ul>
 </li>
 </ul>
@@ -274,255 +254,43 @@ for the JavaScript code in this tag.
 <a href="../../../index.html"><b>HOME</b></a> <a href="../index.html"><b>UP</b></a> 
 </p>
 
-<div id="outline-container-org2728e7e" class="outline-2">
-<h2 id="org2728e7e"><span class="section-number-2">1</span> Vector interfaces</h2>
+<div id="outline-container-org786a8d4" class="outline-2">
+<h2 id="org786a8d4"><span class="section-number-2">1</span> Vector interfaces</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This file defines vector interfaces 
 </p>
 </div>
 
-<div id="outline-container-org2e22aab" class="outline-3">
-<h3 id="org2e22aab"><span class="section-number-3">1.1</span> The <code>Vector_Crtp</code> class</h3>
+<div id="outline-container-org4e84a4c" class="outline-3">
+<h3 id="org4e84a4c"><a id="ID-3664b3fc-f74a-410c-8025-a2b2f7051b8e"></a><span class="section-number-3">1.1</span> The <code>Vector_Crtp</code> class</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 This Crtp interface defines the <code>Vector_Crtp</code> interface. This
 <code>Vector_Crtp</code> class is the most basic form of vector.
 </p>
 
-<blockquote>
-<p>
-Minimal requirements for any <code>Vector</code> class.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">   <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-   <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Vector_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Vector_Crtp</span>, <span style="color: #00688b;">IMPL</span>, VMT_Crtp&gt;
-   {
-     <span style="color: #7f7f7f;">///////////</span>
-     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Types //</span>
-     <span style="color: #7f7f7f;">///////////</span>
-     <span style="color: #7f7f7f;">//</span>
-    <span style="color: #1c86ee;">public</span>:
-     <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Vector_Crtp</span>, <span style="color: #00688b;">IMPL</span>, VMT_Crtp&gt;;
-     <span style="color: #1c86ee;">using</span> <span style="color: #6e8b3d;">base_type</span>::<span style="color: #00688b;">impl</span>;
-
-     <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
-     <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
-
-     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Defines the vector component type =double=, =int= ... )</span>
-     <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
-     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Type used to store vector dimension</span>
-     <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">size_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::size_type;
-
-     <span style="color: #7f7f7f;">////////////////////</span>
-     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Crtp Interface //</span>
-     <span style="color: #7f7f7f;">////////////////////</span>
-     <span style="color: #7f7f7f;">//</span>
-    <span style="color: #1c86ee;">public</span>:
-     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Returns vector dimension</span>
-     <span style="color: #00688b;">size_type</span>
-     <span style="color: #cd9b1d;">size</span>() <span style="color: #1c86ee;">const</span>
-
-     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Returns const refe;rece</span>
-     <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">IMPL</span>&amp;
-     <span style="color: #cd9b1d;">as_const</span>() <span style="color: #1c86ee;">const</span>
-
-     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">operator=</span>
-     <span style="color: #7f7f7f;">//</span>
-     <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">*Note:* cannot lead to object slicing as we call impl_assign that</span>
-     <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">is defined *at* the final class level.</span>
-     <span style="color: #7f7f7f;">//</span>
-     <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">Also note that for user convenience (writing V1=V2,</span>
-     <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">with V1 type being Vector_Crtp&lt;IMPL&gt;) this op=</span>
-     <span style="color: #7f7f7f;">//         </span><span style="color: #7f7f7f;">declaration have to be public.</span>
-     <span style="color: #7f7f7f;">//</span>
-     <span style="color: #00688b;">VMT_ASSIGNMENT_OPERATOR</span>(<span style="color: #2e8b57;">Vector_Crtp</span>);
-   };
-</pre>
-</div>
-</blockquote>
-
 <p>
 See: <a href="vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc700d81" class="outline-3">
-<h3 id="orgc700d81"><span class="section-number-3">1.2</span> The <code>Dense_Vector_Crtp</code> class</h3>
+<div id="outline-container-org465a5e0" class="outline-3">
+<h3 id="org465a5e0"><a id="ID-de8a0a1f-0ae5-495d-a839-a7a5d1199091"></a><span class="section-number-3">1.2</span> The <code>Dense_Vector_Crtp</code> class</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 This Crtp interface defines the <code>Dense_Vector_Crtp</code> interface. This
 <code>Dense_Vector_Crtp</code> class is the default base class for <b>dense</b> vectors
 </p>
 
-<blockquote>
-<p>
-Minimal requirements for any <code>Dense_Vector</code> class.
-</p>
-
-<p>
-<b>Note:</b> We store <b>implementation</b> of an <a href="#coderef-storage_scheme" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-storage_scheme');" onmouseout="CodeHighlightOff(this, 'coderef-storage_scheme');"><code>storage_scheme</code></a> and a
-<a href="#coderef-memory_chunk" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-memory_chunk');" onmouseout="CodeHighlightOff(this, 'coderef-memory_chunk');"><code>memory_chunk</code></a> object. This is not the best design (this does not
-fulfill the <span class="underline">dependency inversion principle</span> : maybe in the future
-define storage scheme and a memory chunk <b>interface</b> instead.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cpp">     <span style="color: #1c86ee;">template</span> &lt;<span style="color: #1c86ee;">typename</span> <span style="color: #00688b;">IMPL</span>&gt;
-     <span style="color: #1c86ee;">class</span> <span style="color: #00688b;">Dense_Vector_Crtp</span> : <span style="color: #1c86ee;">public</span> <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Dense_Vector_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Vector_Crtp&gt;
-     {
-       <span style="color: #7f7f7f;">///////////</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Types //</span>
-       <span style="color: #7f7f7f;">///////////</span>
-       <span style="color: #7f7f7f;">//</span>
-      <span style="color: #1c86ee;">public</span>:
-       <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">base_type</span> = <span style="color: #00688b;">Crtp_Find_Impl</span>&lt;<span style="color: #00688b;">Dense_Vector_Crtp</span>, <span style="color: #00688b;">IMPL</span>, Vector_Crtp&gt;;
-
-       <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">exact_type</span>  = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::exact_type;
-       <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">traits_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::traits_type;
-
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Note: take habit to put storage first, as it can be used to</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">compute required_capacity needed by memory_chunk</span>
-       <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">storage_scheme_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::storage_scheme_type;
-       <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">memory_chunk_type</span>   = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::memory_chunk_type;
-       <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">increment_type</span>      = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::increment_type;
-
-       <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">element_type</span> = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">traits_type</span>::element_type;
-       <span style="color: #1c86ee;">using</span> <span style="color: #00688b;">size_type</span>    = <span style="color: #1c86ee;">typename</span> <span style="color: #6e8b3d;">base_type</span>::size_type;
-
-
-       <span style="color: #7f7f7f;">/////////////</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Members //</span>
-       <span style="color: #7f7f7f;">/////////////</span>
-       <span style="color: #7f7f7f;">//</span>
-      <span style="color: #1c86ee;">protected</span>:
-<span id="coderef-storage_scheme" class="coderef-off">       <span style="color: #00688b;">storage_scheme_type</span> <span style="color: #2e8b57;">_storage_scheme</span>;</span>
-<span id="coderef-memory_chunk" class="coderef-off">       <span style="color: #00688b;">memory_chunk_type</span> <span style="color: #2e8b57;">_memory_chunk</span>;</span>
-
-       <span style="color: #7f7f7f;">//////////////////</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Protected Constructors</span>
-       <span style="color: #7f7f7f;">//////////////////</span>
-       <span style="color: #7f7f7f;">//</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">"Protected" avoid object slicing</span>
-      <span style="color: #1c86ee;">protected</span>:
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Copy</span>
-       <span style="color: #cd9b1d;">Dense_Vector_Crtp</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">Dense_Vector_Crtp</span>&amp; <span style="color: #2e8b57;">src</span>) = <span style="color: #1c86ee;">default</span>;
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Move</span>
-       <span style="color: #cd9b1d;">Dense_Vector_Crtp</span>(<span style="color: #00688b;">Dense_Vector_Crtp</span>&amp;&amp; <span style="color: #2e8b57;">src</span>)
-
-       <span style="color: #7f7f7f;">//////////////////</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Public constructors</span>
-       <span style="color: #7f7f7f;">//////////////////</span>
-      <span style="color: #1c86ee;">public</span>:
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">To be used as move constructor</span>
-       <span style="color: #7f7f7f;">//</span>
-       <span style="color: #cd9b1d;">Dense_Vector_Crtp</span>(<span style="color: #00688b;">storage_scheme_type</span>&amp;&amp; <span style="color: #2e8b57;">storage_scheme</span>, <span style="color: #00688b;">memory_chunk_type</span>&amp;&amp; <span style="color: #2e8b57;">memory_chunk</span>)
-           : _storage_scheme(<span style="color: #6e8b3d;">std</span>::move(storage_scheme)), _memory_chunk(<span style="color: #6e8b3d;">std</span>::move(memory_chunk))
-       {
-         assert(_storage_scheme.required_capacity() &lt;= _memory_chunk.capacity());
-       }
-
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">This constructor allocates its memory at construction time:</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">(the _memory_chunk(capacity()) call)</span>
-       <span style="color: #cd9b1d;">Dense_Vector_Crtp</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">storage_scheme_type</span>&amp; <span style="color: #2e8b57;">storage_scheme</span>)
-           : _storage_scheme(storage_scheme), _memory_chunk(_storage_scheme.required_capacity())
-       {
-         assert(_storage_scheme.required_capacity() &lt;= _memory_chunk.capacity());
-       }
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">This constructor assumes a view</span>
-       <span style="color: #cd9b1d;">Dense_Vector_Crtp</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">storage_scheme_type</span>&amp; <span style="color: #2e8b57;">storage_scheme</span>, <span style="color: #00688b;">element_type</span>* <span style="color: #2e8b57;">p</span>)
-           : _storage_scheme(storage_scheme), _memory_chunk(p, _storage_scheme.required_capacity())
-       {
-         assert(_storage_scheme.required_capacity() &lt;= _memory_chunk.capacity());
-       }
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">This constructor assumes a const view</span>
-       <span style="color: #cd9b1d;">Dense_Vector_Crtp</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">storage_scheme_type</span>&amp; <span style="color: #2e8b57;">storage_scheme</span>, <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>* <span style="color: #2e8b57;">p</span>)
-           : _storage_scheme(storage_scheme), _memory_chunk(p, _storage_scheme.required_capacity())
-       {
-         assert(_storage_scheme.required_capacity() &lt;= _memory_chunk.capacity());
-       }
-
-       <span style="color: #7f7f7f;">////////////////////</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Crtp Interface //</span>
-       <span style="color: #7f7f7f;">////////////////////</span>
-       <span style="color: #7f7f7f;">//</span>
-       <span style="color: #7f7f7f;">//</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #ff0000;">TODO</span><span style="color: #7f7f7f;">:</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- tells if need or not an implementation</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">- remove useless impl_XXX</span>
-       <span style="color: #7f7f7f;">//</span>
-       <span style="color: #1c86ee;">auto</span>
-       <span style="color: #cd9b1d;">as_generic_view</span>()
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_as_generic_view();
-       }
-       <span style="color: #1c86ee;">auto</span>
-       <span style="color: #cd9b1d;">as_generic_view</span>() <span style="color: #1c86ee;">const</span>
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_as_generic_view();
-       }
-       <span style="color: #1c86ee;">auto</span>
-       <span style="color: #cd9b1d;">as_generic_const_view</span>() <span style="color: #1c86ee;">const</span>
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::as_const().as_generic_view();
-       }
-
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">auto makes sense for const views</span>
-       <span style="color: #1c86ee;">auto</span>*
-       <span style="color: #cd9b1d;">data</span>()
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_data();
-       }
-       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>*
-       <span style="color: #cd9b1d;">data</span>() <span style="color: #1c86ee;">const</span>
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_data();
-       }
-
-       <span style="color: #00688b;">increment_type</span>
-       <span style="color: #cd9b1d;">increment</span>() <span style="color: #1c86ee;">const</span>
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_increment();
-       }
-
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">Note: for mutable version it's important to use auto, as</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">memory_chunk.data() maybe returns "const element_type*".  This</span>
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">is the case for Const_View for instance.</span>
-       <span style="color: #1c86ee;">auto</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">[]</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">idx</span>) { <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_random_access(idx); }
-       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">element_type</span>&amp; <span style="color: #1c86ee;">operator</span><span style="color: #cd9b1d;">[]</span>(<span style="color: #1c86ee;">const</span> <span style="color: #00688b;">size_t</span> <span style="color: #2e8b57;">idx</span>) <span style="color: #1c86ee;">const</span>
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_random_access(idx);
-       }
-
-       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">storage_scheme_type</span>&amp;
-       <span style="color: #cd9b1d;">storage_scheme</span>() <span style="color: #1c86ee;">const</span>
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_storage_scheme();
-       };
-
-       <span style="color: #1c86ee;">const</span> <span style="color: #00688b;">memory_chunk_type</span>&amp;
-       <span style="color: #cd9b1d;">memory_chunk</span>() <span style="color: #1c86ee;">const</span>
-       {
-         <span style="color: #1c86ee;">return</span> <span style="color: #6e8b3d;">base_type</span>::impl().impl_memory_chunk();
-       };
-
-       <span style="color: #7f7f7f;">// </span><span style="color: #7f7f7f;">operator=</span>
-       <span style="color: #7f7f7f;">//</span>
-       VMT_ASSIGNMENT_OPERATOR(Dense_Vector_Crtp);
-     };
-</pre>
-</div>
-</blockquote>
-
 <p>
 See: <a href="vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a>
 </p>
 </div>
 
-<div id="outline-container-orgcb4483d" class="outline-4">
-<h4 id="orgcb4483d"><span class="section-number-4">1.2.1</span> Implementation</h4>
+<div id="outline-container-org6456642" class="outline-4">
+<h4 id="org6456642"><span class="section-number-4">1.2.1</span> Implementation</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 See: 
@@ -534,39 +302,10 @@ See:
 </div>
 </div>
 </div>
-
-
-<div id="outline-container-org3729254" class="outline-2">
-<h2 id="org3729254"><span class="section-number-2">2</span> Backlinks</h2>
-</div>
-
-
-<div id="outline-container-orgcd7f550" class="outline-2">
-<h2 id="orgcd7f550"><span class="section-number-2">3</span> 2 Backlinks</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-orgad5fef7" class="outline-3">
-<h3 id="orgad5fef7"><span class="section-number-3">3.1</span> <a href="../../../examples/how_to_new_vector_type.html">how_to_new_vector.cpp</a></h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-The minimal vector interface is <a href="#org2e22aab">The <code>Vector_Crtp</code> class</a>. We also illustrate how the <a href="vmt_assignment_operator_define.html#ID-344fb456-2763-4895-bd5d-1221a04cf927">The <code>VMT_ASSIGNMENT_OPERATOR</code> macro</a> must be used. The code is as follows:
-</p>
-</div>
-</div>
-
-<div id="outline-container-org2b927dc" class="outline-3">
-<h3 id="org2b927dc"><span class="section-number-3">3.2</span> <a href="../../../index.html">My Sitemap</a></h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-<a href="src/LinearAlgebra/dense/vector_crtp.html">vector_crtp.hpp</a>
-</p>
-</div>
-</div>
-</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2020-07-15 Wed 10:54</p>
+<p class="date">Created: 2020-07-17 Fri 08:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

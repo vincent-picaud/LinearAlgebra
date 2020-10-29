@@ -1,4 +1,4 @@
-// file:vector.org 
+// file:vector.org
 #pragma once
 
 #define HAS_VECTOR
@@ -223,6 +223,7 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
+    Default_Vector_View(const Default_Vector_View&) = default;
     Default_Vector_View() : Default_Vector_View(nullptr) { assert(this->data() == nullptr); }
     Default_Vector_View(T* data) : base_type(storage_scheme_type(), data) {}   // <- "CHANGE HERE"
     Default_Vector_View(T* data, const SIZE_TYPE n, const INCREMENT_TYPE inc)  // <- "CHANGE HERE"
@@ -325,6 +326,7 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
+    Default_Vector_Const_View(const Default_Vector_Const_View&) = default;
     Default_Vector_Const_View() : Default_Vector_Const_View(nullptr)
     {
       assert(this->data() == nullptr);

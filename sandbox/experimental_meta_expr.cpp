@@ -31,7 +31,7 @@ main()
   Tiny_Matrix<int, 2, 3> M2;
   // static_assert(std::is_trivially_copyable_v<Tiny_Matrix<int, 2, 3>>);
 
-  auto expression_2 = M1 + 4 * M2 * M1 * M2;
+  //  auto expression_2 = M1 + 4 * M2 * M1 * M2;
   auto expression   = 4 * M2;
 
   print(from_metaexpr_to_reverse_Polish_tuple(expression));

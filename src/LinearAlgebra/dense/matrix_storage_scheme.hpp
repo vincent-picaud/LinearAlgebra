@@ -50,7 +50,7 @@ namespace LinearAlgebra
     // -> leading dimension default value helper
     template <typename N_TYPE, size_t LEADING_DIMENSION>
     inline constexpr auto
-    ld_default_value_helper(const N_TYPE n,
+    ld_default_value_helper(const N_TYPE ,
                             const std::integral_constant<size_t, LEADING_DIMENSION> ld) noexcept
     {
       return ld;

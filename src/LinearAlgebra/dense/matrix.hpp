@@ -383,6 +383,7 @@ namespace LinearAlgebra
     //////////////////
     //
    public:
+    Default_Matrix_View(const Default_Matrix_View&) = default;
     Default_Matrix_View() : Default_Matrix_View(nullptr) { assert(this->data() == nullptr); }
 
     Default_Matrix_View(T* data) : base_type(storage_scheme_type(), data)
@@ -526,6 +527,8 @@ namespace LinearAlgebra
     // *Public Constructors*
     //
    public:
+    Default_Matrix_Const_View(const Default_Matrix_Const_View&) = default;
+
     Default_Matrix_Const_View() : Default_Matrix_Const_View(nullptr)
     {
       assert(this->data() == nullptr);

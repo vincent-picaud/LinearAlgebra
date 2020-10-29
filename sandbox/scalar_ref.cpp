@@ -113,20 +113,20 @@ struct A
 
 // This one let the user explicitly define scalar type
 template <typename U, typename T>
-auto operator*(const Scalar<U>& s, const std::vector<T>& v)
+auto operator*(const Scalar<U>& s, const std::vector<T>& )
 {
   std::cerr << __PRETTY_FUNCTION__ << std::endl;
   return A{s};
 }
 template <typename T>
-auto operator*(const Scalar<typename std::vector<T>::value_type>& s, const std::vector<T>& v)
+auto operator*(const Scalar<typename std::vector<T>::value_type>& s, const std::vector<T>& )
 {
   std::cerr << __PRETTY_FUNCTION__ << std::endl;
   return A{s};
 }
 template <typename T>
 auto operator*(const Scalar<std::complex<typename std::vector<T>::value_type>>& s,
-               const std::vector<T>& v)
+               const std::vector<T>& )
 {
   std::cerr << __PRETTY_FUNCTION__ << std::endl;
   return A{s};

@@ -1,5 +1,3 @@
-// [[file:print_expr.org]]
-// [BEGIN_print_expr_cpp]
 #include "LinearAlgebra/dense/matrix_storage_mask_enum.hpp"
 #include "LinearAlgebra/dense/vector_crtp.hpp"
 #include "LinearAlgebra/dense/vmt_assignment_operator_define.hpp"
@@ -909,14 +907,24 @@ main()
   Minimal_Matrix M0(0), M1(1), M2(2), M3(3);
 
   PRINT_EXPR(v0, alpha * v1 + v2);
+  // Alias 
   PRINT_EXPR(v0, v2 + alpha * v1);
   PRINT_EXPR(v0, v2 - alpha * v1);
+
+  PRINT_EXPR(v0, v1 + v2);
+  PRINT_EXPR(v0, v1 - v2);
+
 
   // ////////////////////////////////////////////////////////////////
 
   PRINT_TEST(v0, alpha * v1 + v2);
+
   PRINT_TEST(v0, v2 + alpha * v1);
   PRINT_TEST(v0, v2 - alpha * v1);
+  
+  PRINT_TEST(v0, v1 + v2);
+  PRINT_TEST(v0, v1 - v2);
+
 }
 
 // // ////////////////////////////////////////////////////////////////

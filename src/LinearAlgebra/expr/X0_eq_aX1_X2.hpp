@@ -1,4 +1,10 @@
-// [[file:X0_eq_aX1_X2.org]]
+/** 
+    Defines \f$ x_0 = \alpha x_1 + x_2 \f$ pattern familly
+
+    @file
+    @ingroup Group_Vector
+    @ingroup Group_Matrix
+*/
 #pragma once
 
 #include "LinearAlgebra/expr/X0_eq_aX1_X2/matrix.hpp"
@@ -8,12 +14,8 @@
 
 namespace LinearAlgebra
 {
-  // [BEGIN_assign]
-  //
-  // \begin{equation*}
-  // v_0 = \alpha v_1 + v_2
-  // \end{equation*}
-  //
+  /** Master \f$ x_0 = \alpha x_1 + x_2 \f$
+   */
   template <typename X0_IMPL, typename ALPHA_IMPL, typename X1_IMPL, typename X2_IMPL>
   void
   assign(VMT_Crtp<X0_IMPL>& X0,
@@ -22,8 +24,6 @@ namespace LinearAlgebra
          const Scalar_Crtp<ALPHA_IMPL>& alpha,
          const VMT_Crtp<X1_IMPL>& X1,
          const VMT_Crtp<X2_IMPL>& X2)
-  // [END_assign]
-
   {
     // note: do not check X0 as there is still the opportunity to resize it
     assert(dimension_predicate(X1.impl()) == dimension_predicate(X2.impl()));
@@ -35,11 +35,8 @@ namespace LinearAlgebra
   // Alias
   // ////////////////////////////////////////////////////////////////
 
-  // [BEGIN_alias]
-  // \begin{equation*}
-  // v_0 = v_2 + \alpha v_1
-  // \end{equation*}
-  // [END_alias]
+  /** Alias \f$ x_0 = x_2 + \alpha x_1 \f$
+   */
   template <typename X0_IMPL, typename X2_IMPL, typename ALPHA_IMPL, typename X1_IMPL>
   void
   assign(VMT_Crtp<X0_IMPL>& X0,
@@ -51,11 +48,9 @@ namespace LinearAlgebra
   {
     assign(X0.impl(), _plus_, _product_, alpha.impl(), X1.impl(), X2.impl());
   }
-  // [BEGIN_alias]
-  // \begin{equation*}
-  // v_0 = v_2 - \alpha v_1
-  // \end{equation*}
-  // [END_alias]
+
+  /** Alias \f$ x_0 = x_2 - \alpha x_1 \f$
+   */
   template <typename X0_IMPL, typename X2_IMPL, typename ALPHA_IMPL, typename X1_IMPL>
   void
   assign(VMT_Crtp<X0_IMPL>& X0,

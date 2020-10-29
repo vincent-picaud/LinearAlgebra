@@ -3,21 +3,5 @@ subprojects/googletest-release-*
 subprojects/packagecache/
 *~
 /README.html
-/LinearAlgebra.srctrlbm
-/LinearAlgebra.srctrldb
-/LinearAlgebra.srctrlprj
 /.clangd/
-/compile_commands.json
-/buildclang/
-/buildgcc/
-/relbuild/
-/index.org
-/setup/extract
-/theindex.inc
-# everything except doc
-/src/**/*.html
-/examples/**/*.html
-/sandbox/**/*.html
-/*.html
-/org-roam.db
-build_release/
+

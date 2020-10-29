@@ -9,5 +9,5 @@ subdir('src')
 subdir('test')
 subdir('sandbox')
 subdir('examples')
-
+subdir('docs')
 

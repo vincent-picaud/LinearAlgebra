@@ -145,7 +145,8 @@ namespace LinearAlgebra::Lapack
         const std::size_t ldb)
   {
     return LAPACKE_spotrs(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
-  };
+  }
+  
   static inline lapack_int
   potrs(const Lapack_Order_Enum matrix_layout,
         const Lapack_UpLo_Enum uplo,
@@ -157,7 +158,7 @@ namespace LinearAlgebra::Lapack
         const std::size_t ldb)
   {
     return LAPACKE_dpotrs(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
-  };
+  }
 
   static inline lapack_int
   potrs(const Lapack_Order_Enum matrix_layout,
@@ -170,7 +171,7 @@ namespace LinearAlgebra::Lapack
         const std::size_t ldb)
   {
     return LAPACKE_cpotrs(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
-  };
+  }
 
   static inline lapack_int
   potrs(const Lapack_Order_Enum matrix_layout,
@@ -183,7 +184,7 @@ namespace LinearAlgebra::Lapack
         const std::size_t ldb)
   {
     return LAPACKE_zpotrs(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
-  };
+  }
 
   //
   // DRIVER routines
@@ -207,7 +208,7 @@ namespace LinearAlgebra::Lapack
        const std::size_t ldb)
   {
     return LAPACKE_sposv(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
-  };
+  }
   static inline lapack_int
   posv(const Lapack_Order_Enum matrix_layout,
        const Lapack_UpLo_Enum uplo,
@@ -219,7 +220,7 @@ namespace LinearAlgebra::Lapack
        const std::size_t ldb)
   {
     return LAPACKE_dposv(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
-  };
+  }
 
   static inline lapack_int
   posv(const Lapack_Order_Enum matrix_layout,
@@ -232,7 +233,7 @@ namespace LinearAlgebra::Lapack
        const std::size_t ldb)
   {
     return LAPACKE_cposv(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
-  };
+  }
 
   static inline lapack_int
   posv(const Lapack_Order_Enum matrix_layout,
@@ -245,5 +246,5 @@ namespace LinearAlgebra::Lapack
        const std::size_t ldb)
   {
     return LAPACKE_zposv(matrix_layout, uplo, n, nrhs, a, lda, b, ldb);
-  };
+  }
 }  // namespace LinearAlgebra::Lapack

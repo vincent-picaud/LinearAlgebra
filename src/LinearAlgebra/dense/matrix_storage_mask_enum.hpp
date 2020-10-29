@@ -57,7 +57,7 @@ namespace LinearAlgebra
           break;
       }
       return ok;
-    };
+    }
 
     // Loop over indices
     //////////////////////////////////////////////////////////////////

@@ -45,6 +45,7 @@ TEST(Lapack, potrf)
                            M.I_size(),
                            M.data(),
                            M.leading_dimension());
+  assert(info == 0);
 
   // also see potrs
   auto L = create_matrix_view_lower_triangular(M.as_const());

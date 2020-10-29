@@ -156,7 +156,7 @@ namespace LinearAlgebra::Blas
       typename ENABLED_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP>>,
       typename ENABLED_To_CBlas_Diag      = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
   auto
-  trmv(const _matrix_unary_op_t_<OP> op,
+  trmv(const _matrix_unary_op_t_<OP>,
        const Dense_Matrix_Crtp<M_IMPL>& M,
        Dense_Vector_Crtp<X_IMPL>& x)
       -> std::enable_if_t<
@@ -192,7 +192,7 @@ namespace LinearAlgebra::Blas
             typename ENABLED_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP>>,
             typename ENABLED_To_CBlas_Diag      = std::enable_if_t<Support_CBlas_Diag_v<M_IMPL>>>
   auto
-  trsv(const _matrix_unary_op_t_<OP> op,
+  trsv(const _matrix_unary_op_t_<OP>,
        const Dense_Matrix_Crtp<M_IMPL>& M,
        Dense_Vector_Crtp<X_IMPL>& x)
       -> std::enable_if_t<
@@ -229,7 +229,7 @@ namespace LinearAlgebra::Blas
             typename ENABLED_To_CBlas_UpLo = std::enable_if_t<Support_CBlas_UpLo_v<M_IMPL>>>
   auto
   symv(const Element_Type_t<Y_IMPL>& alpha,
-       const _matrix_unary_op_t_<OP> op,
+       const _matrix_unary_op_t_<OP>,
        const Dense_Matrix_Crtp<M_IMPL>& M,
        const Dense_Vector_Crtp<X_IMPL>& X,
        const Element_Type_t<Y_IMPL>& beta,
@@ -273,7 +273,7 @@ namespace LinearAlgebra::Blas
             typename ENABLED_To_CBlas_Transpose = std::enable_if_t<Support_CBlas_Transpose_v<OP>>>
   auto
   gemv(const Element_Type_t<Y_IMPL>& alpha,
-       const _matrix_unary_op_t_<OP> op,
+       const _matrix_unary_op_t_<OP>,
        const Dense_Matrix_Crtp<M_IMPL>& M,
        const Dense_Vector_Crtp<X_IMPL>& X,
        const Element_Type_t<Y_IMPL>& beta,
@@ -414,7 +414,7 @@ namespace LinearAlgebra::Blas
   gemm(const Element_Type_t<C_IMPL>& alpha,
        const _matrix_unary_op_t_<OP1> op1,
        const Dense_Matrix_Crtp<A_IMPL>& A,
-       const _matrix_unary_op_t_<OP2> op2,
+       const _matrix_unary_op_t_<OP2>,
        const Dense_Matrix_Crtp<B_IMPL>& B,
        const Element_Type_t<C_IMPL>& beta,
        Dense_Matrix_Crtp<C_IMPL>& C)

@@ -35,7 +35,7 @@ namespace LinearAlgebra
         vmt_1.impl());                                                           \
   }
 
-  LINALG_CODE(==);
+  LINALG_CODE(==)
   // CAVEAT: not LINALG_CODE(!=); see journal.org ID =
   //         3bb0fbb6-b81f-406b-be4f-640a7f9a4089
   template <typename IMPL_0, typename IMPL_1>
@@ -44,10 +44,10 @@ namespace LinearAlgebra
   {
     return not(vmt_0 == vmt_1);
   }
-  LINALG_CODE(<);
-  LINALG_CODE(>);
-  LINALG_CODE(<=);
-  LINALG_CODE(>=);
+  LINALG_CODE(<)
+  LINALG_CODE(>)
+  LINALG_CODE(<=)
+  LINALG_CODE(>=)
 
 #undef LINALG_CODE
 
@@ -60,17 +60,17 @@ namespace LinearAlgebra
                       vmt_1.impl());                                                              \
   }
 
-  LINALG_CODE(==);
+  LINALG_CODE(==)
   template <typename IMPL_1>
   bool
   operator!=(const Element_Type_t<IMPL_1>& vmt_0, const VMT_Crtp<IMPL_1>& vmt_1)
   {
     return not(vmt_0 == vmt_1);
   }
-  LINALG_CODE(<);
-  LINALG_CODE(>);
-  LINALG_CODE(<=);
-  LINALG_CODE(>=);
+  LINALG_CODE(<)
+  LINALG_CODE(>)
+  LINALG_CODE(<=)
+  LINALG_CODE(>=)
 
 #undef LINALG_CODE
 
@@ -83,18 +83,18 @@ namespace LinearAlgebra
                       vmt_0.impl());                                                              \
   }
 
-  LINALG_CODE(==);
+  LINALG_CODE(==)
   template <typename IMPL_0>
   bool
   operator!=(const VMT_Crtp<IMPL_0>& vmt_0, const Element_Type_t<IMPL_0>& vmt_1)
   {
     return not(vmt_0 == vmt_1);
   }
-  LINALG_CODE(<);
-  LINALG_CODE(>);
-  LINALG_CODE(<=);
-  LINALG_CODE(>=);
+  LINALG_CODE(<)
+  LINALG_CODE(>)
+  LINALG_CODE(<=)
+  LINALG_CODE(>=)
 
 #undef LINALG_CODE
 
-}
+}  // namespace LinearAlgebra

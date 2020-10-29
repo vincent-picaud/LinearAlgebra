@@ -41,7 +41,7 @@ namespace LinearAlgebra
 
    public:
     constexpr Default_Memory_Chunk() noexcept = default;
-    constexpr Default_Memory_Chunk(const capacity_type capacity) noexcept {}
+    constexpr Default_Memory_Chunk(const capacity_type ) noexcept {}
     // try to avoid this one as it assume how data is stored...
     constexpr Default_Memory_Chunk(const std::array<T, N>& data) noexcept : _data(data) {}
     constexpr capacity_type

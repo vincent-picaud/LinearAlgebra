@@ -10,8 +10,7 @@ namespace LinearAlgebra
   {
     template <typename IMPL_0, typename IMPL_1>
     constexpr bool
-    impl_same_mathematical_object_p(const Crtp<IMPL_0>& object_0,
-                                    const Crtp<IMPL_1>& object_1) noexcept
+    impl_same_mathematical_object_p(const Crtp<IMPL_0>&, const Crtp<IMPL_1>&) noexcept
     {
       return false;
     }

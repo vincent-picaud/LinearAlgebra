@@ -137,7 +137,7 @@ namespace LinearAlgebra
     operator Generic_Vector_Const_View<T>() { return this->as_const().impl_as_generic_view(); }
     operator Generic_Vector_View<T>() { return impl_as_generic_view(); }
 
-    VMT_ASSIGNMENT_OPERATOR(Default_Vector);
+    VMT_ASSIGNMENT_OPERATOR(Default_Vector)
 
     ///////////////////////////////////
     // Crtp Interface Implementation //
@@ -245,7 +245,7 @@ namespace LinearAlgebra
     operator Generic_Vector_Const_View<T>() { return this->as_const().impl_as_generic_view(); }
     operator Generic_Vector_View<T>() { return impl_as_generic_view(); }
 
-    VMT_ASSIGNMENT_OPERATOR(Default_Vector_View);
+    VMT_ASSIGNMENT_OPERATOR(Default_Vector_View)
 
     ///////////////////////////////////
     // Crtp Interface Implementation //
@@ -350,7 +350,7 @@ namespace LinearAlgebra
     operator Generic_Vector_Const_View<T>() const { return impl_as_generic_view(); }
     operator Generic_Vector_Const_View<T>() { return this->as_const().impl_as_generic_view(); }
 
-    DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Vector_Const_View);
+    DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Vector_Const_View)
 
     ///////////////////////////////////
     // Crtp Interface Implementation //

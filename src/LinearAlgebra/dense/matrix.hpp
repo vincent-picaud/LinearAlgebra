@@ -274,7 +274,7 @@ namespace LinearAlgebra
     }
     operator Generic_Matrix_View<T, SPECIAL_STRUCTURE, MASK>() { return impl_as_generic_view(); }
 
-    VMT_ASSIGNMENT_OPERATOR(Default_Matrix);
+    VMT_ASSIGNMENT_OPERATOR(Default_Matrix)
 
     ///////////////////////////////////
     // Crtp Interface Implementation //
@@ -421,7 +421,7 @@ namespace LinearAlgebra
     }
     operator Generic_Matrix_View<T, SPECIAL_STRUCTURE, MASK>() { return impl_as_generic_view(); }
 
-    VMT_ASSIGNMENT_OPERATOR(Default_Matrix_View);
+    VMT_ASSIGNMENT_OPERATOR(Default_Matrix_View)
 
     ///////////////////////////////////
     // Crtp Interface Implementation //
@@ -568,7 +568,7 @@ namespace LinearAlgebra
     }
     // [END_Default_Matrix_Const_View]
 
-    DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Matrix_Const_View);
+    DELETE_VMT_ASSIGNMENT_OPERATOR(Default_Matrix_Const_View)
 
     ///////////////////////////////////
     // Crtp Interface Implementation //

@@ -580,8 +580,8 @@ namespace LinearAlgebra
     }                                                                                        \
   }
 
-  LINALG_CODE_NO_DUPLICATE();
-  LINALG_CODE_NO_DUPLICATE(const);
+  LINALG_CODE_NO_DUPLICATE()
+  LINALG_CODE_NO_DUPLICATE(const)
 
 #undef LINALG_CODE_NO_DUPLICATE
 
@@ -637,8 +637,8 @@ namespace LinearAlgebra
     }                                                                                                \
   }
 
-  LINALG_CODE_NO_DUPLICATE();
-  LINALG_CODE_NO_DUPLICATE(const);
+  LINALG_CODE_NO_DUPLICATE()
+  LINALG_CODE_NO_DUPLICATE(const)
 
 #undef LINALG_CODE_NO_DUPLICATE
 
@@ -687,8 +687,8 @@ namespace LinearAlgebra
     }                                                                                       \
   }
 
-  LINALG_CODE_NO_DUPLICATE();
-  LINALG_CODE_NO_DUPLICATE(const);
+  LINALG_CODE_NO_DUPLICATE()
+  LINALG_CODE_NO_DUPLICATE(const)
 
 #undef LINALG_CODE_NO_DUPLICATE
 

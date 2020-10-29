@@ -141,7 +141,7 @@ namespace LinearAlgebra
   template <size_t N, typename... STATIC_DYNAMIC_SIZE>
   constexpr auto
   get_static_size_if_any(const std::integral_constant<size_t, N>,
-                         const STATIC_DYNAMIC_SIZE... other_size) noexcept
+                         const STATIC_DYNAMIC_SIZE...) noexcept
   {
     return std::integral_constant<size_t, N>{};
   }
@@ -172,6 +172,8 @@ namespace LinearAlgebra
               (Is_Std_Integral_Constant_Size_Or_Std_Size_v<STATIC_DYNAMIC_SIZE_TAIL> and ...),
           bool>
   {
+    (void)size;
+
     return ((size == size_tail) and ...);
   }
 }  // namespace LinearAlgebra

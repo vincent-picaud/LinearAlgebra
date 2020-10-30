@@ -1,6 +1,13 @@
-//
-// This is the *user* header to include to define standard vector
-//
+/**
+   Header to include to use the default dense vector
+
+   @file
+   @ingroup Group_Vector
+
+   It also includes the most common @ref Group_Vector_Patterns "vector
+   patterns" and functions
+*/
+
 #pragma once
 
 #include "LinearAlgebra/dense/vector_header.hpp"

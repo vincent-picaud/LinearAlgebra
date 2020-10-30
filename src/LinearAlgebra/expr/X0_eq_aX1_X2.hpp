@@ -1,9 +1,13 @@
 /** 
-    Defines \f$ x_0 = \alpha x_1 + x_2 \f$ pattern familly
+    Defines \f$ x_0 = \alpha x_1 + x_2 \f$ pattern
 
     @file
-    @ingroup Group_Vector
-    @ingroup Group_Matrix
+    @ingroup Group_Vector_Patterns 
+    @ingroup Group_Matrix_Patterns
+
+    Known alias are:
+    -  \f$ x_0 = x_2 + \alpha x_1 \f$
+    -  \f$ x_0 = x_2 - \alpha x_1 \f$
 */
 #pragma once
 
@@ -31,9 +35,9 @@ namespace LinearAlgebra
     assign(Expr_Selector<>(), X0.impl(), _plus_, _product_, alpha.impl(), X1.impl(), X2.impl());
   }
 
-  // ////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
   // Alias
-  // ////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
 
   /** Alias \f$ x_0 = x_2 + \alpha x_1 \f$
    */

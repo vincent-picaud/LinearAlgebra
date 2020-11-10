@@ -5,3 +5,6 @@ subprojects/packagecache/
 /README.html
 /.clangd/
 
+*.html
+/build_release/
+/compile_commands.json
